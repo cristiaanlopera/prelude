@@ -903,6 +903,205 @@ body.dark .profile-gate{background:rgba(20,20,20,.97)}
   color:#8a3232;
 }
 
+
+/* ==========================================================
+   PRELUDE · MUSEO OLFATIVO
+   ========================================================== */
+.museum-viewer{
+  position:fixed;
+  inset:0;
+  z-index:320;
+  display:none;
+  overflow:auto;
+  background:rgba(244,242,238,.985);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  opacity:0;
+  transition:opacity .35s ease;
+}
+body.dark .museum-viewer{background:rgba(18,18,18,.985)}
+.museum-viewer.open{display:block}
+.museum-viewer.visible{opacity:1}
+.museum-close{
+  position:fixed;
+  top:17px;
+  right:17px;
+  z-index:2;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:10px 15px;
+  background:var(--card);
+  color:var(--text);
+  cursor:pointer;
+}
+.museum-shell{
+  width:min(1080px,calc(100% - 28px));
+  margin:auto;
+  padding:68px 0 58px;
+}
+.museum-heading{text-align:center;margin-bottom:24px}
+.museum-heading h2{
+  margin:8px 0 5px;
+  font:400 clamp(42px,7vw,86px)/.98 Georgia,"Times New Roman",serif;
+  letter-spacing:-.035em;
+}
+.museum-brand{
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  font-size:11px;
+}
+.museum-frame{
+  width:min(760px,100%);
+  margin:0 auto;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:rgba(255,255,255,.40);
+  box-shadow:0 30px 80px rgba(20,20,20,.12);
+  opacity:0;
+  transform:translateY(18px) scale(.985);
+  transition:opacity .55s ease,transform .7s cubic-bezier(.2,.8,.2,1);
+}
+.museum-viewer.visible .museum-frame{opacity:1;transform:none}
+.museum-frame img{
+  display:block;
+  width:100%;
+  max-height:72vh;
+  object-fit:contain;
+  border-radius:16px;
+}
+.museum-info{
+  width:min(760px,100%);
+  margin:25px auto 0;
+  display:grid;
+  gap:19px;
+}
+.museum-label{
+  margin-bottom:8px;
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+.museum-tags{display:flex;flex-wrap:wrap;gap:7px}
+.museum-tags span{
+  padding:8px 11px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--card);
+  font-size:12px;
+}
+.museum-meta{
+  padding-top:17px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font:400 18px/1.5 Georgia,"Times New Roman",serif;
+  text-align:center;
+}
+
+/* Desbloqueo de obra */
+.museum-unlock{
+  position:fixed;
+  inset:0;
+  z-index:350;
+  display:none;
+  place-items:center;
+  padding:18px;
+  overflow:auto;
+  background:rgba(244,242,238,.985);
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
+  opacity:0;
+  transition:opacity .4s ease;
+}
+body.dark .museum-unlock{background:rgba(18,18,18,.985)}
+.museum-unlock.open{display:grid}
+.museum-unlock.visible{opacity:1}
+.museum-unlock-stage{
+  width:min(620px,100%);
+  text-align:center;
+}
+.museum-unlock-kicker{
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.22em;
+  margin-bottom:14px;
+  opacity:0;
+  transform:translateY(8px);
+  transition:.5s .1s;
+}
+.museum-unlock-image{
+  width:min(470px,82vw);
+  margin:auto;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:rgba(255,255,255,.42);
+  box-shadow:0 30px 80px rgba(20,20,20,.13);
+  opacity:0;
+  transform:translateY(20px) scale(.97);
+  transition:.75s cubic-bezier(.2,.8,.2,1);
+}
+.museum-unlock-image img{
+  display:block;
+  width:100%;
+  max-height:58vh;
+  object-fit:contain;
+  border-radius:15px;
+}
+.museum-unlock h2{
+  margin:20px 0 5px;
+  font:400 clamp(38px,7vw,66px)/1 Georgia,"Times New Roman",serif;
+  opacity:0;
+  transform:translateY(9px);
+  transition:.55s .22s;
+}
+.museum-unlock-brand{
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  opacity:0;
+  transition:.55s .31s;
+}
+.museum-unlock p{
+  margin:15px auto;
+  max-width:390px;
+  color:var(--muted);
+  font:400 17px/1.55 Georgia,"Times New Roman",serif;
+  opacity:0;
+  transition:.55s .38s;
+}
+.museum-unlock button{
+  margin-top:6px;
+  padding:11px 19px;
+  border:0;
+  border-radius:999px;
+  background:var(--dark);
+  color:var(--bg);
+  cursor:pointer;
+  opacity:0;
+  transition:opacity .55s .46s;
+}
+.museum-unlock.visible .museum-unlock-kicker,
+.museum-unlock.visible .museum-unlock-image,
+.museum-unlock.visible h2{
+  opacity:1;
+  transform:none;
+}
+.museum-unlock.visible .museum-unlock-brand,
+.museum-unlock.visible p,
+.museum-unlock.visible button{opacity:1}
+.library-card.discovered{cursor:pointer}
+.library-card.discovered:focus-visible{outline:2px solid var(--text);outline-offset:3px}
+@media(max-width:620px){
+  .museum-shell{padding-top:64px}
+  .museum-heading h2{font-size:39px}
+  .museum-unlock-image{width:min(420px,86vw)}
+}
+
 </style>
 </head>
 <body><div class="watermark-brush one"></div><div class="watermark-brush two"></div>
@@ -1125,6 +1324,43 @@ Descubrir colección
   </div>
 </section>
 
+
+
+<section class="museum-viewer" id="museumViewer" aria-hidden="true">
+  <button class="museum-close" id="museumClose" type="button">Cerrar</button>
+  <div class="museum-shell">
+    <div class="museum-heading">
+      <div class="concept-eyebrow">Prelude · Museo Olfativo</div>
+      <h2 id="museumName"></h2>
+      <div class="museum-brand" id="museumBrand"></div>
+    </div>
+    <figure class="museum-frame">
+      <img id="museumImage" alt="">
+    </figure>
+    <div class="museum-info">
+      <div>
+        <div class="museum-label">Acordes principales</div>
+        <div class="museum-tags" id="museumAccords"></div>
+      </div>
+      <div>
+        <div class="museum-label">Notas destacadas</div>
+        <div class="museum-tags" id="museumNotes"></div>
+      </div>
+      <div class="museum-meta">Esta obra forma parte de tu Biblioteca Prelude.</div>
+    </div>
+  </div>
+</section>
+
+<section class="museum-unlock" id="museumUnlock" aria-hidden="true">
+  <div class="museum-unlock-stage">
+    <div class="museum-unlock-kicker">Nueva obra descubierta</div>
+    <div class="museum-unlock-image"><img id="museumUnlockImage" alt=""></div>
+    <h2 id="museumUnlockName"></h2>
+    <div class="museum-unlock-brand" id="museumUnlockBrand"></div>
+    <p>Ha sido incorporada a tu Biblioteca Prelude.</p>
+    <button id="museumUnlockContinue" type="button">Continuar</button>
+  </div>
+</section>
 
 <section class="concept-overlay" id="conceptOverlay" aria-hidden="true">
   <div class="concept-shell">
@@ -1472,6 +1708,18 @@ const rankingEnabledInputEl=document.getElementById("rankingEnabledInput");
 const rankingAliasInputEl=document.getElementById("rankingAliasInput");
 const saveRankingBtnEl=document.getElementById("saveRankingBtn");
 const rankingStatusEl=document.getElementById("rankingStatus");
+const museumViewerEl=document.getElementById("museumViewer");
+const museumCloseEl=document.getElementById("museumClose");
+const museumNameEl=document.getElementById("museumName");
+const museumBrandEl=document.getElementById("museumBrand");
+const museumImageEl=document.getElementById("museumImage");
+const museumAccordsEl=document.getElementById("museumAccords");
+const museumNotesEl=document.getElementById("museumNotes");
+const museumUnlockEl=document.getElementById("museumUnlock");
+const museumUnlockImageEl=document.getElementById("museumUnlockImage");
+const museumUnlockNameEl=document.getElementById("museumUnlockName");
+const museumUnlockBrandEl=document.getElementById("museumUnlockBrand");
+const museumUnlockContinueEl=document.getElementById("museumUnlockContinue");
 const themeEl=document.getElementById("theme");
 const cartBtnEl=document.getElementById("cartBtn");
 
@@ -1499,6 +1747,97 @@ const supabaseClient=window.supabase
       SUPABASE_PUBLISHABLE_KEY
     )
   : null;
+
+
+function museumProductByName(name){
+  return products.find(product=>product.name===name)||null;
+}
+
+function openMuseumArtwork(name){
+  const product=museumProductByName(name);
+  if(!product||!museumViewerEl)return;
+
+  museumNameEl.textContent=product.name;
+  museumBrandEl.textContent=product.brand;
+  museumImageEl.src=product.image;
+  museumImageEl.alt=`Composición olfativa de ${product.name}`;
+  museumAccordsEl.innerHTML=(product.accords||[])
+    .map(value=>`<span>${value}</span>`)
+    .join("");
+  museumNotesEl.innerHTML=(product.notes||[])
+    .map(value=>`<span>${value}</span>`)
+    .join("");
+
+  museumViewerEl.classList.add("open");
+  museumViewerEl.setAttribute("aria-hidden","false");
+  lockPage();
+
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>museumViewerEl.classList.add("visible"));
+  });
+
+  playSound("library");
+}
+
+function closeMuseumArtwork(){
+  if(!museumViewerEl)return;
+  museumViewerEl.classList.remove("visible");
+
+  setTimeout(()=>{
+    museumViewerEl.classList.remove("open");
+    museumViewerEl.setAttribute("aria-hidden","true");
+    unlockPage();
+  },350);
+
+  playSound("close");
+}
+
+function waitMuseumContinue(){
+  return new Promise(resolve=>{
+    museumUnlockContinueEl.onclick=resolve;
+  });
+}
+
+async function showMuseumUnlockSequence(names){
+  const validNames=names.filter(name=>museumProductByName(name));
+  if(!validNames.length||!museumUnlockEl)return;
+
+  museumUnlockEl.classList.add("open");
+  museumUnlockEl.setAttribute("aria-hidden","false");
+  lockPage();
+
+  for(let index=0;index<validNames.length;index++){
+    const product=museumProductByName(validNames[index]);
+    const isLast=index===validNames.length-1;
+
+    museumUnlockEl.classList.remove("visible");
+    await new Promise(resolve=>setTimeout(resolve,index===0?30:260));
+
+    museumUnlockImageEl.src=product.image;
+    museumUnlockImageEl.alt=`Composición olfativa de ${product.name}`;
+    museumUnlockNameEl.textContent=product.name;
+    museumUnlockBrandEl.textContent=product.brand;
+    museumUnlockContinueEl.textContent=isLast
+      ?"Entrar en mi Biblioteca"
+      :"Descubrir la siguiente obra";
+
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>museumUnlockEl.classList.add("visible"));
+    });
+
+    playSound("library");
+    await waitMuseumContinue();
+  }
+
+  museumUnlockEl.classList.remove("visible");
+  await new Promise(resolve=>setTimeout(resolve,350));
+  museumUnlockEl.classList.remove("open");
+  museumUnlockEl.setAttribute("aria-hidden","true");
+  unlockPage();
+
+  renderLibrary();
+  openEditorial(libraryOverlayEl);
+}
 
 async function redeemPreludeCode(){
   const input=document.getElementById("redeemCode");
@@ -1578,6 +1917,8 @@ async function redeemPreludeCode(){
     playSound("confirm");
 
     input.value="";
+    await showMuseumUnlockSequence(fragrances);
+
     const orderText=data.order_number
       ? ` Pedido ${data.order_number}.`
       : "";
@@ -2179,18 +2520,29 @@ function renderLibrary(){
 
   libraryGridEl.innerHTML=products.map((p,index)=>{
     const discovered=isDiscovered(p.name);
-    return `<article class="library-card ${discovered?"discovered":""}">
+    return `<article class="library-card ${discovered?"discovered":""}" ${discovered?`data-museum-index="${index}" tabindex="0" role="button" aria-label="Abrir obra ${p.name}"`:""}>
       ${discovered?'<div class="library-badge">Descubierta</div>':""}
       <img src="${p.image}" alt="${p.name}" loading="lazy">
       <div class="library-card-body">
         <h3>${p.name}</h3>
         <div class="brand">${p.brand}</div>
         <div class="library-status">${discovered?"Obra incorporada":"Pendiente de descubrir"}</div>
-        <button type="button" disabled>${discovered?"Descubrimiento confirmado":"Requiere código Prelude"}</button>
+        <button type="button" ${discovered?"":"disabled"}>${discovered?"Contemplar obra":"Requiere código Prelude"}</button>
       </div>
     </article>`;
   }).join("");
 
+  libraryGridEl.querySelectorAll("[data-museum-index]").forEach(card=>{
+    const open=()=>openMuseumArtwork(products[Number(card.dataset.museumIndex)].name);
+
+    card.addEventListener("click",open);
+    card.addEventListener("keydown",event=>{
+      if(event.key==="Enter"||event.key===" "){
+        event.preventDefault();
+        open();
+      }
+    });
+  });
 }
 
 function openLibrary(){
@@ -2348,6 +2700,16 @@ if(cancelPinSetupBtnEl){
   cancelPinSetupBtnEl.addEventListener("click",hideProfileGate);
 }
 
+
+
+if(museumCloseEl){
+  museumCloseEl.addEventListener("click",closeMuseumArtwork);
+}
+if(museumViewerEl){
+  museumViewerEl.addEventListener("click",event=>{
+    if(event.target===museumViewerEl)closeMuseumArtwork();
+  });
+}
 
 if(rankingEnabledInputEl){
   rankingEnabledInputEl.addEventListener("change",()=>{
