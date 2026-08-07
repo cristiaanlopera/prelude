@@ -1,0 +1,428 @@
+{
+  "version": "1.1",
+  "description": "Biblioteca oficial de obras del Museo Olfativo Prelude.",
+  "works": [
+    {
+      "id": "le-sel-d-issey",
+      "name": "Le Sel d'Issey",
+      "brand": "Issey Miyake",
+      "artwork": "assets/artworks/le-sel-d-issey.webp",
+      "accords": [
+        "Marino",
+        "Salado",
+        "Amaderado"
+      ],
+      "notes": [
+        "Sal marina",
+        "Jengibre",
+        "Algas",
+        "Vetiver",
+        "Cedro",
+        "Musgo de roble"
+      ]
+    },
+    {
+      "id": "amber-oud-gold-edition",
+      "name": "Amber Oud Gold Edition",
+      "brand": "Al Haramain",
+      "artwork": "assets/artworks/amber-oud-gold-edition.webp",
+      "accords": [
+        "Dulce",
+        "Afrutado",
+        "Avainillado"
+      ],
+      "notes": [
+        "Bergamota",
+        "Melón",
+        "Piña",
+        "Ámbar",
+        "Vainilla",
+        "Almizcle"
+      ]
+    },
+    {
+      "id": "dior-homme-intense",
+      "name": "Dior Homme Intense",
+      "brand": "Dior",
+      "artwork": "assets/artworks/dior-homme-intense.webp",
+      "accords": [
+        "Atalcado",
+        "Amaderado",
+        "Ámbar"
+      ],
+      "notes": [
+        "Iris",
+        "Ambreta",
+        "Cedro",
+        "Ámbar",
+        "Notas amaderadas"
+      ]
+    },
+    {
+      "id": "mercedes-benz-club-black",
+      "name": "Mercedes-Benz Club Black",
+      "brand": "Mercedes-Benz",
+      "artwork": "assets/artworks/mercedes-benz-club-black.webp",
+      "accords": [
+        "Avainillado",
+        "Ámbar",
+        "Balsámico"
+      ],
+      "notes": [
+        "Vainilla",
+        "Incienso",
+        "Benjuí",
+        "Ámbar",
+        "Maderas"
+      ]
+    },
+    {
+      "id": "ck-one",
+      "name": "CK One",
+      "brand": "Calvin Klein",
+      "artwork": "assets/artworks/ck-one.webp",
+      "accords": [
+        "Cítrico",
+        "Verde",
+        "Fresco"
+      ],
+      "notes": [
+        "Limón",
+        "Bergamota",
+        "Té verde",
+        "Piña",
+        "Almizcle",
+        "Cedro"
+      ]
+    },
+    {
+      "id": "la-nuit-de-l-homme",
+      "name": "La Nuit de L'Homme",
+      "brand": "Yves Saint Laurent",
+      "artwork": "assets/artworks/la-nuit-de-l-homme.webp",
+      "accords": [
+        "Especiado",
+        "Aromático",
+        "Amaderado"
+      ],
+      "notes": [
+        "Cardamomo",
+        "Lavanda",
+        "Cedro",
+        "Vetiver",
+        "Bergamota"
+      ]
+    },
+    {
+      "id": "club-de-nuit-sillage",
+      "name": "Club de Nuit Sillage",
+      "brand": "Armaf",
+      "artwork": "assets/artworks/club-de-nuit-sillage.webp",
+      "accords": [
+        "Cítrico",
+        "Almizclado",
+        "Amaderado"
+      ],
+      "notes": [
+        "Bergamota",
+        "Lima",
+        "Jengibre",
+        "Iris",
+        "Ambroxan",
+        "Cedro"
+      ]
+    },
+    {
+      "id": "detour-noir",
+      "name": "Détour Noir",
+      "brand": "Al Haramain",
+      "artwork": "assets/artworks/detour-noir.webp",
+      "accords": [
+        "Avainillado",
+        "Especiado",
+        "Amaderado"
+      ],
+      "notes": [
+        "Manzana",
+        "Lavanda",
+        "Vainilla",
+        "Cardamomo",
+        "Sándalo",
+        "Pachulí"
+      ]
+    },
+    {
+      "id": "fico-di-amalfi",
+      "name": "Fico di Amalfi",
+      "brand": "Acqua di Parma",
+      "artwork": "assets/artworks/fico-di-amalfi.webp",
+      "accords": [
+        "Cítrico",
+        "Afrutado",
+        "Amaderado"
+      ],
+      "notes": [
+        "Cidra",
+        "Pomelo",
+        "Bergamota",
+        "Higo",
+        "Cedro"
+      ]
+    },
+    {
+      "id": "eros",
+      "name": "Eros",
+      "brand": "Versace",
+      "artwork": "assets/artworks/eros.webp",
+      "accords": [
+        "Aromático",
+        "Avainillado",
+        "Fresco"
+      ],
+      "notes": [
+        "Menta",
+        "Manzana",
+        "Limón",
+        "Vainilla",
+        "Haba tonka",
+        "Cedro"
+      ]
+    },
+    {
+      "id": "bois-imperial",
+      "name": "Bois Impérial",
+      "brand": "Essential Parfums",
+      "artwork": "assets/artworks/bois-imperial.webp",
+      "accords": [
+        "Amaderado",
+        "Fresco especiado",
+        "Aromático"
+      ],
+      "notes": [
+        "Akigalawood",
+        "Albahaca",
+        "Vetiver",
+        "Maderas ambaradas"
+      ]
+    },
+    {
+      "id": "bal-d-afrique",
+      "name": "Bal d'Afrique",
+      "brand": "Byredo",
+      "artwork": "assets/artworks/bal-d-afrique.webp",
+      "accords": [
+        "Amaderado",
+        "Aromático",
+        "Terroso"
+      ],
+      "notes": [
+        "Bergamota",
+        "Limón",
+        "Violeta",
+        "Vetiver",
+        "Cedro",
+        "Almizcle"
+      ]
+    },
+    {
+      "id": "le-rem",
+      "name": "Le Rem",
+      "brand": "Réminiscence",
+      "artwork": "assets/artworks/le-rem.webp",
+      "accords": [
+        "Acuático",
+        "Floral",
+        "Almizclado"
+      ],
+      "notes": [
+        "Notas marinas",
+        "Sal",
+        "Flores blancas",
+        "Almizcle",
+        "Maderas"
+      ]
+    },
+    {
+      "id": "le-beau",
+      "name": "Le Beau",
+      "brand": "Jean Paul Gaultier",
+      "artwork": "assets/artworks/le-beau.webp",
+      "accords": [
+        "Coco",
+        "Dulce",
+        "Avainillado"
+      ],
+      "notes": [
+        "Bergamota",
+        "Coco",
+        "Haba tonka",
+        "Maderas"
+      ]
+    },
+    {
+      "id": "stronger-with-you",
+      "name": "Stronger With You",
+      "brand": "Giorgio Armani",
+      "artwork": "assets/artworks/stronger-with-you.webp",
+      "accords": [
+        "Avainillado",
+        "Dulce",
+        "Balsámico"
+      ],
+      "notes": [
+        "Castaña",
+        "Vainilla",
+        "Cardamomo",
+        "Pimienta rosa",
+        "Humo"
+      ]
+    },
+    {
+      "id": "torino-21",
+      "name": "Torino 21",
+      "brand": "Xerjoff",
+      "artwork": "assets/artworks/torino-21.webp",
+      "accords": [
+        "Cítrico",
+        "Verde",
+        "Aromático"
+      ],
+      "notes": [
+        "Menta",
+        "Limón",
+        "Albahaca",
+        "Té verde",
+        "Tomillo",
+        "Romero"
+      ]
+    },
+    {
+      "id": "first-instinct",
+      "name": "First Instinct",
+      "brand": "Abercrombie & Fitch",
+      "artwork": "assets/artworks/first-instinct.webp",
+      "accords": [
+        "Acuático",
+        "Afrutado",
+        "Fresco"
+      ],
+      "notes": [
+        "Melón",
+        "Agua tónica",
+        "Pimienta",
+        "Almizcle",
+        "Ámbar"
+      ]
+    },
+    {
+      "id": "egeo-bomb-black",
+      "name": "Egeo Bomb Black",
+      "brand": "O Boticário",
+      "artwork": "assets/artworks/egeo-bomb-black.webp",
+      "accords": [
+        "Dulce",
+        "Caramelo",
+        "Cuero"
+      ],
+      "notes": [
+        "Caramelo",
+        "Vainilla",
+        "Cuero",
+        "Maderas"
+      ]
+    },
+    {
+      "id": "armani-code",
+      "name": "Armani Code",
+      "brand": "Giorgio Armani",
+      "artwork": "assets/artworks/armani-code.webp",
+      "accords": [
+        "Ámbar",
+        "Especiado",
+        "Avainillado"
+      ],
+      "notes": [
+        "Bergamota",
+        "Anís estrellado",
+        "Cuero",
+        "Haba tonka",
+        "Tabaco"
+      ]
+    },
+    {
+      "id": "starwalker",
+      "name": "Starwalker",
+      "brand": "Montblanc",
+      "artwork": "assets/artworks/starwalker.webp",
+      "accords": [
+        "Amaderado",
+        "Fresco",
+        "Almizclado"
+      ],
+      "notes": [
+        "Bambú",
+        "Bergamota",
+        "Mandarina",
+        "Sándalo",
+        "Almizcle",
+        "Ámbar"
+      ]
+    },
+    {
+      "id": "nautica-voyage",
+      "name": "Nautica Voyage",
+      "brand": "Nautica",
+      "artwork": "assets/artworks/nautica-voyage.webp",
+      "accords": [
+        "Acuático",
+        "Verde",
+        "Fresco"
+      ],
+      "notes": [
+        "Manzana",
+        "Hojas verdes",
+        "Loto",
+        "Notas marinas",
+        "Almizcle",
+        "Cedro"
+      ]
+    },
+    {
+      "id": "cool-water",
+      "name": "Cool Water",
+      "brand": "Davidoff",
+      "artwork": "assets/artworks/cool-water.webp",
+      "accords": [
+        "Aromático",
+        "Marino",
+        "Fresco"
+      ],
+      "notes": [
+        "Menta",
+        "Lavanda",
+        "Notas marinas",
+        "Sándalo",
+        "Almizcle",
+        "Tabaco"
+      ]
+    },
+    {
+      "id": "sauvage",
+      "name": "Sauvage",
+      "brand": "Dior",
+      "artwork": "assets/artworks/sauvage.webp",
+      "accords": [
+        "Fresco especiado",
+        "Ámbar",
+        "Cítrico"
+      ],
+      "notes": [
+        "Bergamota",
+        "Pimienta",
+        "Lavanda",
+        "Ambroxan",
+        "Cedro"
+      ]
+    }
+  ]
+}
