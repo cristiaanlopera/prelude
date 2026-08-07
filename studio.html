@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prelude Studio</title>
+<meta name="prelude-version" content="2.0.0-official">
+<link rel="stylesheet" href="css/studio.css">
+
+</head>
+<body>
+<div class="wrap">
+<header><div class="logo">PRELUDE</div><div class="badge">Studio · Administración</div></header>
+
+<section class="card login" id="loginCard">
+<h1>Acceso privado</h1>
+<p style="color:var(--muted)">Inicia sesión con el usuario administrador creado en Supabase.</p>
+<div class="field"><label>Correo electrónico</label><input id="email" type="email" autocomplete="username"></div>
+<div class="field"><label>Contraseña</label><input id="password" type="password" autocomplete="current-password"></div>
+<button class="primary" id="loginBtn">Entrar en Prelude Studio</button>
+<div class="status" id="loginStatus"></div>
+</section>
+
+
+<section class="dashboard" id="dashboard">
+  <div class="studio-tabs">
+    <button class="active" id="codesTabBtn" type="button">Generar códigos</button>
+    <button id="customersTabBtn" type="button">Clientes</button>
+    <button id="rankingTabBtn" type="button">Ranking</button>
+  </div>
+
+  <div class="studio-view active" id="codesView">
+    
+<div class="grid">
+<div class="card">
+<div class="row"><div><h1>Generar código</h1><p style="color:var(--muted)">Confirma el pedido y selecciona las fragancias que pasarán a la Biblioteca.</p></div><button class="secondary" id="logoutBtn">Cerrar sesión</button></div>
+<div class="field"><label>Número de pedido</label><input id="orderNumber" placeholder="Ej. 0007"></div>
+<div class="field"><label>Nombre del cliente</label><input id="customerName" placeholder="Ej. Luis"></div>
+<div class="field"><label>Teléfono del cliente</label><input id="customerPhone" placeholder="Ej. 600000000"></div>
+<div class="field"><label>Total del pedido (€)</label><input id="orderTotal" type="number" min="0" step="0.01" placeholder="Ej. 18.50"></div>
+<h2>Fragancias confirmadas</h2>
+<div class="perfumes" id="perfumes"><label class="perfume"><input type="checkbox" value="Le Sel d'Issey"><span>Le Sel d'Issey</span></label>
+<label class="perfume"><input type="checkbox" value="Amber Oud Gold Edition"><span>Amber Oud Gold Edition</span></label>
+<label class="perfume"><input type="checkbox" value="Dior Homme Intense"><span>Dior Homme Intense</span></label>
+<label class="perfume"><input type="checkbox" value="Mercedes-Benz Club Black"><span>Mercedes-Benz Club Black</span></label>
+<label class="perfume"><input type="checkbox" value="CK One"><span>CK One</span></label>
+<label class="perfume"><input type="checkbox" value="La Nuit de L'Homme"><span>La Nuit de L'Homme</span></label>
+<label class="perfume"><input type="checkbox" value="Club de Nuit Sillage"><span>Club de Nuit Sillage</span></label>
+<label class="perfume"><input type="checkbox" value="Détour Noir"><span>Détour Noir</span></label>
+<label class="perfume"><input type="checkbox" value="Fico di Amalfi"><span>Fico di Amalfi</span></label>
+<label class="perfume"><input type="checkbox" value="Eros"><span>Eros</span></label>
+<label class="perfume"><input type="checkbox" value="Bois Impérial"><span>Bois Impérial</span></label>
+<label class="perfume"><input type="checkbox" value="Bal d'Afrique"><span>Bal d'Afrique</span></label>
+<label class="perfume"><input type="checkbox" value="Le Rem"><span>Le Rem</span></label>
+<label class="perfume"><input type="checkbox" value="Le Beau"><span>Le Beau</span></label>
+<label class="perfume"><input type="checkbox" value="Stronger With You"><span>Stronger With You</span></label>
+<label class="perfume"><input type="checkbox" value="Torino 21"><span>Torino 21</span></label>
+<label class="perfume"><input type="checkbox" value="First Instinct"><span>First Instinct</span></label>
+<label class="perfume"><input type="checkbox" value="Egeo Bomb Black"><span>Egeo Bomb Black</span></label>
+<label class="perfume"><input type="checkbox" value="Armani Code"><span>Armani Code</span></label>
+<label class="perfume"><input type="checkbox" value="Starwalker"><span>Starwalker</span></label>
+<label class="perfume"><input type="checkbox" value="Nautica Voyage"><span>Nautica Voyage</span></label>
+<label class="perfume"><input type="checkbox" value="Cool Water"><span>Cool Water</span></label>
+<label class="perfume"><input type="checkbox" value="Sauvage"><span>Sauvage</span></label></div>
+<div class="actions"><button class="primary" id="generateBtn">Generar código Prelude</button></div>
+<div class="status" id="generateStatus"></div>
+<div class="result" id="result">
+<div class="badge">Código generado</div>
+<div class="code" id="generatedCode"></div>
+<div class="message" id="whatsappMessage"></div>
+<div class="actions">
+<button class="secondary" id="copyCodeBtn">Copiar código</button>
+<button class="primary" id="copyMessageBtn">Copiar mensaje completo</button>
+</div>
+</div>
+</div>
+
+<aside class="card">
+<h2>Últimos códigos</h2>
+<div id="history"><p style="color:var(--muted)">Todavía no hay datos cargados.</p></div>
+</aside>
+</div>
+
+  </div>
+
+  <div class="studio-view" id="customersView">
+    <div class="card">
+      <div class="customers-toolbar">
+        <div>
+          <h1>Clientes</h1>
+          <p style="color:var(--muted)">Consulta, edita o elimina perfiles de Prelude.</p>
+        </div>
+        <input id="customerSearch" type="search" placeholder="Buscar por nombre o teléfono">
+      </div>
+      <div id="customersList" class="customers-list">
+        <p style="color:var(--muted)">Cargando clientes...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="studio-view" id="rankingView">
+    <div class="card">
+      <div class="ranking-admin-header">
+        <div>
+          <h1>Ranking de Bibliotecas</h1>
+          <p style="color:var(--muted)">Clasificación pública de clientes que han decidido participar.</p>
+        </div>
+        <button class="secondary" id="refreshRankingBtn" type="button">Actualizar ranking</button>
+      </div>
+
+      <div class="ranking-admin-summary" id="rankingAdminSummary">
+        <div>
+          <span class="badge">Participantes</span>
+          <strong id="rankingParticipants">0</strong>
+        </div>
+        <div>
+          <span class="badge">Primera posición</span>
+          <strong id="rankingLeader">—</strong>
+        </div>
+        <div>
+          <span class="badge">Mayor Biblioteca</span>
+          <strong id="rankingLargestLibrary">0 obras</strong>
+        </div>
+      </div>
+
+      <div id="rankingAdminList" class="ranking-admin-list">
+        <p style="color:var(--muted)">Cargando ranking...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="customer-detail" id="customerDetail">
+  <div class="customer-detail-shell">
+    <div class="customer-detail-top">
+      <div>
+        <div class="badge">Prelude Studio · Cliente</div>
+        <h1 id="detailTitle">Cliente</h1>
+      </div>
+      <button class="secondary" id="closeCustomerDetail" type="button">Volver</button>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-section">
+        <h2>Datos del cliente</h2>
+        <div class="detail-field"><label>Nombre</label><input id="editCustomerName"></div>
+        <div class="detail-field"><label>Teléfono</label><input id="editCustomerPhone"></div>
+        <div class="detail-field"><label>Marcapáginas</label><input id="editCustomerBookmarks" type="number" min="0"></div>
+        <div class="detail-field"><label>Total gastado (€)</label><input id="editCustomerTotal" type="number" min="0" step="0.01"></div>
+        <button class="primary" id="saveCustomerBtn" type="button">Guardar cambios</button>
+        <div class="status" id="customerEditStatus"></div>
+      </div>
+
+      <div class="detail-section">
+        <h2>Resumen</h2>
+        <div id="customerSummary"></div>
+        <h2 style="margin-top:20px">Biblioteca</h2>
+        <div id="customerLibrary"></div>
+      </div>
+
+      <div class="detail-section">
+        <h2>Códigos e historial</h2>
+        <div id="customerCodes"></div>
+      </div>
+
+      <div class="detail-section">
+        <h2>Recompensas</h2>
+        <div id="customerRewards"></div>
+      </div>
+
+      <div class="detail-section danger-zone">
+        <h2>Zona de riesgo</h2>
+        <p style="color:var(--muted)">Estas acciones modifican o eliminan el progreso del cliente.</p>
+        <button class="secondary" id="resetCustomerBtn" type="button">Reiniciar Biblioteca y progreso</button>
+        <button class="danger-btn" id="deleteCustomerBtn" type="button">Eliminar cliente definitivamente</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <h2 id="confirmTitle">Confirmar acción</h2>
+    <p id="confirmText"></p>
+    <input id="confirmInput" placeholder="Escribe ELIMINAR">
+    <div class="confirm-actions">
+      <button class="secondary" id="cancelConfirmBtn" type="button">Cancelar</button>
+      <button class="danger-btn" id="confirmActionBtn" type="button">Confirmar</button>
+    </div>
+  </div>
+</section>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/studio.js"></script>
+</body>
+</html>

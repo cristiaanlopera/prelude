@@ -1,0 +1,6 @@
+{
+  "version": "2.0.0-official",
+  "status": "prepared",
+  "note": "El catálogo continúa integrado en js/app.js para no alterar el funcionamiento actual.",
+  "perfumes": []
+}
