@@ -1,32 +1,11 @@
-# Prelude · Proyecto oficial
+# Prelude · Versión estable para Netlify
 
-Esta versión parte de los HTML reales de Prelude y mantiene el funcionamiento actual.
+Esta versión mantiene CSS y JavaScript dentro de los propios HTML.
 
-## Estructura
+Archivos:
+- index.html
+- studio.html
+- netlify.toml
 
-- `index.html`: web principal del cliente.
-- `studio.html`: panel Prelude Studio.
-- `css/styles.css`: estilos de la web principal.
-- `css/studio.css`: estilos de Prelude Studio.
-- `js/app.js`: lógica de la web principal.
-- `js/studio.js`: lógica de Prelude Studio.
-- `data/perfumes.json`: preparado para extraer el catálogo en una fase posterior.
-- `data/works.json`: preparado para el Museo Olfativo.
-- `assets/`: estructura reservada para imágenes, sonidos, iconos y acuarelas.
-
-## Publicación
-
-Sube todo el contenido de esta carpeta a la raíz del repositorio de GitHub.
-
-La web principal se abrirá desde el dominio raíz.
-Prelude Studio estará disponible en `/studio.html`.
-
-## Comprobaciones recomendadas
-
-1. Catálogo.
-2. Carrito.
-3. Perfil de cliente.
-4. Biblioteca.
-5. Recompensas.
-6. Ranking.
-7. Prelude Studio.
+Sube estos archivos a la raíz del repositorio y elimina las referencias anteriores
+a carpetas css, js y data si pertenecían a la versión separada.
