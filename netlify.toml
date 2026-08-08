@@ -10,3 +10,13 @@
   for = "/assets/artworks/*"
   [headers.values]
     Cache-Control = "no-cache"
+
+[[redirects]]
+  from = "/studio"
+  to = "/studio.html"
+  status = 200
+
+[[redirects]]
+  from = "/studio/"
+  to = "/studio.html"
+  status = 200
