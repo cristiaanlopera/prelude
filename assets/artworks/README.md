@@ -13,7 +13,7 @@ Sube las imágenes WebP dentro de `assets/artworks/` respetando exactamente esto
 - `fico-di-amalfi.webp` → Fico di Amalfi
 - `eros.webp` → Eros
 - `bois-imperial.webp` → Bois Impérial
-- `bal-d-afrique.webp` → Bal d'Afrique
+- `byredo-afrique.webp` → Bal d'Afrique
 - `le-rem.webp` → Le Rem
 - `le-beau.webp` → Le Beau
 - `stronger-with-you.webp` → Stronger With You
