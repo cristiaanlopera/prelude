@@ -19,7 +19,8 @@
         "Vetiver",
         "Cedro",
         "Musgo de roble"
-      ]
+      ],
+      "description": "El hombre avanza solo por un espigón todavía húmedo después del temporal. La obra convierte la sal, el viento y la piedra mojada en una imagen de silencio y pureza: no representa el mar como destino, sino como un lugar interior donde respirar."
     },
     {
       "id": "amber-oud-gold-edition",
@@ -38,7 +39,8 @@
         "Ámbar",
         "Vainilla",
         "Almizcle"
-      ]
+      ],
+      "description": "Una tarde cálida en una finca mediterránea concentra fruta madura, vegetación y luz dorada. La escena interpreta la exuberancia dulce y sensual de la fragancia como un verano llevado hasta su punto más pleno, donde todo parece haber absorbido el sol."
     },
     {
       "id": "dior-homme-intense",
@@ -56,7 +58,8 @@
         "Cedro",
         "Ámbar",
         "Notas amaderadas"
-      ]
+      ],
+      "description": "La elegancia aparece como un ritual íntimo y silencioso. El protagonista, rodeado de luz tenue y materiales nobles, representa una sofisticación profunda que no busca llamar la atención: la misma presencia refinada, empolvada y amaderada que deja la fragancia."
     },
     {
       "id": "mercedes-benz-club-black",
@@ -74,7 +77,8 @@
         "Benjuí",
         "Ámbar",
         "Maderas"
-      ]
+      ],
+      "description": "Fuera domina la nieve y el azul de la noche; dentro, la madera y el fuego convierten el espacio en refugio. La obra traduce la vainilla, el ámbar y las resinas en sensación térmica: una oscuridad cálida, masculina y envolvente."
     },
     {
       "id": "ck-one",
@@ -93,7 +97,8 @@
         "Piña",
         "Almizcle",
         "Cedro"
-      ]
+      ],
+      "description": "Una lavandería de los años noventa convierte lo cotidiano en libertad. Camiseta blanca, denim, amigos y luz limpia expresan el carácter cítrico, verde y despreocupado de CK One: juventud sin pose, vivida en presente."
     },
     {
       "id": "la-nuit-de-l-homme",
@@ -111,7 +116,8 @@
         "Cedro",
         "Vetiver",
         "Bergamota"
-      ]
+      ],
+      "description": "Un hombre elegante permanece bajo una marquesina cuando la lluvia acaba de cesar. Las luces reflejadas y la espera indefinida convierten la noche en posibilidad: misterio, atracción y la sensación de que algo importante está a punto de suceder."
     },
     {
       "id": "club-de-nuit-sillage",
@@ -130,7 +136,8 @@
         "Iris",
         "Ambroxan",
         "Cedro"
-      ]
+      ],
+      "description": "El agua del deshielo atraviesa un valle alpino y el protagonista se refresca con ella. La escena convierte la frescura metálica, cítrica y almizclada en algo físico: agua helada, aire blanco y una estela limpia que continúa su camino entre las montañas."
     },
     {
       "id": "detour-noir",
@@ -149,7 +156,8 @@
         "Cardamomo",
         "Sándalo",
         "Pachulí"
-      ]
+      ],
+      "description": "Un hombre y un caballo atraviesan una finca ecuestre al comienzo de una mañana fría. La neblina, el cuero, la madera y la luz cálida representan la dualidad de la fragancia: frescor especiado en el aire y una base dulce, cremosa y distinguida."
     },
     {
       "id": "fico-di-amalfi",
@@ -167,7 +175,8 @@
         "Bergamota",
         "Higo",
         "Cedro"
-      ]
+      ],
+      "description": "Una mañana lenta en la Costa Amalfitana: lino, piedra clara, hojas de higuera y una vista parcial del Mediterráneo. La obra interpreta la fragancia como el placer sencillo de un verano italiano, luminoso, cítrico y relajado."
     },
     {
       "id": "eros",
@@ -186,7 +195,8 @@
         "Vainilla",
         "Haba tonka",
         "Cedro"
-      ]
+      ],
+      "description": "Una noche mediterránea transforma la atracción en narrativa. Entre arquitectura clásica, agua turquesa y luz dorada, el protagonista avanza hacia aquello que desea; la obra une frescura, juventud y sensualidad con la seguridad impulsiva que define Eros."
     },
     {
       "id": "bois-imperial",
@@ -203,7 +213,8 @@
         "Albahaca",
         "Vetiver",
         "Maderas ambaradas"
-      ]
+      ],
+      "description": "Arquitectura contemporánea y vegetación húmeda se mezclan hasta resultar inseparables. La obra representa el contraste esencial de Bois Impérial: precisión mineral y moderna frente a una naturaleza verde, especiada y amaderada que vuelve a ocupar el espacio."
     },
     {
       "id": "bal-d-afrique",
@@ -222,7 +233,8 @@
         "Vetiver",
         "Cedro",
         "Almizcle"
-      ]
+      ],
+      "description": "Un patio lleno de música, conversación y movimiento convierte la fragancia en una celebración cultural y luminosa. La obra no representa un lugar exótico, sino el instante en que el viajero deja de sentirse visitante y entra en el ritmo de la escena."
     },
     {
       "id": "le-rem",
@@ -240,7 +252,8 @@
         "Flores blancas",
         "Almizcle",
         "Maderas"
-      ]
+      ],
+      "description": "El protagonista vuelve al mar como quien vuelve a un recuerdo. La sal, la luz mediterránea y la distancia del horizonte convierten la escena en nostalgia serena: no es simplemente el mar, sino la memoria de algo que nunca terminó de marcharse."
     },
     {
       "id": "le-beau",
@@ -257,7 +270,8 @@
         "Coco",
         "Haba tonka",
         "Maderas"
-      ]
+      ],
+      "description": "Palmeras, lino, bañador, cócteles tropicales y una tarde que parece no tener final. La obra interpreta Le Beau como unas vacaciones juveniles vividas sin preocupación: coco, calor, diversión y la libertad del mejor verano de tu vida."
     },
     {
       "id": "stronger-with-you",
@@ -275,7 +289,8 @@
         "Cardamomo",
         "Pimienta rosa",
         "Humo"
-      ]
+      ],
+      "description": "El protagonista conduce a alguien hacia un salón iluminado por la chimenea, aunque esa persona apenas aparece. El gesto de la mano convierte la calidez en vínculo: la obra habla de intimidad, hogar y de cómo un lugar adquiere sentido cuando se comparte."
     },
     {
       "id": "torino-21",
@@ -294,7 +309,8 @@
         "Té verde",
         "Tomillo",
         "Romero"
-      ]
+      ],
+      "description": "Una mañana impecable en un club de tenis histórico transmite energía antes que competición. El césped húmedo, la ropa clara y el aire fresco traducen la menta, los cítricos y las hierbas aromáticas en una elegancia deportiva, limpia y vital."
     },
     {
       "id": "first-instinct",
@@ -312,7 +328,8 @@
         "Pimienta",
         "Almizcle",
         "Ámbar"
-      ]
+      ],
+      "description": "Una terraza mediterránea al final de la tarde captura el instante anterior a una historia. El gin-tonic, el melón servido de forma natural y la mirada del protagonista convierten la frescura frutal del perfume en espontaneidad, juventud y primer impulso."
     },
     {
       "id": "egeo-bomb-black",
@@ -329,7 +346,8 @@
         "Vainilla",
         "Cuero",
         "Maderas"
-      ]
+      ],
+      "description": "Una feria nocturna casi vacía conserva todavía el brillo de sus luces sobre el suelo mojado. El cuero oscuro del protagonista y la dulzura de los puestos convierten caramelo y vainilla en una noche juvenil, adictiva y ligeramente rebelde que se resiste a terminar."
     },
     {
       "id": "armani-code",
@@ -347,7 +365,8 @@
         "Cuero",
         "Haba tonka",
         "Tabaco"
-      ]
+      ],
+      "description": "Un hombre solo atraviesa la ciudad con una elegancia absolutamente contenida. La arquitectura, la noche y sus pequeños rituales de precisión representan la personalidad de Code: sofisticación italiana, misterio y control sin necesidad de exhibición."
     },
     {
       "id": "starwalker",
@@ -366,7 +385,8 @@
         "Sándalo",
         "Almizcle",
         "Ámbar"
-      ]
+      ],
+      "description": "Una biblioteca luminosa se abre hacia un jardín mediterráneo y un horizonte por descubrir. Mapas, madera y vegetación forman un espacio coherente donde la curiosidad es protagonista: Starwalker aparece como el impulso de mirar más allá y seguir explorando."
     },
     {
       "id": "nautica-voyage",
@@ -385,7 +405,8 @@
         "Notas marinas",
         "Almizcle",
         "Cedro"
-      ]
+      ],
+      "description": "Un hombre navega solo en mar abierto, lejos de cualquier costa. El espacio vacío, la vela y el horizonte convierten el acorde acuático y verde en serenidad: la libertad no está en llegar a un destino, sino en elegir estar lejos de todo por un momento."
     },
     {
       "id": "cool-water",
@@ -404,7 +425,8 @@
         "Sándalo",
         "Almizcle",
         "Tabaco"
-      ]
+      ],
+      "description": "El protagonista acaba de salir del mar y asciende por la roca todavía mojado. La escena hace física la fragancia: agua fría sobre la piel, viento, piedra y vegetación; una sensación de energía limpia y libertad que despierta todo el cuerpo."
     },
     {
       "id": "sauvage",
@@ -422,7 +444,8 @@
         "Lavanda",
         "Ambroxan",
         "Cedro"
-      ]
+      ],
+      "description": "Después de una tormenta, un hombre permanece pequeño frente a una extensión árida inmensa. El aire limpio, la roca húmeda y el horizonte abierto traducen el frescor especiado y mineral de Sauvage en una idea elemental: libertad porque no hay nada alrededor."
     }
   ]
 }
