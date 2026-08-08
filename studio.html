@@ -209,6 +209,51 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
 @media(max-width:980px){.studio-shell{grid-template-columns:1fr}.studio-sidebar{position:static}.studio-tabs{display:flex;overflow-x:auto;padding-bottom:3px}.studio-tabs button{width:auto;white-space:nowrap}.dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){.orders-toolbar{grid-template-columns:1fr}.orders-metrics{grid-template-columns:1fr 1fr}.order-row{grid-template-columns:1fr}.order-actions{justify-content:flex-start}.section-heading{align-items:flex-start;flex-direction:column}.dashboard-hero{align-items:flex-start;flex-direction:column}.dashboard-grid{grid-template-columns:1fr 1fr}.dashboard-columns{grid-template-columns:1fr}.metric-value{font-size:25px}.quick-grid{grid-template-columns:1fr}}
 
+
+/* Studio Fase 3 · Clientes + Mi Colección Prelude */
+.collection-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:12px;align-items:end;margin-bottom:16px}
+.collection-toolbar select,.collection-toolbar input{width:100%;padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--text)}
+.collection-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.collection-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.artwork-admin-card{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.5)}
+.artwork-admin-image{aspect-ratio:4/5;background:#e9e6df;overflow:hidden;display:grid;place-items:center}
+.artwork-admin-image img{width:100%;height:100%;object-fit:cover;display:block}
+.artwork-admin-image.locked img{filter:grayscale(1) blur(6px);transform:scale(1.04);opacity:.32}
+.artwork-admin-body{padding:13px}
+.artwork-admin-title{font:400 17px Georgia,serif;margin-bottom:3px}
+.artwork-admin-brand{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.artwork-admin-state{font-size:12px;margin-bottom:10px}
+.artwork-admin-actions{display:flex;gap:8px;flex-wrap:wrap}
+.artwork-admin-actions button{padding:8px 10px;border:1px solid var(--line);background:transparent;color:var(--text)}
+.artwork-admin-actions .unlock{background:var(--dark);color:#fff;border-color:var(--dark)}
+.artwork-admin-actions .revoke{color:#8a3232;border-color:rgba(138,50,50,.3)}
+.customer-orders{display:grid;gap:9px}
+.customer-order-row{padding:11px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.42)}
+.customer-order-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.customer-order-items{color:var(--muted);font-size:12px;line-height:1.5;margin-top:6px}
+.level-chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:11px;margin-top:6px}
+@media(max-width:820px){.collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.collection-summary{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.collection-grid{grid-template-columns:1fr}.collection-toolbar{grid-template-columns:1fr}}
+
+
+.reward-admin-row,.museum-admin-card{border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0;background:rgba(255,255,255,.45)}
+.reward-admin-grid{display:grid;grid-template-columns:110px 1fr auto auto auto;gap:10px;align-items:end}.reward-admin-grid .field{margin:0}.reward-toolbar{display:flex;justify-content:flex-end;margin-bottom:14px}.danger-lite{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:9px;padding:8px 10px}
+.museum-admin-list{display:grid;gap:14px}.museum-admin-card{display:grid;grid-template-columns:100px 1fr;gap:18px}.museum-thumb{width:100px;aspect-ratio:3/4;object-fit:cover;border-radius:10px;background:#eee}.museum-fields{display:grid;gap:10px}.museum-fields textarea{min-height:110px;resize:vertical}.museum-toolbar{margin-bottom:14px}.museum-toolbar input{width:100%}
+.museum-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.tiny-state{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+@media(max-width:760px){.reward-admin-grid{grid-template-columns:1fr 1fr}.reward-admin-grid .reward-label-field{grid-column:1/-1}.museum-admin-card{grid-template-columns:1fr}.museum-thumb{width:84px}}
+
+
+.stats-filterbar{display:flex;align-items:end;gap:18px;justify-content:space-between;margin-bottom:18px}.stats-filterbar .field{min-width:220px}.stats-filter-note{font-size:13px;color:var(--muted);max-width:620px;line-height:1.5}.stats-metrics{margin-bottom:18px}.small-metric{font-size:24px!important;line-height:1.1}.stats-layout{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin-bottom:18px}.stats-panel{padding:22px}.stats-panel-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}.stats-panel-head h2{margin:0 0 4px}.stats-panel-head p{margin:0;color:var(--muted);font-size:13px}.stats-bars{display:flex;align-items:flex-end;gap:10px;min-height:220px;padding-top:14px;border-bottom:1px solid var(--line)}.stats-bar-wrap{flex:1;min-width:42px;text-align:center}.stats-bar-value{font-size:11px;color:var(--muted);margin-bottom:6px;white-space:nowrap}.stats-bar{width:100%;min-height:3px;background:linear-gradient(180deg,#111,#777);border-radius:2px 2px 0 0}.stats-bar-label{font-size:11px;color:var(--muted);margin-top:8px}.stats-status-list,.stats-ranking{display:grid;gap:10px}.stats-status-row,.stats-rank-row{display:grid;grid-template-columns:minmax(120px,1fr) minmax(90px,2fr) auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.stats-status-row:last-child,.stats-rank-row:last-child{border-bottom:0}.stats-progress{height:7px;background:#e9e6e0;border-radius:99px;overflow:hidden}.stats-progress>span{display:block;height:100%;background:#1d1d1b;border-radius:99px}.stats-rank-name{font-weight:600}.stats-rank-meta{font-size:12px;color:var(--muted)}.stats-empty{color:var(--muted);font-size:13px;padding:12px 0}@media(max-width:900px){.stats-layout{grid-template-columns:1fr}.stats-filterbar{align-items:stretch;flex-direction:column}.stats-filterbar .field{min-width:0}.stats-status-row,.stats-rank-row{grid-template-columns:minmax(100px,1fr) minmax(80px,1.3fr) auto}.stats-bars{overflow-x:auto;align-items:flex-end}.stats-bar-wrap{min-width:58px}}
+
+.admin-data-list{display:grid;gap:12px}.admin-row-card{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.48);padding:16px}.admin-row-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.admin-row-title{font:400 19px Georgia,serif}.admin-row-brand{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:3px}.admin-row-meta{font-size:12px;color:var(--muted);margin-top:8px}.admin-row-actions{display:flex;gap:8px;flex-wrap:wrap}.catalog-create-grid{display:grid;grid-template-columns:1.4fr 1fr repeat(4,.65fr) auto;gap:10px;align-items:end}.catalog-upload-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.catalog-upload-row input[type=file]{position:absolute;inline-size:1px;block-size:1px;opacity:0;pointer-events:none}.catalog-file-name{font-size:12px;color:var(--muted);max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.catalog-image-change{display:inline-flex;align-items:center;gap:6px}.catalog-image-change input{display:none}.catalog-create-grid .field{margin:0}.catalog-wide{grid-column:1/3}.price-grid,.stock-grid{display:grid;grid-template-columns:minmax(180px,1.5fr) repeat(4,minmax(90px,.6fr)) auto;gap:10px;align-items:end}.stock-grid{grid-template-columns:minmax(180px,1.5fr) 110px 110px 110px auto}.price-grid .field,.stock-grid .field{margin:0}.stock-alert{font-size:12px;margin-top:8px}.stock-alert.low{color:#8a3232;font-weight:600}.state-pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:11px}.state-pill.on{background:#151515;color:white;border-color:#151515}@media(max-width:1050px){.catalog-create-grid{grid-template-columns:1fr 1fr}.catalog-wide{grid-column:1/-1}.price-grid,.stock-grid{grid-template-columns:1fr 1fr}.price-grid .admin-name-cell,.stock-grid .admin-name-cell{grid-column:1/-1}}@media(max-width:620px){.catalog-create-grid,.price-grid,.stock-grid{grid-template-columns:1fr}.catalog-wide,.price-grid .admin-name-cell,.stock-grid .admin-name-cell{grid-column:auto}.admin-row-head{flex-direction:column}}
+
+/* Miniaturas del catálogo */
+.catalog-product-main{display:flex;align-items:center;gap:14px;min-width:0}
+.catalog-product-thumb{width:58px;height:72px;flex:0 0 58px;border-radius:12px;border:1px solid var(--line);background:#f7f5f1;object-fit:contain;padding:5px;box-sizing:border-box}
+.catalog-product-thumb.placeholder{display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);text-align:center}
+@media (max-width:700px){.catalog-product-thumb{width:50px;height:62px;flex-basis:50px}.admin-row-head{gap:10px}}
+
+.state-pill.upcoming{background:#3a3a3a;color:#fff;border-color:#3a3a3a}.catalog-state-select{border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:transparent;color:var(--text);font:inherit;font-size:12px}.catalog-delete-btn{border:1px solid rgba(120,35,35,.28);background:transparent;color:#7d3030;border-radius:9px;padding:8px 11px;font:inherit;font-size:12px;cursor:pointer}.catalog-delete-btn:hover{background:rgba(120,35,35,.06);border-color:rgba(120,35,35,.45)}
 </style>
 </head>
 <body>
@@ -233,15 +278,15 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
         <button class="active" id="dashboardTabBtn" data-studio-view="overview" type="button">Dashboard</button>
         <button id="ordersTabBtn" data-studio-view="orders" type="button">Pedidos</button>
         <button id="customersTabBtn" data-studio-view="customers" type="button">Clientes</button>
-        <button id="collectionTabBtn" data-studio-view="collection" type="button">Mi Colección Prelude <span class="nav-state">Fase 3</span></button>
+        <button id="collectionTabBtn" data-studio-view="collection" type="button">Mi Colección Prelude</button>
         <button id="codesTabBtn" data-studio-view="codes" type="button">Códigos Prelude</button>
-        <button id="catalogTabBtn" data-studio-view="catalog" type="button">Catálogo <span class="nav-state">Fase 4</span></button>
-        <button id="pricesTabBtn" data-studio-view="prices" type="button">Precios <span class="nav-state">Fase 4</span></button>
-        <button id="stockTabBtn" data-studio-view="stock" type="button">Stock <span class="nav-state">Fase 4</span></button>
-        <button id="rewardsTabBtn" data-studio-view="rewards" type="button">Recompensas <span class="nav-state">Fase 5</span></button>
+        <button id="catalogTabBtn" data-studio-view="catalog" type="button">Catálogo <span class="nav-state">Activo</span></button>
+        <button id="pricesTabBtn" data-studio-view="prices" type="button">Precios <span class="nav-state">Activo</span></button>
+        <button id="stockTabBtn" data-studio-view="stock" type="button">Stock <span class="nav-state">Activo</span></button>
+        <button id="rewardsTabBtn" data-studio-view="rewards" type="button">Recompensas</button>
         <button id="rankingTabBtn" data-studio-view="ranking" type="button">Ranking</button>
-        <button id="museumTabBtn" data-studio-view="museum" type="button">Museo Olfativo <span class="nav-state">Fase 5</span></button>
-        <button id="statsTabBtn" data-studio-view="stats" type="button">Estadísticas <span class="nav-state">Fase 6</span></button>
+        <button id="museumTabBtn" data-studio-view="museum" type="button">Museo Olfativo</button>
+        <button id="statsTabBtn" data-studio-view="stats" type="button">Estadísticas <span class="nav-state">Activo</span></button>
       </div>
     </aside>
 
@@ -277,7 +322,7 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
               <button class="quick-btn" type="button" data-jump="codes"><strong>Nuevo código</strong><span>Confirmar un descubrimiento</span></button>
               <button class="quick-btn" type="button" data-jump="customers"><strong>Clientes</strong><span>Consultar perfiles</span></button>
               <button class="quick-btn" type="button" data-jump="ranking"><strong>Ranking</strong><span>Ver colecciones</span></button>
-              <button class="quick-btn" type="button" data-jump="stock"><strong>Stock</strong><span>Preparado para Fase 4</span></button>
+              <button class="quick-btn" type="button" data-jump="stock"><strong>Stock</strong><span>Consultar disponibilidad</span></button>
             </div>
           </aside>
         </div>
@@ -302,13 +347,92 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
         </div>
         <div class="card"><div id="ordersList"><p style="color:var(--muted)">Cargando pedidos...</p></div></div>
       </div>
-      <div class="studio-view" id="collectionView"><div class="card module-placeholder"><div class="module-placeholder-inner"><div class="module-badge">Fase 3</div><h1>Mi Colección Prelude</h1><p>Permitirá consultar las obras de cada cliente y gestionar desbloqueos manualmente.</p></div></div></div>
-      <div class="studio-view" id="catalogView"><div class="card module-placeholder"><div class="module-placeholder-inner"><div class="module-badge">Fase 4</div><h1>Catálogo</h1><p>Permitirá publicar, ocultar y añadir fragancias desde Studio sin editar el HTML.</p></div></div></div>
-      <div class="studio-view" id="pricesView"><div class="card module-placeholder"><div class="module-placeholder-inner"><div class="module-badge">Fase 4</div><h1>Precios</h1><p>Permitirá administrar los precios de 2, 3, 5 y 10 ml desde una única pantalla.</p></div></div></div>
-      <div class="studio-view" id="stockView"><div class="card module-placeholder"><div class="module-placeholder-inner"><div class="module-badge">Fase 4</div><h1>Stock</h1><p>Controlará stock inicial, mililitros vendidos, disponibilidad y avisos de stock bajo.</p></div></div></div>
-      <div class="studio-view" id="rewardsView"><div class="card module-placeholder"><div class="module-placeholder-inner"><div class="module-badge">Fase 5</div><h1>Recompensas</h1><p>Centralizará Marcapáginas, niveles, premios y canjes.</p></div></div></div>
-      <div class="studio-view" id="museumView"><div class="card module-placeholder"><div class="module-placeholder-inner"><div class="module-badge">Fase 5</div><h1>Museo Olfativo</h1><p>Permitirá gestionar obra, descripción, perfume asociado y estado de publicación.</p></div></div></div>
-      <div class="studio-view" id="statsView"><div class="card module-placeholder"><div class="module-placeholder-inner"><div class="module-badge">Fase 6</div><h1>Estadísticas</h1><p>Analizará ventas, recurrencia, perfumes más vendidos y evolución del negocio cuando haya datos suficientes.</p></div></div></div>
+      <div class="studio-view" id="collectionView">
+        <div class="section-heading">
+          <div><div class="dashboard-kicker">Clientes</div><h1>Mi Colección Prelude</h1><p>Consulta todas las obras disponibles y gestiona desbloqueos o reversiones manuales.</p></div>
+          <button class="secondary" id="refreshCollectionBtn" type="button">Actualizar</button>
+        </div>
+        <div class="card collection-toolbar">
+          <div class="field" style="margin:0"><label>Cliente</label><select id="collectionCustomerSelect"><option value="">Selecciona un cliente</option></select></div>
+          <button class="secondary" id="openSelectedCustomerBtn" type="button">Abrir ficha del cliente</button>
+        </div>
+        <div class="collection-summary">
+          <div class="metric-card"><div class="metric-label">Obras</div><div class="metric-value" id="collectionWorksMetric">—</div><div class="metric-note" id="collectionTotalWorksNote">obras disponibles</div></div>
+          <div class="metric-card"><div class="metric-label">Nivel</div><div class="metric-value" id="collectionLevelMetric">—</div><div class="metric-note">Mi Colección Prelude</div></div>
+          <div class="metric-card"><div class="metric-label">Marcapáginas</div><div class="metric-value" id="collectionBookmarksMetric">—</div><div class="metric-note">Saldo actual</div></div>
+          <div class="metric-card"><div class="metric-label">Gastado</div><div class="metric-value" id="collectionSpentMetric">—</div><div class="metric-note">Total registrado</div></div>
+        </div>
+        <div class="card"><div id="collectionAdminGrid" class="collection-grid"><p style="color:var(--muted)">Selecciona un cliente para consultar su colección.</p></div><div class="status" id="collectionAdminStatus"></div></div>
+      </div>
+      <div class="studio-view" id="catalogView">
+        <div class="section-heading"><div><div class="dashboard-kicker">Gestión comercial</div><h1>Catálogo</h1><p>Publica, oculta y añade fragancias sin editar el HTML.</p></div><button class="secondary" id="refreshCatalogBtn" type="button">Actualizar</button></div>
+        <div class="card">
+          <div class="catalog-create-grid">
+            <div class="field"><label>Nombre</label><input id="newCatalogName" placeholder="Nombre del perfume"></div>
+            <div class="field"><label>Marca</label><input id="newCatalogBrand" placeholder="Marca"></div>
+            <div class="field catalog-wide catalog-image-picker"><label>Imagen del perfume</label><div class="catalog-upload-row"><input id="newCatalogImageFile" type="file" accept="image/png,image/jpeg,image/webp,image/avif"><button class="secondary" id="chooseCatalogImageBtn" type="button">Subir imagen</button><span id="newCatalogImageName" class="catalog-file-name">Ninguna imagen seleccionada</span></div><input id="newCatalogImage" type="hidden"></div>
+            <div class="field"><label>2 ml (€)</label><input id="newPrice2" type="number" step="0.01" min="0.01" placeholder="Opcional"></div>
+            <div class="field"><label>3 ml (€)</label><input id="newPrice3" type="number" step="0.01" min="0.01" placeholder="Opcional"></div>
+            <div class="field"><label>5 ml (€)</label><input id="newPrice5" type="number" step="0.01" min="0.01" placeholder="Opcional"></div>
+            <div class="field"><label>10 ml (€)</label><input id="newPrice10" type="number" step="0.01" min="0.01" placeholder="Opcional"></div>
+            <div class="field"><label>Estado</label><select id="newCatalogStatus"><option value="upcoming">Próximamente</option><option value="published">Publicado</option><option value="hidden">Oculto</option></select></div>
+            <button class="primary" id="createCatalogBtn" type="button">Añadir perfume</button>
+          </div>
+          <div class="status" id="catalogStatus"></div>
+        </div>
+        <div id="catalogAdminList" class="admin-data-list"><p style="color:var(--muted)">Cargando catálogo...</p></div>
+      </div>
+      <div class="studio-view" id="pricesView">
+        <div class="section-heading"><div><div class="dashboard-kicker">Gestión comercial</div><h1>Precios</h1><p>Edita los precios de 2, 3, 5 y 10 ml. Los cambios se reflejan en Prelude al recargar.</p></div><button class="secondary" id="refreshPricesBtn" type="button">Actualizar</button></div>
+        <div id="pricesAdminList" class="admin-data-list"><p style="color:var(--muted)">Cargando precios...</p></div>
+        <div class="status" id="pricesStatus"></div>
+      </div>
+      <div class="studio-view" id="stockView">
+        <div class="section-heading"><div><div class="dashboard-kicker">Inventario</div><h1>Stock</h1><p>Consulta ml vendidos y configura el stock disponible y el umbral de aviso.</p></div><button class="secondary" id="refreshStockBtn" type="button">Actualizar</button></div>
+        <div id="stockAdminList" class="admin-data-list"><p style="color:var(--muted)">Cargando stock...</p></div>
+        <div class="status" id="stockStatus"></div>
+      </div>
+      <div class="studio-view" id="rewardsView">
+        <div class="section-heading"><div><div class="dashboard-kicker">Fidelización</div><h1>Recompensas</h1><p>Configura los hitos de Marcapáginas, premios y disponibilidad.</p></div><button class="secondary" id="refreshRewardsBtn" type="button">Actualizar</button></div>
+        <div class="card"><div class="reward-toolbar"><button class="primary" id="newRewardBtn" type="button">+ Nueva recompensa</button></div><div id="rewardsAdminList"><p style="color:var(--muted)">Cargando recompensas...</p></div><div class="status" id="rewardsAdminStatus"></div></div>
+      </div>
+      <div class="studio-view" id="museumView">
+        <div class="section-heading"><div><div class="dashboard-kicker">Curaduría</div><h1>Museo Olfativo</h1><p>Gestiona el texto, la obra asociada y el estado de publicación de cada fragancia.</p></div><button class="secondary" id="refreshMuseumBtn" type="button">Actualizar</button></div>
+        <div class="card museum-toolbar"><input id="museumSearch" placeholder="Buscar perfume o marca"></div>
+        <div id="museumAdminList" class="museum-admin-list"><p style="color:var(--muted)">Cargando Museo...</p></div>
+        <div class="status" id="museumAdminStatus"></div>
+      </div>
+      <div class="studio-view" id="statsView">
+  <div class="dashboard-head">
+    <div><div class="dashboard-kicker">Prelude Studio · Fase 6</div><h1>Estadísticas</h1><p>Lectura comercial construida a partir de pedidos y clientes reales. Las métricas económicas utilizan únicamente pedidos entregados.</p></div>
+    <button class="secondary" id="refreshStatsBtn" type="button">Actualizar estadísticas</button>
+  </div>
+  <div class="stats-filterbar card">
+    <div class="field"><label>Periodo</label><select id="statsPeriod"><option value="30">Últimos 30 días</option><option value="90">Últimos 90 días</option><option value="365">Últimos 12 meses</option><option value="all" selected>Todo el historial</option></select></div>
+    <div class="stats-filter-note">Ventas e ingresos = pedidos <strong>Entregados</strong>. Los estados muestran todos los pedidos del periodo.</div>
+  </div>
+  <div class="metric-grid stats-metrics">
+    <div class="metric-card"><div class="metric-label">Ingresos entregados</div><div class="metric-value" id="statsRevenue">0,00 €</div><div class="metric-note" id="statsRevenueNote">0 pedidos entregados</div></div>
+    <div class="metric-card"><div class="metric-label">Ticket medio</div><div class="metric-value" id="statsAvgTicket">0,00 €</div><div class="metric-note">Sobre pedidos entregados</div></div>
+    <div class="metric-card"><div class="metric-label">Clientes con compra</div><div class="metric-value" id="statsBuyingCustomers">0</div><div class="metric-note" id="statsRepeatNote">0 recurrentes</div></div>
+    <div class="metric-card"><div class="metric-label">Tasa de recurrencia</div><div class="metric-value" id="statsRepeatRate">0%</div><div class="metric-note">Clientes con 2+ pedidos entregados</div></div>
+    <div class="metric-card"><div class="metric-label">Decants vendidos</div><div class="metric-value" id="statsUnits">0</div><div class="metric-note" id="statsMlNote">0 ml servidos</div></div>
+    <div class="metric-card"><div class="metric-label">Perfume líder</div><div class="metric-value small-metric" id="statsTopPerfume">—</div><div class="metric-note" id="statsTopPerfumeNote">Sin datos</div></div>
+  </div>
+  <div class="stats-layout">
+    <section class="card stats-panel"><div class="stats-panel-head"><div><h2>Evolución de ingresos</h2><p>Pedidos entregados agrupados por mes.</p></div></div><div id="statsTrend" class="stats-bars"></div></section>
+    <section class="card stats-panel"><div class="stats-panel-head"><div><h2>Estado de pedidos</h2><p>Distribución operativa del periodo seleccionado.</p></div></div><div id="statsStatuses" class="stats-status-list"></div></section>
+  </div>
+  <div class="stats-layout">
+    <section class="card stats-panel"><div class="stats-panel-head"><div><h2>Perfumes más vendidos</h2><p>Ranking por unidades de decant entregadas.</p></div></div><div id="statsPerfumes" class="stats-ranking"></div></section>
+    <section class="card stats-panel"><div class="stats-panel-head"><div><h2>Tamaños más elegidos</h2><p>Preferencia de formato en pedidos entregados.</p></div></div><div id="statsSizes" class="stats-ranking"></div></section>
+  </div>
+  <div class="stats-layout">
+    <section class="card stats-panel"><div class="stats-panel-head"><div><h2>Zonas de entrega</h2><p>Dónde se concentra la actividad.</p></div></div><div id="statsZones" class="stats-ranking"></div></section>
+    <section class="card stats-panel"><div class="stats-panel-head"><div><h2>Clientes recurrentes</h2><p>Clientes con mayor número de pedidos entregados.</p></div></div><div id="statsCustomers" class="stats-ranking"></div></section>
+  </div>
+  <div class="status" id="statsStatus"></div>
+</div>
 
   <div class="studio-view" id="codesView">
     
@@ -442,6 +566,11 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
       </div>
 
       <div class="detail-section">
+        <h2>Pedidos</h2>
+        <div id="customerOrders" class="customer-orders"></div>
+      </div>
+
+      <div class="detail-section">
         <h2>Códigos e historial</h2>
         <div id="customerCodes"></div>
       </div>
@@ -535,6 +664,14 @@ const customerSummary=document.getElementById("customerSummary");
 const customerLibrary=document.getElementById("customerLibrary");
 const customerCodes=document.getElementById("customerCodes");
 const customerRewards=document.getElementById("customerRewards");
+const customerOrders=document.getElementById("customerOrders");
+const collectionCustomerSelect=document.getElementById("collectionCustomerSelect");
+const collectionAdminGrid=document.getElementById("collectionAdminGrid");
+const collectionAdminStatus=document.getElementById("collectionAdminStatus");
+const refreshCollectionBtn=document.getElementById("refreshCollectionBtn");
+const openSelectedCustomerBtn=document.getElementById("openSelectedCustomerBtn");
+let artworksCatalog=[];
+let activeCollectionCustomer=null;
 const customerEditStatus=document.getElementById("customerEditStatus");
 const saveCustomerBtn=document.getElementById("saveCustomerBtn");
 const resetCustomerBtn=document.getElementById("resetCustomerBtn");
@@ -619,7 +756,13 @@ function switchStudioView(view){
   if(view==="overview")loadOverview();
   if(view==="orders")loadOrders();
   if(view==="customers")loadCustomers();
+  if(view==="catalog")loadCatalogAdmin();
+  if(view==="prices")loadCatalogAdmin().then(renderPricesAdmin);
+  if(view==="stock")loadCatalogAdmin().then(renderStockAdmin);
   if(view==="ranking")loadAdminRanking();
+  if(view==="rewards")loadRewardsAdmin();
+  if(view==="museum")loadMuseumAdmin();
+  if(view==="stats")loadStats();
 }
 
 async function loadOverview(){
@@ -629,14 +772,16 @@ async function loadOverview(){
   if(refresh){refresh.disabled=true;refresh.textContent="Actualizando...";}
   if(activity)activity.innerHTML='<p style="color:var(--muted)">Cargando actividad...</p>';
   try{
-    const [customersResult,codesResult]=await Promise.all([
+    const [customersResult,codesResult,worksResult]=await Promise.all([
       client.rpc("admin_list_customers"),
-      client.rpc("admin_list_prelude_codes")
+      client.rpc("admin_list_prelude_codes"),
+      client.rpc("get_prelude_museum_works")
     ]);
     if(customersResult.error)throw customersResult.error;
     if(codesResult.error)throw codesResult.error;
     const customers=customersResult.data||[];
     const codes=codesResult.data||[];
+    const totalWorks=Array.isArray(worksResult.data)&&worksResult.data.length?worksResult.data.length:23;
     const revenue=customers.reduce((sum,item)=>sum+Number(item.total_spent||0),0);
     const works=customers.reduce((sum,item)=>sum+Number(item.library_count||0),0);
     const avg=customers.length?revenue/customers.length:0;
@@ -654,7 +799,7 @@ async function loadOverview(){
     document.getElementById("metricCodesToday").textContent=codesToday;
     document.getElementById("metricAvgSpend").textContent=avg.toFixed(2).replace(".",",")+" €";
     document.getElementById("metricPendingCodes").textContent=pending;
-    document.getElementById("metricTopCollection").textContent=top?`${top.library_count}/23`:"0/23";
+    document.getElementById("metricTopCollection").textContent=top?`${top.library_count}/${totalWorks}`:`0/${totalWorks}`;
     document.getElementById("metricTopCollectionName").textContent=top?top.customer_name:"Sin datos";
     document.getElementById("metricSystem").textContent="Online";
     if(!codes.length){
@@ -733,6 +878,10 @@ function openOrder(id){
 }
 async function setOrderStatus(next){
   if(!activeOrder||activeOrder.status===next)return;
+  if(activeOrder.status==="delivered"&&next!=="delivered"){
+    const ok=confirm("Este pedido dejará de estar ENTREGADO. Prelude revertirá automáticamente las obras desbloqueadas por este pedido y su contabilización de gasto/Marcapáginas, siempre que no exista otra compra que mantenga esas obras. ¿Continuar?");
+    if(!ok)return;
+  }
   const {data,error}=await client.rpc("admin_update_prelude_order_status",{input_order_id:activeOrder.id,input_status:next});
   if(error){alert("No se pudo actualizar el pedido: "+error.message);return;}
   await loadOrders(); activeOrder=ordersCache.find(o=>o.id===activeOrder.id)||data; openOrder(activeOrder.id); loadOverview();
@@ -801,6 +950,95 @@ async function loadAdminRanking(){
   }
 }
 
+
+function studioLibraryLevel(count,total=artworksCatalog.length||23){
+  count=Number(count||0); total=Math.max(1,Number(total||23));
+  if(count>=total)return "Masterpiece";
+  if(count>=15)return "Curador";
+  if(count>=8)return "Coleccionista";
+  if(count>=3)return "Explorador";
+  return "Primer capítulo";
+}
+async function ensureArtworksCatalog(force=false){
+  if(artworksCatalog.length&&!force)return artworksCatalog;
+  try{
+    const {data,error}=await client.rpc("get_prelude_museum_works");
+    if(!error&&Array.isArray(data)&&data.length){artworksCatalog=data.map(w=>({name:w.perfume_name,brand:w.brand||"",artwork:w.artwork_path||"",description:w.description||"",published:w.published!==false}));return artworksCatalog;}
+  }catch(error){console.warn("Museo Supabase no disponible",error)}
+  try{
+    const response=await fetch("data/artworks.json",{cache:"no-store"});
+    const data=await response.json();
+    artworksCatalog=data.works||[];
+  }catch(error){console.error(error);artworksCatalog=[];}
+  return artworksCatalog;
+}
+async function loadCollectionModule(preselectId=null){
+  status(collectionAdminStatus,"Cargando clientes...");
+  const [{data,error},works]=await Promise.all([client.rpc("admin_list_customers"),ensureArtworksCatalog()]);
+  if(error){status(collectionAdminStatus,"No se pudieron cargar los clientes: "+error.message,true);return;}
+  customersCache=data||[];
+  const previous=preselectId||collectionCustomerSelect.value;
+  collectionCustomerSelect.innerHTML='<option value="">Selecciona un cliente</option>'+customersCache.map(c=>`<option value="${c.id}">${escapeHtml(c.customer_name)} · ${escapeHtml(c.customer_phone)}</option>`).join("");
+  if(previous&&customersCache.some(c=>String(c.id)===String(previous))){collectionCustomerSelect.value=previous;await loadSelectedCollection();}
+  else{
+    activeCollectionCustomer=null;
+    collectionAdminGrid.innerHTML='<p style="color:var(--muted)">Selecciona un cliente para consultar su colección.</p>';
+    ["collectionWorksMetric","collectionLevelMetric","collectionBookmarksMetric","collectionSpentMetric"].forEach(id=>document.getElementById(id).textContent="—");
+    status(collectionAdminStatus,works.length?"":"No se pudo cargar el catálogo de obras.",!works.length);
+  }
+}
+async function loadSelectedCollection(){
+  const id=collectionCustomerSelect.value;
+  if(!id)return loadCollectionModule();
+  status(collectionAdminStatus,"Cargando colección...");
+  const [{data,error},works]=await Promise.all([client.rpc("admin_get_customer",{input_customer_id:id}),ensureArtworksCatalog()]);
+  if(error){status(collectionAdminStatus,"No se pudo cargar la colección: "+error.message,true);return;}
+  activeCollectionCustomer=data;
+  const unlocked=new Set((data.library||[]).map(x=>x.perfume));
+  const c=data.customer;
+  document.getElementById("collectionWorksMetric").textContent=unlocked.size;
+  document.getElementById("collectionLevelMetric").textContent=studioLibraryLevel(unlocked.size,works.length);
+  const totalNote=document.getElementById("collectionTotalWorksNote");if(totalNote)totalNote.textContent=`de ${works.length} obras`;
+  document.getElementById("collectionBookmarksMetric").textContent=c.bookmarks||0;
+  document.getElementById("collectionSpentMetric").textContent=Number(c.total_spent||0).toFixed(2).replace(".",",")+" €";
+  collectionAdminGrid.innerHTML=works.map(work=>{
+    const isUnlocked=unlocked.has(work.name);
+    return `<article class="artwork-admin-card">
+      <div class="artwork-admin-image ${isUnlocked?"":"locked"}"><img src="${work.artwork}" alt="${escapeHtml(work.name)}" loading="lazy"></div>
+      <div class="artwork-admin-body">
+        <div class="artwork-admin-title">${escapeHtml(work.name)}</div><div class="artwork-admin-brand">${escapeHtml(work.brand||"")}</div>
+        <div class="artwork-admin-state">${isUnlocked?"✓ Obra desbloqueada":"🔒 Pendiente de descubrir"}</div>
+        <div class="artwork-admin-actions">${isUnlocked
+          ? `<button class="revoke" type="button" data-artwork-action="revoke" data-perfume="${escapeHtml(work.name)}">Revertir obra</button>`
+          : `<button class="unlock" type="button" data-artwork-action="unlock" data-perfume="${escapeHtml(work.name)}">Desbloquear manualmente</button>`}
+        </div>
+      </div></article>`;
+  }).join("");
+  collectionAdminGrid.querySelectorAll("[data-artwork-action]").forEach(btn=>btn.addEventListener("click",()=>setCustomerArtwork(btn.dataset.perfume,btn.dataset.artworkAction==="unlock")));
+  status(collectionAdminStatus,`${unlocked.size} de ${works.length} obras desbloqueadas.`);
+}
+async function setCustomerArtwork(perfume,unlocked){
+  if(!activeCollectionCustomer?.customer?.id)return;
+  const action=unlocked?"desbloquear":"revertir";
+  if(!confirm(`¿Quieres ${action} manualmente ${perfume} para ${activeCollectionCustomer.customer.customer_name}?`))return;
+  status(collectionAdminStatus,unlocked?"Desbloqueando obra...":"Revirtiendo obra...");
+  const {error}=await client.rpc("admin_set_customer_artwork",{input_customer_id:activeCollectionCustomer.customer.id,input_perfume:perfume,input_unlocked:unlocked});
+  if(error){status(collectionAdminStatus,"No se pudo actualizar la obra: "+error.message,true);return;}
+  await loadSelectedCollection();
+  await loadCustomers();
+  if(activeCustomerId===activeCollectionCustomer?.customer?.id)await openCustomer(activeCustomerId);
+}
+async function loadCustomerOrdersForDetail(customerId){
+  const {data,error}=await client.rpc("admin_get_customer_orders",{input_customer_id:customerId});
+  if(error){customerOrders.innerHTML='<p class="error">No se pudieron cargar los pedidos: '+escapeHtml(error.message)+'</p>';return []}
+  const orders=data||[];
+  customerOrders.innerHTML=orders.length?orders.map(o=>{
+    const items=(o.items||[]).map(i=>`${escapeHtml(i.name||"Perfume")} · ${escapeHtml(String(i.size||""))}${i.size?" ml":""}${Number(i.qty||1)>1?` × ${i.qty}`:""}`).join("<br>");
+    return `<div class="customer-order-row"><div class="customer-order-top"><strong>#${escapeHtml(o.order_number||"—")}</strong><span class="order-status status-${o.status}">${ORDER_STATUS_LABELS[o.status]||o.status}</span></div><div class="customer-order-items">${items||"Sin detalle de productos"}<br><strong>${Number(o.order_total||0).toFixed(2).replace(".",",")} €</strong> · ${o.created_at?new Date(o.created_at).toLocaleDateString("es-ES"):"—"}</div></div>`;
+  }).join(""):'<p style="color:var(--muted)">Sin pedidos registrados.</p>';
+  return orders;
+}
+
 async function loadCustomers(){
   customersList.innerHTML='<p style="color:var(--muted)">Cargando clientes...</p>';
   const {data,error}=await client.rpc("admin_list_customers");
@@ -850,16 +1088,19 @@ async function openCustomer(customerId){
   editCustomerBookmarks.value=customer.bookmarks;
   editCustomerTotal.value=Number(customer.total_spent).toFixed(2);
 
+  const detailOrders=await loadCustomerOrdersForDetail(customerId);
   customerSummary.innerHTML=`
-    <div class="code-line"><strong>${data.library.length}</strong> obras descubiertas</div>
+    <div class="code-line"><strong>${detailOrders.length}</strong> pedidos</div>
+    <div class="code-line"><strong>${data.library.length}</strong> obras descubiertas <span class="level-chip">${studioLibraryLevel(data.library.length)}</span></div>
     <div class="code-line"><strong>${customer.bookmarks}</strong> Marcapáginas</div>
     <div class="code-line"><strong>${Number(customer.total_spent).toFixed(2).replace(".",",")} €</strong> acumulados</div>
     <div class="code-line">Miembro desde ${new Date(customer.created_at).toLocaleDateString("es-ES")}</div>
   `;
 
   customerLibrary.innerHTML=data.library.length
-    ? data.library.map(item=>`<span class="library-pill">${item.perfume}</span>`).join("")
-    : '<p style="color:var(--muted)">Sin descubrimientos.</p>';
+    ? data.library.map(item=>`<span class="library-pill">${escapeHtml(item.perfume)}</span>`).join("")+`<div style="margin-top:12px"><button class="secondary" type="button" id="manageCustomerCollectionBtn">Gestionar la colección completa</button></div>`
+    : '<p style="color:var(--muted)">Sin descubrimientos.</p><div style="margin-top:12px"><button class="secondary" type="button" id="manageCustomerCollectionBtn">Gestionar la colección completa</button></div>';
+  document.getElementById("manageCustomerCollectionBtn")?.addEventListener("click",async()=>{customerDetail.classList.remove("open");switchStudioView("collection");await loadCollectionModule(customerId);});
 
   customerCodes.innerHTML=data.codes.length
     ? data.codes.map(item=>`
@@ -1075,8 +1316,25 @@ async function loadHistory(){
       <div class="row"><strong>${item.code}</strong><span>${item.is_redeemed?"Canjeado":"Pendiente"}</span></div>
       <div>${item.customer_name||"Sin nombre"} · Pedido #${item.order_number||"—"}</div>
       <div style="color:var(--muted);margin-top:4px">${item.perfumes.join(", ")}</div>
+      <div style="margin-top:10px"><button type="button" class="secondary" data-delete-code="${item.code}">Quitar código</button></div>
     </div>
   `).join("");
+  history.querySelectorAll("[data-delete-code]").forEach(button=>button.addEventListener("click",()=>deletePreludeCode(button.dataset.deleteCode)));
+}
+
+async function deletePreludeCode(code){
+  if(!code||!client)return;
+  if(!confirm(`¿Quitar el código ${code} del historial? Esta acción no revierte automáticamente obras ya desbloqueadas.`))return;
+  try{
+    const {data,error}=await client.rpc("admin_delete_prelude_code",{input_code:code});
+    if(error)throw error;
+    if(!data||data.success!==true)throw new Error(data?.message||"No se pudo quitar el código.");
+    await loadHistory();
+    await loadOverview();
+  }catch(error){
+    console.error(error);
+    alert("No se pudo quitar el código: "+(error.message||error));
+  }
 }
 
 async function copyText(value,button){
@@ -1087,9 +1345,212 @@ async function copyText(value,button){
 }
 
 
+
+let statsCache={orders:[],customers:[]};
+function statsPeriodStart(){
+  const value=document.getElementById('statsPeriod')?.value||'all';
+  if(value==='all')return null;
+  const d=new Date(); d.setDate(d.getDate()-Number(value)); return d;
+}
+function orderInStatsPeriod(order){
+  const start=statsPeriodStart(); if(!start)return true;
+  return order.created_at&&new Date(order.created_at)>=start;
+}
+function parseItemMl(size){
+  const m=String(size??'').replace(',','.').match(/([0-9]+(?:\.[0-9]+)?)/); return m?Number(m[1]):0;
+}
+function statsMoney(v){return Number(v||0).toFixed(2).replace('.',',')+' €';}
+function statProgressRows(target,rows,formatter){
+  const el=document.getElementById(target); if(!el)return;
+  if(!rows.length){el.innerHTML='<div class="stats-empty">Todavía no hay datos suficientes.</div>';return;}
+  const max=Math.max(...rows.map(r=>Number(r.value||0)),1);
+  el.innerHTML=rows.map((r,i)=>`<div class="stats-rank-row"><div><div class="stats-rank-name">${i+1}. ${escapeHtml(r.label)}</div>${r.meta?`<div class="stats-rank-meta">${escapeHtml(r.meta)}</div>`:''}</div><div class="stats-progress"><span style="width:${Math.max(4,Number(r.value||0)/max*100)}%"></span></div><strong>${formatter?formatter(r):r.value}</strong></div>`).join('');
+}
+function renderStats(){
+  const all=statsCache.orders.filter(orderInStatsPeriod);
+  const delivered=all.filter(o=>o.status==='delivered');
+  const revenue=delivered.reduce((s,o)=>s+Number(o.order_total||0),0);
+  const avg=delivered.length?revenue/delivered.length:0;
+  const customerOrders=new Map();
+  delivered.forEach(o=>{const key=o.customer_id||`guest:${String(o.customer_phone||o.customer_name||'').toLowerCase()}`; if(!customerOrders.has(key))customerOrders.set(key,{name:o.customer_name||'Cliente',count:0,total:0}); const c=customerOrders.get(key);c.count++;c.total+=Number(o.order_total||0);});
+  const repeat=[...customerOrders.values()].filter(c=>c.count>=2);
+  let units=0,totalMl=0; const perfumes=new Map(),sizes=new Map(),zones=new Map();
+  delivered.forEach(o=>{
+    zones.set(o.delivery_zone||'Sin zona',(zones.get(o.delivery_zone||'Sin zona')||0)+1);
+    (Array.isArray(o.items)?o.items:[]).forEach(i=>{
+      const qty=Math.max(1,Number(i.qty||1)); units+=qty; const ml=parseItemMl(i.size)*qty; totalMl+=ml;
+      const name=i.name||'Perfume'; const p=perfumes.get(name)||{units:0,ml:0,revenue:0};p.units+=qty;p.ml+=ml;p.revenue+=Number(i.price||0)*qty;perfumes.set(name,p);
+      const sizeLabel=String(i.size||'Sin tamaño').replace(/\s*ml\s*$/i,'').trim();sizes.set(sizeLabel,(sizes.get(sizeLabel)||0)+qty);
+    });
+  });
+  const perfumeRows=[...perfumes.entries()].map(([label,v])=>({label,value:v.units,meta:`${v.ml.toFixed(0)} ml · ${statsMoney(v.revenue)}`})).sort((a,b)=>b.value-a.value);
+  const top=perfumeRows[0];
+  document.getElementById('statsRevenue').textContent=statsMoney(revenue);
+  document.getElementById('statsRevenueNote').textContent=`${delivered.length} pedido${delivered.length===1?'':'s'} entregado${delivered.length===1?'':'s'}`;
+  document.getElementById('statsAvgTicket').textContent=statsMoney(avg);
+  document.getElementById('statsBuyingCustomers').textContent=customerOrders.size;
+  document.getElementById('statsRepeatNote').textContent=`${repeat.length} recurrente${repeat.length===1?'':'s'}`;
+  document.getElementById('statsRepeatRate').textContent=(customerOrders.size?repeat.length/customerOrders.size*100:0).toFixed(0)+'%';
+  document.getElementById('statsUnits').textContent=units;
+  document.getElementById('statsMlNote').textContent=`${totalMl.toFixed(totalMl%1?1:0).replace('.',',')} ml servidos`;
+  document.getElementById('statsTopPerfume').textContent=top?top.label:'—';
+  document.getElementById('statsTopPerfumeNote').textContent=top?`${top.value} decants · ${top.meta}`:'Sin ventas entregadas';
+  // statuses
+  const statusEl=document.getElementById('statsStatuses'); const totalAll=all.length||1;
+  statusEl.innerHTML=Object.entries(ORDER_LABELS).map(([key,label])=>{const n=all.filter(o=>o.status===key).length;return `<div class="stats-status-row"><span>${label}</span><div class="stats-progress"><span style="width:${n/totalAll*100}%"></span></div><strong>${n}</strong></div>`}).join('');
+  // trend: last 6 calendar months ending current, independent of period only keep months with matching delivered data
+  const monthMap=new Map(); delivered.forEach(o=>{if(!o.created_at)return;const d=new Date(o.created_at);const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;monthMap.set(k,(monthMap.get(k)||0)+Number(o.order_total||0));});
+  let months=[...monthMap.entries()].sort((a,b)=>a[0].localeCompare(b[0])); if(months.length>8)months=months.slice(-8);
+  const trend=document.getElementById('statsTrend');
+  if(!months.length)trend.innerHTML='<div class="stats-empty">Todavía no hay ingresos entregados en este periodo.</div>';
+  else{const mx=Math.max(...months.map(x=>x[1]),1);trend.innerHTML=months.map(([k,v])=>{const [y,m]=k.split('-');const label=new Date(Number(y),Number(m)-1,1).toLocaleDateString('es-ES',{month:'short',year:'2-digit'});return `<div class="stats-bar-wrap"><div class="stats-bar-value">${statsMoney(v)}</div><div class="stats-bar" style="height:${Math.max(5,v/mx*170)}px"></div><div class="stats-bar-label">${label}</div></div>`}).join('');}
+  statProgressRows('statsPerfumes',perfumeRows.slice(0,8),r=>r.value);
+  statProgressRows('statsSizes',[...sizes.entries()].map(([label,value])=>({label:`${label} ml`,value})).sort((a,b)=>b.value-a.value).slice(0,8),r=>r.value);
+  statProgressRows('statsZones',[...zones.entries()].map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value).slice(0,8),r=>r.value);
+  statProgressRows('statsCustomers',[...customerOrders.values()].map(c=>({label:c.name,value:c.count,meta:statsMoney(c.total)})).sort((a,b)=>b.value-a.value||b.meta.localeCompare(a.meta)).slice(0,8),r=>r.value);
+  status(document.getElementById('statsStatus'),`Actualizado ${new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})}.`);
+}
+async function loadStats(){
+  const st=document.getElementById('statsStatus'); if(!client)return;
+  status(st,'Calculando estadísticas...');
+  try{
+    const [ordersResult,customersResult]=await Promise.all([client.rpc('admin_list_prelude_orders'),client.rpc('admin_list_customers')]);
+    if(ordersResult.error)throw ordersResult.error; if(customersResult.error)throw customersResult.error;
+    statsCache={orders:Array.isArray(ordersResult.data)?ordersResult.data:[],customers:Array.isArray(customersResult.data)?customersResult.data:[]};
+    renderStats();
+  }catch(e){console.error(e);status(st,'No se pudieron cargar las estadísticas: '+e.message,true);}
+}
+document.getElementById('refreshStatsBtn')?.addEventListener('click',loadStats);
+document.getElementById('statsPeriod')?.addEventListener('change',renderStats);
+
+
+const STUDIO_CATALOG_IMAGE_MAP={"Le Sel d'Issey":"assets/perfumes/le-sel-d-issey.webp","Amber Oud Gold Edition":"assets/perfumes/amber-oud-gold-edition.webp","Dior Homme Intense":"assets/perfumes/dior-homme-intense.webp","Mercedes-Benz Club Black":"assets/perfumes/mercedes-benz-club-black.webp","CK One":"assets/perfumes/ck-one.webp","La Nuit de L'Homme":"assets/perfumes/la-nuit-de-l-homme.webp","Club de Nuit Sillage":"assets/perfumes/club-de-nuit-sillage.webp","Détour Noir":"assets/perfumes/detour-noir.webp","Fico di Amalfi":"assets/perfumes/fico-di-amalfi.webp","Eros":"assets/perfumes/eros.webp","Bois Impérial":"assets/perfumes/bois-imperial.webp","Bal d'Afrique":"assets/perfumes/bal-d-afrique.webp","Le Rem":"assets/perfumes/le-rem.webp","Le Beau":"assets/perfumes/le-beau.webp","Stronger With You":"assets/perfumes/stronger-with-you.webp","Torino 21":"assets/perfumes/torino-21.webp","First Instinct":"assets/perfumes/first-instinct.webp","Egeo Bomb Black":"assets/perfumes/egeo-bomb-black.webp","Armani Code":"assets/perfumes/armani-code.webp","Starwalker":"assets/perfumes/starwalker.webp","Nautica Voyage":"assets/perfumes/nautica-voyage.webp","Cool Water":"assets/perfumes/cool-water.webp","Sauvage":"assets/perfumes/sauvage.webp"};
+let catalogAdminCache=[];
+function moneyInput(v){return v==null||v===""?"":Number(v).toFixed(2)}
+async function loadCatalogAdmin(){
+  if(!client)return [];
+  try{
+    const {data,error}=await client.rpc("admin_list_prelude_catalog");
+    if(error)throw error;
+    catalogAdminCache=Array.isArray(data)?data:[];
+    renderCatalogAdmin();
+    const active=Object.entries(studioViews).find(([k,node])=>node&&node.classList.contains("active"))?.[0];
+    if(active==="prices")renderPricesAdmin();
+    if(active==="stock")renderStockAdmin();
+    return catalogAdminCache;
+  }catch(error){
+    console.error(error);
+    ["catalogStatus","pricesStatus","stockStatus"].forEach(id=>{const n=document.getElementById(id);if(n)n.textContent="No se pudo cargar el catálogo: "+(error.message||error)});
+    return [];
+  }
+}
+function catalogAdminStatus(p){return p.availability_status||(p.active===false?"hidden":"published")}
+function catalogStatusLabel(status){return status==="upcoming"?"Próximamente":status==="hidden"?"Oculto":"Publicado"}
+function renderCatalogAdmin(){
+  const list=document.getElementById("catalogAdminList"); if(!list)return;
+  if(!catalogAdminCache.length){list.innerHTML='<div class="card"><p style="color:var(--muted)">No hay perfumes en el catálogo.</p></div>';return;}
+  const sorted=[...catalogAdminCache].sort((a,b)=>{const rank=x=>catalogAdminStatus(x)==="upcoming"?0:catalogAdminStatus(x)==="published"?1:2;return rank(a)-rank(b)||String(a.name).localeCompare(String(b.name),"es",{sensitivity:"base"})});
+  list.innerHTML=sorted.map(p=>{const img=p.image_url||STUDIO_CATALOG_IMAGE_MAP[p.name]||"";const status=catalogAdminStatus(p);return `<div class="admin-row-card"><div class="admin-row-head"><div class="catalog-product-main">${img?`<img class="catalog-product-thumb" src="${escapeHtml(img)}" alt="${escapeHtml(p.name)}" loading="lazy">`:`<div class="catalog-product-thumb placeholder">Sin imagen</div>`}<div><div class="admin-row-title">${escapeHtml(p.name)}</div><div class="admin-row-brand">${escapeHtml(p.brand||"")}</div><div class="admin-row-meta">${img?"Imagen del catálogo":"Sin imagen configurada"}</div></div></div><div class="admin-row-actions"><span class="state-pill ${status==="published"?"on":status==="upcoming"?"upcoming":""}">${catalogStatusLabel(status)}</span><select class="catalog-state-select" data-catalog-status="${p.id}"><option value="published" ${status==="published"?"selected":""}>Publicado</option><option value="upcoming" ${status==="upcoming"?"selected":""}>Próximamente</option><option value="hidden" ${status==="hidden"?"selected":""}>Oculto</option></select><label class="secondary catalog-image-change">Subir imagen<input type="file" accept="image/png,image/jpeg,image/webp,image/avif" data-catalog-image-file="${p.id}"></label><button class="catalog-delete-btn" type="button" data-delete-catalog="${p.id}" data-delete-name="${escapeHtml(p.name)}">Eliminar</button></div></div></div>`}).join("");
+  list.querySelectorAll("[data-catalog-status]").forEach(sel=>sel.addEventListener("change",()=>setCatalogStatus(sel.dataset.catalogStatus,sel.value)));
+  list.querySelectorAll("[data-delete-catalog]").forEach(btn=>btn.addEventListener("click",()=>deleteCatalogProduct(btn.dataset.deleteCatalog,btn.dataset.deleteName||"este perfume")));
+  list.querySelectorAll("[data-catalog-image-file]").forEach(input=>input.addEventListener("change",async()=>{if(input.files?.[0])await replaceCatalogImage(input.dataset.catalogImageFile,input.files[0])}));
+}
+async function setCatalogStatus(id,status){
+  const st=document.getElementById("catalogStatus");
+  try{const {error}=await client.rpc("admin_set_prelude_catalog_status",{input_catalog_id:id,input_status:status});if(error)throw error;if(st)st.textContent=`Estado actualizado: ${catalogStatusLabel(status)}.`;await loadCatalogAdmin();}catch(e){if(st)st.textContent="No se pudo cambiar el estado: "+(e.message||e)}
+}
+async function deleteCatalogProduct(id,name){
+  const st=document.getElementById("catalogStatus");
+  const ok=window.confirm(`¿Eliminar ${name} del catálogo?
+
+Dejará de aparecer tanto en Prelude Studio como en la web de clientes. Los pedidos históricos no se eliminarán.`);
+  if(!ok)return;
+  try{
+    const {error}=await client.rpc("admin_delete_prelude_catalog_product",{input_catalog_id:id});
+    if(error)throw error;
+    if(st)st.textContent=`${name} se ha eliminado del catálogo.`;
+    await loadCatalogAdmin();
+    renderPricesAdmin();
+    renderStockAdmin();
+  }catch(e){if(st)st.textContent="No se pudo eliminar el perfume: "+(e.message||e)}
+}
+function catalogSlug(value){return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,70)||"perfume"}
+async function uploadCatalogImage(file,name){
+  if(!file)return "";
+  if(file.size>8*1024*1024)throw new Error("La imagen supera el límite de 8 MB.");
+  const ext=(file.name.split(".").pop()||"webp").toLowerCase().replace(/[^a-z0-9]/g,"")||"webp";
+  const path=`${catalogSlug(name)}-${Date.now()}.${ext}`;
+  const {error}=await client.storage.from("catalog-images").upload(path,file,{cacheControl:"3600",upsert:false,contentType:file.type||undefined});
+  if(error)throw error;
+  const {data}=client.storage.from("catalog-images").getPublicUrl(path);
+  return data?.publicUrl||"";
+}
+async function replaceCatalogImage(id,file){
+  const st=document.getElementById("catalogStatus");
+  const product=catalogAdminCache.find(p=>String(p.id)===String(id));
+  try{
+    if(st)st.textContent=`Subiendo imagen de ${product?.name||"la fragancia"}...`;
+    const url=await uploadCatalogImage(file,product?.name||"perfume");
+    const {error}=await client.rpc("admin_update_prelude_catalog_image",{input_catalog_id:id,input_image_url:url});
+    if(error)throw error;
+    if(st)st.textContent="Imagen actualizada correctamente.";
+    await loadCatalogAdmin();
+  }catch(e){if(st)st.textContent="No se pudo subir la imagen: "+(e.message||e)}
+}
+async function createCatalogProduct(){
+  const st=document.getElementById("catalogStatus");
+  const statusValue=document.getElementById("newCatalogStatus")?.value||"upcoming";
+  const parseOptional=id=>{const raw=document.getElementById(id).value.trim();return raw===""?null:Number(raw)};
+  const vals={name:document.getElementById("newCatalogName").value.trim(),brand:document.getElementById("newCatalogBrand").value.trim(),p2:parseOptional("newPrice2"),p3:parseOptional("newPrice3"),p5:parseOptional("newPrice5"),p10:parseOptional("newPrice10"),status:statusValue};
+  const file=document.getElementById("newCatalogImageFile")?.files?.[0]||null;
+  if(!vals.name||!vals.brand){if(st)st.textContent="Nombre y marca son obligatorios.";return}
+  const prices=[vals.p2,vals.p3,vals.p5,vals.p10];
+  if(prices.some(v=>v!==null&&(!(v>0)||Number.isNaN(v)))){if(st)st.textContent="Los precios, si los introduces, deben ser superiores a 0.";return}
+  if(vals.status==="published"&&!prices.every(v=>v!==null&&v>0)){if(st)st.textContent="Para publicar el perfume debes completar los precios de 2, 3, 5 y 10 ml.";return}
+  try{
+    createCatalogBtn.disabled=true;
+    if(st)st.textContent=file?"Subiendo imagen y creando perfume...":"Creando perfume...";
+    const imageUrl=file?await uploadCatalogImage(file,vals.name):"";
+    const {data,error}=await client.rpc("admin_create_prelude_catalog_product",{input_name:vals.name,input_brand:vals.brand,input_image_url:imageUrl,input_price_2ml:vals.p2,input_price_3ml:vals.p3,input_price_5ml:vals.p5,input_price_10ml:vals.p10,input_status:vals.status});
+    if(error)throw error;
+    if(st)st.textContent=vals.status==="upcoming"?"Perfume añadido como Próximamente. Ya forma parte de Mi Colección Prelude y del Museo, preparado para completar su obra más adelante.":vals.status==="hidden"?"Perfume añadido como Oculto.":"Perfume añadido y publicado.";
+    ["newCatalogName","newCatalogBrand","newPrice2","newPrice3","newPrice5","newPrice10"].forEach(id=>{const n=document.getElementById(id);if(n)n.value=""});
+    const fi=document.getElementById("newCatalogImageFile");if(fi)fi.value="";
+    const fn=document.getElementById("newCatalogImageName");if(fn)fn.textContent="Ninguna imagen seleccionada";
+    if(document.getElementById("newCatalogStatus"))document.getElementById("newCatalogStatus").value="upcoming";
+    await loadCatalogAdmin();
+  }catch(e){if(st)st.textContent="No se pudo añadir: "+(e.message||e)}finally{createCatalogBtn.disabled=false}
+}
+function renderPricesAdmin(){
+  const list=document.getElementById("pricesAdminList");if(!list)return;
+  list.innerHTML=catalogAdminCache.map(p=>`<div class="admin-row-card price-grid"><div class="admin-name-cell"><div class="admin-row-title">${escapeHtml(p.name)}</div><div class="admin-row-brand">${escapeHtml(p.brand||"")}</div></div>${[2,3,5,10].map(n=>`<div class="field"><label>${n} ml (€)</label><input data-price-${n}="${p.id}" type="number" min="0.01" step="0.01" value="${moneyInput(p[`price_${n}ml`])}"></div>`).join("")}<button class="primary" type="button" data-save-prices="${p.id}">Guardar</button></div>`).join("");
+  list.querySelectorAll("[data-save-prices]").forEach(b=>b.addEventListener("click",()=>savePrices(b.dataset.savePrices)));
+}
+async function savePrices(id){
+  const st=document.getElementById("pricesStatus");const get=n=>Number(document.querySelector(`[data-price-${n}="${id}"]`)?.value);
+  try{const {error}=await client.rpc("admin_update_prelude_catalog_prices",{input_catalog_id:id,input_price_2ml:get(2),input_price_3ml:get(3),input_price_5ml:get(5),input_price_10ml:get(10)});if(error)throw error;if(st)st.textContent="Precios actualizados.";await loadCatalogAdmin();renderPricesAdmin();}catch(e){if(st)st.textContent="No se pudieron guardar los precios: "+(e.message||e)}
+}
+function renderStockAdmin(){
+  const list=document.getElementById("stockAdminList");if(!list)return;
+  list.innerHTML=catalogAdminCache.map(p=>{const available=p.stock_available_ml==null?"":Number(p.stock_available_ml).toFixed(2), sold=Number(p.sold_ml||0), threshold=Number(p.low_stock_threshold_ml||10), low=p.stock_available_ml!=null&&Number(p.stock_available_ml)<=threshold;return `<div class="admin-row-card stock-grid"><div class="admin-name-cell"><div class="admin-row-title">${escapeHtml(p.name)}</div><div class="admin-row-brand">${escapeHtml(p.brand||"")}</div><div class="stock-alert ${low?"low":""}">${p.stock_available_ml==null?"Stock sin configurar":low?`Stock bajo · ${available} ml restantes`:`Disponible · ${available} ml`}</div></div><div class="field"><label>Disponible (ml)</label><input data-stock-available="${p.id}" type="number" min="0" step="0.1" value="${available}"></div><div class="field"><label>Vendido</label><input type="text" value="${sold.toFixed(2)} ml" disabled></div><div class="field"><label>Aviso bajo (ml)</label><input data-stock-threshold="${p.id}" type="number" min="0" step="0.1" value="${threshold.toFixed(2)}"></div><button class="primary" type="button" data-save-stock="${p.id}">Guardar</button></div>`}).join("");
+  list.querySelectorAll("[data-save-stock]").forEach(b=>b.addEventListener("click",()=>saveStock(b.dataset.saveStock)));
+}
+async function saveStock(id){
+  const st=document.getElementById("stockStatus");const available=Number(document.querySelector(`[data-stock-available="${id}"]`)?.value),threshold=Number(document.querySelector(`[data-stock-threshold="${id}"]`)?.value);
+  if(Number.isNaN(available)||available<0||Number.isNaN(threshold)||threshold<0){if(st)st.textContent="Introduce valores de stock válidos.";return;}
+  try{const {error}=await client.rpc("admin_set_prelude_catalog_stock",{input_catalog_id:id,input_available_ml:available,input_low_stock_threshold_ml:threshold});if(error)throw error;if(st)st.textContent="Stock actualizado.";await loadCatalogAdmin();renderStockAdmin();}catch(e){if(st)st.textContent="No se pudo guardar el stock: "+(e.message||e)}
+}
+
 studioNavButtons.forEach(button=>button.addEventListener("click",()=>switchStudioView(button.dataset.studioView)));
 document.querySelectorAll("[data-jump]").forEach(button=>button.addEventListener("click",()=>switchStudioView(button.dataset.jump)));
 document.getElementById("refreshOverviewBtn")?.addEventListener("click",loadOverview);
+document.getElementById("refreshCatalogBtn")?.addEventListener("click",loadCatalogAdmin);
+document.getElementById("refreshPricesBtn")?.addEventListener("click",()=>loadCatalogAdmin().then(renderPricesAdmin));
+document.getElementById("refreshStockBtn")?.addEventListener("click",()=>loadCatalogAdmin().then(renderStockAdmin));
+document.getElementById("createCatalogBtn")?.addEventListener("click",createCatalogProduct);
+document.getElementById("chooseCatalogImageBtn")?.addEventListener("click",()=>document.getElementById("newCatalogImageFile")?.click());
+document.getElementById("newCatalogImageFile")?.addEventListener("change",e=>{const f=e.target.files?.[0];const n=document.getElementById("newCatalogImageName");if(n)n.textContent=f?f.name:"Ninguna imagen seleccionada";});
+document.getElementById("newCatalogStatus")?.addEventListener("change",e=>{const upcoming=e.target.value!=="published";["newPrice2","newPrice3","newPrice5","newPrice10"].forEach(id=>{const el=document.getElementById(id);if(el)el.placeholder=upcoming?"Opcional":"Obligatorio";});});
 document.getElementById("refreshOrdersBtn")?.addEventListener("click",loadOrders);
 document.getElementById("ordersSearch")?.addEventListener("input",renderOrders);
 document.getElementById("ordersStatusFilter")?.addEventListener("change",renderOrders);
@@ -1105,6 +1566,9 @@ customerSearch.addEventListener("input",()=>{
     item.customer_phone.includes(query)
   ));
 });
+collectionCustomerSelect.addEventListener("change",loadSelectedCollection);
+refreshCollectionBtn.addEventListener("click",()=>loadCollectionModule(collectionCustomerSelect.value));
+openSelectedCustomerBtn.addEventListener("click",()=>{if(collectionCustomerSelect.value)openCustomer(collectionCustomerSelect.value);});
 closeCustomerDetail.addEventListener("click",()=>customerDetail.classList.remove("open"));
 saveCustomerBtn.addEventListener("click",saveCustomer);
 resetCustomerBtn.addEventListener("click",()=>openDangerConfirm("reset"));
@@ -1114,6 +1578,78 @@ confirmActionBtn.addEventListener("click",executeDangerAction);
 confirmOverlay.addEventListener("click",event=>{
   if(event.target===confirmOverlay)closeDangerConfirm();
 });
+
+
+let rewardsAdminCache=[];
+async function loadRewardsAdmin(){
+  const list=document.getElementById("rewardsAdminList"); if(!list||!client)return;
+  list.innerHTML='<p style="color:var(--muted)">Cargando recompensas...</p>';
+  try{
+    const {data,error}=await client.rpc("admin_list_prelude_reward_settings"); if(error)throw error;
+    rewardsAdminCache=(Array.isArray(data)?data:[]).sort((a,b)=>Number(a.threshold||0)-Number(b.threshold||0));
+    list.innerHTML=rewardsAdminCache.map(r=>`<div class="reward-admin-row" data-reward-key="${escapeHtml(r.id)}"><div class="reward-admin-grid">
+      <div class="field"><label>Hito</label><input class="reward-threshold" type="number" min="1" value="${Number(r.threshold||0)}"></div>
+      <div class="field reward-label-field"><label>Recompensa</label><input class="reward-label" value="${escapeHtml(r.reward_label||'')}"></div>
+      <label style="padding:10px 0"><input class="reward-active" type="checkbox" ${r.active!==false?'checked':''}> Activa</label>
+      <button class="primary save-reward-btn" type="button">Editar</button>
+      <button class="danger-lite delete-reward-btn" type="button">Eliminar</button>
+    </div></div>`).join('')||'<p style="color:var(--muted)">No hay recompensas configuradas.</p>';
+    list.querySelectorAll('.save-reward-btn').forEach(btn=>btn.addEventListener('click',()=>saveRewardSetting(btn.closest('[data-reward-key]'))));
+    list.querySelectorAll('.delete-reward-btn').forEach(btn=>btn.addEventListener('click',()=>deleteRewardSetting(btn.closest('[data-reward-key]'))));
+  }catch(e){console.error(e);list.innerHTML='<p class="error">No se pudieron cargar las recompensas.</p>';}
+}
+async function saveRewardSetting(row){
+  const st=document.getElementById('rewardsAdminStatus');
+  const threshold=Number(row.querySelector('.reward-threshold').value), label=row.querySelector('.reward-label').value.trim();
+  if(!threshold||!label){status(st,'Completa el hito y la recompensa.',true);return;}
+  try{
+    const {error}=await client.rpc('admin_save_prelude_reward_setting',{input_id:row.dataset.rewardKey,input_threshold:threshold,input_reward_label:label,input_active:row.querySelector('.reward-active').checked,input_sort_order:threshold});
+    if(error)throw error; status(st,'Recompensa actualizada.'); await loadRewardsAdmin();
+  }catch(e){console.error(e);status(st,'No se pudo guardar la recompensa: '+e.message,true);}
+}
+async function createRewardSetting(){
+  const threshold=Number(prompt('¿Cuántos Marcapáginas serán necesarios?'));
+  if(!threshold)return;
+  const label=(prompt('Nombre de la recompensa:')||'').trim(); if(!label)return;
+  const st=document.getElementById('rewardsAdminStatus');
+  try{const {error}=await client.rpc('admin_create_prelude_reward_setting',{input_threshold:threshold,input_reward_label:label,input_active:true}); if(error)throw error; status(st,'Nueva recompensa creada.'); await loadRewardsAdmin();}
+  catch(e){console.error(e);status(st,'No se pudo crear la recompensa: '+e.message,true);}
+}
+async function deleteRewardSetting(row){
+  if(!confirm('¿Eliminar definitivamente esta recompensa?'))return;
+  const st=document.getElementById('rewardsAdminStatus');
+  try{const {error}=await client.rpc('admin_delete_prelude_reward_setting',{input_id:row.dataset.rewardKey}); if(error)throw error; status(st,'Recompensa eliminada.'); await loadRewardsAdmin();}
+  catch(e){console.error(e);status(st,'No se pudo eliminar la recompensa: '+e.message,true);}
+}
+document.getElementById('refreshRewardsBtn')?.addEventListener('click',loadRewardsAdmin);
+document.getElementById('newRewardBtn')?.addEventListener('click',createRewardSetting);
+
+let museumAdminCache=[];
+async function loadMuseumAdmin(){
+ const list=document.getElementById('museumAdminList'); if(!list||!client)return;
+ list.innerHTML='<p style="color:var(--muted)">Cargando Museo...</p>';
+ try{const {data,error}=await client.rpc('admin_list_prelude_museum_works'); if(error)throw error; museumAdminCache=Array.isArray(data)?data:[]; renderMuseumAdmin();}
+ catch(e){console.error(e);list.innerHTML='<p class="error">No se pudo cargar el Museo. Ejecuta el SQL de Fase 5.</p>';}
+}
+function renderMuseumAdmin(){
+ const q=(document.getElementById('museumSearch')?.value||'').trim().toLowerCase(); const list=document.getElementById('museumAdminList');
+ const rows=museumAdminCache.filter(w=>!q||`${w.perfume_name} ${w.brand}`.toLowerCase().includes(q));
+ list.innerHTML=rows.map(w=>`<div class="museum-admin-card" data-museum-name="${escapeHtml(w.perfume_name)}">
+   <img class="museum-thumb" src="${escapeHtml(w.artwork_path||'')}" alt="">
+   <div class="museum-fields"><div><strong>${escapeHtml(w.perfume_name)}</strong><div class="meta">${escapeHtml(w.brand||'')}</div></div>
+   <div class="field"><label>Archivo de la obra</label><input class="museum-path" value="${escapeHtml(w.artwork_path||'')}"></div>
+   <div class="field"><label>Descripción artística</label><textarea class="museum-description">${escapeHtml(w.description||'')}</textarea></div>
+   <div class="museum-actions"><label><input class="museum-published" type="checkbox" ${w.published!==false?'checked':''}> Publicada</label><span class="tiny-state">${w.published!==false?'Visible':'Oculta'}</span><button class="primary save-museum-btn" type="button">Guardar cambios</button></div>
+   </div></div>`).join('')||'<p style="color:var(--muted)">No hay obras que coincidan con la búsqueda.</p>';
+ list.querySelectorAll('.save-museum-btn').forEach(btn=>btn.addEventListener('click',()=>saveMuseumWork(btn.closest('[data-museum-name]'))));
+}
+async function saveMuseumWork(card){
+ const st=document.getElementById('museumAdminStatus');
+ try{const {error}=await client.rpc('admin_save_prelude_museum_work',{input_perfume_name:card.dataset.museumName,input_artwork_path:card.querySelector('.museum-path').value.trim(),input_description:card.querySelector('.museum-description').value.trim(),input_published:card.querySelector('.museum-published').checked}); if(error)throw error; status(st,'Obra actualizada.'); await loadMuseumAdmin();}
+ catch(e){console.error(e);status(st,'No se pudo guardar la obra: '+e.message,true);}
+}
+document.getElementById('refreshMuseumBtn')?.addEventListener('click',loadMuseumAdmin);
+document.getElementById('museumSearch')?.addEventListener('input',renderMuseumAdmin);
 
 document.getElementById("loginBtn").addEventListener("click",login);
 document.getElementById("password").addEventListener("keydown",event=>{if(event.key==="Enter")login();});

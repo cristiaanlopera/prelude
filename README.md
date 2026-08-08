@@ -26,3 +26,7 @@ Antes de utilizar el módulo Pedidos, ejecuta `Prelude_Studio_Fase2_Pedidos.sql`
 Flujo: solicitud desde la web → pedido `Pendiente` en Studio → `Preparando` → `Listo` → `Entregado`. Si el pedido pertenece a una cuenta Prelude, al marcarlo como Entregado sus perfumes se incorporan a Mi Colección Prelude y se contabilizan gasto y Marcapáginas una única vez.
 
 El PDF generado desde Studio es un documento de compra/recibo. No se presenta como factura fiscal hasta que se configuren los datos fiscales y la numeración legal correspondiente.
+
+
+## Prelude Studio · Fase 3
+Clientes + Mi Colección Prelude: ficha con pedidos, gasto, nivel y gestión manual de las 23 obras. Ejecutar `Prelude_Studio_Fase3_Clientes_Coleccion.sql` una vez en Supabase.

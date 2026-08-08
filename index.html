@@ -928,6 +928,18 @@ body.dark .profile-gate{background:rgba(20,20,20,.97)}
 /* ==========================================================
    PRELUDE · MUSEO OLFATIVO
    ========================================================== */
+
+.collection-orders{margin-top:34px;padding-top:28px;border-top:1px solid var(--line)}
+.collection-orders-heading{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:16px}
+.collection-orders-heading h3{font-family:Georgia,serif;font-size:28px;font-weight:400;margin:5px 0 6px}.collection-orders-heading p{margin:0;color:var(--muted);max-width:620px}
+.collection-orders-heading button{border:1px solid var(--line);background:transparent;padding:9px 12px;border-radius:999px;cursor:pointer}
+.collection-order{border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:10px;background:rgba(255,255,255,.24)}
+body.dark .collection-order{background:rgba(255,255,255,.025)}
+.collection-order-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.collection-order-number{font-family:Georgia,serif;font-size:20px}.collection-order-meta{font-size:12px;color:var(--muted);margin-top:4px}
+.collection-order-status{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.collection-order-items{margin-top:12px;border-top:1px solid var(--line);padding-top:8px}.collection-order-item{display:flex;justify-content:space-between;gap:12px;padding:5px 0;font-size:13px}.collection-order-total{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px;margin-top:6px;font-weight:700}
+@media(max-width:680px){.collection-orders-heading{align-items:flex-start;flex-direction:column}.collection-order-top{flex-direction:column}}
+
 .museum-viewer{
   position:fixed;
   inset:0;
@@ -1162,6 +1174,20 @@ body.dark .museum-unlock{background:rgba(18,18,18,.985)}
   text-align:center;
 }
 
+
+/* Catálogo: ordenación y próximos lanzamientos */
+.catalog-toolbar{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin:0 0 16px}
+.catalog-toolbar label{font-size:12px;color:var(--muted);letter-spacing:.04em}
+.catalog-sort{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:11px;padding:10px 34px 10px 12px;min-width:210px;font:inherit}
+.card.upcoming{position:relative}
+.card.upcoming .visual,.card.upcoming .info{filter:saturate(.55);}
+.card.upcoming .visual:after{content:"";position:absolute;inset:0;background:rgba(12,12,12,.48);pointer-events:none}
+.card.upcoming .visual{position:relative}
+.upcoming-badge{position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%);border:1px solid rgba(255,255,255,.72);color:#fff;background:rgba(10,10,10,.28);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);padding:10px 15px;border-radius:999px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
+.card.upcoming .controls,.card.upcoming .add{display:none}
+.card.upcoming .view{opacity:.62;pointer-events:none}
+.card.upcoming .from{opacity:.55}
+@media(max-width:720px){.catalog-toolbar{justify-content:stretch;align-items:stretch;flex-direction:column}.catalog-sort{width:100%;min-width:0}.upcoming-badge{font-size:9px;padding:8px 11px}}
 </style>
 </head>
 <body><div class="watermark-brush one"></div><div class="watermark-brush two"></div>
@@ -1246,6 +1272,7 @@ Descubrir colección
 </button></div></div></div>
 <div class="page"><header class="top"><div class="logo">PRELUDE</div><div class="actions"><button class="iconbtn" id="conceptBtn">El concepto</button><button class="iconbtn" id="decantsBtn">Nuestros Decants</button><button class="iconbtn" id="libraryBtn">Mi Colección Prelude <b id="libraryCount">0</b></button><button class="iconbtn sound-toggle" id="soundBtn" type="button" aria-pressed="false">Sonido: no</button><button class="iconbtn" id="theme">◐ <span class="label">Modo oscuro</span></button><button class="iconbtn" id="cartBtn">Cesta <b id="count">0</b></button></div></header>
 <section class="hero"><h2>Every Masterpiece Begins With A Prelude</h2><p>Cada fragancia comienza con una historia. Después llegan las notas, los acordes y la elección.</p></section>
+<div class="catalog-toolbar" aria-label="Ordenar catálogo"><label for="catalogSort">Ordenar por</label><select id="catalogSort" class="catalog-sort"><option value="price-asc">Precio: menor a mayor</option><option value="price-desc">Precio: mayor a menor</option><option value="brand-asc">Marca: A–Z</option><option value="brand-desc">Marca: Z–A</option><option value="name-asc">Perfume: A–Z</option><option value="name-desc">Perfume: Z–A</option></select></div>
 <div class="layout"><main class="grid" id="grid"></main><aside class="cart" id="cart"></aside></div></div>
 
 <section class="journey" id="journey">
@@ -1295,11 +1322,25 @@ Descubrir colección
         </div>
 
         <div class="library-grid" id="libraryGrid"></div>
+
+        <section class="collection-orders" id="collectionOrdersSection">
+          <div class="collection-orders-heading">
+            <div>
+              <div class="concept-eyebrow">Historial Prelude</div>
+              <h3>Mis pedidos</h3>
+              <p>Consulta lo que has pedido, el importe y el estado actual de cada solicitud.</p>
+            </div>
+            <button type="button" id="refreshCollectionOrders">Actualizar</button>
+          </div>
+          <div id="collectionOrdersList" class="collection-orders-list">
+            <div class="muted">Inicia sesión para consultar tus pedidos.</div>
+          </div>
+        </section>
       </div>
 
       <aside class="library-stats">
         <div class="library-level" id="libraryLevel">Primer capítulo</div>
-        <div id="librarySummary">0 de 23 fragancias descubiertas</div>
+        <div id="librarySummary">0 fragancias descubiertas</div>
         <div class="library-progress"><span id="libraryProgressBar"></span></div>
         <div class="muted" id="libraryNextReward">Descubre 3 fragancias más para alcanzar Explorador.</div>
 
@@ -1406,6 +1447,7 @@ Descubrir colección
       <img id="museumImage" alt="">
     </figure>
     <div class="museum-info">
+      <div class="museum-description" id="museumDescription"></div>
       <div>
         <div class="museum-label">Acordes principales</div>
         <div class="museum-tags" id="museumAccords"></div>
@@ -1414,7 +1456,6 @@ Descubrir colección
         <div class="museum-label">Notas destacadas</div>
         <div class="museum-tags" id="museumNotes"></div>
       </div>
-      <div class="museum-description" id="museumDescription"></div>
       <div class="museum-meta">Esta obra forma parte de Mi Colección Prelude.</div>
     </div>
   </div>
@@ -1565,7 +1606,39 @@ function playSound(kind){
 function toast(t){let e=document.getElementById("toast");e.textContent=t;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),1600)}
 function fly(img){const r=img.getBoundingClientRect(),target=document.getElementById("cartBtn").getBoundingClientRect();const f=img.cloneNode();f.className="fly";Object.assign(f.style,{left:r.left+"px",top:r.top+"px",width:r.width+"px",height:r.height+"px",objectFit:"cover"});document.body.appendChild(f);requestAnimationFrame(()=>Object.assign(f.style,{left:target.left+"px",top:target.top+"px",width:"30px",height:"30px",opacity:".15"}));setTimeout(()=>f.remove(),700)}
 function add(i,size,qty,img){const p=products[i],f=cart.find(x=>x.name===p.name&&x.size===size);f?f.qty+=qty:cart.push({...p,size,qty,price:p.prices[size]});renderCart();if(img)fly(img);playSound("add");toast(p.name+" añadido")}
-function renderProducts(){grid.innerHTML="";products.forEach((p,i)=>{let c=document.createElement("article");c.className="card";let min=Math.min(...Object.values(p.prices));c.innerHTML=`<div class="visual"><img src="${p.image}" alt="${p.name}"></div><div class="info"><div class="title"><div><h3>${p.name}</h3><div class="brand">${p.brand}</div></div><div class="from">Desde<strong>${euro.format(min)}</strong></div></div><div class="controls"><select id="s${i}">${Object.entries(p.prices).map(([s,v])=>`<option value="${s}">${s} — ${euro.format(v)}</option>`).join("")}</select><input id="q${i}" type="number" min="1" value="1"></div><button class="view" data-view="${i}">Comenzar el viaje</button><button class="add" data-add="${i}">Añadir a la cesta</button></div>`;grid.appendChild(c)});document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>openJourney(+b.dataset.view));document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{let i=+b.dataset.add;add(i,document.getElementById("s"+i).value,+document.getElementById("q"+i).value,b.closest(".card").querySelector("img"))});let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("show");o.unobserve(e.target)}}),{threshold:.1});document.querySelectorAll(".card").forEach(c=>o.observe(c))}
+function productMinPrice(p){const vals=Object.values(p.prices||{}).map(Number).filter(Number.isFinite);return vals.length?Math.min(...vals):0}
+function catalogStatusOf(p){return p._catalogStatus||"published"}
+function sortedCatalogEntries(){
+  const mode=document.getElementById("catalogSort")?.value||"price-asc";
+  const entries=products.map((p,i)=>({p,i})).filter(({p})=>catalogStatusOf(p)!=="hidden");
+  const cmpText=(a,b)=>String(a||"").localeCompare(String(b||""),"es",{sensitivity:"base"});
+  entries.sort((a,b)=>{
+    const au=catalogStatusOf(a.p)==="upcoming", bu=catalogStatusOf(b.p)==="upcoming";
+    if(au!==bu)return au?-1:1; // Próximamente siempre primero.
+    if(mode==="price-asc")return productMinPrice(a.p)-productMinPrice(b.p);
+    if(mode==="price-desc")return productMinPrice(b.p)-productMinPrice(a.p);
+    if(mode==="brand-asc")return cmpText(a.p.brand,b.p.brand)||cmpText(a.p.name,b.p.name);
+    if(mode==="brand-desc")return cmpText(b.p.brand,a.p.brand)||cmpText(a.p.name,b.p.name);
+    if(mode==="name-asc")return cmpText(a.p.name,b.p.name);
+    if(mode==="name-desc")return cmpText(b.p.name,a.p.name);
+    return Number(a.p._catalogOrder??a.i)-Number(b.p._catalogOrder??b.i);
+  });
+  return entries;
+}
+function renderProducts(){
+  grid.innerHTML="";
+  sortedCatalogEntries().forEach(({p,i})=>{
+    const upcoming=catalogStatusOf(p)==="upcoming";
+    let c=document.createElement("article");c.className="card"+(upcoming?" upcoming":"");
+    let min=productMinPrice(p);
+    c.innerHTML=`<div class="visual"><img src="${p.image}" alt="${p.name}">${upcoming?'<div class="upcoming-badge">Próximamente</div>':''}</div><div class="info"><div class="title"><div><h3>${p.name}</h3><div class="brand">${p.brand}</div></div><div class="from">${upcoming?'Próximamente':'Desde'}${upcoming?'':`<strong>${euro.format(min)}</strong>`}</div></div>${upcoming?'':`<div class="controls"><select id="s${i}">${Object.entries(p.prices).map(([sz,v])=>`<option value="${sz}">${sz} — ${euro.format(v)}</option>`).join("")}</select><input id="q${i}" type="number" min="1" value="1"></div>`}<button class="view" data-view="${i}" ${upcoming?'disabled aria-disabled="true"':''}>${upcoming?'Disponible próximamente':'Comenzar el viaje'}</button>${upcoming?'':`<button class="add" data-add="${i}">Añadir a la cesta</button>`}</div>`;
+    grid.appendChild(c)
+  });
+  document.querySelectorAll("[data-view]:not([disabled])").forEach(b=>b.onclick=()=>openJourney(+b.dataset.view));
+  document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{let i=+b.dataset.add;add(i,document.getElementById("s"+i).value,+document.getElementById("q"+i).value,b.closest(".card").querySelector("img"))});
+  let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("show");o.unobserve(e.target)}}),{threshold:.1});document.querySelectorAll(".card").forEach(c=>o.observe(c))
+}
+
 function renderCart(){
   let sub=cart.reduce((s,x)=>s+x.price*x.qty,0);
   const availableRewards=pendingRewards();
@@ -1826,6 +1899,8 @@ const museumFrameEl=museumImageEl?.closest(".museum-frame");
 const museumAccordsEl=document.getElementById("museumAccords");
 const museumNotesEl=document.getElementById("museumNotes");
 const museumDescriptionEl=document.getElementById("museumDescription");
+const collectionOrdersListEl=document.getElementById("collectionOrdersList");
+const refreshCollectionOrdersEl=document.getElementById("refreshCollectionOrders");
 const perfumeViewerEl=document.getElementById("perfumeViewer");
 const perfumeViewerCloseEl=document.getElementById("perfumeViewerClose");
 const perfumeViewerNameEl=document.getElementById("perfumeViewerName");
@@ -1865,13 +1940,97 @@ const supabaseClient=window.supabase
   : null;
 
 
+function catalogPricesFromRow(row,fallback={}){
+  return {
+    "2 ml":Number(row.price_2ml ?? fallback["2 ml"] ?? 0),
+    "3 ml":Number(row.price_3ml ?? fallback["3 ml"] ?? 0),
+    "5 ml":Number(row.price_5ml ?? fallback["5 ml"] ?? 0),
+    "10 ml":Number(row.price_10ml ?? fallback["10 ml"] ?? 0)
+  };
+}
+
+async function loadStudioManagedCatalog(){
+  if(!supabaseClient)return;
+  try{
+    const {data,error}=await supabaseClient.rpc("get_prelude_catalog");
+    if(error)throw error;
+    const remote=Array.isArray(data)?data:[];
+    if(!remote.length)return;
+    const byName=new Map(remote.map(row=>[String(row.name||"").trim(),row]));
+    const builtinNames=new Set(products.map(p=>p.name));
+    products=products.map((product,baseIndex)=>{
+      const row=byName.get(product.name);
+      if(!row)return {...product,_catalogStatus:"published",_catalogOrder:baseIndex};
+      const status=row.availability_status||(row.active===false?"hidden":"published");
+      return {
+        ...product,
+        brand:row.brand||product.brand,
+        image:row.image_url||product.image,
+        prices:catalogPricesFromRow(row,product.prices),
+        description:row.description||product.description,
+        accords:Array.isArray(row.accords)&&row.accords.length?row.accords:product.accords,
+        notes:Array.isArray(row.notes)&&row.notes.length?row.notes:product.notes,
+        journeyTheme:row.journey_theme||product.journeyTheme,
+        journeyTitle:row.journey_title||product.journeyTitle,
+        journeyCopy:row.journey_copy||product.journeyCopy,
+        _catalogActive:status!=="hidden",
+        _catalogStatus:status,
+        _catalogOrder:Number(row.display_order??baseIndex),
+        _catalogId:row.id||null
+      };
+    }).filter(product=>product._catalogStatus!=="hidden");
+
+    remote.forEach(row=>{
+      const name=String(row.name||"").trim();
+      const status=row.availability_status||(row.active===false?"hidden":"published");
+      if(!name||builtinNames.has(name)||status==="hidden"||!row.image_url)return;
+      products.push({
+        name,
+        brand:row.brand||"",
+        image:row.image_url,
+        prices:catalogPricesFromRow(row),
+        description:row.description||"",
+        accords:Array.isArray(row.accords)?row.accords:[],
+        notes:Array.isArray(row.notes)?row.notes:[],
+        journeyTheme:row.journey_theme||"editorial",
+        journeyTitle:row.journey_title||name,
+        journeyCopy:row.journey_copy||row.description||"",
+        _catalogActive:true,
+        _catalogStatus:status,
+        _catalogOrder:Number(row.display_order??1000),
+        _catalogId:row.id||null
+      });
+    });
+  }catch(error){
+    console.warn("Prelude: catálogo remoto no disponible; se mantiene el catálogo integrado.",error);
+    products=products.map((p,i)=>({...p,_catalogStatus:p._catalogStatus||"published",_catalogOrder:p._catalogOrder??i}));
+  }
+}
+
+
 function museumProductByName(name){
   return products.find(product=>product.name===name)||null;
 }
 
+let PRELUDE_MUSEUM_OVERRIDES={};
 function museumArtworkByName(name){
   const canonical=canonicalPerfumeName(name);
-  return PRELUDE_ARTWORKS[canonical]||null;
+  const base=PRELUDE_ARTWORKS[canonical]||null;
+  const override=PRELUDE_MUSEUM_OVERRIDES[canonical]||null;
+  if(!base&&!override)return null;
+  const merged={...(base||{}),...(override||{})};
+  if(override&&override.published===false){merged.artwork="";}
+  return merged;
+}
+async function loadPreludeMuseumOverrides(){
+  if(!supabaseClient)return;
+  try{const {data,error}=await supabaseClient.rpc("get_prelude_museum_works"); if(error)throw error; PRELUDE_MUSEUM_OVERRIDES={}; (Array.isArray(data)?data:[]).forEach(w=>{const key=canonicalPerfumeName(w.perfume_name); PRELUDE_MUSEUM_OVERRIDES[key]={brand:w.brand,artwork:w.artwork_path,description:w.description,published:w.published};}); renderLibrary();}
+  catch(e){console.warn("No se pudo cargar la configuración del Museo",e);}
+}
+let PRELUDE_REWARD_TIERS=null;
+async function loadPreludeRewardSettings(){
+  if(!supabaseClient)return; try{const {data,error}=await supabaseClient.rpc("get_prelude_reward_settings"); if(error)throw error; PRELUDE_REWARD_TIERS=(Array.isArray(data)?data:[]).filter(x=>x.active!==false).sort((a,b)=>Number(a.threshold)-Number(b.threshold)); renderLibrary();}
+  catch(e){console.warn("No se pudo cargar la configuración de recompensas",e);}
 }
 
 function resolveMuseumImage(product){
@@ -2518,6 +2677,8 @@ function logoutCustomerProfile(){
 
   customerProfile=null;
   discoveredPerfumes=new Set();
+  customerOrdersCache=[];
+  if(collectionOrdersListEl)collectionOrdersListEl.innerHTML='<div class="muted">Inicia sesión para consultar tus pedidos.</div>';
   closeLogoutModal();
   toggleAccountMenu(false);
   renderLibrary();
@@ -2679,19 +2840,19 @@ async function saveRankingPreferences(){
 }
 
 function bookmarksReward(value){
-  const thresholds=[
+  const thresholds=(PRELUDE_REWARD_TIERS&&PRELUDE_REWARD_TIERS.length?PRELUDE_REWARD_TIERS.map(r=>({value:Number(r.threshold),label:r.reward_label})):[
     {value:30,label:"Descubrimiento Prelude de 2 ml sorpresa"},
     {value:75,label:"Descubrimiento Prelude de 2 ml entre 3 opciones"},
     {value:150,label:"Descubrimiento Signature de 5 ml"},
     {value:250,label:"Recompensa exclusiva Prelude"}
-  ];
+  ]);
 
   const next=thresholds.find(item=>value<item.value);
   if(!next){
-    return {target:250,progress:100,text:"Has alcanzado todas las recompensas actuales de Prelude."};
+    return {target:thresholds.at(-1)?.value||0,progress:100,text:"Has alcanzado todas las recompensas actuales de Prelude."};
   }
 
-  const previous=[0,30,75,150].filter(v=>v<=value).pop()||0;
+  const previous=[0,...thresholds.map(item=>item.value)].filter(v=>v<=value).pop()||0;
   const progress=Math.max(0,Math.min(100,((value-previous)/(next.value-previous))*100));
 
   return {
@@ -2727,6 +2888,82 @@ function toggleDiscovered(name){
 function updateLibraryButton(){
   const count=discoveredPerfumes.size;
   if(libraryCountEl)libraryCountEl.textContent=count;
+}
+
+
+const CUSTOMER_ORDER_LABELS={pending:"Pendiente",preparing:"Preparando",ready:"Listo",delivered:"Entregado",cancelled:"Cancelado"};
+let customerOrdersCache=[];
+function customerMoney(value){return Number(value||0).toFixed(2).replace(".",",")+" €";}
+function customerEscape(value){return String(value??"").replace(/[&<>\"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;","'":"&#039;"}[m]));}
+async function loadCustomerOrders(){
+  if(!collectionOrdersListEl)return;
+  if(!customerProfile||!supabaseClient){
+    customerOrdersCache=[];
+    collectionOrdersListEl.innerHTML='<div class="muted">Inicia sesión para consultar tus pedidos.</div>';
+    return;
+  }
+  collectionOrdersListEl.innerHTML='<div class="muted">Actualizando pedidos...</div>';
+  try{
+    const {data,error}=await supabaseClient.rpc("get_prelude_customer_orders",{
+      input_phone:customerProfile.phone,
+      input_access_token:customerProfile.accessToken
+    });
+    if(error)throw error;
+    customerOrdersCache=Array.isArray(data)?data:[];
+    renderCustomerOrders();
+  }catch(error){
+    console.error(error);
+    collectionOrdersListEl.innerHTML='<div class="muted">No se han podido cargar tus pedidos. Actualiza la página o inténtalo de nuevo.</div>';
+  }
+}
+function renderCustomerOrders(){
+  if(!collectionOrdersListEl)return;
+  if(!customerOrdersCache.length){
+    collectionOrdersListEl.innerHTML='<div class="muted">Todavía no tienes pedidos registrados en Prelude.</div>';
+    return;
+  }
+  collectionOrdersListEl.innerHTML=customerOrdersCache.map(order=>{
+    const items=Array.isArray(order.items)?order.items:[];
+    return `<article class="collection-order">
+      <div class="collection-order-top">
+        <div><div class="collection-order-number">#${customerEscape(order.order_number)}</div><div class="collection-order-meta">${order.created_at?new Date(order.created_at).toLocaleString("es-ES"):""} · ${customerEscape(order.delivery_zone||"")}</div></div>
+        <span class="collection-order-status">${CUSTOMER_ORDER_LABELS[order.status]||customerEscape(order.status)}</span>
+      </div>
+      <div class="collection-order-items">${items.length?items.map(item=>`<div class="collection-order-item"><span>${customerEscape(item.name||"Pedido histórico")} ${item.size?"· "+customerEscape(item.size):""} × ${Number(item.qty||1)}</span><strong>${customerMoney(Number(item.price||0)*Number(item.qty||1))}</strong></div>`).join(""):'<div class="muted" style="padding:5px 0">Detalle de productos no disponible para este pedido histórico.</div>'}</div>
+      <div class="collection-order-total"><span>Total</span><span>${customerMoney(order.order_total)}</span></div>
+    </article>`;
+  }).join("");
+}
+
+async function fetchPendingArtworkUnlocks(){
+  if(!customerProfile||!supabaseClient)return [];
+  try{
+    const {data,error}=await supabaseClient.rpc("get_pending_prelude_artwork_notifications",{
+      input_phone:customerProfile.phone,
+      input_access_token:customerProfile.accessToken
+    });
+    if(error)throw error;
+    return Array.isArray(data)?data:[];
+  }catch(error){console.error(error);return [];}
+}
+async function markArtworkNotificationsSeen(ids){
+  if(!customerProfile||!supabaseClient||!ids.length)return;
+  try{
+    await supabaseClient.rpc("mark_prelude_artwork_notifications_seen",{
+      input_phone:customerProfile.phone,
+      input_access_token:customerProfile.accessToken,
+      input_notification_ids:ids
+    });
+  }catch(error){console.error(error);}
+}
+async function revealPendingArtworkUnlocks(){
+  const pending=await fetchPendingArtworkUnlocks();
+  if(!pending.length)return;
+  const names=canonicalizePerfumeList(pending.map(item=>item.perfume));
+  if(!names.length){await markArtworkNotificationsSeen(pending.map(item=>item.id));return;}
+  await showMuseumUnlockSequence(names);
+  await markArtworkNotificationsSeen(pending.map(item=>item.id));
+  markUnlocksAsShown(names);
 }
 
 function renderLibrary(){
@@ -2805,10 +3042,13 @@ function renderLibrary(){
   });
 }
 
-function openLibrary(){
+async function openLibrary(){
   playSound("library");
+  if(customerProfile)await refreshCustomerProfile();
   renderLibrary();
+  await loadCustomerOrders();
   openEditorial(libraryOverlayEl);
+  if(customerProfile)await revealPendingArtworkUnlocks();
 }
 
 function lockPage(){
@@ -2852,6 +3092,14 @@ if(saddEl){
   });
 }
 
+
+if(refreshCollectionOrdersEl){
+  refreshCollectionOrdersEl.addEventListener("click",async()=>{
+    if(customerProfile)await refreshCustomerProfile();
+    renderLibrary();
+    await loadCustomerOrders();
+  });
+}
 
 if(soundBtnEl){
   soundBtnEl.addEventListener("click",async()=>{
@@ -3080,20 +3328,29 @@ if(soundBtnEl){
   soundBtnEl.textContent=soundEnabled?"Sonido: sí":"Sonido: no";
 }
 
-loadProfileLocal();
-loadLibrary();
-renderProducts();
-renderCart();
-renderLibrary();
-updateLibraryButton();
-loadLibraryRanking();
+async function bootstrapPrelude(){
+  loadProfileLocal();
+  loadLibrary();
+  // Render inmediato: el catálogo y la cesta siempre son visibles aunque Supabase tarde o falle.
+  renderProducts();
+  renderCart();
+  try{ await loadStudioManagedCatalog(); }catch(err){ console.warn("Catálogo Studio no disponible; se mantiene el catálogo local.",err); }
+  renderProducts();
+  renderCart();
+  renderLibrary();
+  updateLibraryButton();
+  loadLibraryRanking();
 
-if(customerProfile){
-  refreshCustomerProfile().then(()=>{
-    renderLibrary();
-    updateLibraryButton();
-    renderCart();
-  });
+  if(customerProfile){
+    refreshCustomerProfile().then(()=>{
+      renderLibrary();
+      updateLibraryButton();
+      renderCart();
+    });
+  }
 }
+bootstrapPrelude();
 
+const catalogSortEl=document.getElementById("catalogSort");
+if(catalogSortEl)catalogSortEl.addEventListener("change",()=>{renderProducts();playSound("navigate")});
 </script></body></html>
