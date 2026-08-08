@@ -196,7 +196,7 @@ function renderCustomers(customers){
   customersList.innerHTML=customers.map(item=>`
     <div class="customer-row">
       <div><strong>${item.customer_name}</strong><div class="meta">${item.customer_phone}</div></div>
-      <div><div>${item.library_count} obras</div><div class="meta">Biblioteca</div></div>
+      <div><div>${item.library_count} obras</div><div class="meta">Colección Prelude</div></div>
       <div><div>${item.bookmarks}</div><div class="meta">Marcapáginas</div></div>
       <div><div>${Number(item.total_spent).toFixed(2).replace(".",",")} €</div><div class="meta">Total</div></div>
       <button type="button" data-customer-id="${item.id}">Ver cliente</button>
@@ -314,11 +314,11 @@ function openDangerConfirm(type){
 
   if(type==="delete"){
     confirmTitle.textContent="Eliminar definitivamente";
-    confirmText.textContent="Se eliminarán el perfil, la Biblioteca, los Marcapáginas y los códigos asociados. Escribe ELIMINAR para confirmar.";
+    confirmText.textContent="Se eliminarán el perfil, Mi Colección Prelude, los Marcapáginas y los códigos asociados. Escribe ELIMINAR para confirmar.";
     confirmInput.style.display="block";
     confirmActionBtn.textContent="Eliminar definitivamente";
   }else{
-    confirmTitle.textContent="Reiniciar Biblioteca";
+    confirmTitle.textContent="Reiniciar Colección Prelude";
     confirmText.textContent="Se borrarán los descubrimientos, los Marcapáginas y el total acumulado. El perfil y el PIN se conservarán.";
     confirmInput.style.display="none";
     confirmActionBtn.textContent="Reiniciar";
@@ -408,7 +408,7 @@ async function generateCode(){
     `Total confirmado: ${Number(data.order_total).toFixed(2).replace(".",",")} €`,
     `Marcapáginas añadidos: ${data.bookmarks_awarded}`,
     "",
-    "Código de Biblioteca",
+    "Código de Colección Prelude",
     "",
     data.code,
     "",
@@ -416,7 +416,7 @@ async function generateCode(){
     "",
     ...data.perfumes.map(name=>`• ${name}`),
     "",
-    "Introdúcelo en Mi Biblioteca para incorporar tus nuevas obras.",
+    "Introdúcelo en Mi Colección Prelude para incorporar tus nuevas obras.",
     "",
     "Every Masterpiece Begins With A Prelude.",
     "━━━━━━━━━━━━━━━━━━━━"

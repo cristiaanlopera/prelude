@@ -195,7 +195,7 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
     
 <div class="grid">
 <div class="card">
-<div class="row"><div><h1>Generar código</h1><p style="color:var(--muted)">Confirma el pedido y selecciona las fragancias que pasarán a la Biblioteca.</p></div><button class="secondary" id="logoutBtn">Cerrar sesión</button></div>
+<div class="row"><div><h1>Generar código</h1><p style="color:var(--muted)">Confirma el pedido y selecciona las fragancias que pasarán a la Colección Prelude.</p></div><button class="secondary" id="logoutBtn">Cerrar sesión</button></div>
 <div class="field"><label>Número de pedido</label><input id="orderNumber" placeholder="Ej. 0007"></div>
 <div class="field"><label>Nombre del cliente</label><input id="customerName" placeholder="Ej. Luis"></div>
 <div class="field"><label>Teléfono del cliente</label><input id="customerPhone" placeholder="Ej. 600000000"></div>
@@ -264,7 +264,7 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
     <div class="card">
       <div class="ranking-admin-header">
         <div>
-          <h1>Ranking de Bibliotecas</h1>
+          <h1>Ranking de Colección Preludes</h1>
           <p style="color:var(--muted)">Clasificación pública de clientes que han decidido participar.</p>
         </div>
         <button class="secondary" id="refreshRankingBtn" type="button">Actualizar ranking</button>
@@ -280,7 +280,7 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
           <strong id="rankingLeader">—</strong>
         </div>
         <div>
-          <span class="badge">Mayor Biblioteca</span>
+          <span class="badge">Mayor Colección Prelude</span>
           <strong id="rankingLargestLibrary">0 obras</strong>
         </div>
       </div>
@@ -316,7 +316,7 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
       <div class="detail-section">
         <h2>Resumen</h2>
         <div id="customerSummary"></div>
-        <h2 style="margin-top:20px">Biblioteca</h2>
+        <h2 style="margin-top:20px">Colección Prelude</h2>
         <div id="customerLibrary"></div>
       </div>
 
@@ -333,7 +333,7 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
       <div class="detail-section danger-zone">
         <h2>Zona de riesgo</h2>
         <p style="color:var(--muted)">Estas acciones modifican o eliminan el progreso del cliente.</p>
-        <button class="secondary" id="resetCustomerBtn" type="button">Reiniciar Biblioteca y progreso</button>
+        <button class="secondary" id="resetCustomerBtn" type="button">Reiniciar Colección Prelude y progreso</button>
         <button class="danger-btn" id="deleteCustomerBtn" type="button">Eliminar cliente definitivamente</button>
       </div>
     </div>
@@ -553,7 +553,7 @@ function renderCustomers(customers){
   customersList.innerHTML=customers.map(item=>`
     <div class="customer-row">
       <div><strong>${item.customer_name}</strong><div class="meta">${item.customer_phone}</div></div>
-      <div><div>${item.library_count} obras</div><div class="meta">Biblioteca</div></div>
+      <div><div>${item.library_count} obras</div><div class="meta">Colección Prelude</div></div>
       <div><div>${item.bookmarks}</div><div class="meta">Marcapáginas</div></div>
       <div><div>${Number(item.total_spent).toFixed(2).replace(".",",")} €</div><div class="meta">Total</div></div>
       <button type="button" data-customer-id="${item.id}">Ver cliente</button>
@@ -671,11 +671,11 @@ function openDangerConfirm(type){
 
   if(type==="delete"){
     confirmTitle.textContent="Eliminar definitivamente";
-    confirmText.textContent="Se eliminarán el perfil, la Biblioteca, los Marcapáginas y los códigos asociados. Escribe ELIMINAR para confirmar.";
+    confirmText.textContent="Se eliminarán el perfil, la Colección Prelude, los Marcapáginas y los códigos asociados. Escribe ELIMINAR para confirmar.";
     confirmInput.style.display="block";
     confirmActionBtn.textContent="Eliminar definitivamente";
   }else{
-    confirmTitle.textContent="Reiniciar Biblioteca";
+    confirmTitle.textContent="Reiniciar Colección Prelude";
     confirmText.textContent="Se borrarán los descubrimientos, los Marcapáginas y el total acumulado. El perfil y el PIN se conservarán.";
     confirmInput.style.display="none";
     confirmActionBtn.textContent="Reiniciar";
@@ -765,7 +765,7 @@ async function generateCode(){
     `Total confirmado: ${Number(data.order_total).toFixed(2).replace(".",",")} €`,
     `Marcapáginas añadidos: ${data.bookmarks_awarded}`,
     "",
-    "Código de Biblioteca",
+    "Código de Colección Prelude",
     "",
     data.code,
     "",
@@ -773,7 +773,7 @@ async function generateCode(){
     "",
     ...data.perfumes.map(name=>`• ${name}`),
     "",
-    "Introdúcelo en Mi Biblioteca para incorporar tus nuevas obras.",
+    "Introdúcelo en Mi Colección Prelude para incorporar tus nuevas obras.",
     "",
     "Every Masterpiece Begins With A Prelude.",
     "━━━━━━━━━━━━━━━━━━━━"

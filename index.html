@@ -1123,7 +1123,7 @@ body.dark .museum-unlock{background:rgba(18,18,18,.985)}
   <div class="logout-dialog">
     <div class="concept-eyebrow">Prelude · Cuenta</div>
     <h2>¿Cerrar sesión?</h2>
-    <p>Tu Biblioteca y tus Marcapáginas seguirán guardados en Prelude. Podrás volver a acceder con tu teléfono y PIN.</p>
+    <p>Tu Colección Prelude y tus Marcapáginas seguirán guardados en Prelude. Podrás volver a acceder con tu teléfono y PIN.</p>
     <div class="logout-actions">
       <button class="secondary-action" id="cancelLogoutBtn" type="button">Cancelar</button>
       <button class="danger-action" id="confirmLogoutBtn" type="button">Cerrar sesión</button>
@@ -1134,8 +1134,8 @@ body.dark .museum-unlock{background:rgba(18,18,18,.985)}
 <section class="profile-gate" id="profileGate" aria-hidden="true">
   <div class="profile-card">
     <div class="concept-eyebrow">Prelude · Perfil</div>
-    <h2 id="profileGateTitle">Tu Biblioteca comienza aquí</h2>
-    <p id="profileGateCopy">Crea un perfil para guardar tu Biblioteca y acceder desde otros dispositivos.</p>
+    <h2 id="profileGateTitle">Tu Colección Prelude comienza aquí</h2>
+    <p id="profileGateCopy">Crea un perfil para guardar tu Colección Prelude y acceder desde otros dispositivos.</p>
 
     <div class="profile-tabs" id="profileTabs">
       <button class="active" id="createTabBtn" type="button">Crear cuenta</button>
@@ -1145,7 +1145,7 @@ body.dark .museum-unlock{background:rgba(18,18,18,.985)}
     <div class="profile-pane active" id="benefitsPane">
       <div class="account-benefits">
         <div class="benefit-item">
-          <strong>Biblioteca Olfativa</strong>
+          <strong>Mi Colección Prelude</strong>
           <span>Guarda todas las fragancias que hayas descubierto.</span>
         </div>
         <div class="benefit-item">
@@ -1158,7 +1158,7 @@ body.dark .museum-unlock{background:rgba(18,18,18,.985)}
         </div>
         <div class="benefit-item">
           <strong>Acceso desde cualquier dispositivo</strong>
-          <span>Recupera tu Biblioteca utilizando tu teléfono y PIN.</span>
+          <span>Recupera tu Colección Prelude utilizando tu teléfono y PIN.</span>
         </div>
       </div>
 
@@ -1172,17 +1172,17 @@ body.dark .museum-unlock{background:rgba(18,18,18,.985)}
       <input id="profilePhoneInput" type="tel" placeholder="Teléfono" autocomplete="tel">
       <input id="profilePinInput" type="password" inputmode="numeric" maxlength="6" placeholder="PIN de 6 cifras" autocomplete="new-password">
       <div class="pin-hint">Utiliza un PIN que puedas recordar. No uses fechas de nacimiento ni combinaciones como 123456.</div>
-      <button id="createProfileBtn" type="button">Crear mi Biblioteca</button>
+      <button id="createProfileBtn" type="button">Crear Mi Colección Prelude</button>
     </div>
 
     <div class="profile-pane" id="loginPane">
       <input id="loginPhoneInput" type="tel" placeholder="Teléfono" autocomplete="tel">
       <input id="loginPinInput" type="password" inputmode="numeric" maxlength="6" placeholder="PIN de 6 cifras" autocomplete="current-password">
-      <button id="loginProfileBtn" type="button">Entrar en mi Biblioteca</button>
+      <button id="loginProfileBtn" type="button">Entrar en Mi Colección Prelude</button>
     </div>
 
     <div class="profile-pane" id="setupPinPane">
-      <p>Configura un PIN para poder recuperar esta Biblioteca desde otro dispositivo.</p>
+      <p>Configura un PIN para poder recuperar tu Colección Prelude desde otro dispositivo.</p>
       <input id="setupPinInput" type="password" inputmode="numeric" maxlength="6" placeholder="Nuevo PIN de 6 cifras" autocomplete="new-password">
       <input id="setupPinConfirmInput" type="password" inputmode="numeric" maxlength="6" placeholder="Repite el PIN" autocomplete="new-password">
       <button id="savePinBtn" type="button">Guardar PIN</button>
@@ -1196,7 +1196,7 @@ body.dark .museum-unlock{background:rgba(18,18,18,.985)}
 onclick="var s=document.getElementById('splash');if(s){s.classList.add('hide');setTimeout(function(){s.style.display='none';},850);}">
 Descubrir colección
 </button></div></div></div>
-<div class="page"><header class="top"><div class="logo">PRELUDE</div><div class="actions"><button class="iconbtn" id="conceptBtn">El concepto</button><button class="iconbtn" id="decantsBtn">Nuestros Decants</button><button class="iconbtn" id="libraryBtn">Mi Biblioteca <b id="libraryCount">0</b></button><button class="iconbtn sound-toggle" id="soundBtn" type="button" aria-pressed="false">Sonido: no</button><button class="iconbtn" id="theme">◐ <span class="label">Modo oscuro</span></button><button class="iconbtn" id="cartBtn">Cesta <b id="count">0</b></button></div></header>
+<div class="page"><header class="top"><div class="logo">PRELUDE</div><div class="actions"><button class="iconbtn" id="conceptBtn">El concepto</button><button class="iconbtn" id="decantsBtn">Nuestros Decants</button><button class="iconbtn" id="libraryBtn">Mi Colección Prelude <b id="libraryCount">0</b></button><button class="iconbtn sound-toggle" id="soundBtn" type="button" aria-pressed="false">Sonido: no</button><button class="iconbtn" id="theme">◐ <span class="label">Modo oscuro</span></button><button class="iconbtn" id="cartBtn">Cesta <b id="count">0</b></button></div></header>
 <section class="hero"><h2>Every Masterpiece Begins With A Prelude</h2><p>Cada fragancia comienza con una historia. Después llegan las notas, los acordes y la elección.</p></section>
 <div class="layout"><main class="grid" id="grid"></main><aside class="cart" id="cart"></aside></div></div>
 
@@ -1233,7 +1233,7 @@ Descubrir colección
 <section class="library-overlay" id="libraryOverlay" aria-hidden="true">
   <div class="library-shell">
     <header class="library-header">
-      <div class="concept-eyebrow">Prelude · Biblioteca Olfativa</div>
+      <div class="concept-eyebrow">Prelude · Mi Colección Prelude</div>
       <button class="library-close" id="libraryClose" type="button">Volver a la colección</button>
     </header>
 
@@ -1241,7 +1241,7 @@ Descubrir colección
       <div class="library-main">
         <div class="library-intro">
           <div>
-            <h2>Mi Biblioteca Olfativa</h2>
+            <h2>Mi Colección Prelude</h2>
             <p>Cada fragancia confirmada pasa a formar parte de tu colección personal y queda asociada a tu perfil Prelude.</p>
           </div>
         </div>
@@ -1299,7 +1299,7 @@ Descubrir colección
         </div>
 
         <div class="ranking-card">
-          <div class="concept-eyebrow">Ranking de Bibliotecas</div>
+          <div class="concept-eyebrow">Ranking de Colecciones</div>
           <div class="ranking-title">Exploradores Prelude</div>
 
           <div id="rankingList">
@@ -1358,7 +1358,7 @@ Descubrir colección
         <div class="museum-label">Notas destacadas</div>
         <div class="museum-tags" id="museumNotes"></div>
       </div>
-      <div class="museum-meta">Esta obra forma parte de tu Biblioteca Prelude.</div>
+      <div class="museum-meta">Esta obra forma parte de Mi Colección Prelude.</div>
     </div>
   </div>
 </section>
@@ -1369,7 +1369,7 @@ Descubrir colección
     <div class="museum-unlock-image"><img id="museumUnlockImage" alt=""></div>
     <h2 id="museumUnlockName"></h2>
     <div class="museum-unlock-brand" id="museumUnlockBrand"></div>
-    <p>Ha sido incorporada a tu Biblioteca Prelude.</p>
+    <p>Ha sido incorporada a Mi Colección Prelude.</p>
     <button id="museumUnlockContinue" type="button">Continuar</button>
   </div>
 </section>
@@ -1858,7 +1858,7 @@ async function showMuseumUnlockSequence(names){
     museumUnlockNameEl.textContent=product.name;
     museumUnlockBrandEl.textContent=product.brand;
     museumUnlockContinueEl.textContent=isLast
-      ?"Entrar en mi Biblioteca"
+      ?"Entrar en Mi Colección Prelude"
       :"Descubrir la siguiente obra";
 
     requestAnimationFrame(()=>{
@@ -1897,7 +1897,7 @@ async function redeemPreludeCode(){
 
   if(!supabaseClient){
     setRedeemMessage(
-      "La conexión con la Biblioteca no está disponible todavía. Recarga la página e inténtalo de nuevo.",
+      "La conexión con Mi Colección Prelude no está disponible todavía. Recarga la página e inténtalo de nuevo.",
       "error"
     );
     button.disabled=false;
@@ -2029,18 +2029,18 @@ function switchProfilePane(mode){
     loginTabBtnEl?.classList.add("active");
     profileTabsEl.style.display="grid";
     document.getElementById("profileGateTitle").textContent="Bienvenido de nuevo";
-    document.getElementById("profileGateCopy").textContent="Introduce tu teléfono y PIN para recuperar tu Biblioteca, tus Marcapáginas y tus recompensas.";
+    document.getElementById("profileGateCopy").textContent="Introduce tu teléfono y PIN para recuperar Mi Colección Prelude, tus Marcapáginas y tus recompensas.";
   }else if(mode==="setup"){
     setupPinPaneEl?.classList.add("active");
     profileTabsEl.style.display="none";
-    document.getElementById("profileGateTitle").textContent="Protege tu Biblioteca";
+    document.getElementById("profileGateTitle").textContent="Protege Mi Colección Prelude";
     document.getElementById("profileGateCopy").textContent="Este PIN te permitirá acceder desde cualquier dispositivo.";
   }else if(mode==="create"){
     createPaneEl?.classList.add("active");
     createTabBtnEl?.classList.add("active");
     profileTabsEl.style.display="grid";
     document.getElementById("profileGateTitle").textContent="Crea tu cuenta Prelude";
-    document.getElementById("profileGateCopy").textContent="Guarda tu Biblioteca, acumula Marcapáginas y desbloquea recompensas.";
+    document.getElementById("profileGateCopy").textContent="Guarda Mi Colección Prelude, acumula Marcapáginas y desbloquea recompensas.";
   }else{
     benefitsPaneEl?.classList.add("active");
     profileTabsEl.style.display="none";
@@ -2116,7 +2116,7 @@ async function createCustomerProfile(){
   }
 
   createProfileBtnEl.disabled=true;
-  createProfileBtnEl.textContent="Creando Biblioteca...";
+  createProfileBtnEl.textContent="Creando colección...";
   setProfileStatus("");
 
   try{
@@ -2140,7 +2140,7 @@ async function createCustomerProfile(){
     setProfileStatus("No se ha podido crear el perfil. Inténtalo de nuevo.",true);
   }finally{
     createProfileBtnEl.disabled=false;
-    createProfileBtnEl.textContent="Crear mi Biblioteca";
+    createProfileBtnEl.textContent="Crear Mi Colección Prelude";
   }
 }
 
@@ -2181,7 +2181,7 @@ async function loginCustomerProfile(){
     setProfileStatus("No se ha podido iniciar sesión. Inténtalo de nuevo.",true);
   }finally{
     loginProfileBtnEl.disabled=false;
-    loginProfileBtnEl.textContent="Entrar en mi Biblioteca";
+    loginProfileBtnEl.textContent="Entrar en Mi Colección Prelude";
   }
 }
 
@@ -2499,7 +2499,7 @@ function bookmarksReward(value){
 }
 
 function libraryLevel(count){
-  if(count>=23)return {name:"Masterpiece",next:"Has completado toda la Biblioteca Prelude."};
+  if(count>=23)return {name:"Masterpiece",next:"Has completado Mi Colección Prelude."};
   if(count>=15)return {name:"Curador",next:`Descubre ${23-count} fragancias más para alcanzar Masterpiece.`};
   if(count>=8)return {name:"Coleccionista",next:`Descubre ${15-count} fragancias más para alcanzar Curador.`};
   if(count>=3)return {name:"Explorador",next:`Descubre ${8-count} fragancias más para alcanzar Coleccionista.`};
@@ -2536,7 +2536,7 @@ function renderLibrary(){
   const bookmarkCount=Number(customerProfile?.bookmarks||0);
   const bookmarkReward=bookmarksReward(bookmarkCount);
   document.getElementById("libraryCustomerName").textContent=customerProfile?.name
-    ? `Biblioteca de ${customerProfile.name}`
+    ? `Colección Prelude de ${customerProfile.name}`
     : "Mi perfil Prelude";
   document.getElementById("libraryCustomerPhone").textContent=customerProfile?.phone
     ? customerProfile.phone
