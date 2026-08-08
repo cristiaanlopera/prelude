@@ -1768,7 +1768,8 @@ function museumProductByName(name){
 }
 
 function museumArtworkByName(name){
-  return PRELUDE_ARTWORKS[name]||null;
+  const canonical=canonicalPerfumeName(name);
+  return PRELUDE_ARTWORKS[canonical]||null;
 }
 
 function resolveMuseumImage(product){
@@ -1941,9 +1942,7 @@ async function redeemPreludeCode(){
     const fragrances=Array.isArray(data.perfumes)?data.perfumes:[];
     const completeLibrary=Array.isArray(data.library)?data.library:fragrances;
 
-    discoveredPerfumes=new Set(
-      completeLibrary.filter(name=>products.some(product=>product.name===name))
-    );
+    discoveredPerfumes=new Set(canonicalizePerfumeList(completeLibrary));
 
     customerProfile.bookmarks=Number(data.bookmarks||customerProfile.bookmarks||0);
     customerProfile.totalSpent=Number(data.total_spent||customerProfile.totalSpent||0);
@@ -1996,6 +1995,45 @@ function setProfileStatus(message,error=false){
 
 function normalizePhone(value){
   return String(value||"").replace(/\D/g,"");
+}
+
+function normalizePerfumeKey(value){
+  return String(value||"")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/[’‘`´]/g,"'")
+    .replace(/&/g,"and")
+    .replace(/[^a-zA-Z0-9]+/g," ")
+    .trim()
+    .toLowerCase();
+}
+
+function canonicalPerfumeName(value){
+  const raw=String(value||"").trim();
+  const key=normalizePerfumeKey(raw);
+  if(!key)return raw;
+
+  const exact=products.find(product=>normalizePerfumeKey(product.name)===key);
+  if(exact)return exact.name;
+
+  // Algunos códigos/pedidos antiguos pueden incluir también la marca.
+  const withBrand=products.find(product=>{
+    const nameKey=normalizePerfumeKey(product.name);
+    const brandKey=normalizePerfumeKey(product.brand);
+    return key===`${nameKey} ${brandKey}` || key===`${brandKey} ${nameKey}`;
+  });
+  if(withBrand)return withBrand.name;
+
+  // Compatibilidad específica con variantes históricas de Bal d'Afrique.
+  if(key==="bal d afrique" || key==="bal d afrique byredo" || key==="byredo bal d afrique")return "Bal d'Afrique";
+
+  return raw;
+}
+
+function canonicalizePerfumeList(values){
+  return (Array.isArray(values)?values:[])
+    .map(canonicalPerfumeName)
+    .filter(name=>products.some(product=>product.name===name));
 }
 
 function validPin(value){
@@ -2255,10 +2293,7 @@ async function refreshCustomerProfile(){
       rankingAlias:data.ranking_alias||""
     };
 
-    discoveredPerfumes=new Set(
-      (Array.isArray(data.library)?data.library:[])
-        .filter(name=>products.some(product=>product.name===name))
-    );
+    discoveredPerfumes=new Set(canonicalizePerfumeList(data.library));
 
     saveProfileLocal();
     saveLibrary();
@@ -2273,7 +2308,7 @@ function loadLibrary(){
   try{
     const saved=JSON.parse(localStorage.getItem(LIBRARY_STORAGE_KEY)||"[]");
     if(Array.isArray(saved)){
-      discoveredPerfumes=new Set(saved.filter(name=>products.some(p=>p.name===name)));
+      discoveredPerfumes=new Set(canonicalizePerfumeList(saved));
     }
   }catch(error){
     discoveredPerfumes=new Set();
@@ -2507,13 +2542,15 @@ function libraryLevel(count){
 }
 
 function isDiscovered(name){
-  return discoveredPerfumes.has(name);
+  const canonical=canonicalPerfumeName(name);
+  return discoveredPerfumes.has(canonical);
 }
 
 function toggleDiscovered(name){
   playSound("library");
-  if(isDiscovered(name))discoveredPerfumes.delete(name);
-  else discoveredPerfumes.add(name);
+  const canonical=canonicalPerfumeName(name);
+  if(isDiscovered(canonical))discoveredPerfumes.delete(canonical);
+  else discoveredPerfumes.add(canonical);
   saveLibrary();
   renderLibrary();
   updateLibraryButton();
