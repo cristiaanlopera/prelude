@@ -1,0 +1,17 @@
+PRELUDE — FIX DEFINITIVO PRÓXIMAMENTE
+
+Causa real detectada en consola:
+TypeError: Assignment to constant variable
+
+index.html declaraba el catálogo como:
+const products = [...]
+
+pero loadStudioManagedCatalog() sustituye ese array con:
+products = products.map(...)
+
+Eso provoca una excepción antes de añadir los perfumes remotos.
+
+Corrección aplicada:
+const products -> let products
+
+No se modifica Supabase.
