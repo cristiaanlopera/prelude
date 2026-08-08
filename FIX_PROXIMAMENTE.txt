@@ -1,0 +1,15 @@
+PRELUDE — FIX CATÁLOGO PRÓXIMAMENTE
+
+Problema corregido:
+Los perfumes con availability_status='upcoming' tienen active=false por diseño,
+pero la web estaba descartando cualquier fila con active=false antes de renderizarla.
+
+Corrección:
+- 'hidden' sigue sin mostrarse.
+- 'upcoming' sí se muestra, aunque active=false.
+- 'published' sigue mostrándose normalmente.
+- Próximamente aparece primero y sin controles de compra.
+
+Archivos modificados:
+- index.html
+- js/app.js

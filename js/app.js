@@ -404,11 +404,11 @@ async function loadStudioManagedCatalog(){
         _catalogOrder:Number(row.display_order??products.indexOf(product)),
         _catalogId:row.id||null
       };
-    }).filter(product=>product._catalogActive!==false);
+    }).filter(product=>product._catalogStatus!=="hidden");
 
     remote.forEach(row=>{
       const name=String(row.name||"").trim();
-      if(!name||builtinNames.has(name)||row.active===false||row.availability_status==="hidden")return;
+      if(!name||builtinNames.has(name)||row.availability_status==="hidden")return;
       if(!row.image_url)return;
       products.push({
         name,
@@ -421,7 +421,7 @@ async function loadStudioManagedCatalog(){
         journeyTheme:row.journey_theme||"editorial",
         journeyTitle:row.journey_title||name,
         journeyCopy:row.journey_copy||row.description||"",
-        _catalogActive:true,
+        _catalogActive:row.availability_status!=="hidden",
         _catalogStatus:row.availability_status||"published",
         _catalogOrder:Number(row.display_order??1000),
         _catalogId:row.id||null
