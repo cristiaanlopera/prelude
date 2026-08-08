@@ -344,7 +344,7 @@ border-color:var(--dark);
 .library-card button:disabled{opacity:.72;cursor:default}
 
 
-.profile-gate{position:fixed;inset:0;z-index:260;display:none;place-items:center;padding:18px;background:rgba(244,242,238,.97);backdrop-filter:blur(20px)}
+.profile-gate{position:fixed;inset:0;z-index:260;display:none;place-items:center;padding:18px;background:rgba(244,242,238,.97);backdrop-filter:blur(20px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .profile-gate.open{display:grid}
 body.dark .profile-gate{background:rgba(20,20,20,.97)}
 .profile-card{width:min(470px,100%);background:var(--card);border:1px solid var(--line);border-radius:24px;padding:25px;box-shadow:var(--shadow)}
@@ -371,6 +371,27 @@ body.dark .profile-gate{background:rgba(20,20,20,.97)}
 .profile-link{width:auto!important;padding:0!important;margin:12px 0 0!important;background:transparent!important;color:var(--muted)!important;text-decoration:underline}
 .pin-setup{margin-top:13px;padding-top:13px;border-top:1px solid var(--line)}
 .pin-setup button{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:9px;padding:8px 10px;cursor:pointer}
+
+/* Perfil / checkout: scroll táctil fiable en móvil */
+@media(max-width:720px){
+  .profile-gate{
+    place-items:start center;
+    padding:12px 10px calc(20px + env(safe-area-inset-bottom));
+  }
+  .profile-card{
+    width:100%;
+    max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    margin:auto 0;
+    padding:20px 18px calc(28px + env(safe-area-inset-bottom));
+    border-radius:18px;
+  }
+  .profile-card h2{font-size:34px}
+  .profile-card .profile-link,
+  .profile-card .guest-checkout-btn{touch-action:manipulation}
+}
 
 
 /* Cabecera compacta para móvil */
@@ -1292,21 +1313,29 @@ Descubrir colección
           </button>
 
           <div class="account-menu" id="accountMenu" aria-hidden="true">
-            <div class="account-menu-title">Mi cuenta</div>
+            <div class="account-menu-title" id="accountMenuTitle">Mi cuenta</div>
 
-            <div class="account-detail"><span>Nombre</span><strong id="accountName">—</strong></div>
-            <div class="account-detail"><span>Teléfono</span><strong id="accountPhone">—</strong></div>
-            <div class="account-detail"><span>Nivel</span><strong id="accountLevel">Primer capítulo</strong></div>
-            <div class="account-detail"><span>Obras descubiertas</span><strong id="accountLibraryCount">0</strong></div>
-            <div class="account-detail"><span>Marcapáginas</span><strong id="accountBookmarks">0</strong></div>
-
-            <div class="pin-setup" id="pinSetupNotice">
-              <div class="muted">Configura un PIN para acceder desde otros dispositivos.</div>
-              <button id="openPinSetupBtn" type="button">Configurar PIN</button>
+            <div id="accountLoggedOutActions" style="display:none">
+              <div class="muted" style="margin-bottom:10px">Accede a tu cuenta para recuperar tus obras, Marcapáginas y recompensas.</div>
+              <button class="account-action" id="collectionLoginBtn" type="button">Iniciar sesión</button>
+              <button class="account-action" id="collectionCreateBtn" type="button">Crear cuenta</button>
             </div>
 
-            <button class="account-action" id="changePinBtn" type="button">Cambiar PIN</button>
-            <button class="account-action account-danger" id="logoutProfileBtn" type="button">Cerrar sesión</button>
+            <div id="accountLoggedInDetails">
+              <div class="account-detail"><span>Nombre</span><strong id="accountName">—</strong></div>
+              <div class="account-detail"><span>Teléfono</span><strong id="accountPhone">—</strong></div>
+              <div class="account-detail"><span>Nivel</span><strong id="accountLevel">Primer capítulo</strong></div>
+              <div class="account-detail"><span>Obras descubiertas</span><strong id="accountLibraryCount">0</strong></div>
+              <div class="account-detail"><span>Marcapáginas</span><strong id="accountBookmarks">0</strong></div>
+
+              <div class="pin-setup" id="pinSetupNotice">
+                <div class="muted">Configura un PIN para acceder desde otros dispositivos.</div>
+                <button id="openPinSetupBtn" type="button">Configurar PIN</button>
+              </div>
+
+              <button class="account-action" id="changePinBtn" type="button">Cambiar PIN</button>
+              <button class="account-action account-danger" id="logoutProfileBtn" type="button">Cerrar sesión</button>
+            </div>
           </div>
         </div>
 
@@ -1491,7 +1520,7 @@ async function unlockAudioContext(){
   }
 }
 
-function playTone(frequency,duration,volume=0.022,type="sine",delay=0){
+function playTone(frequency,duration,volume=0.032,type="sine",delay=0){
   if(!soundEnabled)return;
   const ctx=getAudioContext();
   if(!ctx||ctx.state!=="running")return;
@@ -1517,19 +1546,19 @@ function playSound(kind){
   if(!soundEnabled)return;
 
   if(kind==="navigate"){
-    playTone(520,0.08,0.016,"sine");
+    playTone(520,0.08,0.023,"sine");
   }else if(kind==="add"){
-    playTone(440,0.09,0.020,"sine");
-    playTone(660,0.12,0.018,"sine",0.07);
+    playTone(440,0.09,0.029,"sine");
+    playTone(660,0.12,0.026,"sine",0.07);
   }else if(kind==="confirm"){
-    playTone(523.25,0.10,0.020,"sine");
-    playTone(659.25,0.12,0.020,"sine",0.08);
-    playTone(783.99,0.16,0.018,"sine",0.17);
+    playTone(523.25,0.10,0.029,"sine");
+    playTone(659.25,0.12,0.029,"sine",0.08);
+    playTone(783.99,0.16,0.026,"sine",0.17);
   }else if(kind==="close"){
-    playTone(390,0.07,0.013,"sine");
+    playTone(390,0.07,0.019,"sine");
   }else if(kind==="library"){
-    playTone(392,0.08,0.016,"sine");
-    playTone(523.25,0.12,0.017,"sine",0.06);
+    playTone(392,0.08,0.023,"sine");
+    playTone(523.25,0.12,0.025,"sine",0.06);
   }
 }
 
@@ -1637,7 +1666,7 @@ function continueAsGuest(){
   send();
 }
 
-function send(){
+async function send(){
   if(!cart.length)return alert("Añade al menos un Prelude antes de solicitar el pedido.");
 
   const customerName=document.getElementById("name").value.trim();
@@ -1658,12 +1687,34 @@ function send(){
   const selectedRewards=pendingRewards().filter(reward=>selectedRewardIds.has(reward.id));
   const sub=cart.reduce((s,x)=>s+x.price*x.qty,0);
 
+  let savedOrder=null;
+  if(supabaseClient){
+    try{
+      const payloadItems=cart.map(x=>({name:x.name,size:x.size,qty:Number(x.qty||1),price:Number(x.price||0)}));
+      const {data,error}=await supabaseClient.rpc("create_prelude_order",{
+        input_customer_id:customerProfile?.id||null,
+        input_customer_name:customerName,
+        input_customer_phone:customerProfile?.phone||null,
+        input_delivery_zone:deliveryZone,
+        input_notes:notes||null,
+        input_items:payloadItems,
+        input_order_total:sub,
+        input_reward_ids:selectedRewards.map(reward=>String(reward.id))
+      });
+      if(error)throw error;
+      savedOrder=data;
+    }catch(error){
+      console.error("No se pudo registrar el pedido en Prelude Studio",error);
+    }
+  }
+
   const lines=[
     "━━━━━━━━━━━━━━━━━━━━",
     "PRELUDE",
     "Solicitud de pedido",
     "━━━━━━━━━━━━━━━━━━━━",
     "",
+    savedOrder?.order_number?`Pedido: #${savedOrder.order_number}`:"",
     `Nombre: ${customerName}`,
     customerProfile?.phone?`Teléfono: ${customerProfile.phone}`:"",
     `Zona de entrega: ${deliveryZone}`,
@@ -1744,6 +1795,11 @@ const accountLibraryCountEl=document.getElementById("accountLibraryCount");
 const accountBookmarksEl=document.getElementById("accountBookmarks");
 const changePinBtnEl=document.getElementById("changePinBtn");
 const logoutProfileBtnEl=document.getElementById("logoutProfileBtn");
+const accountMenuTitleEl=document.getElementById("accountMenuTitle");
+const accountLoggedOutActionsEl=document.getElementById("accountLoggedOutActions");
+const accountLoggedInDetailsEl=document.getElementById("accountLoggedInDetails");
+const collectionLoginBtnEl=document.getElementById("collectionLoginBtn");
+const collectionCreateBtnEl=document.getElementById("collectionCreateBtn");
 const logoutModalEl=document.getElementById("logoutModal");
 const cancelLogoutBtnEl=document.getElementById("cancelLogoutBtn");
 const confirmLogoutBtnEl=document.getElementById("confirmLogoutBtn");
@@ -2017,7 +2073,10 @@ async function redeemPreludeCode(){
     const fragrances=Array.isArray(data.perfumes)?data.perfumes:[];
     const completeLibrary=Array.isArray(data.library)?data.library:fragrances;
     const previouslyDiscovered=new Set([...discoveredPerfumes].map(canonicalPerfumeName));
-    const newlyDiscovered=canonicalizePerfumeList(fragrances).filter(name=>!previouslyDiscovered.has(name));
+    const shownUnlocks=getShownUnlocks();
+    const newlyDiscovered=canonicalizePerfumeList(fragrances).filter(
+      name=>!previouslyDiscovered.has(name)&&!shownUnlocks.has(name)
+    );
 
     discoveredPerfumes=new Set(canonicalizePerfumeList(completeLibrary));
 
@@ -2035,6 +2094,7 @@ async function redeemPreludeCode(){
     input.value="";
     if(newlyDiscovered.length){
       await showMuseumUnlockSequence(newlyDiscovered);
+      markUnlocksAsShown(newlyDiscovered);
     }
 
     const orderText=data.order_number
@@ -2060,6 +2120,32 @@ async function redeemPreludeCode(){
 
 const PROFILE_STORAGE_KEY="preludeCustomerProfileV1";
 const LIBRARY_STORAGE_KEY="preludeOlfactoryLibraryV1";
+const UNLOCK_SHOWN_STORAGE_PREFIX="preludeMuseumUnlockShownV1:";
+
+function unlockShownStorageKey(){
+  const phone=normalizePhone(customerProfile?.phone||"")||"guest";
+  return `${UNLOCK_SHOWN_STORAGE_PREFIX}${phone}`;
+}
+
+function getShownUnlocks(){
+  try{
+    const stored=JSON.parse(localStorage.getItem(unlockShownStorageKey())||"[]");
+    return new Set(canonicalizePerfumeList(Array.isArray(stored)?stored:[]));
+  }catch(error){
+    console.warn("No se pudo leer el historial de animaciones de obras",error);
+    return new Set();
+  }
+}
+
+function markUnlocksAsShown(names){
+  const shown=getShownUnlocks();
+  canonicalizePerfumeList(names).forEach(name=>shown.add(name));
+  try{
+    localStorage.setItem(unlockShownStorageKey(),JSON.stringify([...shown]));
+  }catch(error){
+    console.warn("No se pudo guardar el historial de animaciones de obras",error);
+  }
+}
 let discoveredPerfumes=new Set();
 let customerProfile=null;
 let selectedRewardIds=new Set();
@@ -2173,6 +2259,9 @@ function showProfileGate(mode="benefits"){
   switchProfilePane(mode);
   profileGateEl.classList.add("open");
   profileGateEl.setAttribute("aria-hidden","false");
+  profileGateEl.scrollTop=0;
+  const profileCard=profileGateEl.querySelector(".profile-card");
+  if(profileCard)profileCard.scrollTop=0;
 }
 
 function hideProfileGate(){
@@ -2663,6 +2752,11 @@ function renderLibrary(){
   renderRewards();
   renderRankingSettings();
 
+  const hasProfile=Boolean(customerProfile);
+  if(accountMenuTitleEl)accountMenuTitleEl.textContent=hasProfile?"Mi cuenta":"Accede a Prelude";
+  if(accountLoggedOutActionsEl)accountLoggedOutActionsEl.style.display=hasProfile?"none":"block";
+  if(accountLoggedInDetailsEl)accountLoggedInDetailsEl.style.display=hasProfile?"block":"none";
+
   if(accountNameEl)accountNameEl.textContent=customerProfile?.name||"—";
   if(accountPhoneEl)accountPhoneEl.textContent=customerProfile?.phone||"—";
   if(accountLevelEl)accountLevelEl.textContent=level.name;
@@ -2823,6 +2917,19 @@ if(profilePinInputEl){
 if(loginPinInputEl){
   loginPinInputEl.addEventListener("keydown",event=>{
     if(event.key==="Enter")loginCustomerProfile();
+  });
+}
+
+if(collectionLoginBtnEl){
+  collectionLoginBtnEl.addEventListener("click",()=>{
+    toggleAccountMenu(false);
+    showProfileGate("login");
+  });
+}
+if(collectionCreateBtnEl){
+  collectionCreateBtnEl.addEventListener("click",()=>{
+    toggleAccountMenu(false);
+    showProfileGate("create");
   });
 }
 

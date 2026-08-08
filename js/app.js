@@ -43,7 +43,7 @@ async function unlockAudioContext(){
   }
 }
 
-function playTone(frequency,duration,volume=0.022,type="sine",delay=0){
+function playTone(frequency,duration,volume=0.032,type="sine",delay=0){
   if(!soundEnabled)return;
   const ctx=getAudioContext();
   if(!ctx||ctx.state!=="running")return;
@@ -69,19 +69,19 @@ function playSound(kind){
   if(!soundEnabled)return;
 
   if(kind==="navigate"){
-    playTone(520,0.08,0.016,"sine");
+    playTone(520,0.08,0.023,"sine");
   }else if(kind==="add"){
-    playTone(440,0.09,0.020,"sine");
-    playTone(660,0.12,0.018,"sine",0.07);
+    playTone(440,0.09,0.029,"sine");
+    playTone(660,0.12,0.026,"sine",0.07);
   }else if(kind==="confirm"){
-    playTone(523.25,0.10,0.020,"sine");
-    playTone(659.25,0.12,0.020,"sine",0.08);
-    playTone(783.99,0.16,0.018,"sine",0.17);
+    playTone(523.25,0.10,0.029,"sine");
+    playTone(659.25,0.12,0.029,"sine",0.08);
+    playTone(783.99,0.16,0.026,"sine",0.17);
   }else if(kind==="close"){
-    playTone(390,0.07,0.013,"sine");
+    playTone(390,0.07,0.019,"sine");
   }else if(kind==="library"){
-    playTone(392,0.08,0.016,"sine");
-    playTone(523.25,0.12,0.017,"sine",0.06);
+    playTone(392,0.08,0.023,"sine");
+    playTone(523.25,0.12,0.025,"sine",0.06);
   }
 }
 
