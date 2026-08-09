@@ -566,7 +566,10 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
       </div>
 
       <div class="detail-section">
-        <h2>Pedidos</h2>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px">
+          <h2 style="margin:0">Pedidos</h2>
+          <button class="primary" id="addCustomerOrderBtn" type="button">+ Añadir pedido</button>
+        </div>
         <div id="customerOrders" class="customer-orders"></div>
       </div>
 
@@ -590,6 +593,50 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
   </div>
 </section>
 
+
+
+<section class="order-detail-overlay" id="customerOrderEditorOverlay">
+  <div class="order-detail-card" style="max-width:900px">
+    <div class="order-detail-head">
+      <div>
+        <div class="dashboard-kicker">Cliente · Pedido</div>
+        <h2 id="customerOrderEditorTitle">Nuevo pedido</h2>
+        <div class="order-meta" id="customerOrderEditorMeta"></div>
+      </div>
+      <button class="secondary" id="closeCustomerOrderEditorBtn" type="button">Cerrar</button>
+    </div>
+
+    <div class="detail-grid" style="grid-template-columns:1fr 1fr;margin-top:18px">
+      <div class="detail-field">
+        <label>Zona de entrega</label>
+        <input id="customerOrderZone" placeholder="Son Ferrer, Santa Ponsa...">
+      </div>
+      <div class="detail-field">
+        <label>Observaciones</label>
+        <input id="customerOrderNotes" placeholder="Opcional">
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 10px">
+      <h3 style="margin:0">Productos</h3>
+      <button class="secondary" id="addCustomerOrderLineBtn" type="button">+ Añadir producto</button>
+    </div>
+
+    <div id="customerOrderLines"></div>
+
+    <div style="display:flex;justify-content:flex-end;align-items:center;gap:16px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)">
+      <span style="color:var(--muted)">Total</span>
+      <strong id="customerOrderEditorTotal" style="font-size:20px">0,00 €</strong>
+    </div>
+
+    <div class="status" id="customerOrderEditorStatus"></div>
+
+    <div class="order-actions" style="margin-top:18px;justify-content:flex-end">
+      <button class="secondary" id="cancelCustomerOrderEditorBtn" type="button">Cancelar</button>
+      <button class="primary" id="saveCustomerOrderBtn" type="button">Guardar pedido</button>
+    </div>
+  </div>
+</section>
 
 <section class="order-detail-overlay" id="orderDetailOverlay">
   <div class="order-detail-card">
@@ -756,6 +803,7 @@ function switchStudioView(view){
   if(view==="overview")loadOverview();
   if(view==="orders")loadOrders();
   if(view==="customers")loadCustomers();
+  if(view==="collection")loadCollectionModule();
   if(view==="catalog")loadCatalogAdmin();
   if(view==="prices")loadCatalogAdmin().then(renderPricesAdmin);
   if(view==="stock")loadCatalogAdmin().then(renderStockAdmin);
@@ -1063,10 +1111,175 @@ async function loadCustomerOrdersForDetail(customerId){
   const orders=data||[];
   customerOrders.innerHTML=orders.length?orders.map(o=>{
     const items=(o.items||[]).map(i=>`${escapeHtml(i.name||"Perfume")} · ${escapeHtml(String(i.size||""))}${i.size?" ml":""}${Number(i.qty||1)>1?` × ${i.qty}`:""}`).join("<br>");
-    return `<div class="customer-order-row"><div class="customer-order-top"><strong>#${escapeHtml(o.order_number||"—")}</strong><span class="order-status status-${o.status}">${ORDER_LABELS[o.status]||o.status}</span></div><div class="customer-order-items">${items||"Sin detalle de productos"}<br><strong>${Number(o.order_total||0).toFixed(2).replace(".",",")} €</strong> · ${o.created_at?new Date(o.created_at).toLocaleDateString("es-ES"):"—"}</div></div>`;
+    return `<div class="customer-order-row"><div class="customer-order-top"><strong>#${escapeHtml(o.order_number||"—")}</strong><span class="order-status status-${o.status}">${ORDER_LABELS[o.status]||o.status}</span></div><div class="customer-order-items">${items||"Sin detalle de productos"}<br><strong>${Number(o.order_total||0).toFixed(2).replace(".",",")} €</strong> · ${o.created_at?new Date(o.created_at).toLocaleDateString("es-ES"):"—"}</div><div style="margin-top:10px"><button class="secondary" type="button" data-edit-customer-order="${o.id}" ${["delivered","cancelled"].includes(o.status)?"disabled title=\"Cambia primero el estado del pedido para editarlo\"":""}>Editar pedido</button></div></div>`;
   }).join(""):'<p style="color:var(--muted)">Sin pedidos registrados.</p>';
+  customerOrders.querySelectorAll("[data-edit-customer-order]").forEach(btn=>{
+    btn.addEventListener("click",()=>openCustomerOrderEditor(btn.dataset.editCustomerOrder));
+  });
   return orders;
 }
+
+
+let customerOrderEditorMode="create";
+let customerOrderEditorOrderId=null;
+let customerOrderCatalogCache=[];
+
+async function ensureCustomerOrderCatalog(){
+  if(customerOrderCatalogCache.length)return customerOrderCatalogCache;
+  const {data,error}=await client.rpc("admin_list_prelude_catalog");
+  if(error)throw error;
+  customerOrderCatalogCache=(Array.isArray(data)?data:[]).filter(p=>p.deleted_at==null&&p.availability_status!=="hidden");
+  return customerOrderCatalogCache;
+}
+
+function customerOrderPrice(product,size){
+  if(!product)return 0;
+  return Number(product[`price_${size}ml`]||0);
+}
+
+function customerOrderLineMarkup(item={}){
+  const name=String(item.name||"");
+  const size=String(item.size||"2").replace(/[^\d]/g,"")||"2";
+  const qty=Math.max(1,Number(item.qty||1));
+  const existingPrice=Number(item.price||0);
+  const options=customerOrderCatalogCache.map(p=>`<option value="${escapeHtml(p.name)}" ${p.name===name?"selected":""}>${escapeHtml(p.name)} · ${escapeHtml(p.brand||"")}</option>`).join("");
+  return `<div class="customer-order-edit-line" style="display:grid;grid-template-columns:minmax(220px,1fr) 110px 90px 120px auto;gap:10px;align-items:end;margin-bottom:10px">
+    <div class="detail-field"><label>Perfume</label><select class="manual-order-product"><option value="">Selecciona perfume</option>${options}</select></div>
+    <div class="detail-field"><label>Formato</label><select class="manual-order-size">${[2,3,5,10].map(v=>`<option value="${v}" ${String(v)===size?"selected":""}>${v} ml</option>`).join("")}</select></div>
+    <div class="detail-field"><label>Cantidad</label><input class="manual-order-qty" type="number" min="1" step="1" value="${qty}"></div>
+    <div class="detail-field"><label>Precio/u.</label><input class="manual-order-price" type="number" min="0" step="0.01" value="${existingPrice?existingPrice.toFixed(2):""}" placeholder="Auto"></div>
+    <button class="danger-lite remove-manual-order-line" type="button">Quitar</button>
+  </div>`;
+}
+
+function bindCustomerOrderLine(row){
+  const product=row.querySelector(".manual-order-product");
+  const size=row.querySelector(".manual-order-size");
+  const price=row.querySelector(".manual-order-price");
+  const syncPrice=()=>{
+    const p=customerOrderCatalogCache.find(x=>x.name===product.value);
+    const auto=customerOrderPrice(p,size.value);
+    if(auto>0)price.value=auto.toFixed(2);
+    recalcCustomerOrderTotal();
+  };
+  product.addEventListener("change",syncPrice);
+  size.addEventListener("change",syncPrice);
+  row.querySelector(".manual-order-qty").addEventListener("input",recalcCustomerOrderTotal);
+  price.addEventListener("input",recalcCustomerOrderTotal);
+  row.querySelector(".remove-manual-order-line").addEventListener("click",()=>{row.remove();recalcCustomerOrderTotal();});
+}
+
+function addCustomerOrderLine(item={}){
+  const wrap=document.getElementById("customerOrderLines");
+  const holder=document.createElement("div");
+  holder.innerHTML=customerOrderLineMarkup(item);
+  const row=holder.firstElementChild;
+  wrap.appendChild(row);
+  bindCustomerOrderLine(row);
+  if(!item.price){
+    const product=customerOrderCatalogCache.find(x=>x.name===String(item.name||""));
+    const auto=customerOrderPrice(product,String(item.size||"2").replace(/[^\d]/g,""));
+    if(auto>0)row.querySelector(".manual-order-price").value=auto.toFixed(2);
+  }
+  recalcCustomerOrderTotal();
+}
+
+function getCustomerOrderEditorItems(){
+  return [...document.querySelectorAll("#customerOrderLines .customer-order-edit-line")].map(row=>({
+    name:row.querySelector(".manual-order-product").value,
+    size:Number(row.querySelector(".manual-order-size").value),
+    qty:Math.max(1,Number(row.querySelector(".manual-order-qty").value||1)),
+    price:Number(row.querySelector(".manual-order-price").value||0)
+  })).filter(i=>i.name&&i.price>0);
+}
+
+function recalcCustomerOrderTotal(){
+  const total=getCustomerOrderEditorItems().reduce((sum,i)=>sum+i.price*i.qty,0);
+  document.getElementById("customerOrderEditorTotal").textContent=money(total);
+  return total;
+}
+
+async function openCustomerOrderEditor(orderId=null){
+  if(!activeCustomerId)return;
+  const customer=customersCache.find(c=>String(c.id)===String(activeCustomerId));
+  try{
+    await ensureCustomerOrderCatalog();
+  }catch(e){
+    alert("No se pudo cargar el catálogo para editar el pedido: "+e.message);
+    return;
+  }
+
+  customerOrderEditorMode=orderId?"edit":"create";
+  customerOrderEditorOrderId=orderId||null;
+  const order=orderId?ordersCache.find(o=>String(o.id)===String(orderId)):null;
+
+  if(order&&["delivered","cancelled"].includes(order.status)){
+    alert("Por seguridad, los pedidos entregados o cancelados no se editan directamente. Cambia primero su estado.");
+    return;
+  }
+
+  document.getElementById("customerOrderEditorTitle").textContent=order?`Editar pedido #${order.order_number}`:"Nuevo pedido";
+  document.getElementById("customerOrderEditorMeta").textContent=customer?`${customer.customer_name} · ${customer.customer_phone}`:"Cliente";
+  document.getElementById("customerOrderZone").value=order?.delivery_zone||"";
+  document.getElementById("customerOrderNotes").value=order?.notes||"";
+  document.getElementById("customerOrderLines").innerHTML="";
+  document.getElementById("customerOrderEditorStatus").textContent="";
+
+  const items=order?.items?.length?order.items:[{}];
+  items.forEach(addCustomerOrderLine);
+  recalcCustomerOrderTotal();
+  document.getElementById("customerOrderEditorOverlay").classList.add("open");
+}
+
+function closeCustomerOrderEditor(){
+  document.getElementById("customerOrderEditorOverlay").classList.remove("open");
+}
+
+async function saveCustomerOrderEditor(){
+  if(!activeCustomerId)return;
+  const st=document.getElementById("customerOrderEditorStatus");
+  const zone=document.getElementById("customerOrderZone").value.trim();
+  const notes=document.getElementById("customerOrderNotes").value.trim();
+  const items=getCustomerOrderEditorItems();
+  const total=recalcCustomerOrderTotal();
+
+  if(!zone){status(st,"Introduce una zona de entrega.",true);return;}
+  if(!items.length){status(st,"Añade al menos un producto con precio válido.",true);return;}
+  if(total<=0){status(st,"El total del pedido debe ser superior a 0 €.",true);return;}
+
+  status(st,"Guardando pedido...");
+  try{
+    if(customerOrderEditorMode==="create"){
+      const {error}=await client.rpc("admin_create_customer_order",{
+        input_customer_id:activeCustomerId,
+        input_delivery_zone:zone,
+        input_notes:notes||null,
+        input_items:items,
+        input_order_total:total
+      });
+      if(error)throw error;
+      status(st,"Pedido añadido correctamente.");
+    }else{
+      const {error}=await client.rpc("admin_update_customer_order",{
+        input_order_id:customerOrderEditorOrderId,
+        input_delivery_zone:zone,
+        input_notes:notes||null,
+        input_items:items,
+        input_order_total:total
+      });
+      if(error)throw error;
+      status(st,"Pedido actualizado correctamente.");
+    }
+
+    await loadOrders();
+    await openCustomer(activeCustomerId);
+    setTimeout(closeCustomerOrderEditor,250);
+  }catch(e){
+    console.error(e);
+    status(st,"No se pudo guardar el pedido: "+e.message,true);
+  }
+}
+
 
 async function loadCustomers(){
   customersList.innerHTML='<p style="color:var(--muted)">Cargando clientes...</p>';
@@ -1607,6 +1820,12 @@ collectionCustomerSelect.addEventListener("change",loadSelectedCollection);
 refreshCollectionBtn.addEventListener("click",()=>loadCollectionModule(collectionCustomerSelect.value));
 openSelectedCustomerBtn.addEventListener("click",()=>{if(collectionCustomerSelect.value)openCustomer(collectionCustomerSelect.value);});
 closeCustomerDetail.addEventListener("click",()=>customerDetail.classList.remove("open"));
+document.getElementById("addCustomerOrderBtn")?.addEventListener("click",()=>openCustomerOrderEditor());
+document.getElementById("addCustomerOrderLineBtn")?.addEventListener("click",()=>addCustomerOrderLine());
+document.getElementById("closeCustomerOrderEditorBtn")?.addEventListener("click",closeCustomerOrderEditor);
+document.getElementById("cancelCustomerOrderEditorBtn")?.addEventListener("click",closeCustomerOrderEditor);
+document.getElementById("saveCustomerOrderBtn")?.addEventListener("click",saveCustomerOrderEditor);
+document.getElementById("customerOrderEditorOverlay")?.addEventListener("click",e=>{if(e.target.id==="customerOrderEditorOverlay")closeCustomerOrderEditor();});
 saveCustomerBtn.addEventListener("click",saveCustomer);
 resetCustomerBtn.addEventListener("click",()=>openDangerConfirm("reset"));
 deleteCustomerBtn.addEventListener("click",()=>openDangerConfirm("delete"));
