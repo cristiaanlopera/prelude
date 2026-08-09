@@ -596,7 +596,7 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
     <div class="order-detail-head"><div><div class="dashboard-kicker">Pedido</div><h2 id="orderDetailTitle">—</h2><div class="order-meta" id="orderDetailMeta"></div></div><button class="secondary" id="closeOrderDetailBtn" type="button">Cerrar</button></div>
     <div id="orderDetailBody"></div>
     <div class="order-status-buttons" id="orderStatusButtons"></div>
-    <div class="order-actions" style="margin-top:16px;justify-content:flex-start"><button id="downloadInvoiceBtn" type="button">Descargar documento PDF</button><button class="danger-btn" id="deleteCancelledOrderBtn" type="button" style="display:none">Eliminar pedido cancelado</button></div>
+    <div class="order-actions" style="margin-top:16px;justify-content:flex-start"><button id="downloadInvoiceBtn" type="button">Descargar documento PDF</button><button class="danger-btn" id="deleteCancelledOrderBtn" type="button" style="display:none" onclick="deleteCancelledOrder()">Eliminar pedido cancelado</button></div>
     <div class="order-document-note">Documento de compra de Prelude. Para utilizarlo como factura fiscal deberán configurarse previamente los datos fiscales y la numeración correspondiente.</div>
   </div>
 </section>
@@ -1586,6 +1586,14 @@ document.getElementById("ordersStatusFilter")?.addEventListener("change",renderO
 document.getElementById("closeOrderDetailBtn")?.addEventListener("click",()=>document.getElementById("orderDetailOverlay").classList.remove("open"));
 document.getElementById("orderDetailOverlay")?.addEventListener("click",e=>{if(e.target.id==="orderDetailOverlay")e.currentTarget.classList.remove("open")});
 document.getElementById("downloadInvoiceBtn")?.addEventListener("click",()=>downloadOrderPdf(activeOrder));
+
+document.addEventListener("click",event=>{
+  const btn=event.target.closest("#deleteCancelledOrderBtn");
+  if(!btn)return;
+  if(btn.getAttribute("onclick"))return;
+  deleteCancelledOrder();
+});
+
 document.getElementById("overviewLogoutBtn")?.addEventListener("click",logout);
 refreshRankingBtn.addEventListener("click",loadAdminRanking);
 customerSearch.addEventListener("input",()=>{
