@@ -596,7 +596,7 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
     <div class="order-detail-head"><div><div class="dashboard-kicker">Pedido</div><h2 id="orderDetailTitle">—</h2><div class="order-meta" id="orderDetailMeta"></div></div><button class="secondary" id="closeOrderDetailBtn" type="button">Cerrar</button></div>
     <div id="orderDetailBody"></div>
     <div class="order-status-buttons" id="orderStatusButtons"></div>
-    <div class="order-actions" style="margin-top:16px;justify-content:flex-start"><button id="downloadInvoiceBtn" type="button">Descargar documento PDF</button></div>
+    <div class="order-actions" style="margin-top:16px;justify-content:flex-start"><button id="downloadInvoiceBtn" type="button">Descargar documento PDF</button><button class="danger-btn" id="deleteCancelledOrderBtn" type="button" style="display:none">Eliminar pedido cancelado</button></div>
     <div class="order-document-note">Documento de compra de Prelude. Para utilizarlo como factura fiscal deberán configurarse previamente los datos fiscales y la numeración correspondiente.</div>
   </div>
 </section>
@@ -874,6 +874,8 @@ function openOrder(id){
   const btns=document.getElementById("orderStatusButtons");
   btns.innerHTML=Object.entries(ORDER_LABELS).map(([value,label])=>`<button class="secondary ${activeOrder.status===value?"active":""}" type="button" data-order-status="${value}">${label}</button>`).join("");
   btns.querySelectorAll("[data-order-status]").forEach(b=>b.addEventListener("click",()=>setOrderStatus(b.dataset.orderStatus)));
+  const deleteBtn=document.getElementById("deleteCancelledOrderBtn");
+  if(deleteBtn)deleteBtn.style.display=activeOrder.status==="cancelled"?"inline-flex":"none";
   document.getElementById("orderDetailOverlay").classList.add("open");
 }
 async function setOrderStatus(next){
@@ -886,6 +888,33 @@ async function setOrderStatus(next){
   if(error){alert("No se pudo actualizar el pedido: "+error.message);return;}
   await loadOrders(); activeOrder=ordersCache.find(o=>o.id===activeOrder.id)||data; openOrder(activeOrder.id); loadOverview();
 }
+
+async function deleteCancelledOrder(){
+  if(!activeOrder)return;
+  if(activeOrder.status!=="cancelled"){
+    alert("Solo se pueden eliminar pedidos cancelados.");
+    return;
+  }
+  const orderNumber=activeOrder.order_number||"";
+  const ok=confirm(`Vas a eliminar definitivamente el pedido #${orderNumber}. Esta acción solo está permitida para pedidos CANCELADOS y no se puede deshacer. ¿Continuar?`);
+  if(!ok)return;
+
+  const {data,error}=await client.rpc("admin_delete_cancelled_prelude_order",{
+    input_order_id:activeOrder.id
+  });
+
+  if(error){
+    alert("No se pudo eliminar el pedido: "+error.message);
+    return;
+  }
+
+  document.getElementById("orderDetailOverlay").classList.remove("open");
+  activeOrder=null;
+  await loadOrders();
+  await loadOverview();
+  if(activeCustomerId)await openCustomer(activeCustomerId);
+}
+
 function downloadOrderPdf(order){
   if(!order)return; const jsPDF=window.jspdf?.jsPDF; if(!jsPDF){alert("No se ha podido cargar el generador PDF.");return;}
   const doc=new jsPDF({unit:"mm",format:"a4"}); let y=22;
@@ -1034,7 +1063,7 @@ async function loadCustomerOrdersForDetail(customerId){
   const orders=data||[];
   customerOrders.innerHTML=orders.length?orders.map(o=>{
     const items=(o.items||[]).map(i=>`${escapeHtml(i.name||"Perfume")} · ${escapeHtml(String(i.size||""))}${i.size?" ml":""}${Number(i.qty||1)>1?` × ${i.qty}`:""}`).join("<br>");
-    return `<div class="customer-order-row"><div class="customer-order-top"><strong>#${escapeHtml(o.order_number||"—")}</strong><span class="order-status status-${o.status}">${ORDER_STATUS_LABELS[o.status]||o.status}</span></div><div class="customer-order-items">${items||"Sin detalle de productos"}<br><strong>${Number(o.order_total||0).toFixed(2).replace(".",",")} €</strong> · ${o.created_at?new Date(o.created_at).toLocaleDateString("es-ES"):"—"}</div></div>`;
+    return `<div class="customer-order-row"><div class="customer-order-top"><strong>#${escapeHtml(o.order_number||"—")}</strong><span class="order-status status-${o.status}">${ORDER_LABELS[o.status]||o.status}</span></div><div class="customer-order-items">${items||"Sin detalle de productos"}<br><strong>${Number(o.order_total||0).toFixed(2).replace(".",",")} €</strong> · ${o.created_at?new Date(o.created_at).toLocaleDateString("es-ES"):"—"}</div></div>`;
   }).join(""):'<p style="color:var(--muted)">Sin pedidos registrados.</p>';
   return orders;
 }
