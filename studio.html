@@ -928,52 +928,10 @@ function enhancePreludeOrderRows(){
     if(cls)row.dataset.orderStatus=cls.replace("status-","");
   });
 }
-function renderPreludeVisualDashboard(){
-  const chart=document.getElementById("preludeOrderChart");
-  const attention=document.getElementById("preludeAttention");
-  if(!chart||!attention)return;
-
-  const source=Array.isArray(window.ordersCache)?window.ordersCache:
-    (typeof ordersCache!=="undefined"&&Array.isArray(ordersCache)?ordersCache:[]);
-  const orders=source.map(o=>({
-    ...o,
-    status:String(o.status||"pending").toLowerCase(),
-    total:Number(o.order_total||o.total||0),
-    date:o.created_at||null
-  }));
-  const recent=orders.slice().sort((a,b)=>new Date(a.date||0)-new Date(b.date||0)).slice(-8);
-  const max=Math.max(1,...recent.map(o=>o.total));
-
-  chart.innerHTML=recent.length?recent.map((o,idx)=>{
-    const height=Math.max(5,(o.total/max)*130);
-    const cls=o.status==="delivered"||o.status==="ready"?o.status:
-      o.status==="cancelled"||o.status==="canceled"?"cancelled":
-      o.status==="preparing"?"preparing":"pending";
-    const label=o.date?new Date(o.date).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit"}):`#${idx+1}`;
-    return `<div class="executive-bar-col" title="${Number(o.total||0).toFixed(2).replace(".",",")} € · ${o.status}">
-      <div class="executive-bar ${cls}" style="height:${height}px"></div>
-      <div class="executive-bar-label">${label}</div>
-    </div>`;
-  }).join(""):'<span style="color:var(--muted);font-size:11px">Todavía no hay pedidos para representar.</span>';
-
-  const pending=orders.filter(o=>["pending","preparing","ready"].includes(o.status)).length;
-  const cancelled=orders.filter(o=>["cancelled","canceled"].includes(o.status)).length;
-  const delivered=orders.filter(o=>o.status==="delivered").length;
-  const rows=[];
-  if(pending)rows.push(`<div class="executive-attention-item warning"><strong>${pending} pedido${pending===1?"":"s"} en curso</strong><span>Pendientes, preparando o listos.</span></div>`);
-  if(cancelled)rows.push(`<div class="executive-attention-item danger"><strong>${cancelled} pedido${cancelled===1?"":"s"} cancelado${cancelled===1?"":"s"}</strong><span>Marcados visualmente en rojo vino.</span></div>`);
-  if(delivered)rows.push(`<div class="executive-attention-item success"><strong>${delivered} pedido${delivered===1?"":"s"} entregado${delivered===1?"":"s"}</strong><span>Operaciones completadas correctamente.</span></div>`);
-  if(!rows.length)rows.push('<div class="executive-attention-item success"><strong>Operativa al día</strong><span>No hay incidencias registradas.</span></div>');
-  attention.innerHTML=rows.join("");
-
-  enhancePreludeOrderRows();
-}
 
 
-document.addEventListener("DOMContentLoaded",()=>{
-  setTimeout(renderPreludeVisualDashboard,500);
-  setTimeout(enhancePreludeOrderRows,650);
-});
+
+
 document.getElementById("refreshOrdersBtn")?.addEventListener("click",()=>setTimeout(renderPreludeVisualDashboard,500));
 document.getElementById("refreshOverviewBtn")?.addEventListener("click",()=>setTimeout(renderPreludeVisualDashboard,500));
 
@@ -2494,6 +2452,156 @@ if(client){
 }else{
   status(loginStatus,"No se ha podido cargar Supabase. Recarga la página.",true);
 }
+
+/* ============================================================
+   PRELUDE STUDIO · FASE 9.1 · DASHBOARD DATA BRIDGE
+   ============================================================ */
+window.PRELUDE_DASHBOARD_ORDERS = window.PRELUDE_DASHBOARD_ORDERS || [];
+
+function preludeNormalizeOrders(rows){
+  return (Array.isArray(rows)?rows:[]).map(o=>({
+    ...o,
+    status:String(o.status||o.order_status||"pending").toLowerCase(),
+    total:Number(o.order_total ?? o.total ?? o.total_amount ?? 0),
+    date:o.created_at||o.createdAt||o.date||null
+  }));
+}
+
+async function preludeFetchOrdersForDashboard(){
+  // 1. Reuse any globally exposed cache if Studio has one.
+  const candidates=[
+    window.ordersCache, window.orders, window.allOrders,
+    window.preludeOrders, window.adminOrders
+  ];
+  for(const rows of candidates){
+    if(Array.isArray(rows) && rows.length){
+      window.PRELUDE_DASHBOARD_ORDERS=preludeNormalizeOrders(rows);
+      return window.PRELUDE_DASHBOARD_ORDERS;
+    }
+  }
+
+  // 2. Ask the existing Supabase client directly.
+  const sb =
+    (typeof supabaseClient!=="undefined" && supabaseClient) ||
+    (typeof client!=="undefined" && client) ||
+    window.supabaseClient || window.client || null;
+
+  if(!sb) return [];
+
+  // Prefer RPCs already commonly used by Prelude Studio.
+  const rpcNames=[
+    "admin_list_prelude_orders",
+    "admin_get_prelude_orders",
+    "admin_list_orders"
+  ];
+  for(const fn of rpcNames){
+    try{
+      const {data,error}=await sb.rpc(fn);
+      if(!error){
+        const rows=Array.isArray(data)?data:
+          Array.isArray(data?.orders)?data.orders:
+          Array.isArray(data?.data)?data.data:[];
+        if(rows.length){
+          window.PRELUDE_DASHBOARD_ORDERS=preludeNormalizeOrders(rows);
+          return window.PRELUDE_DASHBOARD_ORDERS;
+        }
+      }
+    }catch(_){}
+  }
+
+  // Final fallback: read the known orders table with the authenticated admin session.
+  for(const table of ["prelude_orders","orders"]){
+    try{
+      const {data,error}=await sb.from(table).select("*").order("created_at",{ascending:false}).limit(100);
+      if(!error && Array.isArray(data)){
+        window.PRELUDE_DASHBOARD_ORDERS=preludeNormalizeOrders(data);
+        return window.PRELUDE_DASHBOARD_ORDERS;
+      }
+    }catch(_){}
+  }
+  return [];
+}
+
+async function renderPreludeVisualDashboard(){
+  const chart=document.getElementById("preludeOrderChart");
+  const attention=document.getElementById("preludeAttention");
+  if(!chart||!attention)return;
+
+  try{
+    const orders=await preludeFetchOrdersForDashboard();
+
+    const recent=orders.slice().sort((a,b)=>new Date(a.date||0)-new Date(b.date||0)).slice(-8);
+    const max=Math.max(1,...recent.map(o=>Number(o.total||0)));
+
+    if(recent.length){
+      chart.innerHTML=recent.map((o,idx)=>{
+        const height=Math.max(8,(Number(o.total||0)/max)*130);
+        const status=o.status==="canceled"?"cancelled":o.status;
+        const cls=(status==="delivered"||status==="ready")?status:
+          status==="cancelled"?"cancelled":
+          status==="preparing"?"preparing":"pending";
+        const label=o.date
+          ? new Date(o.date).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit"})
+          : `#${idx+1}`;
+        return `<div class="executive-bar-col" title="${Number(o.total||0).toFixed(2).replace(".",",")} € · ${status}">
+          <div class="executive-bar ${cls}" style="height:${height}px"></div>
+          <div class="executive-bar-label">${label}</div>
+        </div>`;
+      }).join("");
+    }else{
+      chart.innerHTML='<span style="color:var(--muted);font-size:11px">No hay pedidos disponibles para representar.</span>';
+    }
+
+    const pending=orders.filter(o=>["pending","preparing","ready"].includes(o.status)).length;
+    const cancelled=orders.filter(o=>["cancelled","canceled"].includes(o.status)).length;
+    const delivered=orders.filter(o=>o.status==="delivered").length;
+
+    const rows=[];
+    if(pending){
+      rows.push(`<div class="executive-attention-item warning">
+        <strong>${pending} pedido${pending===1?"":"s"} en curso</strong>
+        <span>Pendientes, preparando o listos.</span>
+      </div>`);
+    }
+    if(cancelled){
+      rows.push(`<div class="executive-attention-item danger">
+        <strong>${cancelled} pedido${cancelled===1?"":"s"} cancelado${cancelled===1?"":"s"}</strong>
+        <span>Revisar o eliminar cuando corresponda.</span>
+      </div>`);
+    }
+    if(delivered){
+      rows.push(`<div class="executive-attention-item success">
+        <strong>${delivered} pedido${delivered===1?"":"s"} entregado${delivered===1?"":"s"}</strong>
+        <span>Operaciones completadas.</span>
+      </div>`);
+    }
+    if(!rows.length){
+      rows.push(`<div class="executive-attention-item success">
+        <strong>Operativa al día</strong>
+        <span>No hay pedidos que requieran atención.</span>
+      </div>`);
+    }
+    attention.innerHTML=rows.join("");
+    if(typeof enhancePreludeOrderRows==="function") enhancePreludeOrderRows();
+  }catch(err){
+    console.error("Prelude dashboard:",err);
+    chart.innerHTML='<span style="color:var(--prelude-red);font-size:11px">No se ha podido cargar la actividad.</span>';
+    attention.innerHTML='<div class="executive-attention-item danger"><strong>No se han podido consultar los pedidos</strong><span>Revisa la consola para ver el error.</span></div>';
+  }
+}
+
+function preludeScheduleDashboardRefresh(){
+  clearTimeout(window.__preludeDashTimer);
+  window.__preludeDashTimer=setTimeout(()=>renderPreludeVisualDashboard(),250);
+}
+
+
+document.addEventListener("DOMContentLoaded",()=>{
+  setTimeout(preludeScheduleDashboardRefresh,700);
+  setTimeout(preludeScheduleDashboardRefresh,1800);
+});
+window.addEventListener("focus",preludeScheduleDashboardRefresh);
+
 </script>
 </body>
 </html>

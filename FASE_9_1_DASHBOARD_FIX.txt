@@ -1,0 +1,11 @@
+PRELUDE — FASE 9.1
+
+Corrección de carga del dashboard:
+- El gráfico ya no depende de una variable local inaccesible.
+- Busca primero cachés de pedidos expuestas por Studio.
+- Si no existen, consulta Supabase directamente.
+- Prueba las RPC de pedidos y finalmente la tabla prelude_orders.
+- 'Requiere atención' usa exactamente el mismo conjunto de pedidos.
+- Reintenta tras la carga inicial para evitar carreras de inicialización.
+- No requiere SQL.
+- No modifica pedidos ni datos; solo lectura.
