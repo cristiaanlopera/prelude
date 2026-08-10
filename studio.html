@@ -411,7 +411,10 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
 
       <div class="studio-view" id="profitabilityView">
         <div class="section-heading"><div><div class="dashboard-kicker">Finanzas</div><h1>Rentabilidad</h1><p>Configura costes reales y analiza el beneficio de cada formato sin duplicar los costes compartidos del pedido.</p></div><button class="secondary" id="refreshProfitabilityBtn" type="button">Actualizar</button></div>
-        <div class="card" style="margin-bottom:16px"><div class="admin-row-head"><div><h2 style="margin:0 0 6px">Materiales de preparación</h2><p style="color:var(--muted);margin:0">Introduce lo que pagaste y cuántas unidades compraste. Prelude calcula automáticamente el coste por unidad utilizado en la rentabilidad.</p></div><button class="primary" id="savePreparationCostsBtn" type="button">Guardar materiales</button></div><div id="preparationCostsGrid"></div><div class="status" id="preparationCostsStatus"></div></div>
+        <div class="card" style="margin-bottom:16px"><div class="admin-row-head"><div><h2 style="margin:0 0 6px">Materiales de preparación</h2><p style="color:var(--muted);margin:0">Introduce lo que pagaste y cuántas unidades compraste. Prelude calcula automáticamente el coste por unidad utilizado en la rentabilidad.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap">
+  <button class="secondary" id="addPreparationMaterialBtn" type="button">+ Añadir material</button>
+  <button class="primary" id="savePreparationCostsBtn" type="button">Guardar materiales</button>
+</div></div><div id="preparationCostsGrid"></div><div class="status" id="preparationCostsStatus"></div></div>
         <div class="card" style="margin-bottom:16px">
   <div class="profit-cost-grid">
     <div class="field"><label>Perfume</label><select id="profitabilityProductSelect"><option value="">Selecciona un perfume</option></select></div>
@@ -623,6 +626,62 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
 </section>
 
 
+
+
+<section class="order-detail-overlay" id="materialEditorOverlay">
+  <div class="order-detail-card" style="max-width:720px">
+    <div class="order-detail-head">
+      <div>
+        <div class="dashboard-kicker">Rentabilidad · Materiales</div>
+        <h2>Nuevo material</h2>
+        <div class="order-meta">Añade consumibles futuros sin editar el código.</div>
+      </div>
+      <button class="secondary" id="closeMaterialEditorBtn" type="button">Cerrar</button>
+    </div>
+
+    <div class="detail-grid" style="grid-template-columns:1fr 1fr;margin-top:18px">
+      <div class="detail-field" style="grid-column:1/-1">
+        <label>Nombre del material</label>
+        <input id="newMaterialLabel" placeholder="Ej.: Cinta adhesiva">
+      </div>
+      <div class="detail-field">
+        <label>Cómo se utiliza</label>
+        <select id="newMaterialScope">
+          <option value="per_order">1 por pedido</option>
+          <option value="per_decant">1 por decant</option>
+        </select>
+      </div>
+      <div class="detail-field">
+        <label>Formato específico</label>
+        <select id="newMaterialSize">
+          <option value="">Todos / No aplica</option>
+          <option value="2">Solo 2 ml</option>
+          <option value="3">Solo 3 ml</option>
+          <option value="5">Solo 5 ml</option>
+          <option value="10">Solo 10 ml</option>
+        </select>
+      </div>
+      <div class="detail-field">
+        <label>Precio de compra (€)</label>
+        <input id="newMaterialPurchase" type="number" min="0" step="0.01" value="0">
+      </div>
+      <div class="detail-field">
+        <label>Unidades compradas</label>
+        <input id="newMaterialPurchased" type="number" min="0" step="1" value="0">
+      </div>
+      <div class="detail-field">
+        <label>Unidades disponibles</label>
+        <input id="newMaterialAvailable" type="number" min="0" step="1" value="0">
+      </div>
+    </div>
+
+    <div class="status" id="newMaterialStatus"></div>
+    <div class="order-actions" style="margin-top:18px;justify-content:flex-end">
+      <button class="secondary" id="cancelMaterialEditorBtn" type="button">Cancelar</button>
+      <button class="primary" id="createMaterialBtn" type="button">Añadir material</button>
+    </div>
+  </div>
+</section>
 
 <section class="order-detail-overlay" id="customerOrderEditorOverlay">
   <div class="order-detail-card" style="max-width:900px">
@@ -1822,18 +1881,67 @@ function updateMaterialCalculatedCost(row){
 function renderPreparationCosts(){
  const grid=document.getElementById("preparationCostsGrid");if(!grid)return;
  grid.innerHTML=`<div style="overflow-x:auto"><table class="material-cost-table">
- <thead><tr><th>Material</th><th>Precio compra</th><th>Unidades compradas</th><th>Unidades disponibles</th><th>Coste / unidad</th></tr></thead>
+ <thead><tr><th>Material</th><th>Precio compra</th><th>Unidades compradas</th><th>Unidades disponibles</th><th>Coste / unidad</th><th></th></tr></thead>
  <tbody>${preparationCostsCache.map(c=>`<tr data-material-row="${escapeHtml(c.id)}">
    <td><strong>${escapeHtml(c.label)}</strong><div class="material-scope">${c.cost_scope==="per_order"?"1 por pedido":(c.decant_size_ml?`1 por decant de ${c.decant_size_ml} ml`:"1 por decant")}</div></td>
    <td><input data-material-purchase="${escapeHtml(c.id)}" type="number" min="0" step="0.01" value="${Number(c.purchase_price||0).toFixed(2)}"></td>
    <td><input data-material-units="${escapeHtml(c.id)}" type="number" min="0" step="1" value="${Number(c.purchased_units||0)}"></td>
    <td><input data-material-available="${escapeHtml(c.id)}" type="number" min="0" step="1" value="${Number(c.available_units||0)}"></td>
-   <td class="material-unit-cost" data-material-unit-cost="${escapeHtml(c.id)}">${profitMoney(materialUnitCost(c),4)}</td>
+   <td class="material-unit-cost" data-material-unit-cost="${escapeHtml(c.id)}">${profitMoney(materialUnitCost(c),4)}</td><td><button class="danger-lite" type="button" data-delete-material="${escapeHtml(c.id)}">Quitar</button></td>
  </tr>`).join("")}</tbody></table></div>`;
  grid.querySelectorAll("[data-material-row]").forEach(row=>{
    row.querySelectorAll("input").forEach(inp=>inp.addEventListener("input",()=>updateMaterialCalculatedCost(row)));
  });
+ grid.querySelectorAll("[data-delete-material]").forEach(btn=>btn.addEventListener("click",()=>deletePreparationMaterial(btn.dataset.deleteMaterial)));
 }
+
+function openMaterialEditor(){
+  document.getElementById("newMaterialLabel").value="";
+  document.getElementById("newMaterialScope").value="per_order";
+  document.getElementById("newMaterialSize").value="";
+  document.getElementById("newMaterialPurchase").value="0";
+  document.getElementById("newMaterialPurchased").value="0";
+  document.getElementById("newMaterialAvailable").value="0";
+  document.getElementById("newMaterialStatus").textContent="";
+  document.getElementById("materialEditorOverlay").classList.add("open");
+}
+function closeMaterialEditor(){
+  document.getElementById("materialEditorOverlay").classList.remove("open");
+}
+async function createPreparationMaterial(){
+  const st=document.getElementById("newMaterialStatus");
+  const label=document.getElementById("newMaterialLabel").value.trim();
+  const scope=document.getElementById("newMaterialScope").value;
+  const sizeRaw=document.getElementById("newMaterialSize").value;
+  const purchase=Number(document.getElementById("newMaterialPurchase").value||0);
+  const purchased=Number(document.getElementById("newMaterialPurchased").value||0);
+  const available=Number(document.getElementById("newMaterialAvailable").value||0);
+
+  if(!label){status(st,"Introduce el nombre del material.",true);return;}
+  if(purchase<0||purchased<0||available<0){status(st,"Los valores no pueden ser negativos.",true);return;}
+  if(purchase>0&&purchased<=0){status(st,"Indica cuántas unidades compraste.",true);return;}
+
+  const {error}=await client.rpc("admin_create_prelude_preparation_material",{
+    input_label:label,
+    input_cost_scope:scope,
+    input_decant_size_ml:sizeRaw?Number(sizeRaw):null,
+    input_purchase_price:purchase,
+    input_purchased_units:purchased,
+    input_available_units:available
+  });
+  if(error){status(st,"No se pudo añadir: "+error.message,true);return;}
+  status(st,"Material añadido.");
+  await loadProfitabilityAdmin();
+  setTimeout(closeMaterialEditor,250);
+}
+async function deletePreparationMaterial(id){
+  const item=preparationCostsCache.find(c=>c.id===id);
+  if(!confirm(`Quitar "${item?.label||id}" de la lista de materiales?`))return;
+  const {error}=await client.rpc("admin_delete_prelude_preparation_material",{input_id:id});
+  if(error){alert("No se pudo quitar el material: "+error.message);return;}
+  await loadProfitabilityAdmin();
+}
+
 async function savePreparationCosts(){
  const st=document.getElementById("preparationCostsStatus"),btn=document.getElementById("savePreparationCostsBtn");btn.disabled=true;
  try{
@@ -2102,6 +2210,11 @@ document.getElementById("copyMessageBtn").addEventListener("click",event=>copyTe
 
 document.getElementById("refreshProfitabilityBtn")?.addEventListener("click",loadProfitabilityAdmin);
 document.getElementById("savePreparationCostsBtn")?.addEventListener("click",savePreparationCosts);
+document.getElementById("addPreparationMaterialBtn")?.addEventListener("click",openMaterialEditor);
+document.getElementById("closeMaterialEditorBtn")?.addEventListener("click",closeMaterialEditor);
+document.getElementById("cancelMaterialEditorBtn")?.addEventListener("click",closeMaterialEditor);
+document.getElementById("createMaterialBtn")?.addEventListener("click",createPreparationMaterial);
+document.getElementById("materialEditorOverlay")?.addEventListener("click",e=>{if(e.target.id==="materialEditorOverlay")closeMaterialEditor();});
 document.getElementById("profitabilityProductSelect")?.addEventListener("change",e=>loadProfitabilityProduct(e.target.value));
 document.getElementById("profitTargetMarkup")?.addEventListener("input",refreshProfitabilityMarkupTable);
 if(client){
