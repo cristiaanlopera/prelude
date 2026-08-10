@@ -317,6 +317,36 @@ body{background:
  .studio-insight-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
+
+/* PRELUDE STUDIO · FASE 9 · DASHBOARD */
+.dashboard-hero-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:18px 0}
+.dashboard-kpi{padding:18px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.78);box-shadow:0 12px 30px rgba(25,23,20,.045)}
+.dashboard-kpi-label{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.dashboard-kpi-value{font-family:Georgia,"Times New Roman",serif;font-size:29px;line-height:1.1;margin-top:9px}
+.dashboard-kpi-note{font-size:10px;color:var(--muted);margin-top:7px}
+.dashboard-visual-grid{display:grid;grid-template-columns:1.45fr .9fr;gap:16px;margin-top:16px}
+.dashboard-panel{border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.78);padding:18px}
+.dashboard-panel h3{font-family:Georgia,"Times New Roman",serif;font-size:20px;margin:0 0 5px}
+.dashboard-panel-sub{font-size:11px;color:var(--muted);margin-bottom:16px}
+.prelude-bars{display:flex;align-items:flex-end;gap:8px;height:160px;border-bottom:1px solid var(--line);padding:0 4px}
+.prelude-bar-wrap{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:6px}
+.prelude-bar{width:70%;min-width:10px;background:#222;border-radius:6px 6px 2px 2px;min-height:2px;opacity:.86}
+.prelude-bar-label{font-size:9px;color:var(--muted);white-space:nowrap}
+.attention-list{display:grid;gap:9px}
+.attention-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.attention-item strong{font-size:12px}
+.attention-item span{font-size:10px;color:var(--muted)}
+.attention-item.danger{border-left:3px solid var(--danger)}
+.attention-item.warning{border-left:3px solid var(--warning)}
+.attention-item.success{border-left:3px solid var(--success)}
+.dashboard-ranking{display:grid;gap:10px}
+.dashboard-rank-row{display:grid;grid-template-columns:26px 1fr auto;align-items:center;gap:10px}
+.dashboard-rank-num{font-family:Georgia,"Times New Roman",serif;font-size:18px;color:var(--muted)}
+.dashboard-rank-name{font-size:12px}
+.dashboard-rank-value{font-weight:700;font-size:12px}
+@media(max-width:1050px){.dashboard-hero-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.dashboard-hero-grid{grid-template-columns:repeat(2,1fr)}.dashboard-visual-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -337,6 +367,42 @@ body{background:
   <div class="studio-shell">
     <aside class="studio-sidebar">
       <div class="studio-sidebar-title">Centro de control</div>
+<div id="preludeExecutiveDashboard">
+  <div class="dashboard-hero-grid">
+    <div class="dashboard-kpi"><div class="dashboard-kpi-label">Ventas entregadas</div><div class="dashboard-kpi-value" id="execRevenue">—</div><div class="dashboard-kpi-note">Pedidos completados</div></div>
+    <div class="dashboard-kpi"><div class="dashboard-kpi-label">Beneficio estimado</div><div class="dashboard-kpi-value" id="execProfit">—</div><div class="dashboard-kpi-note">Ventas − coste directo estimado</div></div>
+    <div class="dashboard-kpi"><div class="dashboard-kpi-label">Pedidos</div><div class="dashboard-kpi-value" id="execOrders">—</div><div class="dashboard-kpi-note" id="execOrdersNote">Actividad registrada</div></div>
+    <div class="dashboard-kpi"><div class="dashboard-kpi-label">Ticket medio</div><div class="dashboard-kpi-value" id="execAvgTicket">—</div><div class="dashboard-kpi-note">Sobre pedidos entregados</div></div>
+    <div class="dashboard-kpi"><div class="dashboard-kpi-label">Cancelados</div><div class="dashboard-kpi-value" id="execCancelled">—</div><div class="dashboard-kpi-note">Pedidos cancelados</div></div>
+  </div>
+
+  <div class="dashboard-visual-grid">
+    <div class="dashboard-panel">
+      <h3>Actividad de pedidos</h3>
+      <div class="dashboard-panel-sub">Últimos pedidos registrados en Prelude Studio.</div>
+      <div class="prelude-bars" id="execOrderBars"></div>
+    </div>
+    <div class="dashboard-panel">
+      <h3>Requiere atención</h3>
+      <div class="dashboard-panel-sub">Prioridades operativas del negocio.</div>
+      <div class="attention-list" id="execAttention"><div class="attention-item"><span>Cargando información…</span></div></div>
+    </div>
+  </div>
+
+  <div class="dashboard-visual-grid">
+    <div class="dashboard-panel">
+      <h3>Perfumes con mayor facturación</h3>
+      <div class="dashboard-panel-sub">Ranking estimado a partir de las líneas de pedido disponibles.</div>
+      <div class="dashboard-ranking" id="execTopPerfumes"><span style="color:var(--muted);font-size:11px">Cargando…</span></div>
+    </div>
+    <div class="dashboard-panel">
+      <h3>Estado del negocio</h3>
+      <div class="dashboard-panel-sub">Lectura rápida de pedidos y catálogo.</div>
+      <div class="attention-list" id="execBusinessHealth"></div>
+    </div>
+  </div>
+</div>
+
       <div class="studio-tabs">
         <button class="active" id="dashboardTabBtn" data-studio-view="overview" type="button">Dashboard</button>
         <button id="ordersTabBtn" data-studio-view="orders" type="button">Pedidos</button>
@@ -842,6 +908,107 @@ function enhancePreludeStudioNavigation(){
   });
 }
 document.addEventListener("DOMContentLoaded",enhancePreludeStudioNavigation);
+
+
+async function loadPreludeExecutiveDashboard(){
+  const money=v=>new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR"}).format(Number(v||0));
+  try{
+    let orders=[];
+    // Prefer the same orders RPC already used by Studio.
+    if(typeof client!=="undefined"){
+      const candidates=["admin_list_prelude_orders","admin_get_prelude_orders"];
+      for(const fn of candidates){
+        try{
+          const r=await client.rpc(fn);
+          if(!r.error && Array.isArray(r.data)){orders=r.data;break;}
+          if(!r.error && Array.isArray(r.data?.orders)){orders=r.data.orders;break;}
+        }catch(_){}
+      }
+    }
+
+    const normalized=orders.map(o=>({
+      ...o,
+      status:String(o.status||o.order_status||"pending").toLowerCase(),
+      total:Number(o.total||o.order_total||o.total_amount||0),
+      created:o.created_at||o.createdAt||o.date||null,
+      items:Array.isArray(o.items)?o.items:(Array.isArray(o.order_items)?o.order_items:[])
+    }));
+    const delivered=normalized.filter(o=>o.status==="delivered");
+    const cancelled=normalized.filter(o=>o.status==="cancelled"||o.status==="canceled");
+    const active=normalized.filter(o=>["pending","preparing","ready"].includes(o.status));
+    const revenue=delivered.reduce((a,o)=>a+o.total,0);
+    const avg=delivered.length?revenue/delivered.length:0;
+
+    const revenueEl=document.getElementById("execRevenue");
+    const ordersEl=document.getElementById("execOrders");
+    const avgEl=document.getElementById("execAvgTicket");
+    const cancelEl=document.getElementById("execCancelled");
+    if(revenueEl)revenueEl.textContent=money(revenue);
+    if(ordersEl)ordersEl.textContent=String(normalized.length);
+    if(avgEl)avgEl.textContent=money(avg);
+    if(cancelEl){cancelEl.textContent=String(cancelled.length);cancelEl.className="dashboard-kpi-value "+(cancelled.length?"prelude-negative":"");}
+    const note=document.getElementById("execOrdersNote");if(note)note.textContent=`${active.length} requieren gestión`;
+
+    // Profit is intentionally conservative: only show when item-level cost is available.
+    let profit=0, profitKnown=false;
+    delivered.forEach(o=>o.items.forEach(it=>{
+      const sale=Number(it.line_total||it.total||((it.price||0)*(it.qty||it.quantity||1)));
+      const cost=Number(it.direct_cost||it.cost||0);
+      if(cost>0){profit += sale-cost*(Number(it.qty||it.quantity||1));profitKnown=true;}
+    }));
+    const profitEl=document.getElementById("execProfit");
+    if(profitEl){
+      profitEl.textContent=profitKnown?money(profit):"—";
+      profitEl.className="dashboard-kpi-value "+(profitKnown?(profit>=0?"prelude-positive":"prelude-negative"):"");
+    }
+
+    // Last 8 orders as compact editorial bars.
+    const bars=document.getElementById("execOrderBars");
+    if(bars){
+      const recent=normalized.slice().sort((a,b)=>new Date(a.created||0)-new Date(b.created||0)).slice(-8);
+      const max=Math.max(1,...recent.map(o=>o.total));
+      bars.innerHTML=recent.length?recent.map((o,idx)=>{
+        const h=Math.max(5,(o.total/max)*125);
+        const label=o.created?new Date(o.created).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit"}):`#${idx+1}`;
+        return `<div class="prelude-bar-wrap" title="${money(o.total)}"><div class="prelude-bar" style="height:${h}px;${(o.status==="cancelled"||o.status==="canceled")?"background:var(--danger)":o.status==="delivered"?"background:var(--success)":""}"></div><div class="prelude-bar-label">${label}</div></div>`;
+      }).join(""):'<span style="color:var(--muted);font-size:11px">Todavía no hay pedidos para representar.</span>';
+    }
+
+    // Attention block
+    const attention=document.getElementById("execAttention");
+    if(attention){
+      const rows=[];
+      if(active.length)rows.push(`<div class="attention-item warning"><div><strong>${active.length} pedido${active.length===1?"":"s"} en curso</strong><br><span>Pendientes, preparando o listos</span></div></div>`);
+      if(cancelled.length)rows.push(`<div class="attention-item danger"><div><strong>${cancelled.length} cancelado${cancelled.length===1?"":"s"}</strong><br><span>Revisar si procede eliminarlos</span></div></div>`);
+      if(!active.length&&!cancelled.length)rows.push('<div class="attention-item success"><div><strong>Operativa al día</strong><br><span>No hay incidencias destacadas en pedidos.</span></div></div>');
+      attention.innerHTML=rows.join("");
+    }
+
+    // Top perfumes from order lines
+    const totals={};
+    normalized.filter(o=>o.status!=="cancelled"&&o.status!=="canceled").forEach(o=>o.items.forEach(it=>{
+      const name=it.name||it.perfume_name||it.product_name||"Perfume";
+      const val=Number(it.line_total||it.total||((it.price||0)*(it.qty||it.quantity||1)));
+      totals[name]=(totals[name]||0)+val;
+    }));
+    const top=Object.entries(totals).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    const topEl=document.getElementById("execTopPerfumes");
+    if(topEl)topEl.innerHTML=top.length?top.map(([name,val],idx)=>`<div class="dashboard-rank-row"><div class="dashboard-rank-num">${idx+1}</div><div class="dashboard-rank-name">${escapeHtml(name)}</div><div class="dashboard-rank-value">${money(val)}</div></div>`).join(""):'<span style="color:var(--muted);font-size:11px">Los datos aparecerán cuando haya líneas de pedido disponibles.</span>';
+
+    const health=document.getElementById("execBusinessHealth");
+    if(health){
+      const deliveredPct=normalized.length?Math.round(delivered.length/normalized.length*100):0;
+      health.innerHTML=`
+        <div class="attention-item ${deliveredPct>=70?"success":"warning"}"><div><strong>${deliveredPct}% entregados</strong><br><span>Sobre todos los pedidos registrados</span></div></div>
+        <div class="attention-item ${cancelled.length?"danger":"success"}"><div><strong>${cancelled.length} cancelaciones</strong><br><span>${cancelled.length?"Conviene vigilar esta cifra":"Sin cancelaciones registradas"}</span></div></div>`;
+    }
+  }catch(err){
+    console.warn("Dashboard ejecutivo Prelude:",err);
+  }
+}
+
+
+document.addEventListener("DOMContentLoaded",()=>setTimeout(loadPreludeExecutiveDashboard,350));
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>

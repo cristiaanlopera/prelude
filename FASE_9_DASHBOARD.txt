@@ -1,0 +1,10 @@
+PRELUDE — FASE 9 · DASHBOARD
+
+- Dashboard ejecutivo con KPIs: ventas entregadas, beneficio estimado cuando existe coste por línea,
+  pedidos, ticket medio y cancelaciones.
+- Gráfico editorial compacto de actividad reciente.
+- Verde para entregados/positivo; rojo vino para cancelaciones/pérdidas; ámbar para gestión pendiente.
+- Bloque "Requiere atención".
+- Ranking de perfumes por facturación cuando las líneas de pedido están disponibles.
+- Estado general del negocio.
+- No se modifica la base de datos ni se requiere SQL adicional.
