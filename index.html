@@ -1639,8 +1639,31 @@ function renderProducts(){
   let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("show");o.unobserve(e.target)}}),{threshold:.1});document.querySelectorAll(".card").forEach(c=>o.observe(c))
 }
 
+
+let PRELUDE_PREPARATION_FEE={enabled:true,customer_fee:1,free_from:20,real_cost:0};
+
+async function loadPreparationFee(){
+  if(!supabaseClient)return;
+  try{
+    const {data,error}=await supabaseClient.rpc("get_prelude_preparation_fee");
+    if(error)throw error;
+    if(data)PRELUDE_PREPARATION_FEE=data;
+    renderCart();
+  }catch(error){console.warn("Tarifa de preparación no disponible",error);}
+}
+function checkoutPreparationFee(subtotal){
+  const cfg=PRELUDE_PREPARATION_FEE||{};
+  if(cfg.enabled===false)return 0;
+  const fee=Math.max(0,Number(cfg.customer_fee||0));
+  const threshold=Math.max(0,Number(cfg.free_from||0));
+  if(threshold>0 && subtotal>=threshold)return 0;
+  return fee;
+}
 function renderCart(){
   let sub=cart.reduce((s,x)=>s+x.price*x.qty,0);
+  const preparationFee=checkoutPreparationFee(sub);
+  const finalTotal=sub+preparationFee;
+  const freeFrom=Math.max(0,Number(PRELUDE_PREPARATION_FEE?.free_from||0));
   const availableRewards=pendingRewards();
 
   /* Eliminar selecciones que ya no estén pendientes. */
@@ -1672,7 +1695,9 @@ function renderCart(){
     ${rewardsHtml}
     <div class="totals">
       <div class="row"><span>Subtotal</span><span>${euro.format(sub)}</span></div>
-      <div class="row grand"><span>Total</span><span>${euro.format(sub)}</span></div>
+      <div class="row"><span>Preparación Prelude</span><span>${preparationFee>0?euro.format(preparationFee):"Gratis"}</span></div>
+      ${preparationFee>0&&freeFrom>0&&sub<freeFrom?`<div class="muted" style="margin:5px 0 8px">Preparación gratuita a partir de ${euro.format(freeFrom)}.</div>`:""}
+      <div class="row grand"><span>Total</span><span>${euro.format(finalTotal)}</span></div>
     </div>
     <div class="customer">
       <div class="customer-title">Preparar mi Prelude</div>
@@ -1759,6 +1784,8 @@ async function send(){
 
   const selectedRewards=pendingRewards().filter(reward=>selectedRewardIds.has(reward.id));
   const sub=cart.reduce((s,x)=>s+x.price*x.qty,0);
+  const preparationFee=checkoutPreparationFee(sub);
+  const finalTotal=sub+preparationFee;
 
   let savedOrder=null;
   if(supabaseClient){
@@ -1771,7 +1798,7 @@ async function send(){
         input_delivery_zone:deliveryZone,
         input_notes:notes||null,
         input_items:payloadItems,
-        input_order_total:sub,
+        input_order_total:finalTotal,
         input_reward_ids:selectedRewards.map(reward=>String(reward.id))
       });
       if(error)throw error;
@@ -1796,6 +1823,9 @@ async function send(){
     "Pedido",
     "",
     ...cart.map(x=>`• ${x.name} · ${x.size} × ${x.qty} — ${euro.format(x.price*x.qty)}`),
+    "",
+    `Subtotal: ${euro.format(sub)}`,
+    `Preparación Prelude: ${preparationFee>0?euro.format(preparationFee):"Gratis"}`,
     ...(selectedRewards.length?[
       "",
       "Recompensas que deseo canjear",
@@ -1803,7 +1833,7 @@ async function send(){
       ...selectedRewards.map(reward=>`• ${reward.reward_label} [${reward.id}]`)
     ]:[]),
     "",
-    `Total: ${euro.format(sub)}`,
+    `Total: ${euro.format(finalTotal)}`,
     "",
     "━━━━━━━━━━━━━━━━━━━━",
     "",
@@ -3335,6 +3365,7 @@ async function bootstrapPrelude(){
   renderProducts();
   renderCart();
   try{ await loadStudioManagedCatalog(); }catch(err){ console.warn("Catálogo Studio no disponible; se mantiene el catálogo local.",err); }
+  try{ await loadPreparationFee(); }catch(err){ console.warn("Tarifa de preparación no disponible.",err); }
   renderProducts();
   renderCart();
   renderLibrary();

@@ -1,0 +1,10 @@
+PRELUDE — RENTABILIDAD FASE 6
+
+- El precio recomendado de cada decant continúa basado en el coste real de compra + % configurable.
+- PVP de botella queda como dato informativo.
+- Nueva Tarifa de preparación Prelude, independiente del coste real.
+- Tarifa al cliente editable.
+- Preparación gratuita desde un importe configurable.
+- La cesta muestra Subtotal + Preparación Prelude + Total.
+- La tarifa se cobra una sola vez por pedido.
+- El total registrado en Prelude Studio incluye la tarifa de preparación.

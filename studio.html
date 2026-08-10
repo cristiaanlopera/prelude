@@ -416,6 +416,26 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
   <button class="primary" id="savePreparationCostsBtn" type="button">Guardar materiales</button>
 </div></div><div id="preparationCostsGrid"></div><div class="status" id="preparationCostsStatus"></div></div>
         <div class="card" style="margin-bottom:16px">
+          <div class="admin-row-head">
+            <div>
+              <h2 style="margin:0 0 6px">Tarifa de preparación Prelude</h2>
+              <p style="color:var(--muted);margin:0">Se cobra una sola vez por pedido. El coste real se calcula desde los materiales marcados como “1 por pedido”.</p>
+            </div>
+            <button class="primary" id="savePreparationFeeBtn" type="button">Guardar tarifa</button>
+          </div>
+          <div class="profit-cost-grid" style="margin-top:14px">
+            <div class="field"><label>Coste real actual</label><input id="realPreparationCost" type="text" value="—" disabled><small style="color:var(--muted)">ZIP + acolchada + burbuja + guantes y futuros materiales por pedido.</small></div>
+            <div class="field"><label>Tarifa al cliente (€)</label><input id="customerPreparationFee" type="number" min="0" step="0.01" value="1.00"></div>
+            <div class="field"><label>Preparación gratuita desde (€)</label><input id="freePreparationThreshold" type="number" min="0" step="0.01" value="20.00"><small style="color:var(--muted)">0 € = nunca se aplica gratuidad automática.</small></div>
+            <div class="field"><label>Cobrar tarifa</label><select id="preparationFeeEnabled"><option value="true">Sí</option><option value="false">No</option></select></div>
+          </div>
+          <div class="profit-summary-grid" style="margin-top:14px">
+            <div class="metric-card"><div class="metric-label">Margen preparación</div><div class="metric-value" id="preparationFeeMargin">—</div><div class="metric-note">Tarifa cliente − coste real</div></div>
+          </div>
+          <div class="status" id="preparationFeeStatus"></div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
   <div class="profit-cost-grid">
     <div class="field"><label>Perfume</label><select id="profitabilityProductSelect"><option value="">Selecciona un perfume</option></select></div>
     <div class="field"><label>Beneficio objetivo sobre coste (%)</label><input id="profitTargetMarkup" type="number" min="0" step="0.1" value="30"><small style="color:var(--muted)">Ej.: coste 2,00 € + 30 % = precio recomendado 2,60 €.</small></div>
@@ -1967,6 +1987,46 @@ async function savePreparationCosts(){
    if(st)st.textContent="No se pudieron guardar los materiales: "+(e.message||e);
  }finally{btn.disabled=false}
 }
+
+let preparationFeeSettings={enabled:true,customer_fee:1,free_from:20,real_cost:0};
+
+function renderPreparationFeeSettings(){
+  const d=preparationFeeSettings||{};
+  const real=Number(d.real_cost||0), fee=Number(d.customer_fee||0);
+  const realEl=document.getElementById("realPreparationCost");
+  if(realEl)realEl.value=profitMoney(real);
+  const feeEl=document.getElementById("customerPreparationFee");
+  if(feeEl)feeEl.value=fee.toFixed(2);
+  const freeEl=document.getElementById("freePreparationThreshold");
+  if(freeEl)freeEl.value=Number(d.free_from||0).toFixed(2);
+  const enabledEl=document.getElementById("preparationFeeEnabled");
+  if(enabledEl)enabledEl.value=d.enabled===false?"false":"true";
+  const margin=document.getElementById("preparationFeeMargin");
+  if(margin)margin.textContent=profitMoney(fee-real);
+}
+async function loadPreparationFeeSettings(){
+  try{
+    const {data,error}=await client.rpc("admin_get_prelude_preparation_fee_settings");
+    if(error)throw error;
+    preparationFeeSettings=data||preparationFeeSettings;
+    renderPreparationFeeSettings();
+  }catch(e){console.error(e);const st=document.getElementById("preparationFeeStatus");if(st)st.textContent="No se pudo cargar la tarifa: "+e.message}
+}
+async function savePreparationFeeSettings(){
+  const st=document.getElementById("preparationFeeStatus");
+  const fee=Number(document.getElementById("customerPreparationFee").value||0);
+  const freeFrom=Number(document.getElementById("freePreparationThreshold").value||0);
+  const enabled=document.getElementById("preparationFeeEnabled").value==="true";
+  if(fee<0||freeFrom<0){status(st,"Los importes no pueden ser negativos.",true);return}
+  const {data,error}=await client.rpc("admin_save_prelude_preparation_fee_settings",{
+    input_enabled:enabled,input_customer_fee:fee,input_free_from:freeFrom
+  });
+  if(error){status(st,"No se pudo guardar: "+error.message,true);return}
+  preparationFeeSettings=data||preparationFeeSettings;
+  renderPreparationFeeSettings();
+  status(st,"Tarifa de preparación actualizada.");
+}
+
 function renderProfitabilityProductSelect(){
  const sel=document.getElementById("profitabilityProductSelect");if(!sel)return;const current=sel.value;
  sel.innerHTML='<option value="">Selecciona un perfume</option>'+[...catalogAdminCache].sort((a,b)=>String(a.name).localeCompare(String(b.name),"es")).map(p=>`<option value="${p.id}">${escapeHtml(p.name)} · ${escapeHtml(p.brand||"")}</option>`).join("");if(catalogAdminCache.some(p=>String(p.id)===current))sel.value=current;
@@ -2210,6 +2270,8 @@ document.getElementById("copyMessageBtn").addEventListener("click",event=>copyTe
 
 document.getElementById("refreshProfitabilityBtn")?.addEventListener("click",loadProfitabilityAdmin);
 document.getElementById("savePreparationCostsBtn")?.addEventListener("click",savePreparationCosts);
+document.getElementById("savePreparationFeeBtn")?.addEventListener("click",savePreparationFeeSettings);
+document.getElementById("customerPreparationFee")?.addEventListener("input",()=>{preparationFeeSettings.customer_fee=Number(document.getElementById("customerPreparationFee").value||0);renderPreparationFeeSettings();});
 document.getElementById("addPreparationMaterialBtn")?.addEventListener("click",openMaterialEditor);
 document.getElementById("closeMaterialEditorBtn")?.addEventListener("click",closeMaterialEditor);
 document.getElementById("cancelMaterialEditorBtn")?.addEventListener("click",closeMaterialEditor);
