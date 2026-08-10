@@ -269,6 +269,54 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
  .material-cost-table input{min-width:105px}
 }
 
+
+/* ============================================================
+   PRELUDE STUDIO · FASE 8 · EDITORIAL MANAGEMENT UI
+   ============================================================ */
+:root{
+  --success:#315f46;
+  --success-bg:#edf4ef;
+  --danger:#8b3434;
+  --danger-bg:#f8eeee;
+  --warning:#8a682c;
+  --warning-bg:#f7f1e5;
+  --studio-ink:#171716;
+  --studio-paper:#f4f1eb;
+}
+body{background:
+  radial-gradient(circle at 12% 8%,rgba(255,255,255,.92),transparent 30%),
+  linear-gradient(135deg,#f7f5f1 0%,#efede7 100%);}
+.sidebar{box-shadow:0 18px 45px rgba(26,24,20,.07);backdrop-filter:blur(12px)}
+.card{box-shadow:0 16px 38px rgba(25,23,20,.055)}
+.metric-card{transition:transform .18s ease,box-shadow .18s ease}
+.metric-card:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(25,23,20,.07)}
+.prelude-positive,.profit-positive{color:var(--success)!important}
+.prelude-negative,.profit-negative{color:var(--danger)!important}
+.prelude-warning{color:var(--warning)!important}
+.status-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);background:#fff}
+.status-chip::before{content:"";width:6px;height:6px;border-radius:50%;background:#777}
+.status-chip.delivered,.status-chip.ready{color:var(--success);background:var(--success-bg);border-color:rgba(49,95,70,.18)}
+.status-chip.delivered::before,.status-chip.ready::before{background:var(--success)}
+.status-chip.cancelled{color:var(--danger);background:var(--danger-bg);border-color:rgba(139,52,52,.18)}
+.status-chip.cancelled::before{background:var(--danger)}
+.status-chip.preparing,.status-chip.pending{color:var(--warning);background:var(--warning-bg);border-color:rgba(138,104,44,.18)}
+.status-chip.preparing::before,.status-chip.pending::before{background:var(--warning)}
+.studio-section-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 18px}
+.studio-section-tabs button{border:1px solid var(--line);background:rgba(255,255,255,.65);padding:9px 13px;border-radius:999px;cursor:pointer}
+.studio-section-tabs button.active{background:#171716;color:#fff;border-color:#171716}
+.studio-group-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding:15px 10px 5px}
+.studio-insight-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0}
+.studio-insight-card{padding:16px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.72)}
+.studio-insight-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.studio-insight-value{font-family:Georgia,"Times New Roman",serif;font-size:26px;margin-top:7px}
+.financial-equation{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:5px}
+.financial-equation strong{font-size:14px;color:var(--studio-ink)}
+.order-cancelled{border-left:3px solid var(--danger)!important}
+.order-delivered{border-left:3px solid var(--success)!important}
+@media(max-width:850px){
+ .studio-insight-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
 </style>
 </head>
 <body>
@@ -769,7 +817,33 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
 </section>
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+function enhancePreludeStudioNavigation(){
+  const nav=document.querySelector(".sidebar");
+  if(!nav||nav.dataset.grouped==="1")return;
+  nav.dataset.grouped="1";
+  const links=[...nav.querySelectorAll("button,a")];
+  const find=(txt)=>links.find(x=>x.textContent.trim().toLowerCase().includes(txt.toLowerCase()));
+  const groups=[
+    ["Ventas","Pedidos"],
+    ["Colección","Catálogo"],
+    ["Finanzas","Rentabilidad"],
+    ["Fidelización","Recompensas"],
+    ["Experiencia","Museo Olfativo"]
+  ];
+  groups.forEach(([label,target])=>{
+    const el=find(target);
+    if(el){
+      const tag=document.createElement("div");
+      tag.className="studio-group-label";
+      tag.textContent=label;
+      el.parentNode.insertBefore(tag,el);
+    }
+  });
+}
+document.addEventListener("DOMContentLoaded",enhancePreludeStudioNavigation);
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script>
 const SUPABASE_URL="https://uhsnlqbvgbvhfcasbyxf.supabase.co";
@@ -2075,8 +2149,8 @@ function renderProfitabilityEditor(d){
  currentProfitabilityData=d;
  const editor=document.getElementById("profitabilityEditor");const rows=Array.isArray(d.formats)?d.formats:[];
  editor.innerHTML=`<div class="card"><div class="admin-row-head"><div><h2 style="margin:0">${escapeHtml(d.name||"")}</h2><p style="color:var(--muted);margin:5px 0 0">${escapeHtml(d.brand||"")}</p></div><button class="primary" id="saveFinancialsBtn" type="button">Guardar ficha financiera</button></div>
- <div class="profit-financial-grid"><div class="field"><label>PVP botella (€)</label><input id="profitBottlePvp" type="number" min="0" step="0.01" value="${d.bottle_pvp??""}"></div><div class="field"><label>Precio de compra (€)</label><input id="profitPurchasePrice" type="number" min="0" step="0.01" value="${d.bottle_purchase_price??""}"></div><div class="field"><label>Tamaño botella (ml)</label><input id="profitBottleSize" type="number" min="0.01" step="0.01" value="${d.bottle_size_ml??""}"></div><div class="field"><label>Coste jeringa (€)</label><input id="profitSyringeCost" type="number" min="0" step="0.01" value="${d.syringe_cost??0}"></div><div class="field"><label>Jeringa adquirida</label><select id="profitSyringeAcquired"><option value="false" ${d.syringe_acquired?"":"selected"}>No</option><option value="true" ${d.syringe_acquired?"selected":""}>Sí</option></select></div></div>
- <div class="profit-summary-grid"><div class="metric-card"><div class="metric-label">Coste / ml</div><div class="metric-value">${profitMoney(d.cost_per_ml)}</div></div><div class="metric-card"><div class="metric-label">Inversión inicial</div><div class="metric-value">${profitMoney(d.initial_investment)}</div><div class="metric-note">Botella + jeringa adquirida</div></div><div class="metric-card"><div class="metric-label">Costes por pedido</div><div class="metric-value">${profitMoney(d.per_order_preparation_cost)}</div><div class="metric-note">ZIP + acolchada + burbuja + guantes</div></div><div class="metric-card"><div class="metric-label">PVP botella</div><div class="metric-value">${profitMoney(d.bottle_pvp)}</div></div></div>
+ <div class="profit-financial-grid"><div class="field"><label>PVP botella (€)</label><input id="profitBottlePvp" type="number" min="0" step="0.01" value="${d.bottle_pvp??""}"></div><div class="field"><label>Precio de compra (€)</label><input id="profitPurchasePrice" type="number" min="0" step="0.01" value="${d.bottle_purchase_price??""}"></div><div class="field"><label>Tamaño botella (ml)</label><input id="profitBottleSize" type="number" min="0.01" step="0.01" value="${d.bottle_size_ml??""}"></div></div>
+ <div class="profit-summary-grid"><div class="metric-card"><div class="metric-label">Coste / ml</div><div class="metric-value">${profitMoney(d.cost_per_ml)}</div></div><div class="metric-card"><div class="metric-label">Inversión inicial</div><div class="metric-value">${profitMoney(d.initial_investment)}</div><div class="metric-note">Botella + jeringa global</div></div><div class="metric-card"><div class="metric-label">Costes por pedido</div><div class="metric-value">${profitMoney(d.per_order_preparation_cost)}</div><div class="metric-note">ZIP + acolchada + burbuja + guantes</div></div><div class="metric-card"><div class="metric-label">PVP botella</div><div class="metric-value">${profitMoney(d.bottle_pvp)}</div></div></div>
  <div class="profit-table-wrap"><table class="profit-table"><thead><tr><th>Formato</th><th>Coste directo</th><th>Beneficio objetivo</th><th>Precio recomendado</th><th>Precio actual</th><th>Beneficio actual*</th><th>% actual sobre coste*</th><th></th></tr></thead><tbody>${rows.map(r=>profitabilityMarkupRow(r)).join("")}</tbody></table></div><p style="font-size:11px;color:var(--muted);margin-top:12px">* El beneficio actual se calcula sobre el coste directo del decant: perfume + envase + etiqueta + blotter. Los costes compartidos del pedido (ZIP, acolchada, burbuja y guantes) se contabilizan una sola vez en el pedido real.</p></div>`;
  document.getElementById("saveFinancialsBtn").addEventListener("click",()=>saveProfitabilityFinancials(d.catalog_id));
  document.querySelectorAll("[data-apply-recommended]").forEach(btn=>btn.addEventListener("click",()=>applyRecommendedCatalogPrice(d.catalog_id,Number(btn.dataset.applyRecommended),rows)));

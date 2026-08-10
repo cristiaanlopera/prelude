@@ -1,0 +1,12 @@
+PRELUDE — FASE 8 · STUDIO UI
+
+Objetivos:
+- Refinamiento visual editorial/luxury.
+- Verde discreto para beneficio/entregado.
+- Rojo vino para pérdida/cancelado.
+- Ámbar para pendiente/preparando/alertas.
+- Navegación lateral agrupada visualmente.
+- Tarjetas y métricas con mayor jerarquía.
+- Eliminación visual definitiva de Coste jeringa y Jeringa adquirida de la ficha del perfume.
+- La jeringa permanece como material global 1 por perfume.
+- No se altera la lógica funcional de pedidos, clientes, catálogo, stock ni recompensas.

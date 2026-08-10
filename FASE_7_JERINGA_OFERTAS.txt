@@ -1,0 +1,13 @@
+PRELUDE — FASE 7
+
+1. Jeringa global:
+- Se elimina de cada ficha financiera.
+- Se gestiona desde Materiales como "1 por perfume".
+- Su coste se suma una sola vez a la inversión inicial de cada perfume.
+
+2. Oferta / Liquidación:
+- Estado comercial: Normal / Oferta / Liquidación.
+- Descuento porcentual configurable.
+- Motivo interno.
+- La web muestra "Selección especial" o "Últimas unidades".
+- El precio original se conserva visualmente tachado y el carrito usa el precio descontado.
