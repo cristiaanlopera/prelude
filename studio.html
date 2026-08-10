@@ -256,6 +256,19 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
 .state-pill.upcoming{background:#3a3a3a;color:#fff;border-color:#3a3a3a}.catalog-state-select{border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:transparent;color:var(--text);font:inherit;font-size:12px}.catalog-delete-btn{border:1px solid rgba(120,35,35,.28);background:transparent;color:#7d3030;border-radius:9px;padding:8px 11px;font:inherit;font-size:12px;cursor:pointer}.catalog-delete-btn:hover{background:rgba(120,35,35,.06);border-color:rgba(120,35,35,.45)}
 
 .profit-cost-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;margin-top:16px}.profit-financial-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:14px}.profit-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0}.profit-table{width:100%;border-collapse:collapse;margin-top:12px}.profit-table th,.profit-table td{text-align:right;padding:11px 9px;border-bottom:1px solid var(--line);font-size:12px}.profit-table th:first-child,.profit-table td:first-child{text-align:left}.profit-positive{font-weight:700}.profit-negative{font-weight:700}@media(max-width:900px){.profit-financial-grid,.profit-summary-grid,.profit-cost-grid{grid-template-columns:1fr 1fr}.profit-table{min-width:820px}.profit-table-wrap{overflow:auto}}@media(max-width:560px){.profit-financial-grid,.profit-summary-grid,.profit-cost-grid{grid-template-columns:1fr}}
+
+.material-cost-table{width:100%;border-collapse:collapse;margin-top:14px}
+.material-cost-table th,.material-cost-table td{padding:11px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.material-cost-table th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.material-cost-table input{width:100%;min-width:90px}
+.material-unit-cost{font-weight:700;white-space:nowrap}
+.material-stock-low{color:#a45b44;font-weight:700}
+.material-scope{font-size:11px;color:var(--muted);margin-top:3px}
+@media(max-width:760px){
+ .material-cost-table{display:block;overflow-x:auto;white-space:nowrap}
+ .material-cost-table input{min-width:105px}
+}
+
 </style>
 </head>
 <body>
@@ -398,7 +411,7 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
 
       <div class="studio-view" id="profitabilityView">
         <div class="section-heading"><div><div class="dashboard-kicker">Finanzas</div><h1>Rentabilidad</h1><p>Configura costes reales y analiza el beneficio de cada formato sin duplicar los costes compartidos del pedido.</p></div><button class="secondary" id="refreshProfitabilityBtn" type="button">Actualizar</button></div>
-        <div class="card" style="margin-bottom:16px"><div class="admin-row-head"><div><h2 style="margin:0 0 6px">Costes de preparación</h2><p style="color:var(--muted);margin:0">Los envases, etiqueta y blotter se imputan por decant. Bolsas y guantes, una sola vez por pedido.</p></div><button class="primary" id="savePreparationCostsBtn" type="button">Guardar costes</button></div><div id="preparationCostsGrid" class="profit-cost-grid"></div><div class="status" id="preparationCostsStatus"></div></div>
+        <div class="card" style="margin-bottom:16px"><div class="admin-row-head"><div><h2 style="margin:0 0 6px">Materiales de preparación</h2><p style="color:var(--muted);margin:0">Introduce lo que pagaste y cuántas unidades compraste. Prelude calcula automáticamente el coste por unidad utilizado en la rentabilidad.</p></div><button class="primary" id="savePreparationCostsBtn" type="button">Guardar materiales</button></div><div id="preparationCostsGrid"></div><div class="status" id="preparationCostsStatus"></div></div>
         <div class="card" style="margin-bottom:16px">
   <div class="profit-cost-grid">
     <div class="field"><label>Perfume</label><select id="profitabilityProductSelect"><option value="">Selecciona un perfume</option></select></div>
@@ -1795,14 +1808,56 @@ async function loadProfitabilityAdmin(){
     if(st)st.textContent="";
   }catch(e){console.error(e);if(st)st.textContent="No se pudo cargar Rentabilidad: "+(e.message||e)}
 }
+function materialUnitCost(c){
+ const purchase=Number(c.purchase_price||0),units=Number(c.purchased_units||0);
+ return units>0?purchase/units:0;
+}
+function updateMaterialCalculatedCost(row){
+ const purchase=Number(row.querySelector("[data-material-purchase]").value||0);
+ const units=Number(row.querySelector("[data-material-units]").value||0);
+ const unit=units>0?purchase/units:0;
+ const out=row.querySelector("[data-material-unit-cost]");
+ if(out)out.textContent=profitMoney(unit,4);
+}
 function renderPreparationCosts(){
  const grid=document.getElementById("preparationCostsGrid");if(!grid)return;
- grid.innerHTML=preparationCostsCache.map(c=>`<div class="field"><label>${escapeHtml(c.label)} · ${c.cost_scope==="per_order"?"por pedido":"por decant"}</label><input data-prep-cost="${escapeHtml(c.id)}" type="number" min="0" step="0.0001" value="${Number(c.cost||0).toFixed(4)}"></div>`).join("");
+ grid.innerHTML=`<div style="overflow-x:auto"><table class="material-cost-table">
+ <thead><tr><th>Material</th><th>Precio compra</th><th>Unidades compradas</th><th>Unidades disponibles</th><th>Coste / unidad</th></tr></thead>
+ <tbody>${preparationCostsCache.map(c=>`<tr data-material-row="${escapeHtml(c.id)}">
+   <td><strong>${escapeHtml(c.label)}</strong><div class="material-scope">${c.cost_scope==="per_order"?"1 por pedido":(c.decant_size_ml?`1 por decant de ${c.decant_size_ml} ml`:"1 por decant")}</div></td>
+   <td><input data-material-purchase="${escapeHtml(c.id)}" type="number" min="0" step="0.01" value="${Number(c.purchase_price||0).toFixed(2)}"></td>
+   <td><input data-material-units="${escapeHtml(c.id)}" type="number" min="0" step="1" value="${Number(c.purchased_units||0)}"></td>
+   <td><input data-material-available="${escapeHtml(c.id)}" type="number" min="0" step="1" value="${Number(c.available_units||0)}"></td>
+   <td class="material-unit-cost" data-material-unit-cost="${escapeHtml(c.id)}">${profitMoney(materialUnitCost(c),4)}</td>
+ </tr>`).join("")}</tbody></table></div>`;
+ grid.querySelectorAll("[data-material-row]").forEach(row=>{
+   row.querySelectorAll("input").forEach(inp=>inp.addEventListener("input",()=>updateMaterialCalculatedCost(row)));
+ });
 }
 async function savePreparationCosts(){
  const st=document.getElementById("preparationCostsStatus"),btn=document.getElementById("savePreparationCostsBtn");btn.disabled=true;
- try{for(const input of document.querySelectorAll("[data-prep-cost]")){const {error}=await client.rpc("admin_update_prelude_preparation_cost",{input_id:input.dataset.prepCost,input_cost:Number(input.value||0)});if(error)throw error}if(st)st.textContent="Costes de preparación actualizados.";await loadProfitabilityAdmin();}
- catch(e){if(st)st.textContent="No se pudieron guardar los costes: "+(e.message||e)}finally{btn.disabled=false}
+ try{
+   for(const row of document.querySelectorAll("[data-material-row]")){
+     const id=row.dataset.materialRow;
+     const purchase=Number(row.querySelector("[data-material-purchase]").value||0);
+     const units=Number(row.querySelector("[data-material-units]").value||0);
+     const available=Number(row.querySelector("[data-material-available]").value||0);
+     if(units<0||available<0||purchase<0)throw new Error("Los valores de materiales no pueden ser negativos.");
+     if(units===0&&purchase>0)throw new Error("Si indicas un precio de compra, debes indicar las unidades compradas.");
+     const {error}=await client.rpc("admin_update_prelude_material_purchase",{
+       input_id:id,
+       input_purchase_price:purchase,
+       input_purchased_units:units,
+       input_available_units:available
+     });
+     if(error)throw error;
+   }
+   if(st)st.textContent="Materiales y costes unitarios actualizados.";
+   await loadProfitabilityAdmin();
+ }catch(e){
+   console.error(e);
+   if(st)st.textContent="No se pudieron guardar los materiales: "+(e.message||e);
+ }finally{btn.disabled=false}
 }
 function renderProfitabilityProductSelect(){
  const sel=document.getElementById("profitabilityProductSelect");if(!sel)return;const current=sel.value;
