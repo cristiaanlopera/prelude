@@ -1,0 +1,15 @@
+PRELUDE — FASE 9 CORREGIDA
+
+Esta versión parte de Fase 8, no de la Fase 9 defectuosa.
+
+Correcciones:
+- El dashboard visual se inserta dentro de overviewView en el flujo normal.
+- No invade ni desplaza la barra lateral.
+- No existen elementos superpuestos.
+- Verde oscuro: entregado/listo, beneficio positivo y estado correcto.
+- Rojo vino: cancelado y pérdidas.
+- Ámbar: pendiente/preparando y atención.
+- Gráfico de actividad colocado debajo de las métricas nativas.
+- Bloque 'Requiere atención' en dos columnas y responsive.
+- No requiere SQL.
+- No modifica la lógica de negocio.

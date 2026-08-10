@@ -318,34 +318,56 @@ body{background:
 }
 
 
-/* PRELUDE STUDIO · FASE 9 · DASHBOARD */
-.dashboard-hero-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:18px 0}
-.dashboard-kpi{padding:18px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.78);box-shadow:0 12px 30px rgba(25,23,20,.045)}
-.dashboard-kpi-label{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
-.dashboard-kpi-value{font-family:Georgia,"Times New Roman",serif;font-size:29px;line-height:1.1;margin-top:9px}
-.dashboard-kpi-note{font-size:10px;color:var(--muted);margin-top:7px}
-.dashboard-visual-grid{display:grid;grid-template-columns:1.45fr .9fr;gap:16px;margin-top:16px}
-.dashboard-panel{border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.78);padding:18px}
-.dashboard-panel h3{font-family:Georgia,"Times New Roman",serif;font-size:20px;margin:0 0 5px}
-.dashboard-panel-sub{font-size:11px;color:var(--muted);margin-bottom:16px}
-.prelude-bars{display:flex;align-items:flex-end;gap:8px;height:160px;border-bottom:1px solid var(--line);padding:0 4px}
-.prelude-bar-wrap{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:6px}
-.prelude-bar{width:70%;min-width:10px;background:#222;border-radius:6px 6px 2px 2px;min-height:2px;opacity:.86}
-.prelude-bar-label{font-size:9px;color:var(--muted);white-space:nowrap}
-.attention-list{display:grid;gap:9px}
-.attention-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:#fff}
-.attention-item strong{font-size:12px}
-.attention-item span{font-size:10px;color:var(--muted)}
-.attention-item.danger{border-left:3px solid var(--danger)}
-.attention-item.warning{border-left:3px solid var(--warning)}
-.attention-item.success{border-left:3px solid var(--success)}
-.dashboard-ranking{display:grid;gap:10px}
-.dashboard-rank-row{display:grid;grid-template-columns:26px 1fr auto;align-items:center;gap:10px}
-.dashboard-rank-num{font-family:Georgia,"Times New Roman",serif;font-size:18px;color:var(--muted)}
-.dashboard-rank-name{font-size:12px}
-.dashboard-rank-value{font-weight:700;font-size:12px}
-@media(max-width:1050px){.dashboard-hero-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:760px){.dashboard-hero-grid{grid-template-columns:repeat(2,1fr)}.dashboard-visual-grid{grid-template-columns:1fr}}
+/* ============================================================
+   PRELUDE STUDIO · FASE 9 CORREGIDA
+   ============================================================ */
+:root{
+  --prelude-green:#315f46;
+  --prelude-green-soft:#edf4ef;
+  --prelude-red:#8b3434;
+  --prelude-red-soft:#f8eeee;
+  --prelude-amber:#8a682c;
+  --prelude-amber-soft:#f7f1e5;
+}
+.metric-card{position:relative;overflow:hidden}
+.metric-card.metric-success{border-color:rgba(49,95,70,.22);background:linear-gradient(145deg,#fff,var(--prelude-green-soft))}
+.metric-card.metric-danger{border-color:rgba(139,52,52,.22);background:linear-gradient(145deg,#fff,var(--prelude-red-soft))}
+.metric-card.metric-warning{border-color:rgba(138,104,44,.22);background:linear-gradient(145deg,#fff,var(--prelude-amber-soft))}
+.metric-card.metric-success .metric-value{color:var(--prelude-green)}
+.metric-card.metric-danger .metric-value{color:var(--prelude-red)}
+.metric-card.metric-warning .metric-value{color:var(--prelude-amber)}
+.profit-positive,.prelude-positive{color:var(--prelude-green)!important;font-weight:700}
+.profit-negative,.prelude-negative{color:var(--prelude-red)!important;font-weight:700}
+.order-status.status-delivered{color:var(--prelude-green);background:var(--prelude-green-soft);border-color:rgba(49,95,70,.22)}
+.order-status.status-cancelled,.order-status.status-canceled{color:var(--prelude-red);background:var(--prelude-red-soft);border-color:rgba(139,52,52,.22)}
+.order-status.status-pending,.order-status.status-preparing{color:var(--prelude-amber);background:var(--prelude-amber-soft);border-color:rgba(138,104,44,.22)}
+.order-status.status-ready{color:var(--prelude-green);background:var(--prelude-green-soft);border-color:rgba(49,95,70,.22)}
+.order-row[data-order-status="cancelled"],.order-row[data-order-status="canceled"]{border-left:3px solid var(--prelude-red);padding-left:12px}
+.order-row[data-order-status="delivered"]{border-left:3px solid var(--prelude-green);padding-left:12px}
+
+.executive-section{margin:18px 0 16px}
+.executive-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.8fr);gap:16px}
+.executive-panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 12px 30px rgba(0,0,0,.035);min-width:0}
+.executive-panel h2{margin:0;font-size:23px}
+.executive-sub{color:var(--muted);font-size:11px;margin:5px 0 16px}
+.executive-bars{height:170px;display:flex;align-items:flex-end;gap:9px;border-bottom:1px solid var(--line);padding:0 7px 5px}
+.executive-bar-col{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px}
+.executive-bar{width:65%;background:#20201f;border-radius:7px 7px 2px 2px;min-height:3px;transition:height .2s ease}
+.executive-bar.delivered{background:var(--prelude-green)}
+.executive-bar.cancelled{background:var(--prelude-red)}
+.executive-bar.pending,.executive-bar.preparing{background:var(--prelude-amber)}
+.executive-bar-label{font-size:9px;color:var(--muted);white-space:nowrap}
+.executive-attention{display:grid;gap:9px}
+.executive-attention-item{padding:12px 13px;border-radius:12px;border:1px solid var(--line);background:#fff;border-left-width:3px}
+.executive-attention-item.success{border-left-color:var(--prelude-green)}
+.executive-attention-item.warning{border-left-color:var(--prelude-amber)}
+.executive-attention-item.danger{border-left-color:var(--prelude-red)}
+.executive-attention-item strong{display:block;font-size:12px;margin-bottom:2px}
+.executive-attention-item span{font-size:10px;color:var(--muted)}
+.dashboard-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:9px;color:var(--muted)}
+.dashboard-legend span{display:inline-flex;align-items:center;gap:5px}
+.dashboard-legend i{width:7px;height:7px;border-radius:50%;display:inline-block}
+@media(max-width:850px){.executive-grid{grid-template-columns:1fr}}
 
 </style>
 </head>
@@ -367,42 +389,6 @@ body{background:
   <div class="studio-shell">
     <aside class="studio-sidebar">
       <div class="studio-sidebar-title">Centro de control</div>
-<div id="preludeExecutiveDashboard">
-  <div class="dashboard-hero-grid">
-    <div class="dashboard-kpi"><div class="dashboard-kpi-label">Ventas entregadas</div><div class="dashboard-kpi-value" id="execRevenue">—</div><div class="dashboard-kpi-note">Pedidos completados</div></div>
-    <div class="dashboard-kpi"><div class="dashboard-kpi-label">Beneficio estimado</div><div class="dashboard-kpi-value" id="execProfit">—</div><div class="dashboard-kpi-note">Ventas − coste directo estimado</div></div>
-    <div class="dashboard-kpi"><div class="dashboard-kpi-label">Pedidos</div><div class="dashboard-kpi-value" id="execOrders">—</div><div class="dashboard-kpi-note" id="execOrdersNote">Actividad registrada</div></div>
-    <div class="dashboard-kpi"><div class="dashboard-kpi-label">Ticket medio</div><div class="dashboard-kpi-value" id="execAvgTicket">—</div><div class="dashboard-kpi-note">Sobre pedidos entregados</div></div>
-    <div class="dashboard-kpi"><div class="dashboard-kpi-label">Cancelados</div><div class="dashboard-kpi-value" id="execCancelled">—</div><div class="dashboard-kpi-note">Pedidos cancelados</div></div>
-  </div>
-
-  <div class="dashboard-visual-grid">
-    <div class="dashboard-panel">
-      <h3>Actividad de pedidos</h3>
-      <div class="dashboard-panel-sub">Últimos pedidos registrados en Prelude Studio.</div>
-      <div class="prelude-bars" id="execOrderBars"></div>
-    </div>
-    <div class="dashboard-panel">
-      <h3>Requiere atención</h3>
-      <div class="dashboard-panel-sub">Prioridades operativas del negocio.</div>
-      <div class="attention-list" id="execAttention"><div class="attention-item"><span>Cargando información…</span></div></div>
-    </div>
-  </div>
-
-  <div class="dashboard-visual-grid">
-    <div class="dashboard-panel">
-      <h3>Perfumes con mayor facturación</h3>
-      <div class="dashboard-panel-sub">Ranking estimado a partir de las líneas de pedido disponibles.</div>
-      <div class="dashboard-ranking" id="execTopPerfumes"><span style="color:var(--muted);font-size:11px">Cargando…</span></div>
-    </div>
-    <div class="dashboard-panel">
-      <h3>Estado del negocio</h3>
-      <div class="dashboard-panel-sub">Lectura rápida de pedidos y catálogo.</div>
-      <div class="attention-list" id="execBusinessHealth"></div>
-    </div>
-  </div>
-</div>
-
       <div class="studio-tabs">
         <button class="active" id="dashboardTabBtn" data-studio-view="overview" type="button">Dashboard</button>
         <button id="ordersTabBtn" data-studio-view="orders" type="button">Pedidos</button>
@@ -438,9 +424,33 @@ body{background:
           <div class="metric-card"><div class="metric-label">Gasto medio por cliente</div><div class="metric-value" id="metricAvgSpend">—</div><div class="metric-note">Sobre clientes registrados</div></div>
           <div class="metric-card"><div class="metric-label">Códigos pendientes</div><div class="metric-value" id="metricPendingCodes">—</div><div class="metric-note">Pendientes de canjear</div></div>
           <div class="metric-card"><div class="metric-label">Colección más avanzada</div><div class="metric-value" id="metricTopCollection">—</div><div class="metric-note" id="metricTopCollectionName">Sin datos</div></div>
-          <div class="metric-card"><div class="metric-label">Estado</div><div class="metric-value" id="metricSystem">Online</div><div class="metric-note">Supabase conectado</div></div>
+          <div class="metric-card metric-success"><div class="metric-label">Estado</div><div class="metric-value" id="metricSystem">Online</div><div class="metric-note">Supabase conectado</div></div>
         </div>
-        <div class="dashboard-columns">
+        
+        <section class="executive-section" id="preludeExecutiveSection">
+          <div class="executive-grid">
+            <div class="executive-panel">
+              <h2>Actividad de pedidos</h2>
+              <div class="executive-sub">Lectura visual de los últimos pedidos registrados.</div>
+              <div class="executive-bars" id="preludeOrderChart">
+                <span style="color:var(--muted);font-size:11px">Cargando actividad…</span>
+              </div>
+              <div class="dashboard-legend">
+                <span><i style="background:var(--prelude-green)"></i>Entregado / listo</span>
+                <span><i style="background:var(--prelude-amber)"></i>Pendiente / preparando</span>
+                <span><i style="background:var(--prelude-red)"></i>Cancelado</span>
+              </div>
+            </div>
+            <aside class="executive-panel">
+              <h2>Requiere atención</h2>
+              <div class="executive-sub">Prioridades operativas de Prelude.</div>
+              <div class="executive-attention" id="preludeAttention">
+                <div class="executive-attention-item"><span>Cargando información…</span></div>
+              </div>
+            </aside>
+          </div>
+        </section>
+<div class="dashboard-columns">
           <section class="card">
             <div class="row"><div><h2>Actividad reciente</h2><p style="color:var(--muted);margin-top:-6px">Últimos códigos generados.</p></div><button class="secondary" id="refreshOverviewBtn" type="button">Actualizar</button></div>
             <div class="activity-list" id="overviewActivity"><p style="color:var(--muted)">Cargando actividad...</p></div>
@@ -910,105 +920,62 @@ function enhancePreludeStudioNavigation(){
 document.addEventListener("DOMContentLoaded",enhancePreludeStudioNavigation);
 
 
-async function loadPreludeExecutiveDashboard(){
-  const money=v=>new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR"}).format(Number(v||0));
-  try{
-    let orders=[];
-    // Prefer the same orders RPC already used by Studio.
-    if(typeof client!=="undefined"){
-      const candidates=["admin_list_prelude_orders","admin_get_prelude_orders"];
-      for(const fn of candidates){
-        try{
-          const r=await client.rpc(fn);
-          if(!r.error && Array.isArray(r.data)){orders=r.data;break;}
-          if(!r.error && Array.isArray(r.data?.orders)){orders=r.data.orders;break;}
-        }catch(_){}
-      }
-    }
+function enhancePreludeOrderRows(){
+  document.querySelectorAll(".order-row").forEach(row=>{
+    const chip=row.querySelector(".order-status");
+    if(!chip)return;
+    const cls=[...chip.classList].find(x=>x.startsWith("status-"));
+    if(cls)row.dataset.orderStatus=cls.replace("status-","");
+  });
+}
+function renderPreludeVisualDashboard(){
+  const chart=document.getElementById("preludeOrderChart");
+  const attention=document.getElementById("preludeAttention");
+  if(!chart||!attention)return;
 
-    const normalized=orders.map(o=>({
-      ...o,
-      status:String(o.status||o.order_status||"pending").toLowerCase(),
-      total:Number(o.total||o.order_total||o.total_amount||0),
-      created:o.created_at||o.createdAt||o.date||null,
-      items:Array.isArray(o.items)?o.items:(Array.isArray(o.order_items)?o.order_items:[])
-    }));
-    const delivered=normalized.filter(o=>o.status==="delivered");
-    const cancelled=normalized.filter(o=>o.status==="cancelled"||o.status==="canceled");
-    const active=normalized.filter(o=>["pending","preparing","ready"].includes(o.status));
-    const revenue=delivered.reduce((a,o)=>a+o.total,0);
-    const avg=delivered.length?revenue/delivered.length:0;
+  const source=Array.isArray(window.ordersCache)?window.ordersCache:
+    (typeof ordersCache!=="undefined"&&Array.isArray(ordersCache)?ordersCache:[]);
+  const orders=source.map(o=>({
+    ...o,
+    status:String(o.status||"pending").toLowerCase(),
+    total:Number(o.order_total||o.total||0),
+    date:o.created_at||null
+  }));
+  const recent=orders.slice().sort((a,b)=>new Date(a.date||0)-new Date(b.date||0)).slice(-8);
+  const max=Math.max(1,...recent.map(o=>o.total));
 
-    const revenueEl=document.getElementById("execRevenue");
-    const ordersEl=document.getElementById("execOrders");
-    const avgEl=document.getElementById("execAvgTicket");
-    const cancelEl=document.getElementById("execCancelled");
-    if(revenueEl)revenueEl.textContent=money(revenue);
-    if(ordersEl)ordersEl.textContent=String(normalized.length);
-    if(avgEl)avgEl.textContent=money(avg);
-    if(cancelEl){cancelEl.textContent=String(cancelled.length);cancelEl.className="dashboard-kpi-value "+(cancelled.length?"prelude-negative":"");}
-    const note=document.getElementById("execOrdersNote");if(note)note.textContent=`${active.length} requieren gestión`;
+  chart.innerHTML=recent.length?recent.map((o,idx)=>{
+    const height=Math.max(5,(o.total/max)*130);
+    const cls=o.status==="delivered"||o.status==="ready"?o.status:
+      o.status==="cancelled"||o.status==="canceled"?"cancelled":
+      o.status==="preparing"?"preparing":"pending";
+    const label=o.date?new Date(o.date).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit"}):`#${idx+1}`;
+    return `<div class="executive-bar-col" title="${Number(o.total||0).toFixed(2).replace(".",",")} € · ${o.status}">
+      <div class="executive-bar ${cls}" style="height:${height}px"></div>
+      <div class="executive-bar-label">${label}</div>
+    </div>`;
+  }).join(""):'<span style="color:var(--muted);font-size:11px">Todavía no hay pedidos para representar.</span>';
 
-    // Profit is intentionally conservative: only show when item-level cost is available.
-    let profit=0, profitKnown=false;
-    delivered.forEach(o=>o.items.forEach(it=>{
-      const sale=Number(it.line_total||it.total||((it.price||0)*(it.qty||it.quantity||1)));
-      const cost=Number(it.direct_cost||it.cost||0);
-      if(cost>0){profit += sale-cost*(Number(it.qty||it.quantity||1));profitKnown=true;}
-    }));
-    const profitEl=document.getElementById("execProfit");
-    if(profitEl){
-      profitEl.textContent=profitKnown?money(profit):"—";
-      profitEl.className="dashboard-kpi-value "+(profitKnown?(profit>=0?"prelude-positive":"prelude-negative"):"");
-    }
+  const pending=orders.filter(o=>["pending","preparing","ready"].includes(o.status)).length;
+  const cancelled=orders.filter(o=>["cancelled","canceled"].includes(o.status)).length;
+  const delivered=orders.filter(o=>o.status==="delivered").length;
+  const rows=[];
+  if(pending)rows.push(`<div class="executive-attention-item warning"><strong>${pending} pedido${pending===1?"":"s"} en curso</strong><span>Pendientes, preparando o listos.</span></div>`);
+  if(cancelled)rows.push(`<div class="executive-attention-item danger"><strong>${cancelled} pedido${cancelled===1?"":"s"} cancelado${cancelled===1?"":"s"}</strong><span>Marcados visualmente en rojo vino.</span></div>`);
+  if(delivered)rows.push(`<div class="executive-attention-item success"><strong>${delivered} pedido${delivered===1?"":"s"} entregado${delivered===1?"":"s"}</strong><span>Operaciones completadas correctamente.</span></div>`);
+  if(!rows.length)rows.push('<div class="executive-attention-item success"><strong>Operativa al día</strong><span>No hay incidencias registradas.</span></div>');
+  attention.innerHTML=rows.join("");
 
-    // Last 8 orders as compact editorial bars.
-    const bars=document.getElementById("execOrderBars");
-    if(bars){
-      const recent=normalized.slice().sort((a,b)=>new Date(a.created||0)-new Date(b.created||0)).slice(-8);
-      const max=Math.max(1,...recent.map(o=>o.total));
-      bars.innerHTML=recent.length?recent.map((o,idx)=>{
-        const h=Math.max(5,(o.total/max)*125);
-        const label=o.created?new Date(o.created).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit"}):`#${idx+1}`;
-        return `<div class="prelude-bar-wrap" title="${money(o.total)}"><div class="prelude-bar" style="height:${h}px;${(o.status==="cancelled"||o.status==="canceled")?"background:var(--danger)":o.status==="delivered"?"background:var(--success)":""}"></div><div class="prelude-bar-label">${label}</div></div>`;
-      }).join(""):'<span style="color:var(--muted);font-size:11px">Todavía no hay pedidos para representar.</span>';
-    }
-
-    // Attention block
-    const attention=document.getElementById("execAttention");
-    if(attention){
-      const rows=[];
-      if(active.length)rows.push(`<div class="attention-item warning"><div><strong>${active.length} pedido${active.length===1?"":"s"} en curso</strong><br><span>Pendientes, preparando o listos</span></div></div>`);
-      if(cancelled.length)rows.push(`<div class="attention-item danger"><div><strong>${cancelled.length} cancelado${cancelled.length===1?"":"s"}</strong><br><span>Revisar si procede eliminarlos</span></div></div>`);
-      if(!active.length&&!cancelled.length)rows.push('<div class="attention-item success"><div><strong>Operativa al día</strong><br><span>No hay incidencias destacadas en pedidos.</span></div></div>');
-      attention.innerHTML=rows.join("");
-    }
-
-    // Top perfumes from order lines
-    const totals={};
-    normalized.filter(o=>o.status!=="cancelled"&&o.status!=="canceled").forEach(o=>o.items.forEach(it=>{
-      const name=it.name||it.perfume_name||it.product_name||"Perfume";
-      const val=Number(it.line_total||it.total||((it.price||0)*(it.qty||it.quantity||1)));
-      totals[name]=(totals[name]||0)+val;
-    }));
-    const top=Object.entries(totals).sort((a,b)=>b[1]-a[1]).slice(0,5);
-    const topEl=document.getElementById("execTopPerfumes");
-    if(topEl)topEl.innerHTML=top.length?top.map(([name,val],idx)=>`<div class="dashboard-rank-row"><div class="dashboard-rank-num">${idx+1}</div><div class="dashboard-rank-name">${escapeHtml(name)}</div><div class="dashboard-rank-value">${money(val)}</div></div>`).join(""):'<span style="color:var(--muted);font-size:11px">Los datos aparecerán cuando haya líneas de pedido disponibles.</span>';
-
-    const health=document.getElementById("execBusinessHealth");
-    if(health){
-      const deliveredPct=normalized.length?Math.round(delivered.length/normalized.length*100):0;
-      health.innerHTML=`
-        <div class="attention-item ${deliveredPct>=70?"success":"warning"}"><div><strong>${deliveredPct}% entregados</strong><br><span>Sobre todos los pedidos registrados</span></div></div>
-        <div class="attention-item ${cancelled.length?"danger":"success"}"><div><strong>${cancelled.length} cancelaciones</strong><br><span>${cancelled.length?"Conviene vigilar esta cifra":"Sin cancelaciones registradas"}</span></div></div>`;
-    }
-  }catch(err){
-    console.warn("Dashboard ejecutivo Prelude:",err);
-  }
+  enhancePreludeOrderRows();
 }
 
 
-document.addEventListener("DOMContentLoaded",()=>setTimeout(loadPreludeExecutiveDashboard,350));
+document.addEventListener("DOMContentLoaded",()=>{
+  setTimeout(renderPreludeVisualDashboard,500);
+  setTimeout(enhancePreludeOrderRows,650);
+});
+document.getElementById("refreshOrdersBtn")?.addEventListener("click",()=>setTimeout(renderPreludeVisualDashboard,500));
+document.getElementById("refreshOverviewBtn")?.addEventListener("click",()=>setTimeout(renderPreludeVisualDashboard,500));
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
