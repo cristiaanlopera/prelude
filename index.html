@@ -1236,6 +1236,23 @@ body.dark .museum-unlock{background:rgba(18,18,18,.985)}
 .reward-choice-slot:empty{display:none}
 @media(max-width:720px){.reward-choice-grid{grid-template-columns:repeat(2,1fr)}}
 
+
+.reward-entry .reward-choice-slot{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.12);
+}
+.reward-select-explicit{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:128px;
+  font-weight:600;
+}
+.cart-reward-option .reward-select-explicit{
+  margin-top:6px;
+}
+
 </style>
 </head>
 <body><div class="watermark-brush one"></div><div class="watermark-brush two"></div>
@@ -1732,7 +1749,11 @@ function renderCart(){
                 <small>Desbloqueada con ${reward.threshold} Marcapáginas</small>
               </span>
             </label>
-            <div class="reward-choice-slot" data-reward-choice-slot="${reward.id}"></div>
+            <div class="reward-choice-slot" data-reward-choice-slot="${reward.id}">
+              <button type="button" class="reward-select-btn reward-select-explicit" data-open-reward-choice="${reward.id}">
+                Elegir Prelude
+              </button>
+            </div>
           </div>
         `).join("")}
       </div>`
@@ -2818,7 +2839,13 @@ function renderRewards(){
       <div class="reward-status ${reward.status}">
         ${reward.status==="pending"?"Pendiente de canjear":"Canjeada"}
       </div>
-      ${reward.status==="pending"?`<div class="reward-choice-slot" data-reward-choice-slot="${reward.id}"></div>`:""}
+      ${reward.status==="pending"?`
+        <div class="reward-choice-slot" data-reward-choice-slot="${reward.id}">
+          <button type="button" class="reward-select-btn reward-select-explicit" data-open-reward-choice="${reward.id}">
+            Elegir Prelude
+          </button>
+          <div class="pending-reward-choice-note">Selecciona la fragancia de tu recompensa.</div>
+        </div>`:""}
     </div>
   `).join("");
 
@@ -3610,25 +3637,30 @@ async function refreshClientRewardChoiceUI(force=false){
     if(slot.dataset.loaded==="1"&&!force)continue;
 
     slot.dataset.loaded="1";
-    slot.innerHTML="";
 
     try{
       const cfg=await fetchRewardChoiceConfig(customerRewardId,force);
-      if(!cfg||cfg.choice_type!=="choice")continue;
+      if(!cfg||cfg.choice_type!=="choice"){
+        const fallback=slot.querySelector("[data-open-reward-choice]");
+        if(fallback)fallback.style.display="none";
+        slot.querySelectorAll(".pending-reward-choice-note").forEach(x=>x.remove());
+        continue;
+      }
 
       const selected=Array.isArray(cfg.selected)?cfg.selected:[];
 
-      const btn=document.createElement("button");
-      btn.type="button";
-      btn.className="reward-select-btn";
+      let btn=slot.querySelector("[data-open-reward-choice]");
+      if(!btn){
+        btn=document.createElement("button");
+        btn.type="button";
+        btn.className="reward-select-btn reward-select-explicit";
+        btn.dataset.openRewardChoice=customerRewardId;
+        slot.prepend(btn);
+      }
       btn.textContent=selected.length?"Cambiar elección":"Elegir Prelude";
-      btn.addEventListener("click",async e=>{
-        e.preventDefault();
-        e.stopPropagation();
-        await openRewardChoice(customerRewardId);
-      });
-      slot.appendChild(btn);
+      btn.style.display="inline-flex";
 
+      slot.querySelectorAll(".reward-selected-choice,.pending-reward-choice-note").forEach(x=>x.remove());
       const detail=document.createElement("div");
       if(selected.length){
         detail.className="reward-selected-choice";
@@ -3695,6 +3727,40 @@ document.addEventListener("click",e=>{
 
 document.addEventListener("DOMContentLoaded",()=>{
   setTimeout(()=>refreshClientRewardChoiceUI(true),900);
+});
+
+
+document.addEventListener("click",async e=>{
+  const btn=e.target.closest("[data-open-reward-choice]");
+  if(!btn)return;
+  e.preventDefault();
+  e.stopPropagation();
+  const rewardId=String(btn.dataset.openRewardChoice||"");
+  if(!rewardId)return;
+  btn.disabled=true;
+  const oldText=btn.textContent;
+  btn.textContent="Cargando…";
+  try{
+    const cfg=await fetchRewardChoiceConfig(rewardId,true);
+    if(!cfg){
+      throw new Error("No se encontró la configuración de esta recompensa.");
+    }
+    if(cfg.choice_type!=="choice"){
+      alert("Esta recompensa todavía no está configurada como «Cliente elige» en Prelude Studio.");
+      return;
+    }
+    if(!Array.isArray(cfg.options)||!cfg.options.length){
+      alert("Esta recompensa está configurada como «Cliente elige», pero no tiene perfumes asignados.");
+      return;
+    }
+    await openRewardChoice(rewardId);
+  }catch(error){
+    console.error("Selector de recompensa:",error);
+    alert("No se pudo abrir el selector: "+(error.message||error));
+  }finally{
+    btn.disabled=false;
+    btn.textContent=oldText.includes("Cambiar")?"Cambiar elección":"Elegir Prelude";
+  }
 });
 
 </script>
