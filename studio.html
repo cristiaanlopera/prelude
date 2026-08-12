@@ -369,6 +369,206 @@ body{background:
 .dashboard-legend i{width:7px;height:7px;border-radius:50%;display:inline-block}
 @media(max-width:850px){.executive-grid{grid-template-columns:1fr}}
 
+
+.business-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:14px 0}
+.business-kpi{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.82);padding:15px}
+.business-kpi .k-label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.business-kpi .k-value{font-family:Georgia,"Times New Roman",serif;font-size:24px;margin-top:8px}
+.business-kpi .k-note{font-size:9px;color:var(--muted);margin-top:5px}
+.business-kpi.positive .k-value{color:var(--prelude-green)} .business-kpi.warning .k-value{color:var(--prelude-amber)}
+.chart-toolbar{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.chart-range{display:flex;gap:5px;flex-wrap:wrap}.chart-range button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 9px;font-size:9px;cursor:pointer}.chart-range button.active{background:#1b1b1a;color:#fff}
+.daily-chart{height:205px;position:relative;border-bottom:1px solid var(--line);margin-top:12px}.daily-chart svg{width:100%;height:100%;overflow:visible}
+.daily-axis-label{font-size:9px;fill:#777}.daily-point{cursor:pointer}.chart-tooltip{position:absolute;z-index:5;display:none;background:#171716;color:#fff;padding:8px 10px;border-radius:9px;font-size:10px;pointer-events:none}
+.secondary-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}.secondary-kpi{border-top:1px solid var(--line);padding:12px 4px}.secondary-kpi span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}.secondary-kpi strong{display:block;font-family:Georgia,"Times New Roman",serif;font-size:20px;margin-top:5px}
+@media(max-width:1100px){.business-kpis{grid-template-columns:repeat(3,1fr)}}@media(max-width:760px){.business-kpis{grid-template-columns:repeat(2,1fr)}.secondary-kpis{grid-template-columns:repeat(2,1fr)}}
+
+
+/* PRELUDE · FASE 9.3 · PEDIDOS UI */
+.orders-status-strip{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin:12px 0 16px;
+}
+.orders-status-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 11px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#fff;
+  min-width:0;
+  box-shadow:0 4px 14px rgba(0,0,0,.025);
+}
+.orders-status-pill .dot{
+  width:8px;height:8px;border-radius:50%;flex:0 0 auto;
+}
+.orders-status-pill .label{
+  font-size:9px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.orders-status-pill .count{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:16px;
+  line-height:1;
+}
+.orders-status-pill.pending{background:var(--prelude-amber-soft);border-color:rgba(138,104,44,.2)}
+.orders-status-pill.pending .dot{background:var(--prelude-amber)}
+.orders-status-pill.preparing{background:#eef2f5;border-color:rgba(74,92,112,.18)}
+.orders-status-pill.preparing .dot{background:#56697d}
+.orders-status-pill.ready{background:#eff6f1;border-color:rgba(49,95,70,.16)}
+.orders-status-pill.ready .dot{background:#6f987d}
+.orders-status-pill.delivered{background:var(--prelude-green-soft);border-color:rgba(49,95,70,.22)}
+.orders-status-pill.delivered .dot{background:var(--prelude-green)}
+.orders-status-pill.cancelled{background:var(--prelude-red-soft);border-color:rgba(139,52,52,.2)}
+.orders-status-pill.cancelled .dot{background:var(--prelude-red)}
+
+.order-card,.order-row{
+  position:relative;
+  transition:border-color .15s ease,background .15s ease,transform .15s ease;
+}
+.order-card[data-order-status="pending"],.order-row[data-order-status="pending"]{
+  border-left:3px solid var(--prelude-amber)!important;
+  background:linear-gradient(90deg,rgba(247,241,229,.85),rgba(255,255,255,.96) 15%);
+}
+.order-card[data-order-status="preparing"],.order-row[data-order-status="preparing"]{
+  border-left:3px solid #56697d!important;
+  background:linear-gradient(90deg,rgba(238,242,245,.92),rgba(255,255,255,.96) 15%);
+}
+.order-card[data-order-status="ready"],.order-row[data-order-status="ready"]{
+  border-left:3px solid #6f987d!important;
+  background:linear-gradient(90deg,rgba(239,246,241,.9),rgba(255,255,255,.96) 15%);
+}
+.order-card[data-order-status="delivered"],.order-row[data-order-status="delivered"]{
+  border-left:3px solid var(--prelude-green)!important;
+  background:linear-gradient(90deg,rgba(237,244,239,.95),rgba(255,255,255,.96) 15%);
+}
+.order-card[data-order-status="cancelled"],.order-row[data-order-status="cancelled"],
+.order-card[data-order-status="canceled"],.order-row[data-order-status="canceled"]{
+  border-left:3px solid var(--prelude-red)!important;
+  background:linear-gradient(90deg,rgba(248,238,238,.96),rgba(255,255,255,.96) 15%);
+}
+.order-status{
+  border-radius:999px!important;
+  padding:5px 9px!important;
+  font-size:9px!important;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.order-status.status-preparing{color:#56697d!important;background:#eef2f5!important;border-color:rgba(74,92,112,.18)!important}
+.order-status.status-ready{color:#5f836b!important;background:#eff6f1!important;border-color:rgba(49,95,70,.16)!important}
+.orders-legacy-metrics{display:none!important}
+@media(max-width:760px){
+  .orders-status-strip{gap:6px}
+  .orders-status-pill{padding:7px 9px}
+  .orders-status-pill .label{font-size:8px}
+  .orders-status-pill .count{font-size:14px}
+}
+
+
+/* PRELUDE · FASE 9.4 · ESTADOS DE PEDIDO A COLOR
+   Se usan fondos completos pero desaturados para mantener la estética Prelude. */
+
+/* LISTO pasa a azul para diferenciarse claramente de ENTREGADO */
+.orders-status-pill.ready{
+  background:#eaf1f7!important;
+  border-color:rgba(55,92,125,.24)!important;
+}
+.orders-status-pill.ready .dot{background:#416d91!important;}
+.order-status.status-ready{
+  color:#355d7d!important;
+  background:#eaf1f7!important;
+  border-color:rgba(55,92,125,.24)!important;
+}
+
+/* Tarjeta completa según estado */
+.order-card[data-order-status="pending"],.order-row[data-order-status="pending"]{
+  border:1px solid rgba(138,104,44,.22)!important;
+  border-left:4px solid var(--prelude-amber)!important;
+  background:#f7f1e5!important;
+}
+.order-card[data-order-status="preparing"],.order-row[data-order-status="preparing"]{
+  border:1px solid rgba(74,92,112,.20)!important;
+  border-left:4px solid #56697d!important;
+  background:#e9eef2!important;
+}
+.order-card[data-order-status="ready"],.order-row[data-order-status="ready"]{
+  border:1px solid rgba(55,92,125,.22)!important;
+  border-left:4px solid #416d91!important;
+  background:#eaf1f7!important;
+}
+.order-card[data-order-status="delivered"],.order-row[data-order-status="delivered"]{
+  border:1px solid rgba(49,95,70,.22)!important;
+  border-left:4px solid var(--prelude-green)!important;
+  background:#e8f1eb!important;
+}
+.order-card[data-order-status="cancelled"],.order-row[data-order-status="cancelled"],
+.order-card[data-order-status="canceled"],.order-row[data-order-status="canceled"]{
+  border:1px solid rgba(139,52,52,.22)!important;
+  border-left:4px solid var(--prelude-red)!important;
+  background:#f5e8e8!important;
+}
+
+/* Un poco más de contraste al pasar el ratón, sin cambiar el estado visual */
+.order-card[data-order-status]:hover,.order-row[data-order-status]:hover{
+  box-shadow:0 8px 22px rgba(0,0,0,.055);
+}
+
+
+/* PRELUDE · FASE 9.7 FIX · NAVEGACIÓN AGRUPADA */
+.studio-tabs{gap:7px!important}
+.studio-nav-home{margin-bottom:4px!important}
+.studio-nav-group{
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(255,255,255,.34);
+  overflow:hidden;
+}
+.studio-nav-group + .studio-nav-group{margin-top:7px}
+.studio-nav-group-head{
+  width:100%;
+  border:0;
+  background:transparent;
+  padding:10px 11px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  cursor:pointer;
+  color:var(--text);
+}
+.studio-nav-group-head:hover{background:rgba(255,255,255,.55)}
+.studio-nav-group-title{
+  font-size:9px;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.studio-nav-chevron{font-size:14px;color:var(--muted);transition:transform .16s ease}
+.studio-nav-group.open .studio-nav-chevron{transform:rotate(90deg)}
+.studio-nav-items{display:none;padding:0 5px 6px}
+.studio-nav-group.open .studio-nav-items{display:grid;gap:3px}
+.studio-nav-items>button{
+  padding:8px 9px!important;
+  font-size:12px!important;
+}
+.studio-nav-items>button.active{background:var(--dark)!important;color:#fff!important}
+
+
+/* PRELUDE · FASE 9.8 · OBRAS PRELUDE */
+.works-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:14px 0 16px}
+.work-status-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;font-size:9px;text-transform:uppercase;letter-spacing:.07em;border:1px solid var(--line)}
+.work-status-chip.published{background:var(--prelude-green-soft);color:var(--prelude-green);border-color:rgba(49,95,70,.2)}
+.work-status-chip.pending{background:var(--prelude-amber-soft);color:var(--prelude-amber);border-color:rgba(138,104,44,.2)}
+.work-status-chip.hidden{background:#f1f1ef;color:#666}
+.work-card{position:relative}
+.work-delete-btn{background:var(--prelude-red-soft)!important;color:var(--prelude-red)!important;border-color:rgba(139,52,52,.18)!important}
+
 </style>
 </head>
 <body>
@@ -401,7 +601,7 @@ body{background:
         <button id="profitabilityTabBtn" data-studio-view="profitability" type="button">Rentabilidad <span class="nav-state">Nuevo</span></button>
         <button id="rewardsTabBtn" data-studio-view="rewards" type="button">Recompensas</button>
         <button id="rankingTabBtn" data-studio-view="ranking" type="button">Ranking</button>
-        <button id="museumTabBtn" data-studio-view="museum" type="button">Museo Olfativo</button>
+        <button id="museumTabBtn" data-studio-view="museum" type="button">Obras Prelude</button>
         <button id="statsTabBtn" data-studio-view="stats" type="button">Estadísticas <span class="nav-state">Activo</span></button>
       </div>
     </aside>
@@ -428,28 +628,21 @@ body{background:
         </div>
         
         <section class="executive-section" id="preludeExecutiveSection">
-          <div class="executive-grid">
-            <div class="executive-panel">
-              <h2>Actividad de pedidos</h2>
-              <div class="executive-sub">Lectura visual de los últimos pedidos registrados.</div>
-              <div class="executive-bars" id="preludeOrderChart">
-                <span style="color:var(--muted);font-size:11px">Cargando actividad…</span>
-              </div>
-              <div class="dashboard-legend">
-                <span><i style="background:var(--prelude-green)"></i>Entregado / listo</span>
-                <span><i style="background:var(--prelude-amber)"></i>Pendiente / preparando</span>
-                <span><i style="background:var(--prelude-red)"></i>Cancelado</span>
-              </div>
-            </div>
-            <aside class="executive-panel">
-              <h2>Requiere atención</h2>
-              <div class="executive-sub">Prioridades operativas de Prelude.</div>
-              <div class="executive-attention" id="preludeAttention">
-                <div class="executive-attention-item"><span>Cargando información…</span></div>
-              </div>
-            </aside>
-          </div>
-        </section>
+<div class="business-kpis">
+<div class="business-kpi positive"><div class="k-label">Ingresos</div><div class="k-value" id="bizRevenue">—</div><div class="k-note">Todos los pedidos entregados</div></div>
+<div class="business-kpi positive"><div class="k-label">Beneficio neto</div><div class="k-value" id="bizProfit">—</div><div class="k-note">Se activará con costes reales</div></div>
+<div class="business-kpi"><div class="k-label">Margen neto</div><div class="k-value" id="bizMargin">—</div><div class="k-note">Beneficio / ingresos</div></div>
+<div class="business-kpi"><div class="k-label">Entregados</div><div class="k-value" id="bizDelivered">—</div><div class="k-note">Pedidos completados</div></div>
+<div class="business-kpi"><div class="k-label">Ticket medio</div><div class="k-value" id="bizTicket">—</div><div class="k-note">Por pedido entregado</div></div>
+<div class="business-kpi warning"><div class="k-label">En curso</div><div class="k-value" id="bizActive">—</div><div class="k-note">Pendiente · preparando · listo</div></div>
+</div>
+<div class="executive-grid"><div class="executive-panel">
+<div class="chart-toolbar"><div><h2>Ventas diarias</h2><div class="executive-sub">Ingresos de pedidos entregados, incluidos clientes sin cuenta.</div></div>
+<div class="chart-range" id="salesRange"><button data-days="7">7 días</button><button class="active" data-days="30">30 días</button><button data-days="90">90 días</button><button data-days="0">Todo</button></div></div>
+<div class="daily-chart" id="dailySalesChart"><div class="chart-tooltip" id="dailyTooltip"></div></div></div>
+<aside class="executive-panel"><h2>Requiere atención</h2><div class="executive-sub">Prioridades operativas de Prelude.</div><div class="executive-attention" id="preludeAttention"></div></aside></div>
+<div class="secondary-kpis"><div class="secondary-kpi"><span>Clientes registrados</span><strong id="bizClients">—</strong></div><div class="secondary-kpi"><span>Obras descubiertas</span><strong id="bizWorks">—</strong></div><div class="secondary-kpi"><span>Colección más avanzada</span><strong id="bizCollection">—</strong></div><div class="secondary-kpi"><span>Pedidos cancelados</span><strong id="bizCancelled">—</strong></div></div>
+</section>
 <div class="dashboard-columns">
           <section class="card">
             <div class="row"><div><h2>Actividad reciente</h2><p style="color:var(--muted);margin-top:-6px">Últimos códigos generados.</p></div><button class="secondary" id="refreshOverviewBtn" type="button">Actualizar</button></div>
@@ -469,6 +662,13 @@ body{background:
       </div>
 
       <div class="studio-view" id="ordersView">
+<div class="orders-status-strip" id="ordersStatusStrip">
+  <div class="orders-status-pill pending"><span class="dot"></span><span class="label">Pendientes</span><span class="count" id="ordersPendingCompact">0</span></div>
+  <div class="orders-status-pill preparing"><span class="dot"></span><span class="label">Preparando</span><span class="count" id="ordersPreparingCompact">0</span></div>
+  <div class="orders-status-pill ready"><span class="dot"></span><span class="label">Listos</span><span class="count" id="ordersReadyCompact">0</span></div>
+  <div class="orders-status-pill delivered"><span class="dot"></span><span class="label">Entregados</span><span class="count" id="ordersDeliveredCompact">0</span></div>
+</div>
+
         <div class="section-heading">
           <div><div class="dashboard-kicker">Operaciones</div><h1>Pedidos</h1><p>Gestiona solicitudes, estados, entregas y documentos de compra.</p></div>
           <button class="secondary" id="refreshOrdersBtn" type="button">Actualizar pedidos</button>
@@ -573,7 +773,16 @@ body{background:
         <div class="card"><div class="reward-toolbar"><button class="primary" id="newRewardBtn" type="button">+ Nueva recompensa</button></div><div id="rewardsAdminList"><p style="color:var(--muted)">Cargando recompensas...</p></div><div class="status" id="rewardsAdminStatus"></div></div>
       </div>
       <div class="studio-view" id="museumView">
-        <div class="section-heading"><div><div class="dashboard-kicker">Curaduría</div><h1>Museo Olfativo</h1><p>Gestiona el texto, la obra asociada y el estado de publicación de cada fragancia.</p></div><button class="secondary" id="refreshMuseumBtn" type="button">Actualizar</button></div>
+<div class="works-toolbar">
+  <div>
+    <div class="dashboard-kicker">Universo Prelude</div>
+    <h1 style="margin:4px 0 4px">Obras Prelude</h1>
+    <p style="margin:0;color:var(--muted)">Gestiona manualmente las obras vinculadas a tu catálogo.</p>
+  </div>
+  <button class="primary" id="addWorkBtn" type="button">+ Añadir obra</button>
+</div>
+
+        <div class="section-heading"><div><div class="dashboard-kicker">Curaduría</div><h1>Obras Prelude</h1><p>Gestiona el texto, la obra asociada y el estado de publicación de cada fragancia.</p></div><button class="secondary" id="refreshMuseumBtn" type="button">Actualizar</button></div>
         <div class="card museum-toolbar"><input id="museumSearch" placeholder="Buscar perfume o marca"></div>
         <div id="museumAdminList" class="museum-admin-list"><p style="color:var(--muted)">Cargando Museo...</p></div>
         <div class="status" id="museumAdminStatus"></div>
@@ -905,7 +1114,7 @@ function enhancePreludeStudioNavigation(){
     ["Colección","Catálogo"],
     ["Finanzas","Rentabilidad"],
     ["Fidelización","Recompensas"],
-    ["Experiencia","Museo Olfativo"]
+    ["Experiencia","Obras Prelude"]
   ];
   groups.forEach(([label,target])=>{
     const el=find(target);
@@ -1179,7 +1388,7 @@ function renderOrders(){
   list.innerHTML=rows.map(o=>`<div class="order-row">
     <div><div class="order-number">#${escapeHtml(o.order_number)}</div><div class="order-meta">${o.created_at?new Date(o.created_at).toLocaleString("es-ES"):""}</div></div>
     <div><strong>${escapeHtml(o.customer_name||"Cliente")}</strong><div class="order-meta">${escapeHtml(o.delivery_zone||"")}${o.customer_phone?" · "+escapeHtml(o.customer_phone):""}</div></div>
-    <div><strong>${Array.isArray(o.items)?o.items.length:0}</strong><div class="order-meta">líneas de pedido</div></div>
+    <div><strong>${Array.isArray(o.items)?o.items.length:0}</strong><div class="order-meta">Preludes</div></div>
     <div><strong>${money(o.order_total)}</strong><div class="order-meta"><span class="order-status">${ORDER_LABELS[o.status]||o.status}</span></div></div>
     <div class="order-actions"><button type="button" data-open-order="${o.id}">Ver pedido</button><button class="secondary" type="button" data-pdf-order="${o.id}">PDF</button></div>
   </div>`).join("");
@@ -2522,73 +2731,7 @@ async function preludeFetchOrdersForDashboard(){
   return [];
 }
 
-async function renderPreludeVisualDashboard(){
-  const chart=document.getElementById("preludeOrderChart");
-  const attention=document.getElementById("preludeAttention");
-  if(!chart||!attention)return;
 
-  try{
-    const orders=await preludeFetchOrdersForDashboard();
-
-    const recent=orders.slice().sort((a,b)=>new Date(a.date||0)-new Date(b.date||0)).slice(-8);
-    const max=Math.max(1,...recent.map(o=>Number(o.total||0)));
-
-    if(recent.length){
-      chart.innerHTML=recent.map((o,idx)=>{
-        const height=Math.max(8,(Number(o.total||0)/max)*130);
-        const status=o.status==="canceled"?"cancelled":o.status;
-        const cls=(status==="delivered"||status==="ready")?status:
-          status==="cancelled"?"cancelled":
-          status==="preparing"?"preparing":"pending";
-        const label=o.date
-          ? new Date(o.date).toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit"})
-          : `#${idx+1}`;
-        return `<div class="executive-bar-col" title="${Number(o.total||0).toFixed(2).replace(".",",")} € · ${status}">
-          <div class="executive-bar ${cls}" style="height:${height}px"></div>
-          <div class="executive-bar-label">${label}</div>
-        </div>`;
-      }).join("");
-    }else{
-      chart.innerHTML='<span style="color:var(--muted);font-size:11px">No hay pedidos disponibles para representar.</span>';
-    }
-
-    const pending=orders.filter(o=>["pending","preparing","ready"].includes(o.status)).length;
-    const cancelled=orders.filter(o=>["cancelled","canceled"].includes(o.status)).length;
-    const delivered=orders.filter(o=>o.status==="delivered").length;
-
-    const rows=[];
-    if(pending){
-      rows.push(`<div class="executive-attention-item warning">
-        <strong>${pending} pedido${pending===1?"":"s"} en curso</strong>
-        <span>Pendientes, preparando o listos.</span>
-      </div>`);
-    }
-    if(cancelled){
-      rows.push(`<div class="executive-attention-item danger">
-        <strong>${cancelled} pedido${cancelled===1?"":"s"} cancelado${cancelled===1?"":"s"}</strong>
-        <span>Revisar o eliminar cuando corresponda.</span>
-      </div>`);
-    }
-    if(delivered){
-      rows.push(`<div class="executive-attention-item success">
-        <strong>${delivered} pedido${delivered===1?"":"s"} entregado${delivered===1?"":"s"}</strong>
-        <span>Operaciones completadas.</span>
-      </div>`);
-    }
-    if(!rows.length){
-      rows.push(`<div class="executive-attention-item success">
-        <strong>Operativa al día</strong>
-        <span>No hay pedidos que requieran atención.</span>
-      </div>`);
-    }
-    attention.innerHTML=rows.join("");
-    if(typeof enhancePreludeOrderRows==="function") enhancePreludeOrderRows();
-  }catch(err){
-    console.error("Prelude dashboard:",err);
-    chart.innerHTML='<span style="color:var(--prelude-red);font-size:11px">No se ha podido cargar la actividad.</span>';
-    attention.innerHTML='<div class="executive-attention-item danger"><strong>No se han podido consultar los pedidos</strong><span>Revisa la consola para ver el error.</span></div>';
-  }
-}
 
 function preludeScheduleDashboardRefresh(){
   clearTimeout(window.__preludeDashTimer);
@@ -2602,6 +2745,363 @@ document.addEventListener("DOMContentLoaded",()=>{
 });
 window.addEventListener("focus",preludeScheduleDashboardRefresh);
 
+
+function preludeHideLegacyDashboardMetrics(){
+ const root=document.getElementById("overviewView");if(!root)return;
+ const unwanted=["ingresos acumulados","códigos hoy","códigos pendientes","gasto medio por cliente"];
+ root.querySelectorAll(".metric-card").forEach(c=>{const t=(c.querySelector(".metric-label")?.textContent||"").trim().toLowerCase();if(unwanted.some(x=>t.includes(x)))c.style.display="none";});
+}
+async function renderPreludeVisualDashboard(days=Number(document.querySelector("#salesRange button.active")?.dataset.days||30)){
+ const money=v=>new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR"}).format(Number(v||0));
+ try{
+  const orders=await preludeFetchOrdersForDashboard(), delivered=orders.filter(o=>o.status==="delivered"), cancelled=orders.filter(o=>["cancelled","canceled"].includes(o.status)), active=orders.filter(o=>["pending","preparing","ready"].includes(o.status));
+  const revenue=delivered.reduce((a,o)=>a+Number(o.total||0),0), ticket=delivered.length?revenue/delivered.length:0;
+  document.getElementById("bizRevenue").textContent=money(revenue);document.getElementById("bizDelivered").textContent=delivered.length;document.getElementById("bizTicket").textContent=money(ticket);document.getElementById("bizActive").textContent=active.length;document.getElementById("bizCancelled").textContent=cancelled.length;
+  const val=label=>{const c=[...document.querySelectorAll("#overviewView .metric-card")].find(c=>(c.querySelector(".metric-label")?.textContent||"").toLowerCase().includes(label));return c?.querySelector(".metric-value")?.textContent?.trim()||"—"};
+  document.getElementById("bizClients").textContent=val("clientes");document.getElementById("bizWorks").textContent=val("obras descubiertas");document.getElementById("bizCollection").textContent=val("colección más avanzada");
+  const map=new Map();delivered.forEach(o=>{if(!o.date)return;const d=new Date(o.date),k=d.toISOString().slice(0,10),x=map.get(k)||{revenue:0,count:0,date:new Date(d.getFullYear(),d.getMonth(),d.getDate())};x.revenue+=Number(o.total||0);x.count++;map.set(k,x)});
+  let data=[...map.values()].sort((a,b)=>a.date-b.date);
+  if(days>0){const end=new Date(),beg=new Date(end.getFullYear(),end.getMonth(),end.getDate());beg.setDate(beg.getDate()-days+1);data=[];for(let d=new Date(beg);d<=end;d.setDate(d.getDate()+1)){const k=d.toISOString().slice(0,10);data.push(map.get(k)||{revenue:0,count:0,date:new Date(d)})}}
+  drawPreludeDailySales(data,money);
+  const rows=[];if(active.length)rows.push(`<div class="executive-attention-item warning"><strong>${active.length} pedido${active.length===1?"":"s"} en curso</strong><span>Requieren gestión.</span></div>`);if(cancelled.length)rows.push(`<div class="executive-attention-item danger"><strong>${cancelled.length} cancelado${cancelled.length===1?"":"s"}</strong><span>Consulta el historial de pedidos.</span></div>`);if(!active.length)rows.push('<div class="executive-attention-item success"><strong>Pedidos al día</strong><span>No hay pedidos pendientes.</span></div>');document.getElementById("preludeAttention").innerHTML=rows.join("");
+  preludeHideLegacyDashboardMetrics();
+ }catch(e){console.error("Prelude dashboard",e)}
+}
+function drawPreludeDailySales(data,money){
+ const box=document.getElementById("dailySalesChart");if(!box)return;const W=760,H=190,max=Math.max(1,...data.map(x=>x.revenue)),n=Math.max(1,data.length-1);
+ const pts=data.map((x,i)=>({...x,x:12+(i/n)*736,y:170-(x.revenue/max)*145})),path=pts.map((p,i)=>(i?"L":"M")+p.x+" "+p.y).join(" "),step=Math.max(1,Math.ceil(data.length/6));
+ box.innerHTML=`<div class="chart-tooltip" id="dailyTooltip"></div><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${path}" fill="none" stroke="var(--prelude-green)" stroke-width="2"></path>${pts.map((p,i)=>`<circle class="daily-point" data-i="${i}" cx="${p.x}" cy="${p.y}" r="${p.revenue?3.5:2}" fill="${p.revenue?'var(--prelude-green)':'#c9c7c2'}"></circle>`).join("")}${pts.filter((_,i)=>i%step===0||i===pts.length-1).map(p=>`<text class="daily-axis-label" x="${p.x}" y="188" text-anchor="middle">${p.date.toLocaleDateString("es-ES",{day:"2-digit",month:"short"}).replace(".","")}</text>`).join("")}</svg>`;
+ const tip=box.querySelector("#dailyTooltip");box.querySelectorAll(".daily-point").forEach(el=>{el.onmouseenter=e=>{const p=pts[+el.dataset.i];tip.innerHTML=`<strong>${p.date.toLocaleDateString("es-ES",{day:"numeric",month:"long"})}</strong><br>Ventas: ${money(p.revenue)}<br>Pedidos: ${p.count}<br>Ticket medio: ${money(p.count?p.revenue/p.count:0)}`;tip.style.display="block";tip.style.left=Math.min(box.clientWidth-150,e.offsetX+12)+"px";tip.style.top=Math.max(5,e.offsetY-60)+"px"};el.onmouseleave=()=>tip.style.display="none"});
+}
+document.addEventListener("click",e=>{const b=e.target.closest("#salesRange button");if(!b)return;document.querySelectorAll("#salesRange button").forEach(x=>x.classList.remove("active"));b.classList.add("active");renderPreludeVisualDashboard(+b.dataset.days)});
+document.addEventListener("DOMContentLoaded",()=>setTimeout(preludeHideLegacyDashboardMetrics,450));
+
+
+function enhancePreludeOrdersUI(){
+  const root=document.getElementById("ordersView");if(!root)return;
+
+  // Hide large legacy status cards only when they are clearly the status counters.
+  root.querySelectorAll(".metric-card,.card").forEach(card=>{
+    const text=(card.textContent||"").trim().toLowerCase();
+    const labels=["pendientes","preparando","listos","entregados"];
+    if(labels.some(l=>text===l || text.startsWith(l+"\n") || text.startsWith(l+" "))){
+      const hasSmallNumber=/\b\d+\b/.test(text);
+      if(hasSmallNumber)card.classList.add("orders-legacy-metrics");
+    }
+  });
+
+  const rows=[...root.querySelectorAll(".order-row,.order-card")];
+  const counts={pending:0,preparing:0,ready:0,delivered:0,cancelled:0};
+
+  rows.forEach(row=>{
+    let status="";
+    const chip=row.querySelector(".order-status");
+    if(chip){
+      const cls=[...chip.classList].find(x=>x.startsWith("status-"));
+      if(cls)status=cls.replace("status-","");
+      if(!status){
+        const t=(chip.textContent||"").trim().toLowerCase();
+        const map={pendiente:"pending",preparando:"preparing",listo:"ready",entregado:"delivered",cancelado:"cancelled"};
+        status=map[t]||"";
+      }
+    }
+    if(!status){
+      const t=(row.textContent||"").toLowerCase();
+      if(t.includes("cancelado"))status="cancelled";
+      else if(t.includes("entregado"))status="delivered";
+      else if(t.includes("listo"))status="ready";
+      else if(t.includes("preparando"))status="preparing";
+      else if(t.includes("pendiente"))status="pending";
+    }
+    if(status){
+      row.dataset.orderStatus=status;
+      if(counts[status]!==undefined)counts[status]++;
+    }
+  });
+
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=String(v||0)};
+  set("ordersPendingCompact",counts.pending);
+  set("ordersPreparingCompact",counts.preparing);
+  set("ordersReadyCompact",counts.ready);
+  set("ordersDeliveredCompact",counts.delivered);
+}
+
+function schedulePreludeOrdersEnhancement(){
+  clearTimeout(window.__preludeOrdersUiTimer);
+  window.__preludeOrdersUiTimer=setTimeout(enhancePreludeOrdersUI,250);
+}
+document.addEventListener("DOMContentLoaded",()=>setTimeout(schedulePreludeOrdersEnhancement,650));
+document.getElementById("refreshOrdersBtn")?.addEventListener("click",()=>setTimeout(schedulePreludeOrdersEnhancement,450));
+
+
+/* PRELUDE · FASE 9.5 · AUTO-COLOR PEDIDOS
+   Aplica los estados automáticamente cada vez que se renderiza/cambia la lista. */
+(function(){
+  let timer=null;
+
+  function refreshPreludeOrderColours(){
+    clearTimeout(timer);
+    timer=setTimeout(()=>{
+      try{
+        if(typeof enhancePreludeOrdersUI==="function") enhancePreludeOrdersUI();
+        if(typeof enhancePreludeOrderRows==="function") enhancePreludeOrderRows();
+      }catch(err){
+        console.error("Prelude auto estado:",err);
+      }
+    },40);
+  }
+
+  function observePreludeOrders(){
+    const root=document.getElementById("ordersView");
+    if(!root)return;
+
+    const observer=new MutationObserver(mutations=>{
+      const relevant=mutations.some(m=>m.type==="childList" || m.type==="characterData");
+      if(relevant) refreshPreludeOrderColours();
+    });
+
+    observer.observe(root,{
+      childList:true,
+      subtree:true,
+      characterData:true
+    });
+
+    /* También se actualiza al entrar en Pedidos. */
+    document.addEventListener("click",e=>{
+      const target=e.target.closest("button,a,[data-view],[data-target]");
+      if(!target)return;
+      const text=(target.textContent||"").trim().toLowerCase();
+      const view=(target.dataset.view||target.dataset.target||"").toLowerCase();
+      if(text==="pedidos" || view.includes("orders") || view.includes("pedidos")){
+        setTimeout(refreshPreludeOrderColours,80);
+        setTimeout(refreshPreludeOrderColours,350);
+      }
+    });
+
+    refreshPreludeOrderColours();
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",()=>setTimeout(observePreludeOrders,500));
+  }else{
+    setTimeout(observePreludeOrders,500);
+  }
+})();
+
+
+
+
+
+/* PRELUDE · FASE 9.6 FIX · NOMENCLATURA PRELUDES */
+function renameOrderLinesToPreludesSafe(root=document){
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+  const nodes=[];
+  while(walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(n=>{
+    const old=n.nodeValue||"";
+    const next=old
+      .replace(/(\d+)\s+l[ií]neas?\s+de\s+pedido/gi,"$1 Preludes")
+      .replace(/(\d+)\s+lineas?\s+de\s+pedido/gi,"$1 Preludes");
+    if(next!==old) n.nodeValue=next;
+  });
+}
+function schedulePreludeRename(){
+  setTimeout(()=>renameOrderLinesToPreludesSafe(document.getElementById("ordersView")||document),120);
+}
+document.addEventListener("DOMContentLoaded",schedulePreludeRename);
+document.getElementById("refreshOrdersBtn")?.addEventListener("click",schedulePreludeRename);
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button,a,[data-view],[data-target]");
+  if(!t)return;
+  const text=(t.textContent||"").trim().toLowerCase();
+  const view=(t.dataset.view||t.dataset.target||"").toLowerCase();
+  if(text==="pedidos"||view.includes("orders")||view.includes("pedidos")) schedulePreludeRename();
+});
+
+
+/* PRELUDE · FASE 9.7 FIX
+   La barra real de Studio es .studio-sidebar / .studio-tabs. */
+function buildPreludeGroupedNavigationFixed(){
+  const sidebar=document.querySelector(".studio-sidebar");
+  const tabs=sidebar?.querySelector(".studio-tabs");
+  if(!sidebar||!tabs||tabs.dataset.grouped==="1")return;
+  tabs.dataset.grouped="1";
+
+  const dashboard=document.getElementById("dashboardTabBtn");
+  if(dashboard)dashboard.classList.add("studio-nav-home");
+
+  const definitions=[
+    {title:"Ventas", ids:["ordersTabBtn","customersTabBtn"]},
+    {title:"Colección", ids:["catalogTabBtn","pricesTabBtn","stockTabBtn"]},
+    {title:"Finanzas", ids:["profitabilityTabBtn","statsTabBtn"]},
+    {title:"Fidelización", ids:["codesTabBtn","rewardsTabBtn","rankingTabBtn"]},
+    {title:"Universo Prelude", ids:["collectionTabBtn","museumTabBtn"]}
+  ];
+
+  definitions.forEach((def,index)=>{
+    const buttons=def.ids.map(id=>document.getElementById(id)).filter(Boolean);
+    if(!buttons.length)return;
+
+    const group=document.createElement("div");
+    group.className="studio-nav-group";
+
+    const head=document.createElement("button");
+    head.type="button";
+    head.className="studio-nav-group-head";
+    head.innerHTML=`<span class="studio-nav-group-title">${def.title}</span><span class="studio-nav-chevron">›</span>`;
+
+    const items=document.createElement("div");
+    items.className="studio-nav-items";
+
+    buttons.forEach(btn=>items.appendChild(btn));
+    group.append(head,items);
+    tabs.appendChild(group);
+
+    head.addEventListener("click",()=>{
+      const willOpen=!group.classList.contains("open");
+      tabs.querySelectorAll(".studio-nav-group").forEach(g=>g.classList.remove("open"));
+      if(willOpen)group.classList.add("open");
+    });
+  });
+
+  // Open the group containing the active view, if any.
+  const active=tabs.querySelector(".studio-nav-items button.active");
+  const activeGroup=active?.closest(".studio-nav-group");
+  if(activeGroup)activeGroup.classList.add("open");
+
+  // When a nested section is selected, keep its group open.
+  tabs.querySelectorAll(".studio-nav-items button").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const group=btn.closest(".studio-nav-group");
+      tabs.querySelectorAll(".studio-nav-group").forEach(g=>g.classList.remove("open"));
+      group?.classList.add("open");
+    });
+  });
+}
+document.addEventListener("DOMContentLoaded",()=>setTimeout(buildPreludeGroupedNavigationFixed,120));
+
+
+/* PRELUDE · FASE 9.8 · GESTIÓN MANUAL DE OBRAS */
+function openWorkEditor(){
+  const select=document.getElementById("newWorkCatalogId");
+  if(select){
+    select.innerHTML='<option value="">Selecciona un perfume</option>'+catalogCache
+      .filter(p=>!p.deleted_at)
+      .map(p=>`<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)} · ${escapeHtml(p.brand||"")}</option>`).join("");
+  }
+  document.getElementById("newWorkImageUrl").value="";
+  document.getElementById("newWorkDescription").value="";
+  document.getElementById("newWorkPublished").value="false";
+  document.getElementById("newWorkStatus").textContent="";
+  document.getElementById("workEditorOverlay").classList.add("open");
+}
+function closeWorkEditor(){document.getElementById("workEditorOverlay").classList.remove("open")}
+
+async function createPreludeWork(){
+  const st=document.getElementById("newWorkStatus");
+  const catalogId=document.getElementById("newWorkCatalogId").value;
+  const imageUrl=document.getElementById("newWorkImageUrl").value.trim()||null;
+  const description=document.getElementById("newWorkDescription").value.trim()||null;
+  const published=document.getElementById("newWorkPublished").value==="true";
+  if(!catalogId){status(st,"Selecciona un perfume.",true);return}
+  const {error}=await client.rpc("admin_create_prelude_work",{
+    input_catalog_id:catalogId,
+    input_image_url:imageUrl,
+    input_description:description,
+    input_published:published
+  });
+  if(error){status(st,"No se pudo crear la obra: "+error.message,true);return}
+  closeWorkEditor();
+  if(typeof loadMuseumAdmin==="function")await loadMuseumAdmin();
+}
+
+async function deletePreludeWork(workId,name){
+  if(!confirm(`Eliminar la obra de "${name}"? El perfume seguirá en el catálogo.`))return;
+  const {error}=await client.rpc("admin_delete_prelude_work",{input_work_id:workId});
+  if(error){alert("No se pudo eliminar la obra: "+error.message);return}
+  if(typeof loadMuseumAdmin==="function")await loadMuseumAdmin();
+}
+
+function enhanceWorksManagement(){
+  const root=document.getElementById("museumView");if(!root)return;
+  const cards=[...root.querySelectorAll(".card")].filter(c=>c.querySelector("textarea"));
+  cards.forEach(card=>{
+    if(card.dataset.workEnhanced==="1")return;
+    card.dataset.workEnhanced="1";
+    card.classList.add("work-card");
+
+    const name=(card.querySelector("strong,h2,h3")?.textContent||"Obra").trim();
+    const idInput=card.querySelector("[data-work-id],input[name='work_id']");
+    const workId=idInput?.dataset.workId||idInput?.value||card.dataset.workId||"";
+    const published=!!card.querySelector("input[type='checkbox']:checked");
+    const hasImage=!!(card.querySelector("input[type='url'],input[type='text']")?.value||"").trim();
+
+    const chip=document.createElement("span");
+    chip.className="work-status-chip "+(published?"published":hasImage?"hidden":"pending");
+    chip.textContent=published?"Publicada":hasImage?"Oculta":"Pendiente";
+    const heading=card.querySelector("strong,h2,h3");
+    heading?.insertAdjacentElement("afterend",chip);
+
+    if(workId){
+      const actions=card.querySelector(".order-actions")||card;
+      const btn=document.createElement("button");
+      btn.type="button";
+      btn.className="secondary work-delete-btn";
+      btn.textContent="Eliminar obra";
+      btn.addEventListener("click",()=>deletePreludeWork(workId,name));
+      actions.appendChild(btn);
+    }
+  });
+}
+
+document.getElementById("addWorkBtn")?.addEventListener("click",openWorkEditor);
+document.getElementById("closeWorkEditorBtn")?.addEventListener("click",closeWorkEditor);
+document.getElementById("cancelWorkEditorBtn")?.addEventListener("click",closeWorkEditor);
+document.getElementById("createWorkBtn")?.addEventListener("click",createPreludeWork);
+document.getElementById("workEditorOverlay")?.addEventListener("click",e=>{if(e.target.id==="workEditorOverlay")closeWorkEditor()});
+document.addEventListener("DOMContentLoaded",()=>setTimeout(enhanceWorksManagement,700));
+document.addEventListener("click",e=>{const t=e.target.closest("button,a");if((t?.textContent||"").includes("Obras Prelude"))setTimeout(enhanceWorksManagement,450)});
+
 </script>
+
+<section class="order-detail-overlay" id="workEditorOverlay">
+  <div class="order-detail-card" style="max-width:760px">
+    <div class="order-detail-head">
+      <div>
+        <div class="dashboard-kicker">Obras Prelude</div>
+        <h2>Nueva obra</h2>
+        <div class="order-meta">Selecciona un perfume del catálogo y crea su ficha artística.</div>
+      </div>
+      <button class="secondary" id="closeWorkEditorBtn" type="button">Cerrar</button>
+    </div>
+    <div class="detail-grid" style="grid-template-columns:1fr 1fr;margin-top:18px">
+      <div class="detail-field" style="grid-column:1/-1">
+        <label>Perfume</label>
+        <select id="newWorkCatalogId"><option value="">Selecciona un perfume</option></select>
+      </div>
+      <div class="detail-field" style="grid-column:1/-1">
+        <label>Archivo / URL de la obra</label>
+        <input id="newWorkImageUrl" placeholder="Opcional al crear">
+      </div>
+      <div class="detail-field" style="grid-column:1/-1">
+        <label>Descripción artística</label>
+        <textarea id="newWorkDescription" rows="5"></textarea>
+      </div>
+      <div class="detail-field">
+        <label>Estado</label>
+        <select id="newWorkPublished">
+          <option value="false">Pendiente / oculta</option>
+          <option value="true">Publicada</option>
+        </select>
+      </div>
+    </div>
+    <div class="status" id="newWorkStatus"></div>
+    <div class="order-actions" style="margin-top:18px;justify-content:flex-end">
+      <button class="secondary" id="cancelWorkEditorBtn" type="button">Cancelar</button>
+      <button class="primary" id="createWorkBtn" type="button">Crear obra</button>
+    </div>
+  </div>
+</section>
+
 </body>
 </html>
