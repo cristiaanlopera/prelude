@@ -1812,7 +1812,12 @@ function requestCheckout(){
   }
 
   if(customerProfile){
-    send();
+    validateSelectedRewardChoices().then(ok=>{
+      if(ok)send();
+    }).catch(error=>{
+      console.error(error);
+      alert("No se pudieron validar las recompensas seleccionadas.");
+    });
     return;
   }
 
@@ -1892,7 +1897,17 @@ async function send(){
       "",
       "Recompensas que deseo canjear",
       "",
-      ...selectedRewards.map(reward=>`• ${reward.reward_label} [${reward.id}]`)
+      ...await Promise.all(selectedRewards.map(async reward=>{
+        try{
+          const cfg=await fetchRewardChoiceConfig(String(reward.id),true);
+          const chosen=(cfg?.selected||[])
+            .map(x=>`${x.name} · ${x.decant_size_ml} ml`)
+            .join(", ");
+          return `• ${reward.reward_label}${chosen?` — Elegido: ${chosen}`:""} [${reward.id}]`;
+        }catch(_){
+          return `• ${reward.reward_label} [${reward.id}]`;
+        }
+      }))
     ]:[]),
     "",
     `Total: ${euro.format(finalTotal)}`,
@@ -3451,51 +3466,61 @@ const catalogSortEl=document.getElementById("catalogSort");
 if(catalogSortEl)catalogSortEl.addEventListener("change",()=>{renderProducts();playSound("navigate")});
 
 
-/* PRELUDE · FASE 11.2 · ELECCIÓN VISUAL DE RECOMPENSAS */
+/* PRELUDE · FASE 11.3 · RECOMPENSA REAL DEL CLIENTE → REWARD_KEY */
 let rewardChoiceCache=new Map();
 let activeRewardChoice=null;
 let activeRewardSelections=new Set();
 
-async function fetchRewardChoiceConfig(rewardId){
-  const key=String(rewardId);
-  if(rewardChoiceCache.has(key))return rewardChoiceCache.get(key);
-  const {data,error}=await supabaseClient.rpc("get_prelude_reward_choice",{input_reward_id:key});
-  if(error)throw error;
-  rewardChoiceCache.set(key,data||null);
-  return data||null;
-}
+async function fetchRewardChoiceConfig(customerRewardId,force=false){
+  const key=String(customerRewardId);
+  if(!force && rewardChoiceCache.has(key))return rewardChoiceCache.get(key);
+  if(!customerProfile||!supabaseClient)return null;
 
-async function fetchSavedRewardChoice(rewardId){
-  if(!customerProfile)return {selected:[]};
-  const {data,error}=await supabaseClient.rpc("get_my_prelude_reward_choice_for_customer",{
-    input_reward_id:String(rewardId),
+  const {data,error}=await supabaseClient.rpc("get_prelude_customer_reward_choice_config",{
+    input_customer_reward_id:key,
     input_phone:customerProfile.phone,
     input_access_token:customerProfile.accessToken
   });
   if(error)throw error;
-  return data||{selected:[]};
+
+  const result=data||null;
+  rewardChoiceCache.set(key,result);
+  return result;
 }
 
-async function openRewardChoice(rewardId){
-  if(!supabaseClient||!customerProfile)return;
-  const cfg=await fetchRewardChoiceConfig(String(rewardId));
-  if(!cfg||cfg.choice_type!=="choice")return;
+async function fetchSavedRewardChoice(customerRewardId){
+  const cfg=await fetchRewardChoiceConfig(customerRewardId,true);
+  return {selected:Array.isArray(cfg?.selected)?cfg.selected:[]};
+}
 
-  activeRewardChoice=cfg;
-  activeRewardSelections=new Set();
+async function openRewardChoice(customerRewardId){
+  if(!supabaseClient||!customerProfile)return;
 
   try{
-    const saved=await fetchSavedRewardChoice(String(rewardId));
-    (saved?.selected||[]).forEach(x=>activeRewardSelections.add(String(x.catalog_id)));
-  }catch(error){console.warn(error);}
+    const cfg=await fetchRewardChoiceConfig(customerRewardId,true);
+    if(!cfg || cfg.choice_type!=="choice")return;
 
-  document.getElementById("rewardChoiceTitle").textContent=cfg.reward_name||"Elige tu Prelude";
-  document.getElementById("rewardChoiceSubtitle").textContent=`Elige ${Number(cfg.choice_count||1)} de ${(cfg.options||[]).length} opciones · ${Number(cfg.decant_size_ml||2)} ml`;
-  renderRewardChoiceGrid();
+    activeRewardChoice=cfg;
+    activeRewardSelections=new Set(
+      (Array.isArray(cfg.selected)?cfg.selected:[]).map(x=>String(x.catalog_id))
+    );
 
-  const overlay=document.getElementById("rewardChoiceOverlay");
-  overlay.classList.add("open");
-  overlay.setAttribute("aria-hidden","false");
+    const title=document.getElementById("rewardChoiceTitle");
+    const subtitle=document.getElementById("rewardChoiceSubtitle");
+    if(title)title.textContent=cfg.reward_label||"Elige tu Prelude";
+    if(subtitle)subtitle.textContent=
+      `Elige ${Number(cfg.choice_count||1)} de ${(cfg.options||[]).length} opciones · ${Number(cfg.decant_size_ml||2)} ml`;
+
+    renderRewardChoiceGrid();
+
+    const overlay=document.getElementById("rewardChoiceOverlay");
+    if(!overlay)throw new Error("No se encuentra el selector de recompensas.");
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden","false");
+  }catch(error){
+    console.error("Abrir recompensa:",error);
+    alert("No se pudo abrir la elección de recompensa: "+(error.message||error));
+  }
 }
 
 function renderRewardChoiceGrid(){
@@ -3507,74 +3532,91 @@ function renderRewardChoiceGrid(){
 
   box.innerHTML=options.map(p=>{
     const selected=activeRewardSelections.has(String(p.catalog_id));
-    return `<div class="reward-choice-card ${selected?"selected":""}" data-choice-catalog="${p.catalog_id}">
-      <div class="selected-mark">${selected?"✓":""}</div>
-      ${p.image_url?`<img src="${p.image_url}" alt="${p.name||""}">`:`<div style="height:180px;display:grid;place-items:center;background:#eee;color:#666">Sin imagen</div>`}
-      <div class="body">
+    const img=String(p.image_url||"").trim();
+
+    return `<button type="button"
+      class="reward-choice-card ${selected?"selected":""}"
+      data-choice-catalog="${p.catalog_id}">
+      <span class="selected-mark">${selected?"✓":""}</span>
+      ${img
+        ? `<img src="${img}" alt="${p.name||""}">`
+        : `<span style="height:180px;display:grid;place-items:center;background:#eee;color:#666">Sin imagen</span>`}
+      <span class="body">
         <strong>${p.name||""}</strong>
         <span>${p.brand||""} · ${Number(activeRewardChoice.decant_size_ml||2)} ml</span>
-      </div>
-    </div>`;
+      </span>
+    </button>`;
   }).join("");
 
-  document.getElementById("rewardChoiceCountLabel").textContent=`${activeRewardSelections.size}/${max} seleccionados`;
-  document.getElementById("confirmRewardChoiceBtn").disabled=activeRewardSelections.size!==max;
+  const label=document.getElementById("rewardChoiceCountLabel");
+  const confirm=document.getElementById("confirmRewardChoiceBtn");
+  if(label)label.textContent=`${activeRewardSelections.size}/${max} seleccionados`;
+  if(confirm)confirm.disabled=activeRewardSelections.size!==max;
 }
 
 function closeRewardChoice(){
   const overlay=document.getElementById("rewardChoiceOverlay");
-  overlay.classList.remove("open");
-  overlay.setAttribute("aria-hidden","true");
+  if(overlay){
+    overlay.classList.remove("open");
+    overlay.setAttribute("aria-hidden","true");
+  }
   activeRewardChoice=null;
   activeRewardSelections.clear();
 }
 
 async function saveCurrentRewardChoice(){
-  if(!activeRewardChoice||!customerProfile)return;
+  if(!activeRewardChoice||!customerProfile||!supabaseClient)return;
+
   const ids=[...activeRewardSelections];
   const btn=document.getElementById("confirmRewardChoiceBtn");
-  btn.disabled=true;
-  btn.textContent="Guardando…";
+  if(btn){
+    btn.disabled=true;
+    btn.textContent="Guardando…";
+  }
 
   try{
-    const {error}=await supabaseClient.rpc("save_prelude_reward_choice_for_customer",{
-      input_reward_id:String(activeRewardChoice.reward_id),
+    const {error}=await supabaseClient.rpc("save_prelude_customer_reward_choice",{
+      input_customer_reward_id:String(activeRewardChoice.customer_reward_id),
       input_catalog_ids:ids,
       input_phone:customerProfile.phone,
       input_access_token:customerProfile.accessToken
     });
     if(error)throw error;
+
+    rewardChoiceCache.delete(String(activeRewardChoice.customer_reward_id));
     closeRewardChoice();
     await refreshClientRewardChoiceUI(true);
     renderCart();
     renderRewards();
   }catch(error){
-    console.error(error);
+    console.error("Guardar recompensa:",error);
     alert("No se pudo guardar tu elección: "+(error.message||error));
   }finally{
-    btn.disabled=false;
-    btn.textContent="Confirmar elección";
+    if(btn){
+      btn.disabled=false;
+      btn.textContent="Confirmar elección";
+    }
   }
 }
 
 async function refreshClientRewardChoiceUI(force=false){
   if(!supabaseClient||!customerProfile)return;
+
   const slots=[...document.querySelectorAll("[data-reward-choice-slot]")];
 
   for(const slot of slots){
-    const rewardId=String(slot.dataset.rewardChoiceSlot||"");
-    if(!rewardId)continue;
+    const customerRewardId=String(slot.dataset.rewardChoiceSlot||"");
+    if(!customerRewardId)continue;
     if(slot.dataset.loaded==="1"&&!force)continue;
 
     slot.dataset.loaded="1";
     slot.innerHTML="";
 
     try{
-      const cfg=await fetchRewardChoiceConfig(rewardId);
+      const cfg=await fetchRewardChoiceConfig(customerRewardId,force);
       if(!cfg||cfg.choice_type!=="choice")continue;
 
-      const saved=await fetchSavedRewardChoice(rewardId);
-      const selected=Array.isArray(saved?.selected)?saved.selected:[];
+      const selected=Array.isArray(cfg.selected)?cfg.selected:[];
 
       const btn=document.createElement("button");
       btn.type="button";
@@ -3583,17 +3625,19 @@ async function refreshClientRewardChoiceUI(force=false){
       btn.addEventListener("click",async e=>{
         e.preventDefault();
         e.stopPropagation();
-        await openRewardChoice(rewardId);
+        await openRewardChoice(customerRewardId);
       });
       slot.appendChild(btn);
 
       const detail=document.createElement("div");
       if(selected.length){
         detail.className="reward-selected-choice";
-        detail.textContent="Elegido: "+selected.map(x=>`${x.name} · ${x.decant_size_ml} ml`).join(", ");
+        detail.textContent="Elegido: "+
+          selected.map(x=>`${x.name} · ${x.decant_size_ml} ml`).join(", ");
       }else{
         detail.className="pending-reward-choice-note";
-        detail.textContent=`Elige ${Number(cfg.choice_count||1)} de ${(cfg.options||[]).length} opciones · ${Number(cfg.decant_size_ml||2)} ml`;
+        detail.textContent=
+          `Elige ${Number(cfg.choice_count||1)} de ${(cfg.options||[]).length} opciones · ${Number(cfg.decant_size_ml||2)} ml`;
       }
       slot.appendChild(detail);
     }catch(error){
@@ -3603,13 +3647,37 @@ async function refreshClientRewardChoiceUI(force=false){
   }
 }
 
+async function validateSelectedRewardChoices(){
+  if(!customerProfile)return true;
+
+  const selected=pendingRewards().filter(reward=>selectedRewardIds.has(reward.id));
+
+  for(const reward of selected){
+    const cfg=await fetchRewardChoiceConfig(String(reward.id),true);
+    if(cfg?.choice_type==="choice"){
+      const chosen=Array.isArray(cfg.selected)?cfg.selected:[];
+      if(chosen.length!==Number(cfg.choice_count||1)){
+        await openRewardChoice(String(reward.id));
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 document.addEventListener("click",e=>{
   const card=e.target.closest("[data-choice-catalog]");
   if(card&&activeRewardChoice){
+    e.preventDefault();
     const id=String(card.dataset.choiceCatalog);
     const max=Number(activeRewardChoice.choice_count||1);
-    if(activeRewardSelections.has(id))activeRewardSelections.delete(id);
-    else if(activeRewardSelections.size<max)activeRewardSelections.add(id);
+
+    if(activeRewardSelections.has(id)){
+      activeRewardSelections.delete(id);
+    }else if(activeRewardSelections.size<max){
+      activeRewardSelections.add(id);
+    }
+
     renderRewardChoiceGrid();
     return;
   }
@@ -3625,7 +3693,9 @@ document.addEventListener("click",e=>{
   }
 });
 
-document.addEventListener("DOMContentLoaded",()=>setTimeout(()=>refreshClientRewardChoiceUI(true),900));
+document.addEventListener("DOMContentLoaded",()=>{
+  setTimeout(()=>refreshClientRewardChoiceUI(true),900);
+});
 
 </script>
 <section class="reward-choice-overlay" id="rewardChoiceOverlay" aria-hidden="true">

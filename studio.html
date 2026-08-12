@@ -2039,7 +2039,7 @@ async function openCustomer(customerId){
 
   customerRewards.innerHTML=data.rewards?.length
     ? data.rewards.map(reward=>`
-        <div class="reward-admin-row">
+        <div class="reward-admin-row" data-customer-reward-instance="${reward.id}">
           <strong>${reward.reward_label}</strong>
           <div class="reward-admin-meta">
             ${reward.threshold} Marcapáginas ·
@@ -2071,6 +2071,7 @@ async function openCustomer(customerId){
     });
   });
 
+  await decorateCustomerRewardChoices(activeCustomerId);
   customerEditStatus.textContent="";
   customerDetail.classList.add("open");
 }
@@ -3638,6 +3639,41 @@ async function loadCustomerRewardChoices(customerId){
     if(error)throw error;
     return Array.isArray(data)?data:[];
   }catch(e){console.warn("Customer reward choices:",e);return[]}
+}
+
+
+/* PRELUDE · FASE 11.3 · ELECCIÓN DE RECOMPENSA EN FICHA DE CLIENTE */
+async function decorateCustomerRewardChoices(customerId){
+  const root=document.getElementById("customerRewards");
+  if(!root||!customerId)return;
+
+  try{
+    const {data,error}=await client.rpc("admin_get_customer_reward_choices",{
+      input_customer_id:customerId
+    });
+    if(error)throw error;
+
+    const rows=Array.isArray(data)?data:[];
+    const byInstance=new Map();
+    rows.forEach(x=>{
+      const key=String(x.customer_reward_id||"");
+      if(!key)return;
+      if(!byInstance.has(key))byInstance.set(key,[]);
+      byInstance.get(key).push(x);
+    });
+
+    root.querySelectorAll("[data-customer-reward-instance]").forEach(card=>{
+      const chosen=byInstance.get(String(card.dataset.customerRewardInstance))||[];
+      if(!chosen.length)return;
+      const line=document.createElement("div");
+      line.className="reward-admin-meta";
+      line.style.color="var(--prelude-green)";
+      line.textContent="Elegido: "+chosen.map(x=>`${x.name} · ${x.decant_size_ml} ml`).join(", ");
+      card.appendChild(line);
+    });
+  }catch(error){
+    console.warn("Elecciones de recompensa:",error);
+  }
 }
 
 </script>
