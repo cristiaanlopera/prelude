@@ -1280,6 +1280,88 @@ body.dark .museum-unlock{background:rgba(18,18,18,.985)}
   .reward-choice-card img{height:180px!important}
 }
 
+
+/* PRELUDE · FASE 12.14 · SELECTOR RECOMPENSAS MÓVIL */
+.reward-choice-overlay{
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+.reward-choice-overlay.open{
+  overflow-y:auto;
+  align-items:flex-start;
+}
+.reward-choice-modal{
+  display:flex;
+  flex-direction:column;
+}
+.reward-choice-footer{
+  position:sticky;
+  bottom:0;
+  z-index:5;
+  background:#f4f1eb;
+  padding-top:12px;
+  padding-bottom:calc(4px + env(safe-area-inset-bottom));
+  border-top:1px solid rgba(0,0,0,.10);
+}
+.reward-choice-close{
+  position:sticky;
+  top:0;
+  margin-left:auto;
+  z-index:8;
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:rgba(244,241,235,.94);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+@media(max-width:720px){
+  .reward-choice-overlay{
+    padding:0;
+    align-items:flex-start;
+    justify-content:stretch;
+  }
+  .reward-choice-modal{
+    width:100%;
+    max-height:none;
+    min-height:100dvh;
+    border-radius:0;
+    padding:18px 14px calc(18px + env(safe-area-inset-bottom));
+    overflow:visible;
+  }
+  .reward-choice-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+  .reward-choice-card img{
+    height:auto!important;
+    aspect-ratio:3/4;
+    object-fit:cover!important;
+  }
+  .reward-choice-footer{
+    margin-left:-14px;
+    margin-right:-14px;
+    padding-left:14px;
+    padding-right:14px;
+  }
+  .reward-choice-footer .primary{
+    min-height:46px;
+  }
+}
+
+
+html.reward-choice-open,
+body.reward-choice-open{
+  overflow:hidden!important;
+  height:100%;
+  touch-action:none;
+}
+#rewardChoiceOverlay{
+  touch-action:pan-y;
+}
+
 </style>
 </head>
 <body><div class="watermark-brush one"></div><div class="watermark-brush two"></div>
@@ -3565,10 +3647,18 @@ async function openRewardChoice(customerRewardId){
     if(subtitle)subtitle.textContent=
       `Elige ${Number(cfg.choice_count||1)} de ${(cfg.options||[]).length} opciones · ${Number(cfg.decant_size_ml||2)} ml`;
 
+    const optionImages=(Array.isArray(cfg.options)?cfg.options:[])
+      .map(rewardPerfumeImage)
+      .filter(Boolean);
+    await Promise.allSettled(optionImages.map(preloadPreludeImage));
+
     renderRewardChoiceGrid();
 
     const overlay=document.getElementById("rewardChoiceOverlay");
     if(!overlay)throw new Error("No se encuentra el selector de recompensas.");
+    document.documentElement.classList.add("reward-choice-open");
+    document.body.classList.add("reward-choice-open");
+    overlay.scrollTop=0;
     overlay.classList.add("open");
     overlay.setAttribute("aria-hidden","false");
   }catch(error){
@@ -3612,7 +3702,7 @@ function renderRewardChoiceGrid(){
       data-choice-catalog="${p.catalog_id}">
       <span class="selected-mark">${selected?"✓":""}</span>
       ${img
-        ? `<img src="${img}" alt="${p.name||""}">`
+        ? `<img src="${img}" alt="${p.name||""}" loading="eager" decoding="async" fetchpriority="high">`
         : `<span style="height:180px;display:grid;place-items:center;background:#eee;color:#666">Sin imagen</span>`}
       <span class="body">
         <strong>${p.name||""}</strong>
@@ -3632,7 +3722,10 @@ function closeRewardChoice(){
   if(overlay){
     overlay.classList.remove("open");
     overlay.setAttribute("aria-hidden","true");
+    overlay.scrollTop=0;
   }
+  document.documentElement.classList.remove("reward-choice-open");
+  document.body.classList.remove("reward-choice-open");
   activeRewardChoice=null;
   activeRewardSelections.clear();
 }
@@ -3808,6 +3901,37 @@ document.addEventListener("click",async e=>{
     btn.textContent=oldText.includes("Cambiar")?"Cambiar elección":"Elegir Prelude";
   }
 });
+
+
+const preludeImagePreloadCache=new Map();
+
+function preloadPreludeImage(src){
+  src=String(src||"").trim();
+  if(!src)return Promise.resolve(false);
+  if(preludeImagePreloadCache.has(src))return preludeImagePreloadCache.get(src);
+
+  const promise=new Promise(resolve=>{
+    const img=new Image();
+    img.decoding="async";
+    img.onload=()=>resolve(true);
+    img.onerror=()=>resolve(false);
+    img.src=src;
+    // decode improves first paint on browsers that support it.
+    if(img.decode)img.decode().then(()=>resolve(true)).catch(()=>{});
+  });
+  preludeImagePreloadCache.set(src,promise);
+  return promise;
+}
+
+function preloadRewardCatalogImages(){
+  if(!Array.isArray(products))return;
+  products.forEach(p=>preloadPreludeImage(p?.image));
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  setTimeout(preloadRewardCatalogImages,250);
+});
+window.addEventListener("load",preloadRewardCatalogImages);
 
 </script>
 <section class="reward-choice-overlay" id="rewardChoiceOverlay" aria-hidden="true">

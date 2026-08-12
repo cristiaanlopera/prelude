@@ -1,0 +1,12 @@
+PRELUDE — FASE 12.14
+
+Correcciones en la web pública:
+- Selector de recompensas móvil ahora ocupa la pantalla completa y permite scroll vertical natural.
+- El pie con “Confirmar elección” queda sticky y siempre accesible.
+- El botón de cerrar permanece accesible durante el desplazamiento.
+- El fondo de la web queda bloqueado mientras el selector está abierto para evitar scroll cruzado.
+- Respeta safe-area inferior de iPhone.
+- Las imágenes de catálogo se precargan tras cargar la página.
+- Al abrir una recompensa, las imágenes de sus opciones se precargan antes de mostrar el selector.
+- Imágenes del selector usan loading=eager, decoding=async y fetchpriority=high.
+- No requiere SQL.
