@@ -2609,31 +2609,112 @@ document.getElementById('refreshRewardsBtn')?.addEventListener('click',loadRewar
 document.getElementById('newRewardBtn')?.addEventListener('click',createRewardSetting);
 
 let museumAdminCache=[];
+
 async function loadMuseumAdmin(){
- const list=document.getElementById('museumAdminList'); if(!list||!client)return;
- list.innerHTML='<p style="color:var(--muted)">Cargando Museo...</p>';
- try{const {data,error}=await client.rpc('admin_list_prelude_museum_works'); if(error)throw error; museumAdminCache=Array.isArray(data)?data:[]; renderMuseumAdmin();}
- catch(e){console.error(e);list.innerHTML='<p class="error">No se pudo cargar el Museo. Ejecuta el SQL de Fase 5.</p>';}
+  const list=document.getElementById("museumAdminList");
+  const st=document.getElementById("museumAdminStatus");
+  if(!list||!client)return;
+  list.innerHTML='<p style="color:var(--muted)">Cargando Obras Prelude...</p>';
+
+  try{
+    const {data,error}=await client.rpc("admin_list_prelude_works");
+    if(error)throw error;
+    museumAdminCache=Array.isArray(data)?data:[];
+    renderMuseumAdmin();
+  }catch(e){
+    console.error(e);
+    list.innerHTML='<p class="error">No se pudieron cargar las Obras Prelude: '+escapeHtml(e.message||String(e))+'</p>';
+    if(st)st.textContent="Comprueba que has ejecutado el SQL de Fase 9.8.";
+  }
 }
+
 function renderMuseumAdmin(){
- const q=(document.getElementById('museumSearch')?.value||'').trim().toLowerCase(); const list=document.getElementById('museumAdminList');
- const rows=museumAdminCache.filter(w=>!q||`${w.perfume_name} ${w.brand}`.toLowerCase().includes(q));
- list.innerHTML=rows.map(w=>`<div class="museum-admin-card" data-museum-name="${escapeHtml(w.perfume_name)}">
-   <img class="museum-thumb" src="${escapeHtml(w.artwork_path||'')}" alt="">
-   <div class="museum-fields"><div><strong>${escapeHtml(w.perfume_name)}</strong><div class="meta">${escapeHtml(w.brand||'')}</div></div>
-   <div class="field"><label>Archivo de la obra</label><input class="museum-path" value="${escapeHtml(w.artwork_path||'')}"></div>
-   <div class="field"><label>Descripción artística</label><textarea class="museum-description">${escapeHtml(w.description||'')}</textarea></div>
-   <div class="museum-actions"><label><input class="museum-published" type="checkbox" ${w.published!==false?'checked':''}> Publicada</label><span class="tiny-state">${w.published!==false?'Visible':'Oculta'}</span><button class="primary save-museum-btn" type="button">Guardar cambios</button></div>
-   </div></div>`).join('')||'<p style="color:var(--muted)">No hay obras que coincidan con la búsqueda.</p>';
- list.querySelectorAll('.save-museum-btn').forEach(btn=>btn.addEventListener('click',()=>saveMuseumWork(btn.closest('[data-museum-name]'))));
+  const q=(document.getElementById("museumSearch")?.value||"").trim().toLowerCase();
+  const list=document.getElementById("museumAdminList");
+  if(!list)return;
+
+  const rows=(museumAdminCache||[]).filter(w=>{
+    const text=`${w.name||""} ${w.brand||""}`.toLowerCase();
+    return !q||text.includes(q);
+  });
+
+  list.innerHTML=rows.map(w=>{
+    const hasImage=!!String(w.image_url||"").trim();
+    const state=w.published?"published":hasImage?"hidden":"pending";
+    const stateLabel=w.published?"Publicada":hasImage?"Oculta":"Pendiente";
+    const availability=w.availability_status==="upcoming"?" · Próximamente":"";
+    return `
+      <div class="museum-admin-card work-card" data-work-id="${escapeHtml(w.id)}" data-catalog-id="${escapeHtml(w.catalog_id)}">
+        <div>
+          ${hasImage
+            ? `<img class="museum-thumb" src="${escapeHtml(w.image_url)}" alt="">`
+            : `<div class="museum-thumb" style="display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:10px;text-align:center;padding:8px">Obra pendiente</div>`}
+        </div>
+        <div class="museum-fields">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div>
+              <strong>${escapeHtml(w.name||"")}</strong>
+              <div class="meta">${escapeHtml(w.brand||"")}${availability}</div>
+            </div>
+            <span class="work-status-chip ${state}">${stateLabel}</span>
+          </div>
+
+          <div class="field">
+            <label>Archivo de la obra</label>
+            <input class="museum-path" value="${escapeHtml(w.image_url||"")}" placeholder="URL o ruta de la obra">
+          </div>
+
+          <div class="field">
+            <label>Descripción artística</label>
+            <textarea class="museum-description">${escapeHtml(w.description||"")}</textarea>
+          </div>
+
+          <div class="museum-actions">
+            <label>
+              <input class="museum-published" type="checkbox" ${w.published?"checked":""}>
+              Publicada
+            </label>
+            <button class="primary save-museum-btn" type="button">Guardar cambios</button>
+            <button class="secondary work-delete-btn delete-work-btn" type="button">Eliminar obra</button>
+          </div>
+        </div>
+      </div>`;
+  }).join("") || '<p style="color:var(--muted)">No hay obras creadas. Pulsa “+ Añadir obra” para crear la primera.</p>';
+
+  list.querySelectorAll(".save-museum-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>saveMuseumWork(btn.closest("[data-work-id]")));
+  });
+
+  list.querySelectorAll(".delete-work-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const card=btn.closest("[data-work-id]");
+      deletePreludeWork(card.dataset.workId, card.querySelector("strong")?.textContent||"esta obra");
+    });
+  });
 }
+
 async function saveMuseumWork(card){
- const st=document.getElementById('museumAdminStatus');
- try{const {error}=await client.rpc('admin_save_prelude_museum_work',{input_perfume_name:card.dataset.museumName,input_artwork_path:card.querySelector('.museum-path').value.trim(),input_description:card.querySelector('.museum-description').value.trim(),input_published:card.querySelector('.museum-published').checked}); if(error)throw error; status(st,'Obra actualizada.'); await loadMuseumAdmin();}
- catch(e){console.error(e);status(st,'No se pudo guardar la obra: '+e.message,true);}
+  const st=document.getElementById("museumAdminStatus");
+  if(!card)return;
+  try{
+    const {error}=await client.rpc("admin_create_prelude_work",{
+      input_catalog_id:card.dataset.catalogId,
+      input_image_url:card.querySelector(".museum-path").value.trim()||null,
+      input_description:card.querySelector(".museum-description").value.trim()||null,
+      input_published:card.querySelector(".museum-published").checked
+    });
+    if(error)throw error;
+    status(st,"Obra actualizada.");
+    await loadMuseumAdmin();
+  }catch(e){
+    console.error(e);
+    status(st,"No se pudo guardar la obra: "+e.message,true);
+  }
 }
-document.getElementById('refreshMuseumBtn')?.addEventListener('click',loadMuseumAdmin);
-document.getElementById('museumSearch')?.addEventListener('input',renderMuseumAdmin);
+
+document.getElementById("refreshMuseumBtn")?.addEventListener("click",loadMuseumAdmin);
+document.getElementById("museumSearch")?.addEventListener("input",renderMuseumAdmin);
+
 
 document.getElementById("loginBtn").addEventListener("click",login);
 document.getElementById("password").addEventListener("keydown",event=>{if(event.key==="Enter")login();});
@@ -2982,18 +3063,35 @@ document.addEventListener("DOMContentLoaded",()=>setTimeout(buildPreludeGroupedN
 
 
 /* PRELUDE · FASE 9.8 · GESTIÓN MANUAL DE OBRAS */
-function openWorkEditor(){
-  const select=document.getElementById("newWorkCatalogId");
-  if(select){
-    select.innerHTML='<option value="">Selecciona un perfume</option>'+catalogCache
-      .filter(p=>!p.deleted_at)
-      .map(p=>`<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)} · ${escapeHtml(p.brand||"")}</option>`).join("");
+async function openWorkEditor(){
+  try{
+    if(!Array.isArray(catalogCache)||!catalogCache.length){
+      await loadCatalogAdmin();
+    }
+    if(!Array.isArray(museumAdminCache)){
+      await loadMuseumAdmin();
+    }
+
+    const existing=new Set((museumAdminCache||[]).map(w=>String(w.catalog_id)));
+    const select=document.getElementById("newWorkCatalogId");
+    const available=(catalogCache||[]).filter(p=>!p.deleted_at && !existing.has(String(p.id)));
+
+    select.innerHTML='<option value="">Selecciona un perfume</option>'+
+      available.map(p=>`<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)} · ${escapeHtml(p.brand||"")}</option>`).join("");
+
+    if(!available.length){
+      select.innerHTML='<option value="">Todos los perfumes ya tienen una obra</option>';
+    }
+
+    document.getElementById("newWorkImageUrl").value="";
+    document.getElementById("newWorkDescription").value="";
+    document.getElementById("newWorkPublished").value="false";
+    document.getElementById("newWorkStatus").textContent="";
+    document.getElementById("workEditorOverlay").classList.add("open");
+  }catch(e){
+    console.error(e);
+    alert("No se pudo preparar el formulario de nueva obra: "+e.message);
   }
-  document.getElementById("newWorkImageUrl").value="";
-  document.getElementById("newWorkDescription").value="";
-  document.getElementById("newWorkPublished").value="false";
-  document.getElementById("newWorkStatus").textContent="";
-  document.getElementById("workEditorOverlay").classList.add("open");
 }
 function closeWorkEditor(){document.getElementById("workEditorOverlay").classList.remove("open")}
 
@@ -3022,45 +3120,21 @@ async function deletePreludeWork(workId,name){
   if(typeof loadMuseumAdmin==="function")await loadMuseumAdmin();
 }
 
-function enhanceWorksManagement(){
-  const root=document.getElementById("museumView");if(!root)return;
-  const cards=[...root.querySelectorAll(".card")].filter(c=>c.querySelector("textarea"));
-  cards.forEach(card=>{
-    if(card.dataset.workEnhanced==="1")return;
-    card.dataset.workEnhanced="1";
-    card.classList.add("work-card");
 
-    const name=(card.querySelector("strong,h2,h3")?.textContent||"Obra").trim();
-    const idInput=card.querySelector("[data-work-id],input[name='work_id']");
-    const workId=idInput?.dataset.workId||idInput?.value||card.dataset.workId||"";
-    const published=!!card.querySelector("input[type='checkbox']:checked");
-    const hasImage=!!(card.querySelector("input[type='url'],input[type='text']")?.value||"").trim();
 
-    const chip=document.createElement("span");
-    chip.className="work-status-chip "+(published?"published":hasImage?"hidden":"pending");
-    chip.textContent=published?"Publicada":hasImage?"Oculta":"Pendiente";
-    const heading=card.querySelector("strong,h2,h3");
-    heading?.insertAdjacentElement("afterend",chip);
 
-    if(workId){
-      const actions=card.querySelector(".order-actions")||card;
-      const btn=document.createElement("button");
-      btn.type="button";
-      btn.className="secondary work-delete-btn";
-      btn.textContent="Eliminar obra";
-      btn.addEventListener("click",()=>deletePreludeWork(workId,name));
-      actions.appendChild(btn);
-    }
-  });
-}
 
-document.getElementById("addWorkBtn")?.addEventListener("click",openWorkEditor);
+
+
+
+
+document.getElementById("addWorkBtn")?.addEventListener("click",()=>openWorkEditor());
 document.getElementById("closeWorkEditorBtn")?.addEventListener("click",closeWorkEditor);
 document.getElementById("cancelWorkEditorBtn")?.addEventListener("click",closeWorkEditor);
 document.getElementById("createWorkBtn")?.addEventListener("click",createPreludeWork);
-document.getElementById("workEditorOverlay")?.addEventListener("click",e=>{if(e.target.id==="workEditorOverlay")closeWorkEditor()});
-document.addEventListener("DOMContentLoaded",()=>setTimeout(enhanceWorksManagement,700));
-document.addEventListener("click",e=>{const t=e.target.closest("button,a");if((t?.textContent||"").includes("Obras Prelude"))setTimeout(enhanceWorksManagement,450)});
+document.getElementById("workEditorOverlay")?.addEventListener("click",e=>{
+  if(e.target.id==="workEditorOverlay")closeWorkEditor();
+});
 
 </script>
 
