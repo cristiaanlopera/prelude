@@ -1,0 +1,12 @@
+PRELUDE — FASE 12 · FINANZAS / RENTABILIDAD
+
+Cambios:
+- Tarifa de preparación convertida en franja compacta.
+- Ficha financiera de perfume mucho más compacta.
+- Miniatura del perfume usando la imagen ya asociada al catálogo cuando está disponible.
+- Precio pagado y tamaño de botella pasan a ser los datos financieros principales.
+- PVP botella se conserva únicamente como referencia.
+- Tabla simplificada: coste real, precio actual, beneficio, margen, €/ml y estado.
+- Estados financieros: Rentable (verde), Margen bajo (ámbar), Pérdida (rojo).
+- Se conserva la lógica existente de guardado y aplicación de precios.
+- Sin cambios SQL.

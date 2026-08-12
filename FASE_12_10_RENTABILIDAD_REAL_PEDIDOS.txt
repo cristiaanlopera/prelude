@@ -1,0 +1,22 @@
+PRELUDE — FASE 12.10 · RENTABILIDAD REAL DE PEDIDOS
+
+Añadido como cuarto bloque plegable dentro de Finanzas > Rentabilidad.
+
+Calcula únicamente pedidos ENTREGADOS:
+- Ingresos reales (order_total).
+- Coste directo de todos los decants vendidos.
+- Coste real compartido de preparación, una vez por pedido.
+- Tarifa/ajustes netos históricos = total del pedido - suma de líneas.
+- Beneficio real = ingresos - coste decants - coste preparación.
+- Margen real = beneficio / ingresos.
+- Diagnóstico por pedido: Pérdida, Margen bajo (<30%) u Óptimo.
+- Resumen global de ingresos, costes, preparación, beneficio y margen.
+- Buscador y filtro por diagnóstico.
+- Aviso si falta el coste financiero de alguna línea, para no presentar una cifra incompleta como definitiva.
+
+IMPORTANTE:
+"Tarifa / ajustes" se muestra como un valor neto porque el histórico actual de pedidos
+no separa necesariamente tarifa de preparación, descuentos y recompensas en campos distintos.
+No se inventa ese desglose.
+
+No requiere SQL.

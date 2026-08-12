@@ -1,0 +1,18 @@
+PRELUDE — FASE 12.11 · ECONOMÍA DE MARCAPÁGINAS
+
+Añadido a Recompensas:
+- Marcapáginas obtenidos por cada 1 € gastado (simulación).
+- Límite saludable de coste de fidelización (8 % inicial, editable).
+- Gasto equivalente necesario para alcanzar cada recompensa.
+- Coste real de la opción más barata.
+- Coste real medio de las opciones.
+- Peor escenario económico: el perfume elegible con mayor coste real.
+- Coste de fidelización = peor escenario / gasto necesario.
+- Diagnóstico Sostenible / Revisar.
+- Resumen global de recompensas activas, coste máximo medio, fidelización media y recompensas a revisar.
+
+IMPORTANTE:
+Esta fase es de ANÁLISIS. Cambiar "Marcapáginas por 1 €" en Studio no altera todavía
+la acumulación pública de puntos. Primero permite decidir qué economía queremos adoptar.
+
+No requiere SQL.

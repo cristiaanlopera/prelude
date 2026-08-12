@@ -1253,6 +1253,33 @@ body.dark .museum-unlock{background:rgba(18,18,18,.985)}
   margin-top:6px;
 }
 
+
+/* PRELUDE · FASE 11.9 · RECOMPENSAS FULL-BLEED + IMAGEN CATÁLOGO */
+.reward-choice-card{
+  overflow:hidden;
+  padding:0!important;
+}
+.reward-choice-card img{
+  width:100%!important;
+  height:220px!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  display:block!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+}
+.reward-choice-card .body{
+  padding:13px 14px 14px!important;
+  background:#fff;
+}
+.reward-choice-card .selected-mark{
+  z-index:2;
+}
+@media(max-width:720px){
+  .reward-choice-card img{height:180px!important}
+}
+
 </style>
 </head>
 <body><div class="watermark-brush one"></div><div class="watermark-brush two"></div>
@@ -3550,6 +3577,25 @@ async function openRewardChoice(customerRewardId){
   }
 }
 
+function rewardPerfumeImage(option){
+  const catalogId=String(option?.catalog_id||"");
+  const optionName=String(option?.name||"").trim().toLowerCase();
+
+  const product=(Array.isArray(products)?products:[]).find(p=>{
+    const byId=catalogId && String(p?._catalogId||"")===catalogId;
+    const byName=optionName && String(p?.name||"").trim().toLowerCase()===optionName;
+    return byId||byName;
+  });
+
+  // Primary source: the image already displayed in Prelude's public catalog.
+  if(product?.image)return product.image;
+
+  // Fallback to any image_url returned by Supabase.
+  if(option?.image_url)return option.image_url;
+
+  return "";
+}
+
 function renderRewardChoiceGrid(){
   const box=document.getElementById("rewardChoiceGrid");
   if(!box||!activeRewardChoice)return;
@@ -3559,7 +3605,7 @@ function renderRewardChoiceGrid(){
 
   box.innerHTML=options.map(p=>{
     const selected=activeRewardSelections.has(String(p.catalog_id));
-    const img=String(p.image_url||"").trim();
+    const img=String(rewardPerfumeImage(p)||"").trim();
 
     return `<button type="button"
       class="reward-choice-card ${selected?"selected":""}"

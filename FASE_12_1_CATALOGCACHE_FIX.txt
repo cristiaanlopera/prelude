@@ -1,0 +1,5 @@
+PRELUDE — FASE 12.1
+Corrige ReferenceError: catalogCache is not defined.
+La miniatura financiera deja de depender de una variable inexistente.
+La ausencia de cache de imágenes ya no impide cargar Rentabilidad.
+No requiere SQL.

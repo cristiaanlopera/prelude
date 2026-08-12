@@ -1,0 +1,13 @@
+PRELUDE — FASE 12.12
+
+Reorganización visual de Fidelización > Recompensas.
+
+- Economía de Marcapáginas ahora es un bloque plegable/desplegable.
+- Recompensas Prelude ahora es un segundo bloque plegable/desplegable.
+- Ambos conservan toda su funcionalidad interna.
+- Jerarquía visual coherente con Finanzas > Rentabilidad.
+- Diseño responsive.
+- No requiere SQL.
+
+Siguiente fase recomendada:
+Reconstrucción de Finanzas > Estadísticas como Dashboard financiero de Prelude.

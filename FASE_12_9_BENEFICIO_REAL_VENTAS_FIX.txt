@@ -1,0 +1,12 @@
+PRELUDE — FASE 12.9
+
+Corrección de Beneficio real generado:
+- Usa la RPC real de Studio: admin_list_prelude_orders.
+- Lee los items con la estructura real de pedidos: name, size, qty, price.
+- Convierte tamaños como "2 ml", "3 ml", "5 ml" y "10 ml" a números.
+- Solo contabiliza pedidos con estado delivered.
+- Beneficio real = precio realmente cobrado en las líneas vendidas - coste directo de esos decants.
+- Muestra ml vendidos y número real de Preludes vendidos.
+- Añade desglose: ingresos vendidos y coste directo.
+- Si no existen ventas entregadas del perfume, muestra 0,00 € y "Sin ventas entregadas".
+- No requiere SQL.

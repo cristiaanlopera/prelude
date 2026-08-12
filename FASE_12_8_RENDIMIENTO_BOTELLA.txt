@@ -1,0 +1,15 @@
+PRELUDE — FASE 12.8 · RENDIMIENTO DE LA BOTELLA
+
+Añade a la ficha financiera:
+- Inversión inicial.
+- Beneficio mínimo estimado de la botella.
+  Se calcula con PRECIOS ACTUALES y el formato 2/3/5/10 ml que produzca
+  el menor beneficio equivalente por ml.
+- Indica cuál es el peor escenario (2, 3, 5 o 10 ml).
+- Beneficio real generado a partir de pedidos entregados cuando el histórico
+  de pedidos está disponible para Studio.
+- Ml vendidos, número de Preludes vendidos y ml restantes estimados.
+- Porcentaje de inversión recuperada.
+- Estado visual cuando la inversión de la botella ya está recuperada.
+
+No modifica precios ni requiere SQL.

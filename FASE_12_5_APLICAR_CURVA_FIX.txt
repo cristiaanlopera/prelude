@@ -1,0 +1,6 @@
+PRELUDE — FASE 12.5
+- Corrige la discrepancia entre el precio Recomendado mostrado y el precio aplicado.
+- La tabla y el botón Aplicar usan ahora exactamente preludeRecommendedPrice().
+- El aviso de confirmación muestra precio actual y diferencia.
+- La antigua fórmula del 30 % queda fuera del flujo de aplicación.
+- No requiere SQL.

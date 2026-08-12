@@ -1,0 +1,13 @@
+PRELUDE — FASE 12.3
+
+Correcciones:
+- Coste real de preparación calculado localmente desde todos los materiales marcados "1 por pedido".
+- Margen de preparación = tarifa cliente - coste real.
+- Se actualiza en directo al editar materiales o tarifa.
+- Los precios actuales de 2/3/5/10 ml se recuperan del catálogo si la RPC de rentabilidad no los devuelve.
+- Beneficio, margen y €/ml se calculan a partir del precio actual real.
+- Ya no convierte valores null en 0 € ni los marca erróneamente como Pérdida.
+- Estado "Sin precio" cuando de verdad no existe un precio configurado.
+- "Aplicar sugerido" muestra también el precio sugerido.
+- Corrige otra referencia residual a catalogCache al aplicar un precio sugerido.
+- No requiere SQL.

@@ -1,0 +1,23 @@
+PRELUDE — FASE 12.13 · DASHBOARD FINANCIERO
+
+Finanzas > Estadísticas pasa a ser Dashboard financiero.
+
+Incluye:
+- Ingresos reales de pedidos entregados.
+- Beneficio real.
+- Margen real.
+- Beneficio medio por pedido.
+- Ticket medio.
+- Beneficio generado por cada 1 € vendido.
+- Estado automático de salud financiera.
+- Gráfico mensual comparando ingresos y beneficio.
+- Perfumes con mayor beneficio.
+- Perfumes más vendidos.
+- Tamaños más elegidos.
+- Recurrencia, Preludes y ml vendidos.
+- Calidad/cobertura del cálculo financiero.
+- Aviso explícito si faltan costes de algún perfume.
+
+Los costes utilizan las mismas fichas financieras y materiales que Rentabilidad.
+El coste compartido de preparación se contabiliza una sola vez por pedido entregado.
+No requiere SQL.

@@ -1,0 +1,6 @@
+PRELUDE FASE 12.6
+- Recomendado -> Mínimo saludable.
+- Diagnóstico: Pérdida / Revisar / Óptimo / Alto margen.
+- Un precio por encima del mínimo ya no aparece como diferencia negativa.
+- Aplicar mínimo solo aparece cuando el precio actual está por debajo del suelo saludable.
+- Si el precio ya es saludable, aparece Mantener.

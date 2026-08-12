@@ -1,0 +1,12 @@
+PRELUDE — FASE 12.7 · DIAGNÓSTICO DE LA COLECCIÓN
+
+Añadido en Finanzas > Rentabilidad > Rentabilidad por perfume:
+- Botón Analizar colección.
+- Revisión automática de todos los perfumes visibles.
+- Contadores de formatos en Pérdida, Revisar, Óptimo y Alto margen.
+- Matriz por perfume para 2 / 3 / 5 / 10 ml.
+- Orden automático: los perfumes problemáticos aparecen primero.
+- Click en una fila abre directamente la ficha financiera de ese perfume.
+- Utiliza la misma Curva Prelude y el mismo Mínimo saludable que la ficha individual.
+- No modifica precios ni datos.
+- No requiere SQL.

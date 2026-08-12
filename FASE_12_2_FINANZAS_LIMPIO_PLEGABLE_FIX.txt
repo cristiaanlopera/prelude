@@ -1,0 +1,13 @@
+PRELUDE — FASE 12.2
+
+- Corrige "Cannot read properties of null (reading 'value')" al guardar ficha financiera.
+- Jeringa queda gestionada exclusivamente desde Materiales.
+- Elimina la columna Unidades disponibles de Materiales de preparación.
+- Conserva internamente el valor existente sin mostrarlo ni exigir edición.
+- La imagen financiera reutiliza STUDIO_CATALOG_IMAGE_MAP / imagen del catálogo.
+- Jerarquía tipográfica uniforme: título, subtítulo, etiqueta y dato.
+- Rentabilidad queda organizada en 3 bloques plegables:
+  1. Materiales de preparación
+  2. Tarifa de preparación Prelude
+  3. Rentabilidad por perfume
+- No requiere SQL.

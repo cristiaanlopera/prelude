@@ -1,0 +1,8 @@
+PRELUDE — FASE 11.9
+
+- Parte del Prelude.zip más reciente subido por el usuario.
+- Recupera la asociación automática entre recompensa y la imagen real del catálogo.
+- Busca por catalog_id y, como respaldo, por nombre.
+- Mantiene el diseño full-bleed: la imagen ocupa todo el ancho superior de la tarjeta.
+- Elimina padding/márgenes internos alrededor de la imagen.
+- No requiere SQL.
