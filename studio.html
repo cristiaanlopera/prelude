@@ -569,7 +569,178 @@ body{background:
 .work-card{position:relative}
 .work-delete-btn{background:var(--prelude-red-soft)!important;color:var(--prelude-red)!important;border-color:rgba(139,52,52,.18)!important}
 
-</style>
+
+/* PRELUDE · FASE 9.9 · MODO OSCURO + COLECCIONISTA DESTACADO */
+.studio-theme-toggle{
+  width:100%;
+  margin:0 0 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.studio-theme-toggle .theme-icon{font-size:15px}
+.collection-leader-card{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:18px;
+  align-items:center;
+  margin-bottom:16px;
+  background:linear-gradient(135deg,rgba(255,255,255,.88),rgba(245,242,235,.82));
+}
+.collection-leader-stats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(90px,1fr));
+  gap:10px;
+}
+.collection-leader-stats>div{
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:11px 12px;
+  background:rgba(255,255,255,.62);
+}
+.collection-leader-stats span{
+  display:block;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--muted);
+}
+.collection-leader-stats strong{
+  display:block;
+  margin-top:5px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:17px;
+}
+
+/* Dark mode */
+html[data-studio-theme="dark"]{
+  color-scheme:dark;
+  --bg:#11110f;
+  --card:#1b1b18;
+  --text:#f1eee7;
+  --muted:#a6a198;
+  --line:#35332f;
+  --dark:#f1eee7;
+  --success:#78a989;
+  --success-bg:#1d2a21;
+  --danger:#d28383;
+  --danger-bg:#2b1b1b;
+  --warning:#c8a45c;
+  --warning-bg:#2b2418;
+  --prelude-green:#78a989;
+  --prelude-green-soft:#1d2a21;
+  --prelude-red:#d28383;
+  --prelude-red-soft:#2b1b1b;
+  --prelude-amber:#c8a45c;
+  --prelude-amber-soft:#2b2418;
+}
+html[data-studio-theme="dark"] body{
+  background:
+    radial-gradient(circle at 12% 8%,rgba(255,255,255,.025),transparent 30%),
+    linear-gradient(135deg,#121210 0%,#0e0e0c 100%)!important;
+  color:var(--text);
+}
+html[data-studio-theme="dark"] .studio-sidebar,
+html[data-studio-theme="dark"] .card,
+html[data-studio-theme="dark"] .metric-card,
+html[data-studio-theme="dark"] .executive-panel,
+html[data-studio-theme="dark"] .business-kpi,
+html[data-studio-theme="dark"] .studio-nav-group,
+html[data-studio-theme="dark"] .order-detail-card,
+html[data-studio-theme="dark"] .customer-row,
+html[data-studio-theme="dark"] .museum-admin-card,
+html[data-studio-theme="dark"] .artwork-admin-card{
+  background:#1b1b18!important;
+  color:var(--text)!important;
+  border-color:var(--line)!important;
+}
+html[data-studio-theme="dark"] input,
+html[data-studio-theme="dark"] select,
+html[data-studio-theme="dark"] textarea,
+html[data-studio-theme="dark"] button.secondary{
+  background:#23231f!important;
+  color:var(--text)!important;
+  border-color:#3b3934!important;
+}
+html[data-studio-theme="dark"] button.primary{
+  background:#f1eee7!important;
+  color:#141412!important;
+  border-color:#f1eee7!important;
+}
+html[data-studio-theme="dark"] .studio-tabs button.active,
+html[data-studio-theme="dark"] .studio-nav-items>button.active{
+  background:#f1eee7!important;
+  color:#141412!important;
+}
+html[data-studio-theme="dark"] .collection-leader-card{
+  background:linear-gradient(135deg,#1e1e1a,#171714)!important;
+}
+html[data-studio-theme="dark"] .collection-leader-stats>div,
+html[data-studio-theme="dark"] .attention-item,
+html[data-studio-theme="dark"] .executive-attention-item{
+  background:#23231f!important;
+  border-color:#3b3934!important;
+}
+html[data-studio-theme="dark"] .order-card[data-order-status="pending"],
+html[data-studio-theme="dark"] .order-row[data-order-status="pending"]{background:#2b2418!important}
+html[data-studio-theme="dark"] .order-card[data-order-status="preparing"],
+html[data-studio-theme="dark"] .order-row[data-order-status="preparing"]{background:#1c242b!important}
+html[data-studio-theme="dark"] .order-card[data-order-status="ready"],
+html[data-studio-theme="dark"] .order-row[data-order-status="ready"]{background:#182632!important}
+html[data-studio-theme="dark"] .order-card[data-order-status="delivered"],
+html[data-studio-theme="dark"] .order-row[data-order-status="delivered"]{background:#1d2a21!important}
+html[data-studio-theme="dark"] .order-card[data-order-status="cancelled"],
+html[data-studio-theme="dark"] .order-row[data-order-status="cancelled"],
+html[data-studio-theme="dark"] .order-card[data-order-status="canceled"],
+html[data-studio-theme="dark"] .order-row[data-order-status="canceled"]{background:#2b1b1b!important}
+html[data-studio-theme="dark"] .old-price,
+html[data-studio-theme="dark"] .meta,
+html[data-studio-theme="dark"] .metric-note,
+html[data-studio-theme="dark"] .dashboard-panel-sub,
+html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
+@media(max-width:820px){
+  .collection-leader-card{grid-template-columns:1fr}
+  .collection-leader-stats{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:520px){
+  .collection-leader-stats{grid-template-columns:1fr}
+}
+
+
+/* PRELUDE · FASE 10 · CÓDIGOS / DECANTS */
+.codes-fragrance-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:14px}
+.codes-fragrance-head input{max-width:230px}
+.codes-selection-summary{font-size:10px;color:var(--muted);margin:8px 0 10px}
+#perfumes .perfume{position:relative;transition:background .15s ease,border-color .15s ease}
+#perfumes .perfume.selected-size{background:var(--prelude-green-soft)!important;border-color:rgba(49,95,70,.22)!important}
+#perfumes .perfume .decant-size-badge{
+  margin-left:auto;
+  font-size:9px;
+  padding:3px 6px;
+  border-radius:999px;
+  background:rgba(255,255,255,.75);
+  color:var(--prelude-green);
+  border:1px solid rgba(49,95,70,.18);
+}
+.decant-size-card{max-width:560px}
+.decant-size-options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}
+.decant-size-options button{
+  min-height:82px;border:1px solid var(--line);border-radius:14px;background:var(--card);
+  color:var(--text);cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;
+  justify-content:center;padding:14px;transition:transform .12s ease,border-color .12s ease
+}
+.decant-size-options button:hover{transform:translateY(-1px);border-color:var(--prelude-green)}
+.decant-size-options strong{font-family:Georgia,"Times New Roman",serif;font-size:21px}
+.decant-size-options span{font-size:11px;color:var(--muted);margin-top:5px}
+.decant-size-options button.unavailable{opacity:.4;cursor:not-allowed}
+@media(max-width:680px){
+ .codes-fragrance-head{align-items:stretch;flex-direction:column}
+ .codes-fragrance-head input{max-width:none;width:100%}
+ .decant-size-options{grid-template-columns:1fr 1fr}
+}
+
+.reward-config-btn{margin-left:6px}.reward-perfume-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-height:390px;overflow:auto;margin-top:12px}.reward-perfume-option{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);cursor:pointer;position:relative}.reward-perfume-option.selected{border-color:var(--prelude-green);box-shadow:0 0 0 1px var(--prelude-green) inset}.reward-perfume-option img{width:100%;height:120px;object-fit:cover;background:#f1f1ef;display:block}.reward-perfume-option .body{padding:10px}.reward-perfume-option strong{display:block;font-size:12px}.reward-perfume-option span{display:block;font-size:9px;color:var(--muted);margin-top:3px}.reward-perfume-option .check{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.92);border:1px solid var(--line);font-size:11px}.reward-perfume-option.selected .check{background:var(--prelude-green);color:#fff;border-color:var(--prelude-green)}</style>
 </head>
 <body>
 <div class="wrap">
@@ -589,6 +760,9 @@ body{background:
   <div class="studio-shell">
     <aside class="studio-sidebar">
       <div class="studio-sidebar-title">Centro de control</div>
+      <button id="studioThemeToggle" class="secondary studio-theme-toggle" type="button" aria-pressed="false">
+        <span class="theme-icon">◐</span><span class="theme-label">Modo oscuro</span>
+      </button>
       <div class="studio-tabs">
         <button class="active" id="dashboardTabBtn" data-studio-view="overview" type="button">Dashboard</button>
         <button id="ordersTabBtn" data-studio-view="orders" type="button">Pedidos</button>
@@ -691,6 +865,18 @@ body{background:
         <div class="section-heading">
           <div><div class="dashboard-kicker">Clientes</div><h1>Mi Colección Prelude</h1><p>Consulta todas las obras disponibles y gestiona desbloqueos o reversiones manuales.</p></div>
           <button class="secondary" id="refreshCollectionBtn" type="button">Actualizar</button>
+        </div>
+        <div class="card collection-leader-card" id="collectionLeaderCard">
+          <div>
+            <div class="dashboard-kicker">Coleccionista destacado</div>
+            <h2 style="margin:4px 0 4px">Cliente con más obras descubiertas</h2>
+            <p style="margin:0;color:var(--muted)">La colección más avanzada registrada en Prelude.</p>
+          </div>
+          <div class="collection-leader-stats">
+            <div><span>Cliente</span><strong id="collectionLeaderName">—</strong></div>
+            <div><span>Obras</span><strong id="collectionLeaderWorks">—</strong></div>
+            <div><span>Nivel</span><strong id="collectionLeaderLevel">—</strong></div>
+          </div>
         </div>
         <div class="card collection-toolbar">
           <div class="field" style="margin:0"><label>Cliente</label><select id="collectionCustomerSelect"><option value="">Selecciona un cliente</option></select></div>
@@ -827,8 +1013,16 @@ body{background:
 <div class="field"><label>Número de pedido</label><input id="orderNumber" placeholder="Ej. 0007"></div>
 <div class="field"><label>Nombre del cliente</label><input id="customerName" placeholder="Ej. Luis"></div>
 <div class="field"><label>Teléfono del cliente</label><input id="customerPhone" placeholder="Ej. 600000000"></div>
-<div class="field"><label>Total del pedido (€)</label><input id="orderTotal" type="number" min="0" step="0.01" placeholder="Ej. 18.50"></div>
-<h2>Fragancias confirmadas</h2>
+<div class="field"><label>Total del pedido (€)</label><input id="orderTotal" type="number" min="0" step="0.01" placeholder="0,00" readonly>
+<small style="color:var(--muted)">Se calcula automáticamente a partir de las fragancias y tamaños seleccionados.</small></div>
+<div class="codes-fragrance-head">
+  <div>
+    <h2 style="margin-bottom:4px">Fragancias confirmadas</h2>
+    <p style="margin:0;color:var(--muted);font-size:10px">Selecciona la fragancia y después el tamaño del Prelude.</p>
+  </div>
+  <input id="codesPerfumeSearch" type="search" placeholder="Buscar perfume o marca">
+</div>
+<div class="codes-selection-summary" id="codesSelectionSummary">0 Preludes seleccionados</div>
 <div class="perfumes" id="perfumes"><label class="perfume"><input type="checkbox" value="Le Sel d'Issey"><span>Le Sel d'Issey</span></label>
 <label class="perfume"><input type="checkbox" value="Amber Oud Gold Edition"><span>Amber Oud Gold Edition</span></label>
 <label class="perfume"><input type="checkbox" value="Dior Homme Intense"><span>Dior Homme Intense</span></label>
@@ -1539,6 +1733,7 @@ async function loadCollectionModule(preselectId=null){
   const [{data,error},works]=await Promise.all([client.rpc("admin_list_customers"),ensureArtworksCatalog()]);
   if(error){status(collectionAdminStatus,"No se pudieron cargar los clientes: "+error.message,true);return;}
   customersCache=data||[];
+  renderCollectionLeader(customersCache,works.length);
   const previous=preselectId||collectionCustomerSelect.value;
   collectionCustomerSelect.innerHTML='<option value="">Selecciona un cliente</option>'+customersCache.map(c=>`<option value="${c.id}">${escapeHtml(c.customer_name)} · ${escapeHtml(c.customer_phone)}</option>`).join("");
   if(previous&&customersCache.some(c=>String(c.id)===String(previous))){collectionCustomerSelect.value=previous;await loadSelectedCollection();}
@@ -1957,7 +2152,9 @@ async function executeDangerAction(){
 }
 
 function selectedPerfumes(){
-  return [...document.querySelectorAll('#perfumes input:checked')].map(input=>input.value);
+  return [...document.querySelectorAll('#perfumes input:checked')]
+    .filter(input=>codeDecantSelections.has(input.value))
+    .map(input=>input.value);
 }
 
 async function generateCode(){
@@ -2009,7 +2206,10 @@ async function generateCode(){
     "",
     "Este código desbloqueará:",
     "",
-    ...data.perfumes.map(name=>`• ${name}`),
+    ...data.perfumes.map(name=>{
+      const sel=codeDecantSelections.get(name);
+      return `• ${name}${sel?` · ${sel.size} ml`:""}`;
+    }),
     "",
     "Introdúcelo en Mi Colección Prelude para incorporar tus nuevas obras.",
     "",
@@ -2576,6 +2776,7 @@ async function loadRewardsAdmin(){
       <div class="field reward-label-field"><label>Recompensa</label><input class="reward-label" value="${escapeHtml(r.reward_label||'')}"></div>
       <label style="padding:10px 0"><input class="reward-active" type="checkbox" ${r.active!==false?'checked':''}> Activa</label>
       <button class="primary save-reward-btn" type="button">Editar</button>
+      <button class="secondary reward-config-btn" data-reward-options="${escapeHtml(r.id)}" type="button">Opciones</button>
       <button class="danger-lite delete-reward-btn" type="button">Eliminar</button>
     </div></div>`).join('')||'<p style="color:var(--muted)">No hay recompensas configuradas.</p>';
     list.querySelectorAll('.save-reward-btn').forEach(btn=>btn.addEventListener('click',()=>saveRewardSetting(btn.closest('[data-reward-key]'))));
@@ -2611,7 +2812,7 @@ document.getElementById('newRewardBtn')?.addEventListener('click',createRewardSe
 let museumAdminCache=[];
 
 
-let museumAdminCache=[];
+
 
 async function loadMuseumAdmin(){
   const list=document.getElementById("museumAdminList");
@@ -3086,17 +3287,38 @@ document.addEventListener("DOMContentLoaded",()=>setTimeout(buildPreludeGroupedN
 /* PRELUDE · FASE 9.8 · GESTIÓN MANUAL DE OBRAS */
 
 
+
 async function openWorkEditor(){
   try{
-    if(!Array.isArray(catalogCache)||!catalogCache.length) await loadCatalogAdmin();
-    if(!Array.isArray(museumAdminCache)||!museumAdminCache.length) await loadMuseumAdmin();
+    let catalogRows=[];
+
+    // Prefer the catalogue already loaded by Prelude Studio.
+    if(typeof loadCatalogAdmin==="function"){
+      try{ await loadCatalogAdmin(); }catch(_){}
+    }
+
+    // Read the real cache used by Studio when available.
+    if(typeof catalogAdminCache!=="undefined" && Array.isArray(catalogAdminCache)){
+      catalogRows=catalogAdminCache;
+    }
+
+    // Robust fallback: query the catalogue directly.
+    if(!catalogRows.length){
+      const {data,error}=await client.rpc("admin_list_prelude_catalog");
+      if(error)throw error;
+      catalogRows=Array.isArray(data)?data:(Array.isArray(data?.items)?data.items:[]);
+    }
+
+    if(!Array.isArray(museumAdminCache) || !museumAdminCache.length){
+      try{ await loadMuseumAdmin(); }catch(_){}
+    }
 
     const existing=new Set((museumAdminCache||[]).map(w=>String(w.catalog_id)));
-    const available=(catalogCache||[]).filter(p=>!p.deleted_at && !existing.has(String(p.id)));
+    const available=catalogRows.filter(p=>!p.deleted_at && !existing.has(String(p.id)));
 
     const select=document.getElementById("newWorkCatalogId");
     select.innerHTML='<option value="">Selecciona un perfume</option>'+
-      available.map(p=>`<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)} · ${escapeHtml(p.brand||"")}</option>`).join("");
+      available.map(p=>`<option value="${escapeHtml(p.id)}">${escapeHtml(p.name||"")} · ${escapeHtml(p.brand||"")}</option>`).join("");
 
     if(!available.length){
       select.innerHTML='<option value="">Todos los perfumes ya tienen una obra</option>';
@@ -3108,8 +3330,8 @@ async function openWorkEditor(){
     document.getElementById("newWorkStatus").textContent="";
     document.getElementById("workEditorOverlay").classList.add("open");
   }catch(e){
-    console.error(e);
-    alert("No se pudo preparar el formulario: "+e.message);
+    console.error("Obras Prelude · nueva obra:",e);
+    alert("No se pudo preparar el formulario: "+(e.message||e));
   }
 }
 
@@ -3162,12 +3384,10 @@ async function deletePreludeWork(workId,name){
 
 
 document.getElementById("addWorkBtn")?.addEventListener("click",()=>openWorkEditor());
-document.getElementById("closeWorkEditorBtn")?.addEventListener("click",closeWorkEditor);
-document.getElementById("cancelWorkEditorBtn")?.addEventListener("click",closeWorkEditor);
-document.getElementById("createWorkBtn")?.addEventListener("click",createPreludeWork);
-document.getElementById("workEditorOverlay")?.addEventListener("click",e=>{
-  if(e.target.id==="workEditorOverlay")closeWorkEditor();
-});
+
+
+
+
 
 
 document.addEventListener("click",e=>{
@@ -3183,6 +3403,242 @@ document.addEventListener("DOMContentLoaded",()=>{
     if(document.getElementById("museumView")?.classList.contains("active")) loadMuseumAdmin();
   },500);
 });
+
+
+/* PRELUDE · FASE 9.9 · THEME + TOP COLLECTION */
+function applyStudioTheme(theme){
+  const t=theme==="dark"?"dark":"light";
+  document.documentElement.dataset.studioTheme=t;
+  localStorage.setItem("prelude_studio_theme",t);
+  const btn=document.getElementById("studioThemeToggle");
+  if(btn){
+    btn.setAttribute("aria-pressed",String(t==="dark"));
+    const label=btn.querySelector(".theme-label");
+    const icon=btn.querySelector(".theme-icon");
+    if(label)label.textContent=t==="dark"?"Modo claro":"Modo oscuro";
+    if(icon)icon.textContent=t==="dark"?"☀":"◐";
+  }
+}
+function initStudioTheme(){
+  const saved=localStorage.getItem("prelude_studio_theme");
+  const initial=saved==="dark"?"dark":"light";
+  applyStudioTheme(initial);
+}
+document.getElementById("studioThemeToggle")?.addEventListener("click",()=>{
+  const current=document.documentElement.dataset.studioTheme||"light";
+  applyStudioTheme(current==="dark"?"light":"dark");
+});
+
+function renderCollectionLeader(customers,totalWorks){
+  const rows=Array.isArray(customers)?customers:[];
+  const leader=rows.slice().sort((a,b)=>{
+    const aw=Number(a.library_count||0), bw=Number(b.library_count||0);
+    if(bw!==aw)return bw-aw;
+    return Number(b.total_spent||0)-Number(a.total_spent||0);
+  })[0];
+
+  const name=document.getElementById("collectionLeaderName");
+  const works=document.getElementById("collectionLeaderWorks");
+  const level=document.getElementById("collectionLeaderLevel");
+  if(!name||!works||!level)return;
+
+  if(!leader){
+    name.textContent="—";works.textContent="—";level.textContent="—";return;
+  }
+
+  name.textContent=leader.customer_name||"Cliente";
+  works.textContent=String(Number(leader.library_count||0));
+  level.textContent=typeof studioLibraryLevel==="function"
+    ? studioLibraryLevel(Number(leader.library_count||0),Number(totalWorks||0))
+    : "—";
+}
+document.addEventListener("DOMContentLoaded",initStudioTheme);
+
+
+/* PRELUDE · FASE 9.9.1 · FIX BOTONES OBRAS
+   El modal está al final del HTML, después del script principal.
+   Usamos delegación para que Crear/Cerrar/Cancelar funcionen siempre. */
+document.addEventListener("click",async e=>{
+  const createBtn=e.target.closest("#createWorkBtn");
+  if(createBtn){
+    e.preventDefault();
+    if(createBtn.disabled)return;
+    createBtn.disabled=true;
+    const original=createBtn.textContent;
+    createBtn.textContent="Creando obra…";
+    try{
+      await createPreludeWork();
+    }finally{
+      createBtn.disabled=false;
+      createBtn.textContent=original;
+    }
+    return;
+  }
+
+  if(e.target.closest("#closeWorkEditorBtn") || e.target.closest("#cancelWorkEditorBtn")){
+    e.preventDefault();
+    closeWorkEditor();
+    return;
+  }
+
+  if(e.target.id==="workEditorOverlay"){
+    closeWorkEditor();
+  }
+});
+
+
+/* PRELUDE · FASE 10 · CÓDIGOS CON TAMAÑO Y TOTAL AUTOMÁTICO */
+const codeDecantSelections=new Map();
+let activeCodePerfumeInput=null;
+
+function codeCatalogProduct(name){
+  const norm=v=>String(v||"").trim().toLowerCase();
+  return (Array.isArray(catalogAdminCache)?catalogAdminCache:[]).find(p=>norm(p.name)===norm(name))||null;
+}
+function codeDecantPrice(name,size){
+  const p=codeCatalogProduct(name);
+  if(!p)return null;
+  const key=`price_${size}ml`;
+  const v=Number(p[key]);
+  if(!Number.isFinite(v))return null;
+
+  // Respect commercial discount when configured.
+  const status=p.commercial_status||"normal";
+  const discount=Math.max(0,Math.min(95,Number(p.discount_percent||0)));
+  return (status==="offer"||status==="clearance") && discount>0
+    ? Math.round((v*(1-discount/100)+Number.EPSILON)*100)/100
+    : v;
+}
+async function ensureCodesCatalog(){
+  if(Array.isArray(catalogAdminCache)&&catalogAdminCache.length)return;
+  if(typeof loadCatalogAdmin==="function")await loadCatalogAdmin();
+}
+async function openCodeDecantSize(input){
+  activeCodePerfumeInput=input;
+  const name=input.value;
+  await ensureCodesCatalog();
+
+  document.getElementById("decantSizePerfumeName").textContent=name;
+  const st=document.getElementById("decantSizeStatus");if(st)st.textContent="";
+  [2,3,5,10].forEach(size=>{
+    const btn=document.querySelector(`#decantSizeOptions [data-size="${size}"]`);
+    const price=codeDecantPrice(name,size);
+    const span=btn?.querySelector(`[data-size-price="${size}"]`);
+    if(span)span.textContent=price==null?"Sin precio":`${price.toFixed(2).replace(".",",")} €`;
+    btn?.classList.toggle("unavailable",price==null);
+    if(btn)btn.disabled=price==null;
+  });
+  document.getElementById("decantSizeOverlay").classList.add("open");
+}
+function closeCodeDecantSize(){document.getElementById("decantSizeOverlay").classList.remove("open")}
+function setCodeDecantSize(size){
+  if(!activeCodePerfumeInput)return;
+  const name=activeCodePerfumeInput.value;
+  const price=codeDecantPrice(name,size);
+  if(price==null)return;
+
+  codeDecantSelections.set(name,{size:Number(size),price:Number(price)});
+  activeCodePerfumeInput.checked=true;
+  updateCodePerfumeVisual(activeCodePerfumeInput);
+  updateCodesOrderTotal();
+  closeCodeDecantSize();
+}
+function clearCodeDecant(input){
+  codeDecantSelections.delete(input.value);
+  input.checked=false;
+  updateCodePerfumeVisual(input);
+  updateCodesOrderTotal();
+}
+function updateCodePerfumeVisual(input){
+  const label=input.closest(".perfume");if(!label)return;
+  label.querySelector(".decant-size-badge")?.remove();
+  const selected=codeDecantSelections.get(input.value);
+  label.classList.toggle("selected-size",!!selected);
+  if(selected){
+    const badge=document.createElement("span");
+    badge.className="decant-size-badge";
+    badge.textContent=`${selected.size} ml`;
+    label.appendChild(badge);
+  }
+}
+function updateCodesOrderTotal(){
+  const total=[...codeDecantSelections.values()].reduce((sum,x)=>sum+Number(x.price||0),0);
+  const totalEl=document.getElementById("orderTotal");
+  if(totalEl)totalEl.value=total.toFixed(2);
+
+  const summary=document.getElementById("codesSelectionSummary");
+  const n=codeDecantSelections.size;
+  if(summary)summary.textContent=`${n} Prelude${n===1?"":"s"} seleccionado${n===1?"":"s"} · ${total.toFixed(2).replace(".",",")} €`;
+}
+function filterCodesPerfumes(){
+  const q=(document.getElementById("codesPerfumeSearch")?.value||"").trim().toLowerCase();
+  document.querySelectorAll("#perfumes .perfume").forEach(label=>{
+    const name=(label.querySelector("span")?.textContent||"").toLowerCase();
+    const p=codeCatalogProduct(label.querySelector("input")?.value);
+    const brand=String(p?.brand||"").toLowerCase();
+    label.style.display=!q||name.includes(q)||brand.includes(q)?"":"none";
+  });
+}
+
+document.addEventListener("change",e=>{
+  const input=e.target.closest("#perfumes input[type='checkbox']");
+  if(!input)return;
+  if(input.checked){
+    // Do not leave it selected until a size has been confirmed.
+    input.checked=false;
+    openCodeDecantSize(input);
+  }else{
+    clearCodeDecant(input);
+  }
+});
+document.addEventListener("click",e=>{
+  const sizeBtn=e.target.closest("#decantSizeOptions [data-size]");
+  if(sizeBtn){setCodeDecantSize(Number(sizeBtn.dataset.size));return;}
+  if(e.target.closest("#closeDecantSizeBtn")){closeCodeDecantSize();return;}
+  if(e.target.id==="decantSizeOverlay"){closeCodeDecantSize();}
+});
+document.getElementById("codesPerfumeSearch")?.addEventListener("input",filterCodesPerfumes);
+document.addEventListener("DOMContentLoaded",()=>setTimeout(()=>ensureCodesCatalog().then(filterCodesPerfumes),600));
+
+
+let activeRewardOptionsId=null;
+let rewardOptionsSelected=new Set();
+let rewardOptionsCache=[];
+async function openRewardOptions(rewardId){
+ activeRewardOptionsId=rewardId; rewardOptionsSelected=new Set();
+ if(!Array.isArray(catalogAdminCache)||!catalogAdminCache.length)await loadCatalogAdmin();
+ const {data,error}=await client.rpc("admin_get_prelude_reward_options",{input_reward_id:rewardId}); if(error)throw error;
+ const cfg=data||{};
+ rewardChoiceType.value=cfg.choice_type||"direct";rewardChoiceSize.value=String(cfg.decant_size_ml||2);rewardChoiceCount.value=Number(cfg.choice_count||1);rewardOptionLimit.value=Number(cfg.option_limit||3);
+ rewardOptionsSelected=new Set((cfg.options||[]).map(x=>String(x.catalog_id)));
+ rewardOptionsCache=(catalogAdminCache||[]).filter(p=>!p.deleted_at&&catalogAdminStatus(p)!=="hidden");
+ renderRewardPerfumeOptions(); rewardOptionsOverlay.classList.add("open");
+}
+function closeRewardOptions(){rewardOptionsOverlay.classList.remove("open")}
+function renderRewardPerfumeOptions(){
+ const q=(rewardPerfumeSearch.value||"").trim().toLowerCase(),limit=Math.max(1,Number(rewardOptionLimit.value||3));
+ const rows=rewardOptionsCache.filter(p=>!q||`${p.name||""} ${p.brand||""}`.toLowerCase().includes(q));
+ rewardPerfumeOptions.innerHTML=rows.map(p=>{const sel=rewardOptionsSelected.has(String(p.id)),img=p.image_url||STUDIO_CATALOG_IMAGE_MAP[p.name]||"";return `<div class="reward-perfume-option ${sel?"selected":""}" data-reward-option="${escapeHtml(p.id)}"><div class="check">${sel?"✓":""}</div>${img?`<img src="${escapeHtml(img)}">`:`<div style="height:120px;display:grid;place-items:center;color:var(--muted)">Sin imagen</div>`}<div class="body"><strong>${escapeHtml(p.name||"")}</strong><span>${escapeHtml(p.brand||"")}</span></div></div>`}).join("");
+ rewardPerfumeOptions.querySelectorAll("[data-reward-option]").forEach(card=>card.onclick=()=>{const id=String(card.dataset.rewardOption);if(rewardOptionsSelected.has(id))rewardOptionsSelected.delete(id);else if(rewardOptionsSelected.size<limit)rewardOptionsSelected.add(id);else rewardOptionsStatus.textContent=`Máximo ${limit} opciones.`;renderRewardPerfumeOptions()});
+}
+async function saveRewardOptions(){
+ const type=rewardChoiceType.value,size=Number(rewardChoiceSize.value),count=Math.max(1,Number(rewardChoiceCount.value||1)),limit=Math.max(1,Number(rewardOptionLimit.value||3)),ids=[...rewardOptionsSelected];
+ if(type==="choice"&&ids.length<count){rewardOptionsStatus.textContent="Añade suficientes perfumes.";return}
+ const {error}=await client.rpc("admin_save_prelude_reward_options",{input_reward_id:activeRewardOptionsId,input_choice_type:type,input_decant_size_ml:size,input_choice_count:count,input_option_limit:limit,input_catalog_ids:ids});if(error){rewardOptionsStatus.textContent=error.message;return}
+ closeRewardOptions();await loadRewardsAdmin();
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-reward-options]");if(b){openRewardOptions(b.dataset.rewardOptions).catch(err=>alert(err.message));return}if(e.target.closest("#closeRewardOptionsBtn")||e.target.closest("#cancelRewardOptionsBtn"))closeRewardOptions();if(e.target.closest("#saveRewardOptionsBtn"))saveRewardOptions();if(e.target.id==="rewardOptionsOverlay")closeRewardOptions()});
+document.getElementById("rewardPerfumeSearch")?.addEventListener("input",renderRewardPerfumeOptions);
+document.getElementById("rewardOptionLimit")?.addEventListener("input",renderRewardPerfumeOptions);
+
+/* PRELUDE · FASE 11.1 · ELECCIONES DE RECOMPENSA EN STUDIO */
+async function loadCustomerRewardChoices(customerId){
+  try{
+    const {data,error}=await client.rpc("admin_get_customer_reward_choices",{input_customer_id:customerId});
+    if(error)throw error;
+    return Array.isArray(data)?data:[];
+  }catch(e){console.warn("Customer reward choices:",e);return[]}
+}
 
 </script>
 
@@ -3225,5 +3681,41 @@ document.addEventListener("DOMContentLoaded",()=>{
   </div>
 </section>
 
-</body>
+
+<section class="order-detail-overlay" id="decantSizeOverlay">
+  <div class="order-detail-card decant-size-card">
+    <div class="order-detail-head">
+      <div>
+        <div class="dashboard-kicker">Códigos Prelude</div>
+        <h2 id="decantSizePerfumeName">Elegir tamaño</h2>
+        <div class="order-meta">Selecciona el tamaño del decant solicitado.</div>
+      </div>
+      <button class="secondary" id="closeDecantSizeBtn" type="button">Cerrar</button>
+    </div>
+
+    <div class="decant-size-options" id="decantSizeOptions">
+      <button type="button" data-size="2"><strong>2 ml</strong><span data-size-price="2">—</span></button>
+      <button type="button" data-size="3"><strong>3 ml</strong><span data-size-price="3">—</span></button>
+      <button type="button" data-size="5"><strong>5 ml</strong><span data-size-price="5">—</span></button>
+      <button type="button" data-size="10"><strong>10 ml</strong><span data-size-price="10">—</span></button>
+    </div>
+    <div class="status" id="decantSizeStatus"></div>
+  </div>
+</section>
+
+<section class="order-detail-overlay" id="rewardOptionsOverlay">
+  <div class="order-detail-card" style="max-width:820px">
+    <div class="order-detail-head"><div><div class="dashboard-kicker">Fidelización · Recompensas</div><h2>Opciones de recompensa</h2><div class="order-meta">Configura qué fragancias podrá elegir el cliente.</div></div><button class="secondary" id="closeRewardOptionsBtn" type="button">Cerrar</button></div>
+    <div class="detail-grid" style="grid-template-columns:1fr 1fr;margin-top:18px">
+      <div class="detail-field"><label>Tipo de recompensa</label><select id="rewardChoiceType"><option value="direct">Directa / sin elección</option><option value="choice">Cliente elige</option></select></div>
+      <div class="detail-field"><label>Tamaño del decant</label><select id="rewardChoiceSize"><option value="2">2 ml</option><option value="3">3 ml</option><option value="5">5 ml</option><option value="10">10 ml</option></select></div>
+      <div class="detail-field"><label>Cuántos puede elegir</label><input id="rewardChoiceCount" type="number" min="1" step="1" value="1"></div>
+      <div class="detail-field"><label>Máximo de opciones visibles</label><input id="rewardOptionLimit" type="number" min="1" step="1" value="3"></div>
+    </div>
+    <div class="field" style="margin-top:14px"><label>Buscar perfume</label><input id="rewardPerfumeSearch" type="search" placeholder="Buscar por perfume o marca"></div>
+    <div id="rewardPerfumeOptions" class="reward-perfume-grid"></div>
+    <div class="status" id="rewardOptionsStatus"></div>
+    <div class="order-actions" style="justify-content:flex-end;margin-top:16px"><button class="secondary" id="cancelRewardOptionsBtn" type="button">Cancelar</button><button class="primary" id="saveRewardOptionsBtn" type="button">Guardar opciones</button></div>
+  </div>
+</section></body>
 </html>

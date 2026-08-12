@@ -1188,6 +1188,54 @@ body.dark .museum-unlock{background:rgba(18,18,18,.985)}
 .card.upcoming .view{opacity:.62;pointer-events:none}
 .card.upcoming .from{opacity:.55}
 @media(max-width:720px){.catalog-toolbar{justify-content:stretch;align-items:stretch;flex-direction:column}.catalog-sort{width:100%;min-width:0}.upcoming-badge{font-size:9px;padding:8px 11px}}
+
+/* PRELUDE · FASE 11.1 · ELECCIÓN DE RECOMPENSAS EN CLIENTE */
+.reward-select-btn{
+  margin-top:8px;
+  border:1px solid rgba(255,255,255,.28);
+  background:rgba(255,255,255,.08);
+  color:inherit;
+  border-radius:999px;
+  padding:7px 10px;
+  font-size:10px;
+  cursor:pointer;
+}
+.reward-selected-choice{
+  margin-top:7px;
+  font-size:10px;
+  opacity:.82;
+}
+.pending-reward-choice-note{
+  display:block;
+  margin-top:5px;
+  font-size:10px;
+  opacity:.72;
+}
+
+
+.reward-choice-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:18px;z-index:99999}
+.reward-choice-overlay.open{display:flex}
+.reward-choice-modal{width:min(920px,100%);max-height:88vh;overflow:auto;background:#f4f1eb;color:#171716;border-radius:20px;padding:24px;position:relative;box-shadow:0 24px 80px rgba(0,0,0,.28)}
+.reward-choice-close{position:absolute;right:14px;top:12px;border:0;background:transparent;font-size:28px;cursor:pointer}
+.reward-choice-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}
+.reward-choice-card{border:1px solid rgba(0,0,0,.12);border-radius:16px;overflow:hidden;background:#fff;cursor:pointer;position:relative;transition:transform .15s ease,box-shadow .15s ease}
+.reward-choice-card:hover{transform:translateY(-2px)}
+.reward-choice-card.selected{box-shadow:0 0 0 2px #171716 inset}
+.reward-choice-card img{width:100%;height:180px;object-fit:cover;background:#eee;display:block}
+.reward-choice-card .body{padding:12px}
+.reward-choice-card strong{display:block;font-size:14px}
+.reward-choice-card span{display:block;font-size:11px;opacity:.65;margin-top:4px}
+.reward-choice-card .selected-mark{position:absolute;right:10px;top:10px;width:27px;height:27px;border-radius:50%;background:#fff;display:grid;place-items:center;border:1px solid rgba(0,0,0,.15)}
+.reward-choice-card.selected .selected-mark{background:#171716;color:#fff}
+.reward-choice-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px}
+.reward-select-btn{margin-top:8px;border:1px solid currentColor;background:transparent;color:inherit;border-radius:999px;padding:7px 10px;font-size:10px;cursor:pointer}
+.reward-selected-choice{margin-top:7px;font-size:10px;opacity:.82}
+.pending-reward-choice-note{display:block;margin-top:5px;font-size:10px;opacity:.72}
+.cart-reward-option>label{display:flex;align-items:flex-start;gap:8px;cursor:pointer}
+.cart-reward-option .reward-choice-slot{margin-left:28px;margin-top:5px}
+.reward-choice-slot:empty{display:none}
+@media(max-width:720px){.reward-choice-grid{grid-template-columns:repeat(2,1fr)}}
+
 </style>
 </head>
 <body><div class="watermark-brush one"></div><div class="watermark-brush two"></div>
@@ -1676,13 +1724,16 @@ function renderCart(){
         <h4>Recompensas pendientes</h4>
         <div class="muted">Selecciona las que deseas recibir con este pedido. Seguirán pendientes hasta que Prelude confirme la entrega.</div>
         ${availableRewards.map(reward=>`
-          <label class="cart-reward-option">
-            <input type="checkbox" data-reward-id="${reward.id}" ${selectedRewardIds.has(reward.id)?"checked":""}>
-            <span>
-              ${reward.reward_label}
-              <small>Desbloqueada con ${reward.threshold} Marcapáginas</small>
-            </span>
-          </label>
+          <div class="cart-reward-option" data-cart-reward-id="${reward.id}">
+            <label>
+              <input type="checkbox" data-reward-id="${reward.id}" ${selectedRewardIds.has(reward.id)?"checked":""}>
+              <span>
+                ${reward.reward_label}
+                <small>Desbloqueada con ${reward.threshold} Marcapáginas</small>
+              </span>
+            </label>
+            <div class="reward-choice-slot" data-reward-choice-slot="${reward.id}"></div>
+          </div>
         `).join("")}
       </div>`
     : "";
@@ -1729,11 +1780,22 @@ function renderCart(){
   });
 
   document.querySelectorAll("[data-reward-id]").forEach(input=>{
-    input.addEventListener("change",()=>{
-      if(input.checked)selectedRewardIds.add(input.dataset.rewardId);
-      else selectedRewardIds.delete(input.dataset.rewardId);
+    input.addEventListener("change",async()=>{
+      if(input.checked){
+        selectedRewardIds.add(input.dataset.rewardId);
+        try{
+          const cfg=await fetchRewardChoiceConfig(String(input.dataset.rewardId));
+          if(cfg?.choice_type==="choice"){
+            const saved=await fetchSavedRewardChoice(String(input.dataset.rewardId));
+            if(!saved?.selected?.length)await openRewardChoice(String(input.dataset.rewardId));
+          }
+        }catch(error){console.warn("Recompensa:",error);}
+      }else{
+        selectedRewardIds.delete(input.dataset.rewardId);
+      }
     });
   });
+  setTimeout(()=>refreshClientRewardChoiceUI(true),0);
 
   document.getElementById("clear").onclick=()=>{
     cart.length=0;
@@ -2736,13 +2798,16 @@ function renderRewards(){
   }
 
   libraryRewardsListEl.innerHTML=rewards.map(reward=>`
-    <div class="reward-entry">
+    <div class="reward-entry" data-client-reward-id="${reward.id}">
       <strong>${reward.reward_label}</strong>
       <div class="reward-status ${reward.status}">
         ${reward.status==="pending"?"Pendiente de canjear":"Canjeada"}
       </div>
+      ${reward.status==="pending"?`<div class="reward-choice-slot" data-reward-choice-slot="${reward.id}"></div>`:""}
     </div>
   `).join("");
+
+  setTimeout(()=>refreshClientRewardChoiceUI(true),0);
 }
 
 
@@ -3384,4 +3449,197 @@ bootstrapPrelude();
 
 const catalogSortEl=document.getElementById("catalogSort");
 if(catalogSortEl)catalogSortEl.addEventListener("change",()=>{renderProducts();playSound("navigate")});
-</script></body></html>
+
+
+/* PRELUDE · FASE 11.2 · ELECCIÓN VISUAL DE RECOMPENSAS */
+let rewardChoiceCache=new Map();
+let activeRewardChoice=null;
+let activeRewardSelections=new Set();
+
+async function fetchRewardChoiceConfig(rewardId){
+  const key=String(rewardId);
+  if(rewardChoiceCache.has(key))return rewardChoiceCache.get(key);
+  const {data,error}=await supabaseClient.rpc("get_prelude_reward_choice",{input_reward_id:key});
+  if(error)throw error;
+  rewardChoiceCache.set(key,data||null);
+  return data||null;
+}
+
+async function fetchSavedRewardChoice(rewardId){
+  if(!customerProfile)return {selected:[]};
+  const {data,error}=await supabaseClient.rpc("get_my_prelude_reward_choice_for_customer",{
+    input_reward_id:String(rewardId),
+    input_phone:customerProfile.phone,
+    input_access_token:customerProfile.accessToken
+  });
+  if(error)throw error;
+  return data||{selected:[]};
+}
+
+async function openRewardChoice(rewardId){
+  if(!supabaseClient||!customerProfile)return;
+  const cfg=await fetchRewardChoiceConfig(String(rewardId));
+  if(!cfg||cfg.choice_type!=="choice")return;
+
+  activeRewardChoice=cfg;
+  activeRewardSelections=new Set();
+
+  try{
+    const saved=await fetchSavedRewardChoice(String(rewardId));
+    (saved?.selected||[]).forEach(x=>activeRewardSelections.add(String(x.catalog_id)));
+  }catch(error){console.warn(error);}
+
+  document.getElementById("rewardChoiceTitle").textContent=cfg.reward_name||"Elige tu Prelude";
+  document.getElementById("rewardChoiceSubtitle").textContent=`Elige ${Number(cfg.choice_count||1)} de ${(cfg.options||[]).length} opciones · ${Number(cfg.decant_size_ml||2)} ml`;
+  renderRewardChoiceGrid();
+
+  const overlay=document.getElementById("rewardChoiceOverlay");
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden","false");
+}
+
+function renderRewardChoiceGrid(){
+  const box=document.getElementById("rewardChoiceGrid");
+  if(!box||!activeRewardChoice)return;
+
+  const options=Array.isArray(activeRewardChoice.options)?activeRewardChoice.options:[];
+  const max=Number(activeRewardChoice.choice_count||1);
+
+  box.innerHTML=options.map(p=>{
+    const selected=activeRewardSelections.has(String(p.catalog_id));
+    return `<div class="reward-choice-card ${selected?"selected":""}" data-choice-catalog="${p.catalog_id}">
+      <div class="selected-mark">${selected?"✓":""}</div>
+      ${p.image_url?`<img src="${p.image_url}" alt="${p.name||""}">`:`<div style="height:180px;display:grid;place-items:center;background:#eee;color:#666">Sin imagen</div>`}
+      <div class="body">
+        <strong>${p.name||""}</strong>
+        <span>${p.brand||""} · ${Number(activeRewardChoice.decant_size_ml||2)} ml</span>
+      </div>
+    </div>`;
+  }).join("");
+
+  document.getElementById("rewardChoiceCountLabel").textContent=`${activeRewardSelections.size}/${max} seleccionados`;
+  document.getElementById("confirmRewardChoiceBtn").disabled=activeRewardSelections.size!==max;
+}
+
+function closeRewardChoice(){
+  const overlay=document.getElementById("rewardChoiceOverlay");
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden","true");
+  activeRewardChoice=null;
+  activeRewardSelections.clear();
+}
+
+async function saveCurrentRewardChoice(){
+  if(!activeRewardChoice||!customerProfile)return;
+  const ids=[...activeRewardSelections];
+  const btn=document.getElementById("confirmRewardChoiceBtn");
+  btn.disabled=true;
+  btn.textContent="Guardando…";
+
+  try{
+    const {error}=await supabaseClient.rpc("save_prelude_reward_choice_for_customer",{
+      input_reward_id:String(activeRewardChoice.reward_id),
+      input_catalog_ids:ids,
+      input_phone:customerProfile.phone,
+      input_access_token:customerProfile.accessToken
+    });
+    if(error)throw error;
+    closeRewardChoice();
+    await refreshClientRewardChoiceUI(true);
+    renderCart();
+    renderRewards();
+  }catch(error){
+    console.error(error);
+    alert("No se pudo guardar tu elección: "+(error.message||error));
+  }finally{
+    btn.disabled=false;
+    btn.textContent="Confirmar elección";
+  }
+}
+
+async function refreshClientRewardChoiceUI(force=false){
+  if(!supabaseClient||!customerProfile)return;
+  const slots=[...document.querySelectorAll("[data-reward-choice-slot]")];
+
+  for(const slot of slots){
+    const rewardId=String(slot.dataset.rewardChoiceSlot||"");
+    if(!rewardId)continue;
+    if(slot.dataset.loaded==="1"&&!force)continue;
+
+    slot.dataset.loaded="1";
+    slot.innerHTML="";
+
+    try{
+      const cfg=await fetchRewardChoiceConfig(rewardId);
+      if(!cfg||cfg.choice_type!=="choice")continue;
+
+      const saved=await fetchSavedRewardChoice(rewardId);
+      const selected=Array.isArray(saved?.selected)?saved.selected:[];
+
+      const btn=document.createElement("button");
+      btn.type="button";
+      btn.className="reward-select-btn";
+      btn.textContent=selected.length?"Cambiar elección":"Elegir Prelude";
+      btn.addEventListener("click",async e=>{
+        e.preventDefault();
+        e.stopPropagation();
+        await openRewardChoice(rewardId);
+      });
+      slot.appendChild(btn);
+
+      const detail=document.createElement("div");
+      if(selected.length){
+        detail.className="reward-selected-choice";
+        detail.textContent="Elegido: "+selected.map(x=>`${x.name} · ${x.decant_size_ml} ml`).join(", ");
+      }else{
+        detail.className="pending-reward-choice-note";
+        detail.textContent=`Elige ${Number(cfg.choice_count||1)} de ${(cfg.options||[]).length} opciones · ${Number(cfg.decant_size_ml||2)} ml`;
+      }
+      slot.appendChild(detail);
+    }catch(error){
+      console.warn("Reward choice UI:",error);
+      slot.dataset.loaded="";
+    }
+  }
+}
+
+document.addEventListener("click",e=>{
+  const card=e.target.closest("[data-choice-catalog]");
+  if(card&&activeRewardChoice){
+    const id=String(card.dataset.choiceCatalog);
+    const max=Number(activeRewardChoice.choice_count||1);
+    if(activeRewardSelections.has(id))activeRewardSelections.delete(id);
+    else if(activeRewardSelections.size<max)activeRewardSelections.add(id);
+    renderRewardChoiceGrid();
+    return;
+  }
+
+  if(e.target.closest("#rewardChoiceClose")||e.target.id==="rewardChoiceOverlay"){
+    closeRewardChoice();
+    return;
+  }
+
+  if(e.target.closest("#confirmRewardChoiceBtn")){
+    e.preventDefault();
+    saveCurrentRewardChoice();
+  }
+});
+
+document.addEventListener("DOMContentLoaded",()=>setTimeout(()=>refreshClientRewardChoiceUI(true),900));
+
+</script>
+<section class="reward-choice-overlay" id="rewardChoiceOverlay" aria-hidden="true">
+  <div class="reward-choice-modal">
+    <button class="reward-choice-close" id="rewardChoiceClose" type="button" aria-label="Cerrar">×</button>
+    <div class="eyebrow">Recompensa Prelude</div>
+    <h2 id="rewardChoiceTitle">Elige tu Prelude</h2>
+    <p id="rewardChoiceSubtitle"></p>
+    <div class="reward-choice-grid" id="rewardChoiceGrid"></div>
+    <div class="reward-choice-footer">
+      <span id="rewardChoiceCountLabel"></span>
+      <button class="primary" id="confirmRewardChoiceBtn" type="button">Confirmar elección</button>
+    </div>
+  </div>
+</section>
+
+</body></html>
