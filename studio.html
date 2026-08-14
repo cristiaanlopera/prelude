@@ -944,6 +944,16 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
 @media(max-width:800px){.financial-kpi-grid{grid-template-columns:1fr 1fr}.financial-two-col{grid-template-columns:1fr}.financial-coverage{grid-template-columns:1fr 1fr}.financial-filterbar{grid-template-columns:1fr}.financial-health{border-left:0;border-top:1px solid var(--line);padding:10px 0 0}}
 @media(max-width:520px){.financial-kpi-grid{grid-template-columns:1fr}.financial-coverage{grid-template-columns:1fr}.financial-dual-chart{overflow-x:auto}.financial-month{min-width:58px}}
 
+
+/* PRELUDE · FASE 12.15 · INVERSIÓN */
+.investment-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}
+.investment-card{padding:16px!important}.investment-table-head,.investment-row{display:grid;grid-template-columns:minmax(180px,2fr) .65fr .85fr .85fr auto;gap:9px;align-items:center}
+.investment-table-head{padding:0 8px 7px;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.investment-row{padding:9px 8px;border-top:1px solid var(--line)}.investment-row input{width:100%;box-sizing:border-box}.investment-row-total{font-family:Georgia,serif;font-size:16px}
+.investment-actions{display:flex;gap:5px}.investment-actions button{padding:7px 9px}
+.investment-total-row{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);margin-top:8px;padding:14px 8px 2px}.investment-total-row span{font-size:10px;color:var(--muted)}.investment-total-row strong{font-family:Georgia,serif;font-size:22px}
+@media(max-width:760px){.investment-summary{grid-template-columns:1fr}.investment-table-head{display:none}.investment-row{grid-template-columns:1fr 1fr}.investment-row .investment-name{grid-column:1/-1}.investment-actions{grid-column:1/-1}.business-kpis{grid-template-columns:repeat(2,1fr)}}
+
 </style>
 </head>
 <body>
@@ -977,6 +987,7 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
         <button id="pricesTabBtn" data-studio-view="prices" type="button">Precios <span class="nav-state">Activo</span></button>
         <button id="stockTabBtn" data-studio-view="stock" type="button">Stock <span class="nav-state">Activo</span></button>
         <button id="profitabilityTabBtn" data-studio-view="profitability" type="button">Rentabilidad <span class="nav-state">Nuevo</span></button>
+        <button id="investmentTabBtn" data-studio-view="investment" type="button">Inversión <span class="nav-state">Nuevo</span></button>
         <button id="rewardsTabBtn" data-studio-view="rewards" type="button">Recompensas</button>
         <button id="rankingTabBtn" data-studio-view="ranking" type="button">Ranking</button>
         <button id="museumTabBtn" data-studio-view="museum" type="button">Obras Prelude</button>
@@ -1013,6 +1024,7 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
 <div class="business-kpi"><div class="k-label">Entregados</div><div class="k-value" id="bizDelivered">—</div><div class="k-note">Pedidos completados</div></div>
 <div class="business-kpi"><div class="k-label">Ticket medio</div><div class="k-value" id="bizTicket">—</div><div class="k-note">Por pedido entregado</div></div>
 <div class="business-kpi warning"><div class="k-label">En curso</div><div class="k-value" id="bizActive">—</div><div class="k-note">Pendiente · preparando · listo</div></div>
+<div class="business-kpi"><div class="k-label">Inversión realizada</div><div class="k-value" id="bizInvestment">—</div><div class="k-note">Compras registradas en Finanzas</div></div>
 </div>
 <div class="executive-grid"><div class="executive-panel">
 <div class="chart-toolbar"><div><h2>Ventas diarias</h2><div class="executive-sub">Ingresos de pedidos entregados, incluidos clientes sin cuenta.</div></div>
@@ -1285,7 +1297,26 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
         <div id="museumAdminList" class="museum-admin-list"><p style="color:var(--muted)">Cargando Museo...</p></div>
         <div class="status" id="museumAdminStatus"></div>
       </div>
-      <div class="studio-view" id="statsView">
+      
+<div class="studio-view" id="investmentView">
+  <div class="section-heading">
+    <div><div class="dashboard-kicker">Finanzas</div><h1>Inversión</h1><p>Registra compras e inversiones de Prelude para conocer cuánto capital has destinado al proyecto.</p></div>
+    <button class="secondary" id="refreshInvestmentBtn" type="button">Actualizar</button>
+  </div>
+  <section class="investment-summary">
+    <div class="financial-kpi"><span>Inversión total</span><strong id="investmentTotal">0,00 €</strong><small>Suma de todas las compras</small></div>
+    <div class="financial-kpi"><span>Productos registrados</span><strong id="investmentProducts">0</strong><small>Líneas de inversión</small></div>
+    <div class="financial-kpi"><span>Unidades adquiridas</span><strong id="investmentUnits">0</strong><small>Total de unidades</small></div>
+  </section>
+  <section class="card investment-card">
+    <div class="financial-panel-head"><div><span class="dashboard-kicker">Registro</span><h2>Productos e inversiones</h2><p>Añade perfumes, packaging, material u otras compras. El importe se calcula como unidades × precio pagado por unidad.</p></div><button class="primary" id="addInvestmentBtn" type="button">+ Añadir inversión</button></div>
+    <div class="investment-table-head"><span>Producto</span><span>Unidades</span><span>Precio / unidad</span><span>Total</span><span></span></div>
+    <div id="investmentList"><p class="diag-empty">Cargando inversiones…</p></div>
+    <div class="investment-total-row"><span>Inversión total registrada</span><strong id="investmentGrandTotal">0,00 €</strong></div>
+  </section>
+  <div class="status" id="investmentStatus"></div>
+</div>
+<div class="studio-view" id="statsView">
   <div class="dashboard-head financial-stats-head">
     <div><div class="dashboard-kicker">Finanzas</div><h1>Dashboard financiero</h1><p>Resultado económico de Prelude construido a partir de pedidos entregados y costes reales configurados.</p></div>
     <button class="secondary" id="refreshStatsBtn" type="button">Actualizar dashboard</button>
@@ -3458,8 +3489,8 @@ function renderOrderProfitability(){
       <div class="order-profit-values">
         <div><span>Venta</span><strong>${profitMoney(x.revenue)}</strong></div>
         <div><span>Coste decants</span><strong>${profitMoney(x.directCost)}</strong></div>
-        <div><span>Preparación</span><strong>${profitMoney(x.prepCost)}</strong></div>
-        <div><span>Tarifa / ajustes</span><strong class="${x.adjustment<0?"finance-negative":""}">${x.adjustment===0?"—":`${x.adjustment>0?"+":""}${profitMoney(x.adjustment)}`}</strong></div>
+        <div><span>Coste preparación</span><strong>${profitMoney(x.prepCost)}</strong></div>
+        <div><span>Tarifa cobrada</span><strong class="${x.adjustment<0?"finance-negative":""}">${x.adjustment===0?`0,00 € · Gratis`:`${x.adjustment>0?"+":""}${profitMoney(x.adjustment)}`}</strong></div>
         <div class="order-profit-result"><span>Beneficio real</span><strong class="${x.profit>=0?"finance-positive":"finance-negative"}">${profitMoney(x.profit)}</strong></div>
         <div><span>Margen</span><strong>${x.margin==null?"—":profitPct(x.margin)}</strong></div>
       </div>
@@ -4048,6 +4079,23 @@ async function renderPreludeVisualDashboard(days=Number(document.querySelector("
   const orders=await preludeFetchOrdersForDashboard(), delivered=orders.filter(o=>o.status==="delivered"), cancelled=orders.filter(o=>["cancelled","canceled"].includes(o.status)), active=orders.filter(o=>["pending","preparing","ready"].includes(o.status));
   const revenue=delivered.reduce((a,o)=>a+Number(o.total||0),0), ticket=delivered.length?revenue/delivered.length:0;
   document.getElementById("bizRevenue").textContent=money(revenue);document.getElementById("bizDelivered").textContent=delivered.length;document.getElementById("bizTicket").textContent=money(ticket);document.getElementById("bizActive").textContent=active.length;document.getElementById("bizCancelled").textContent=cancelled.length;
+  const finance=await preludeDashboardRealFinance(delivered);
+  const profitEl=document.getElementById("bizProfit"),marginEl=document.getElementById("bizMargin");
+  if(finance){
+    profitEl.textContent=money(finance.profit);
+    marginEl.textContent=finance.margin==null?"—":finance.margin.toFixed(1).replace(".",",")+" %";
+    const note=profitEl.parentElement?.querySelector(".k-note");
+    if(note)note.textContent=finance.missing?`${finance.missing} Prelude(s) sin coste configurado`:"Ingresos − costes reales";
+  }
+  try{
+    await loadInvestment(true);
+    const inv=investmentTotals();
+    const invEl=document.getElementById("bizInvestment");
+    if(invEl)invEl.textContent=money(inv.total);
+  }catch(_){
+    const invEl=document.getElementById("bizInvestment");
+    if(invEl)invEl.textContent="—";
+  }
   const val=label=>{const c=[...document.querySelectorAll("#overviewView .metric-card")].find(c=>(c.querySelector(".metric-label")?.textContent||"").toLowerCase().includes(label));return c?.querySelector(".metric-value")?.textContent?.trim()||"—"};
   document.getElementById("bizClients").textContent=val("clientes");document.getElementById("bizWorks").textContent=val("obras descubiertas");document.getElementById("bizCollection").textContent=val("colección más avanzada");
   const map=new Map();delivered.forEach(o=>{if(!o.date)return;const d=new Date(o.date),k=d.toISOString().slice(0,10),x=map.get(k)||{revenue:0,count:0,date:new Date(d.getFullYear(),d.getMonth(),d.getDate())};x.revenue+=Number(o.total||0);x.count++;map.set(k,x)});
@@ -4821,6 +4869,182 @@ document.addEventListener("click",e=>{
   toggle.setAttribute("aria-expanded",String(!collapsed));
   const icon=toggle.querySelector(".reward-fold-icon");
   if(icon)icon.textContent=collapsed?"+":"−";
+});
+
+
+/* PRELUDE · FASE 12.15 · INVERSIÓN + DASHBOARD FINANCIERO UNIFICADO */
+
+let investmentCache=[];
+
+function investmentMoney(v){
+  return Number(v||0).toLocaleString("es-ES",{minimumFractionDigits:2,maximumFractionDigits:2})+" €";
+}
+function investmentTotals(){
+  return investmentCache.reduce((a,x)=>{
+    const units=Math.max(0,Number(x.units||0));
+    const price=Math.max(0,Number(x.unit_price||0));
+    a.total+=units*price;
+    a.units+=units;
+    return a;
+  },{total:0,units:0});
+}
+async function loadInvestment(silent=false){
+  const list=document.getElementById("investmentList");
+  const st=document.getElementById("investmentStatus");
+  if(list)list.innerHTML='<p class="diag-empty">Cargando inversiones…</p>';
+  try{
+    const {data,error}=await client.rpc("admin_list_prelude_investments");
+    if(error)throw error;
+    investmentCache=Array.isArray(data)?data:[];
+    renderInvestment();
+    if(st&&!silent)status(st,"Inversión actualizada.");
+    return investmentCache;
+  }catch(error){
+    console.error("Inversión:",error);
+    investmentCache=[];
+    renderInvestment();
+    if(st)status(st,"No se pudo cargar Inversión: "+(error.message||error),true);
+    return [];
+  }
+}
+function renderInvestment(){
+  const list=document.getElementById("investmentList");
+  if(!list)return;
+  const totals=investmentTotals();
+
+  document.getElementById("investmentTotal").textContent=investmentMoney(totals.total);
+  document.getElementById("investmentGrandTotal").textContent=investmentMoney(totals.total);
+  document.getElementById("investmentProducts").textContent=investmentCache.length;
+  document.getElementById("investmentUnits").textContent=totals.units.toLocaleString("es-ES");
+
+  if(!investmentCache.length){
+    list.innerHTML='<p class="diag-empty">Todavía no has registrado ninguna inversión.</p>';
+    return;
+  }
+
+  list.innerHTML=investmentCache.map(x=>`<div class="investment-row" data-investment-id="${escapeHtml(x.id)}">
+    <input class="investment-name" data-field="name" value="${escapeHtml(x.name||"")}" placeholder="Nombre del producto">
+    <input data-field="units" type="number" min="0" step="1" value="${Number(x.units||0)}" aria-label="Unidades">
+    <input data-field="unit_price" type="number" min="0" step="0.01" value="${Number(x.unit_price||0)}" aria-label="Precio por unidad">
+    <strong class="investment-row-total">${investmentMoney(Number(x.units||0)*Number(x.unit_price||0))}</strong>
+    <div class="investment-actions">
+      <button class="secondary investment-save" type="button">Guardar</button>
+      <button class="secondary investment-delete" type="button">Eliminar</button>
+    </div>
+  </div>`).join("");
+}
+async function createInvestment(){
+  const st=document.getElementById("investmentStatus");
+  try{
+    const {data,error}=await client.rpc("admin_upsert_prelude_investment",{
+      input_id:null,
+      input_name:"Nueva inversión",
+      input_units:1,
+      input_unit_price:0
+    });
+    if(error)throw error;
+    await loadInvestment();
+    const id=Array.isArray(data)?data[0]?.id:data?.id;
+    const row=id?document.querySelector(`[data-investment-id="${CSS.escape(String(id))}"]`):document.querySelector('#investmentList .investment-row');
+    row?.querySelector(".investment-name")?.focus();
+  }catch(error){
+    console.error(error);
+    if(st)status(st,"No se pudo crear la inversión: "+(error.message||error),true);
+  }
+}
+async function saveInvestmentRow(row){
+  const st=document.getElementById("investmentStatus");
+  const id=row.dataset.investmentId;
+  const name=row.querySelector('[data-field="name"]').value.trim();
+  const units=Math.max(0,Number(row.querySelector('[data-field="units"]').value||0));
+  const unitPrice=Math.max(0,Number(row.querySelector('[data-field="unit_price"]').value||0));
+
+  if(!name){
+    if(st)status(st,"Introduce un nombre para la inversión.",true);
+    row.querySelector('[data-field="name"]')?.focus();
+    return;
+  }
+
+  try{
+    const {error}=await client.rpc("admin_upsert_prelude_investment",{
+      input_id:id,
+      input_name:name,
+      input_units:units,
+      input_unit_price:unitPrice
+    });
+    if(error)throw error;
+    await loadInvestment();
+    if(st)status(st,"Inversión guardada.");
+    preludeScheduleDashboardRefresh();
+  }catch(error){
+    console.error(error);
+    if(st)status(st,"No se pudo guardar la inversión: "+(error.message||error),true);
+  }
+}
+async function deleteInvestmentRow(row){
+  const st=document.getElementById("investmentStatus");
+  if(!confirm("¿Eliminar esta inversión?"))return;
+  try{
+    const {error}=await client.rpc("admin_delete_prelude_investment",{input_id:row.dataset.investmentId});
+    if(error)throw error;
+    await loadInvestment();
+    if(st)status(st,"Inversión eliminada.");
+    preludeScheduleDashboardRefresh();
+  }catch(error){
+    console.error(error);
+    if(st)status(st,"No se pudo eliminar la inversión: "+(error.message||error),true);
+  }
+}
+
+document.addEventListener("click",e=>{
+  if(e.target.closest("#addInvestmentBtn"))createInvestment();
+  if(e.target.closest("#refreshInvestmentBtn"))loadInvestment();
+
+  const row=e.target.closest(".investment-row");
+  if(!row)return;
+  if(e.target.closest(".investment-save"))saveInvestmentRow(row);
+  if(e.target.closest(".investment-delete"))deleteInvestmentRow(row);
+});
+document.addEventListener("input",e=>{
+  const row=e.target.closest(".investment-row");
+  if(!row||!e.target.matches('[data-field="units"],[data-field="unit_price"]'))return;
+  const u=Number(row.querySelector('[data-field="units"]').value||0);
+  const p=Number(row.querySelector('[data-field="unit_price"]').value||0);
+  row.querySelector(".investment-row-total").textContent=investmentMoney(u*p);
+});
+document.addEventListener("DOMContentLoaded",()=>setTimeout(loadInvestment,900));
+
+async function preludeDashboardRealFinance(delivered){
+  try{
+    if(!catalogAdminCache.length)await loadCatalogAdmin();
+    if(!preparationCostsCache.length){
+      const prep=await client.rpc("admin_list_prelude_preparation_costs");
+      if(!prep.error)preparationCostsCache=Array.isArray(prep.data)?prep.data:[];
+    }
+    await loadPreparationFeeSettings();
+    const costMap=await buildProfitabilityCostMap(),prepCost=calculateRealPreparationCost();
+    let revenue=0,cost=0,missing=0;
+    for(const order of delivered){
+      const raw=order.raw||order;
+      const items=Array.isArray(raw.items)?raw.items:[];
+      let itemRevenue=0,direct=0;
+      for(const item of items){
+        const qty=Number(item?.qty??item?.quantity??1),size=parsePreludeDecantSize(item?.size_ml??item?.size??item?.ml),price=Number(item?.price??item?.unit_price??0);
+        itemRevenue+=price*qty;
+        const entry=findProfitProduct(item,costMap),unitCost=entry?.bySize?.[size];
+        if(Number.isFinite(unitCost))direct+=unitCost*qty;else missing+=qty;
+      }
+      const orderRevenue=Number(raw.order_total??order.total??itemRevenue);
+      revenue+=orderRevenue;cost+=direct+prepCost;
+    }
+    return {revenue,profit:revenue-cost,margin:revenue>0?(revenue-cost)/revenue*100:null,missing};
+  }catch(e){console.error("Dashboard finance",e);return null;}
+}
+
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest('[data-studio-view="investment"]');
+  if(b)setTimeout(()=>loadInvestment(),50);
 });
 
 </script>

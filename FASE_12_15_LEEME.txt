@@ -1,0 +1,19 @@
+PRELUDE — FASE 12.15
+
+1. Dashboard:
+- Beneficio neto y margen neto usan el mismo motor de costes reales de Rentabilidad.
+- Añadida Inversión realizada.
+
+2. Rentabilidad por pedido:
+- “Preparación” pasa a “Coste preparación”.
+- “Tarifa / ajustes” pasa a “Tarifa cobrada”.
+- Si no se cobra, muestra “0,00 € · Gratis”.
+
+3. Finanzas > Inversión:
+- Añadir, editar y eliminar productos.
+- Nombre, unidades, precio por unidad y total automático.
+- Resumen de inversión total, líneas y unidades.
+
+IMPORTANTE:
+La interfaz funciona inmediatamente con almacenamiento local.
+Se incluye Prelude_FASE_12_15_INVERSION.sql como base para persistencia Supabase multi-dispositivo. La conexión de la interfaz a esas RPC se realizará tras ejecutar el SQL.

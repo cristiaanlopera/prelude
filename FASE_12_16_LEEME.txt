@@ -1,0 +1,15 @@
+PRELUDE — FASE 12.16 · INVERSIÓN CONECTADA A SUPABASE
+
+El apartado Finanzas > Inversión ya usa las RPC creadas en la Fase 12.15:
+- admin_list_prelude_investments()
+- admin_upsert_prelude_investment(...)
+- admin_delete_prelude_investment(...)
+
+Los datos quedan persistidos en Supabase y se comparten entre dispositivos.
+
+También:
+- Dashboard lee la inversión total directamente desde Supabase.
+- Añadir / editar / eliminar inversión actualiza el Dashboard.
+- Ya no depende de localStorage.
+
+No requiere ejecutar SQL adicional si Prelude_FASE_12_15_INVERSION.sql ya se ejecutó correctamente.
