@@ -1,0 +1,16 @@
+PRELUDE — FASE 12.18 · DASHBOARD EJECUTIVO
+
+Rediseño completo del Dashboard:
+- 5 KPIs principales: Ingresos, Beneficio neto, Margen neto, Inversión realizada y Pedidos entregados.
+- Todos los indicadores son clicables y llevan al módulo correspondiente.
+- Recuperación de inversión con porcentaje y barra de progreso.
+  Fórmula usada: beneficio neto acumulado / inversión total registrada.
+- Evolución de Prelude con Ingresos y Beneficio y filtros 7/30/90 días/Todo.
+- Selector de métrica: Ambos / Ingresos / Beneficio.
+- Requiere atención con accesos directos a Pedidos, Stock y Rentabilidad.
+- Rendimiento del catálogo: top 3 perfumes por beneficio directo.
+- Comunidad: Clientes, Obras, Colección más avanzada y Cancelados; todos clicables.
+- Últimos pedidos con acceso directo a Pedidos.
+- Se eliminan visualmente las estadísticas duplicadas del Dashboard anterior.
+
+No requiere SQL.

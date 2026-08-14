@@ -1,0 +1,10 @@
+PRELUDE — FASE 12.17 · INVERSIÓN / FINANZAS FIX
+
+Correcciones:
+- Inversión se ha añadido al registro real de vistas de Prelude Studio.
+- Al pulsar Inversión, ya se activa investmentView en vez de dejar el área central en blanco.
+- Al entrar en Inversión se ejecuta loadInvestment() automáticamente.
+- Inversión pasa a estar dentro del grupo desplegable FINANZAS, junto a Rentabilidad y Estadísticas.
+- Estado vacío de Inversión más visible.
+- Sigue usando Supabase mediante las RPC ejecutadas en la fase anterior.
+- No requiere SQL adicional.

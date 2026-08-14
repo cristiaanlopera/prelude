@@ -954,6 +954,46 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
 .investment-total-row{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);margin-top:8px;padding:14px 8px 2px}.investment-total-row span{font-size:10px;color:var(--muted)}.investment-total-row strong{font-family:Georgia,serif;font-size:22px}
 @media(max-width:760px){.investment-summary{grid-template-columns:1fr}.investment-table-head{display:none}.investment-row{grid-template-columns:1fr 1fr}.investment-row .investment-name{grid-column:1/-1}.investment-actions{grid-column:1/-1}.business-kpis{grid-template-columns:repeat(2,1fr)}}
 
+
+/* PRELUDE · FASE 12.17 · INVERSIÓN / FINANZAS FIX */
+#investmentView.active{display:block}
+.investment-list .diag-empty{padding:22px 10px;text-align:center;border:1px dashed var(--line);border-radius:10px;color:var(--muted);margin:6px 0}
+#investmentStatus{min-height:18px;margin-top:8px}
+
+
+/* PRELUDE · FASE 12.18 · DASHBOARD EJECUTIVO */
+#overviewView>.dashboard-grid{display:none!important}
+.dashboard-legacy-hidden{display:none!important}
+.executive-v2{margin-top:14px}
+.executive-status-line{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:10px}
+.executive-status-line strong{display:block;font-family:Georgia,"Times New Roman",serif;font-size:20px;font-weight:500;margin-top:2px}
+.executive-online{display:inline-flex;align-items:center;gap:6px;font-size:9px;color:var(--muted)}
+.executive-online i{width:7px;height:7px;border-radius:50%;background:var(--prelude-green);box-shadow:0 0 0 4px rgba(49,95,70,.10)}
+.executive-primary-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-bottom:10px}
+.executive-kpi,.investment-recovery-panel,.community-kpis button{appearance:none;color:var(--text);text-align:left;cursor:pointer;transition:transform .15s ease,border-color .15s ease,background .15s ease}
+.executive-kpi{border:1px solid var(--line);border-radius:14px;background:var(--card);padding:12px;min-height:105px}
+.executive-kpi:hover,.community-kpis button:hover,.investment-recovery-panel:hover{transform:translateY(-1px);border-color:rgba(127,127,127,.45)}
+.executive-kpi span,.community-kpis span{display:block;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.executive-kpi strong{display:block;font-family:Georgia,"Times New Roman",serif;font-size:23px;font-weight:500;margin:8px 0 5px;line-height:1}
+.executive-kpi small,.community-kpis small{display:block;font-size:8px;color:var(--muted);line-height:1.35}
+.executive-kpi.positive strong{color:var(--prelude-green)}
+.investment-recovery-panel{width:100%;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:13px 15px;display:grid;grid-template-columns:1fr 1.4fr;gap:22px;align-items:center;margin-bottom:10px}
+.investment-recovery-copy strong{display:block;font-family:Georgia,serif;font-size:24px;font-weight:500;margin:4px 0}.investment-recovery-copy small{font-size:9px;color:var(--muted)}
+.investment-recovery-visual{display:grid;gap:6px}.investment-recovery-track{height:8px;border-radius:999px;background:rgba(127,127,127,.14);overflow:hidden}.investment-recovery-track i{display:block;width:0;height:100%;background:var(--prelude-green);border-radius:inherit;transition:width .35s ease}.investment-recovery-visual>span{font-size:9px;color:var(--muted);text-align:right}
+.executive-main-grid{grid-template-columns:minmax(0,1.7fr) minmax(250px,.7fr)!important;margin-bottom:10px}.executive-secondary-grid{grid-template-columns:1fr 1fr!important;margin-bottom:10px}
+.executive-panel{border-radius:14px!important}.executive-panel h2{margin:3px 0 3px}.evolution-panel{min-height:330px}
+.executive-chart-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.chart-metric{display:flex;gap:4px}.chart-metric button{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:999px;padding:6px 8px;font-size:8px;cursor:pointer}.chart-metric button.active{background:var(--text);color:var(--bg)}
+.executive-chart-legend{display:flex;gap:12px;margin-top:7px;font-size:8px;color:var(--muted)}.executive-chart-legend span{display:flex;align-items:center;gap:4px}.executive-chart-legend i{width:14px;height:2px;background:var(--prelude-green)}.executive-chart-legend i.profit{background:#9a927f}
+.executive-dual-chart{height:225px}
+.executive-attention{display:grid;gap:7px;margin-top:12px}.executive-attention-item{cursor:pointer}.executive-attention-item:hover{border-color:rgba(127,127,127,.45)}
+.dashboard-performance-list{display:grid;gap:0;margin-top:10px}.dashboard-performance-row{display:grid;grid-template-columns:28px 1fr auto;gap:9px;align-items:center;border-top:1px solid var(--line);padding:9px 0}.dashboard-performance-rank{font-family:Georgia,serif;font-size:16px;color:var(--muted)}.dashboard-performance-row strong{display:block;font-size:10px}.dashboard-performance-row small{display:block;color:var(--muted);font-size:8px;margin-top:2px}.dashboard-performance-profit{font-family:Georgia,serif;font-size:15px;color:var(--prelude-green);white-space:nowrap}
+.dashboard-panel-link{border:0;background:transparent;color:var(--muted);padding:7px 0 0;font-size:9px;cursor:pointer}
+.community-kpis{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.community-kpis button{border:1px solid var(--line);background:transparent;border-radius:10px;padding:10px}.community-kpis strong{display:block;font-family:Georgia,serif;font-size:19px;font-weight:500;margin:5px 0}
+.recent-orders-panel{margin-bottom:0}.dashboard-recent-orders{display:grid;gap:0}.dashboard-order-row{display:grid;grid-template-columns:110px 1fr auto auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);cursor:pointer}.dashboard-order-row:hover{opacity:.78}.dashboard-order-number{font-family:Georgia,serif;font-size:14px}.dashboard-order-client strong{font-size:10px}.dashboard-order-client small,.dashboard-order-date{font-size:8px;color:var(--muted)}.dashboard-order-total{font-family:Georgia,serif;font-size:14px}.dashboard-order-status{font-size:8px;border:1px solid var(--line);border-radius:999px;padding:4px 7px}
+@media(max-width:1050px){.executive-primary-kpis{grid-template-columns:repeat(3,1fr)}.executive-main-grid,.executive-secondary-grid{grid-template-columns:1fr!important}}
+@media(max-width:700px){.executive-primary-kpis{grid-template-columns:1fr 1fr}.investment-recovery-panel{grid-template-columns:1fr}.executive-chart-controls{justify-content:flex-start}.chart-toolbar{flex-direction:column}.dashboard-order-row{grid-template-columns:85px 1fr auto}.dashboard-order-status{display:none}}
+@media(max-width:460px){.executive-primary-kpis{grid-template-columns:1fr}.community-kpis{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -1016,39 +1056,98 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
           <div class="metric-card metric-success"><div class="metric-label">Estado</div><div class="metric-value" id="metricSystem">Online</div><div class="metric-note">Supabase conectado</div></div>
         </div>
         
-        <section class="executive-section" id="preludeExecutiveSection">
-<div class="business-kpis">
-<div class="business-kpi positive"><div class="k-label">Ingresos</div><div class="k-value" id="bizRevenue">—</div><div class="k-note">Todos los pedidos entregados</div></div>
-<div class="business-kpi positive"><div class="k-label">Beneficio neto</div><div class="k-value" id="bizProfit">—</div><div class="k-note">Se activará con costes reales</div></div>
-<div class="business-kpi"><div class="k-label">Margen neto</div><div class="k-value" id="bizMargin">—</div><div class="k-note">Beneficio / ingresos</div></div>
-<div class="business-kpi"><div class="k-label">Entregados</div><div class="k-value" id="bizDelivered">—</div><div class="k-note">Pedidos completados</div></div>
-<div class="business-kpi"><div class="k-label">Ticket medio</div><div class="k-value" id="bizTicket">—</div><div class="k-note">Por pedido entregado</div></div>
-<div class="business-kpi warning"><div class="k-label">En curso</div><div class="k-value" id="bizActive">—</div><div class="k-note">Pendiente · preparando · listo</div></div>
-<div class="business-kpi"><div class="k-label">Inversión realizada</div><div class="k-value" id="bizInvestment">—</div><div class="k-note">Compras registradas en Finanzas</div></div>
-</div>
-<div class="executive-grid"><div class="executive-panel">
-<div class="chart-toolbar"><div><h2>Ventas diarias</h2><div class="executive-sub">Ingresos de pedidos entregados, incluidos clientes sin cuenta.</div></div>
-<div class="chart-range" id="salesRange"><button data-days="7">7 días</button><button class="active" data-days="30">30 días</button><button data-days="90">90 días</button><button data-days="0">Todo</button></div></div>
-<div class="daily-chart" id="dailySalesChart"><div class="chart-tooltip" id="dailyTooltip"></div></div></div>
-<aside class="executive-panel"><h2>Requiere atención</h2><div class="executive-sub">Prioridades operativas de Prelude.</div><div class="executive-attention" id="preludeAttention"></div></aside></div>
-<div class="secondary-kpis"><div class="secondary-kpi"><span>Clientes registrados</span><strong id="bizClients">—</strong></div><div class="secondary-kpi"><span>Obras descubiertas</span><strong id="bizWorks">—</strong></div><div class="secondary-kpi"><span>Colección más avanzada</span><strong id="bizCollection">—</strong></div><div class="secondary-kpi"><span>Pedidos cancelados</span><strong id="bizCancelled">—</strong></div></div>
-</section>
-<div class="dashboard-columns">
-          <section class="card">
-            <div class="row"><div><h2>Actividad reciente</h2><p style="color:var(--muted);margin-top:-6px">Últimos códigos generados.</p></div><button class="secondary" id="refreshOverviewBtn" type="button">Actualizar</button></div>
-            <div class="activity-list" id="overviewActivity"><p style="color:var(--muted)">Cargando actividad...</p></div>
-          </section>
-          <aside class="card">
-            <h2>Accesos rápidos</h2>
-            <p style="color:var(--muted)">Gestiones frecuentes de Prelude Studio.</p>
-            <div class="quick-grid">
-              <button class="quick-btn" type="button" data-jump="codes"><strong>Nuevo código</strong><span>Confirmar un descubrimiento</span></button>
-              <button class="quick-btn" type="button" data-jump="customers"><strong>Clientes</strong><span>Consultar perfiles</span></button>
-              <button class="quick-btn" type="button" data-jump="ranking"><strong>Ranking</strong><span>Ver colecciones</span></button>
-              <button class="quick-btn" type="button" data-jump="stock"><strong>Stock</strong><span>Consultar disponibilidad</span></button>
-            </div>
-          </aside>
+        <section class="executive-section executive-v2" id="preludeExecutiveSection">
+  <div class="executive-status-line">
+    <div><span class="dashboard-kicker">Estado de Prelude</span><strong id="bizHealthLabel">Calculando…</strong></div>
+    <span class="executive-online"><i></i> Studio online</span>
+  </div>
+
+  <div class="executive-primary-kpis">
+    <button class="executive-kpi positive" type="button" data-jump="stats">
+      <span>Ingresos</span><strong id="bizRevenue">—</strong><small>Pedidos entregados</small>
+    </button>
+    <button class="executive-kpi positive" type="button" data-jump="stats">
+      <span>Beneficio neto</span><strong id="bizProfit">—</strong><small>Ingresos − costes reales</small>
+    </button>
+    <button class="executive-kpi" type="button" data-jump="stats">
+      <span>Margen neto</span><strong id="bizMargin">—</strong><small>Beneficio / ingresos</small>
+    </button>
+    <button class="executive-kpi" type="button" data-jump="investment">
+      <span>Inversión realizada</span><strong id="bizInvestment">—</strong><small>Compras registradas</small>
+    </button>
+    <button class="executive-kpi" type="button" data-jump="orders" data-order-filter="delivered">
+      <span>Pedidos entregados</span><strong id="bizDelivered">—</strong><small id="bizTicketNote">Ticket medio —</small>
+    </button>
+  </div>
+
+  <button class="investment-recovery-panel" type="button" data-jump="investment">
+    <div class="investment-recovery-copy">
+      <span class="dashboard-kicker">Recuperación de la inversión</span>
+      <strong id="bizRecoveryPct">—</strong>
+      <small id="bizRecoveryText">Beneficio acumulado frente a inversión realizada.</small>
+    </div>
+    <div class="investment-recovery-visual">
+      <div class="investment-recovery-track"><i id="bizRecoveryBar"></i></div>
+      <span id="bizRecoveryAmounts">—</span>
+    </div>
+  </button>
+
+  <div class="executive-grid executive-main-grid">
+    <section class="executive-panel evolution-panel">
+      <div class="chart-toolbar">
+        <div><span class="dashboard-kicker">Evolución</span><h2>Evolución de Prelude</h2><div class="executive-sub">Ingresos y beneficio de pedidos entregados.</div></div>
+        <div class="executive-chart-controls">
+          <div class="chart-metric" id="dashboardMetric">
+            <button class="active" type="button" data-dashboard-metric="both">Ambos</button>
+            <button type="button" data-dashboard-metric="revenue">Ingresos</button>
+            <button type="button" data-dashboard-metric="profit">Beneficio</button>
+          </div>
+          <div class="chart-range" id="salesRange"><button data-days="7">7 días</button><button class="active" data-days="30">30 días</button><button data-days="90">90 días</button><button data-days="0">Todo</button></div>
         </div>
+      </div>
+      <div class="executive-chart-legend"><span><i class="revenue"></i>Ingresos</span><span><i class="profit"></i>Beneficio</span></div>
+      <div class="daily-chart executive-dual-chart" id="dailySalesChart"><div class="chart-tooltip" id="dailyTooltip"></div></div>
+    </section>
+
+    <aside class="executive-panel attention-panel">
+      <div><span class="dashboard-kicker">Prioridades</span><h2>Requiere atención</h2><div class="executive-sub">Solo aquello que necesita una acción.</div></div>
+      <div class="executive-attention" id="preludeAttention"></div>
+    </aside>
+  </div>
+
+  <div class="executive-grid executive-secondary-grid">
+    <section class="executive-panel">
+      <div><span class="dashboard-kicker">Catálogo</span><h2>Rendimiento del catálogo</h2><div class="executive-sub">Fragancias con mayor beneficio directo generado.</div></div>
+      <div id="dashboardCatalogPerformance" class="dashboard-performance-list"><p class="diag-empty">Calculando rendimiento…</p></div>
+      <button class="dashboard-panel-link" type="button" data-jump="stats">Ver estadísticas completas →</button>
+    </section>
+
+    <section class="executive-panel">
+      <div><span class="dashboard-kicker">Comunidad</span><h2>Prelude en cifras</h2><div class="executive-sub">Actividad de clientes y colecciones.</div></div>
+      <div class="community-kpis">
+        <button type="button" data-jump="customers"><span>Clientes</span><strong id="bizClients">—</strong><small>Perfiles registrados</small></button>
+        <button type="button" data-jump="collection"><span>Obras descubiertas</span><strong id="bizWorks">—</strong><small>Suma de colecciones</small></button>
+        <button type="button" data-jump="ranking"><span>Colección más avanzada</span><strong id="bizCollection">—</strong><small id="bizCollectionName">—</small></button>
+        <button type="button" data-jump="orders" data-order-filter="cancelled"><span>Cancelados</span><strong id="bizCancelled">—</strong><small>Historial de pedidos</small></button>
+      </div>
+    </section>
+  </div>
+
+  <section class="executive-panel recent-orders-panel">
+    <div class="financial-panel-head">
+      <div><span class="dashboard-kicker">Actividad</span><h2>Últimos pedidos</h2><p>Acceso directo a la actividad comercial más reciente.</p></div>
+      <button class="secondary" type="button" data-jump="orders">Ver pedidos</button>
+    </div>
+    <div id="dashboardRecentOrders" class="dashboard-recent-orders"><p class="diag-empty">Cargando pedidos…</p></div>
+  </section>
+</section>
+
+<div class="dashboard-columns dashboard-legacy-hidden">
+  <section class="card">
+    <div class="row"><div><h2>Actividad reciente</h2></div><button class="secondary" id="refreshOverviewBtn" type="button">Actualizar</button></div>
+    <div class="activity-list" id="overviewActivity"></div>
+  </section>
+</div>
       </div>
 
       <div class="studio-view" id="ordersView">
@@ -1311,7 +1410,7 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
   <section class="card investment-card">
     <div class="financial-panel-head"><div><span class="dashboard-kicker">Registro</span><h2>Productos e inversiones</h2><p>Añade perfumes, packaging, material u otras compras. El importe se calcula como unidades × precio pagado por unidad.</p></div><button class="primary" id="addInvestmentBtn" type="button">+ Añadir inversión</button></div>
     <div class="investment-table-head"><span>Producto</span><span>Unidades</span><span>Precio / unidad</span><span>Total</span><span></span></div>
-    <div id="investmentList"><p class="diag-empty">Cargando inversiones…</p></div>
+    <div id="investmentList" class="investment-list"><p class="diag-empty">Cargando inversiones…</p></div>
     <div class="investment-total-row"><span>Inversión total registrada</span><strong id="investmentGrandTotal">0,00 €</strong></div>
   </section>
   <div class="status" id="investmentStatus"></div>
@@ -1734,6 +1833,7 @@ const studioViews={
   prices:document.getElementById("pricesView"),
   stock:document.getElementById("stockView"),
   profitability:document.getElementById("profitabilityView"),
+  investment:document.getElementById("investmentView"),
   rewards:document.getElementById("rewardsView"),
   ranking:document.getElementById("rankingView"),
   museum:document.getElementById("museumView"),
@@ -1857,6 +1957,7 @@ function switchStudioView(view){
   if(view==="prices")loadCatalogAdmin().then(renderPricesAdmin);
   if(view==="stock")loadCatalogAdmin().then(renderStockAdmin);
   if(view==="profitability")loadProfitabilityAdmin();
+  if(view==="investment")loadInvestment();
   if(view==="ranking")loadAdminRanking();
   if(view==="rewards")loadRewardsAdmin();
   if(view==="museum")loadMuseumAdmin();
@@ -4073,46 +4174,184 @@ function preludeHideLegacyDashboardMetrics(){
  const unwanted=["ingresos acumulados","códigos hoy","códigos pendientes","gasto medio por cliente"];
  root.querySelectorAll(".metric-card").forEach(c=>{const t=(c.querySelector(".metric-label")?.textContent||"").trim().toLowerCase();if(unwanted.some(x=>t.includes(x)))c.style.display="none";});
 }
+async function preludeDashboardFinancialDetail(delivered){
+  if(!catalogAdminCache.length)await loadCatalogAdmin();
+  if(!preparationCostsCache.length){
+    const prep=await client.rpc("admin_list_prelude_preparation_costs");
+    if(!prep.error)preparationCostsCache=Array.isArray(prep.data)?prep.data:[];
+  }
+  await loadPreparationFeeSettings();
+  const costMap=await buildProfitabilityCostMap();
+  const prepCost=calculateRealPreparationCost();
+  const perfumes=new Map();
+  const perOrder=[]; let revenue=0,cost=0,missing=0;
+
+  for(const order of delivered){
+    const raw=order.raw||order;
+    const items=Array.isArray(raw.items)?raw.items:[];
+    let itemRevenue=0,direct=0;
+    for(const item of items){
+      const qty=Number(item?.qty??item?.quantity??1);
+      const size=parsePreludeDecantSize(item?.size_ml??item?.size??item?.ml);
+      const price=Number(item?.price??item?.unit_price??0);
+      itemRevenue+=price*qty;
+      const entry=findProfitProduct(item,costMap);
+      const unitCost=entry?.bySize?.[size];
+      const name=String(item?.name||item?.product_name||entry?.product?.name||"Perfume");
+      const row=perfumes.get(name)||{name,revenue:0,cost:0,units:0,ml:0,missing:0};
+      row.revenue+=price*qty;row.units+=qty;row.ml+=size*qty;
+      if(Number.isFinite(unitCost)){direct+=unitCost*qty;row.cost+=unitCost*qty;}
+      else{missing+=qty;row.missing+=qty;}
+      perfumes.set(name,row);
+    }
+    const orderRevenue=Number(raw.order_total??order.total??itemRevenue);
+    const orderProfit=orderRevenue-direct-prepCost;
+    revenue+=orderRevenue;cost+=direct+prepCost;
+    perOrder.push({...order,revenue:orderRevenue,profit:orderProfit});
+  }
+  return {revenue,profit:revenue-cost,margin:revenue>0?(revenue-cost)/revenue*100:null,missing,perOrder,perfumes:[...perfumes.values()]};
+}
+
 async function renderPreludeVisualDashboard(days=Number(document.querySelector("#salesRange button.active")?.dataset.days||30)){
  const money=v=>new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR"}).format(Number(v||0));
  try{
-  const orders=await preludeFetchOrdersForDashboard(), delivered=orders.filter(o=>o.status==="delivered"), cancelled=orders.filter(o=>["cancelled","canceled"].includes(o.status)), active=orders.filter(o=>["pending","preparing","ready"].includes(o.status));
-  const revenue=delivered.reduce((a,o)=>a+Number(o.total||0),0), ticket=delivered.length?revenue/delivered.length:0;
-  document.getElementById("bizRevenue").textContent=money(revenue);document.getElementById("bizDelivered").textContent=delivered.length;document.getElementById("bizTicket").textContent=money(ticket);document.getElementById("bizActive").textContent=active.length;document.getElementById("bizCancelled").textContent=cancelled.length;
-  const finance=await preludeDashboardRealFinance(delivered);
-  const profitEl=document.getElementById("bizProfit"),marginEl=document.getElementById("bizMargin");
-  if(finance){
-    profitEl.textContent=money(finance.profit);
-    marginEl.textContent=finance.margin==null?"—":finance.margin.toFixed(1).replace(".",",")+" %";
-    const note=profitEl.parentElement?.querySelector(".k-note");
-    if(note)note.textContent=finance.missing?`${finance.missing} Prelude(s) sin coste configurado`:"Ingresos − costes reales";
-  }
-  try{
-    await loadInvestment(true);
-    const inv=investmentTotals();
-    const invEl=document.getElementById("bizInvestment");
-    if(invEl)invEl.textContent=money(inv.total);
-  }catch(_){
-    const invEl=document.getElementById("bizInvestment");
-    if(invEl)invEl.textContent="—";
-  }
+  const orders=await preludeFetchOrdersForDashboard();
+  const delivered=orders.filter(o=>o.status==="delivered");
+  const cancelled=orders.filter(o=>["cancelled","canceled"].includes(o.status));
+  const active=orders.filter(o=>["pending","preparing","ready"].includes(o.status));
+  const ticket=delivered.length?delivered.reduce((a,o)=>a+Number(o.total||0),0)/delivered.length:0;
+
+  const finance=await preludeDashboardFinancialDetail(delivered);
+  document.getElementById("bizRevenue").textContent=money(finance.revenue);
+  document.getElementById("bizProfit").textContent=money(finance.profit);
+  document.getElementById("bizMargin").textContent=finance.margin==null?"—":finance.margin.toFixed(1).replace(".",",")+" %";
+  document.getElementById("bizDelivered").textContent=delivered.length;
+  document.getElementById("bizTicketNote").textContent=`Ticket medio ${money(ticket)}`;
+  document.getElementById("bizCancelled").textContent=cancelled.length;
+
+  await loadInvestment(true);
+  const inv=investmentTotals();
+  document.getElementById("bizInvestment").textContent=money(inv.total);
+
+  const recovery=inv.total>0?Math.max(0,finance.profit)/inv.total*100:0;
+  document.getElementById("bizRecoveryPct").textContent=inv.total?recovery.toFixed(1).replace(".",",")+" %":"—";
+  document.getElementById("bizRecoveryBar").style.width=Math.min(100,recovery)+"%";
+  document.getElementById("bizRecoveryAmounts").textContent=inv.total?`${money(Math.max(0,finance.profit))} de ${money(inv.total)}`:"Sin inversión registrada";
+  document.getElementById("bizRecoveryText").textContent=recovery>=100?"Inversión recuperada.":`${money(Math.max(0,inv.total-Math.max(0,finance.profit)))} pendientes de recuperar`;
+
+  const health=document.getElementById("bizHealthLabel");
+  if(finance.missing)health.textContent="Datos financieros incompletos";
+  else if(finance.profit<0)health.textContent="Resultado en pérdida";
+  else if((finance.margin||0)<30)health.textContent="Margen ajustado";
+  else health.textContent="Rentabilidad saludable";
+
   const val=label=>{const c=[...document.querySelectorAll("#overviewView .metric-card")].find(c=>(c.querySelector(".metric-label")?.textContent||"").toLowerCase().includes(label));return c?.querySelector(".metric-value")?.textContent?.trim()||"—"};
-  document.getElementById("bizClients").textContent=val("clientes");document.getElementById("bizWorks").textContent=val("obras descubiertas");document.getElementById("bizCollection").textContent=val("colección más avanzada");
-  const map=new Map();delivered.forEach(o=>{if(!o.date)return;const d=new Date(o.date),k=d.toISOString().slice(0,10),x=map.get(k)||{revenue:0,count:0,date:new Date(d.getFullYear(),d.getMonth(),d.getDate())};x.revenue+=Number(o.total||0);x.count++;map.set(k,x)});
-  let data=[...map.values()].sort((a,b)=>a.date-b.date);
-  if(days>0){const end=new Date(),beg=new Date(end.getFullYear(),end.getMonth(),end.getDate());beg.setDate(beg.getDate()-days+1);data=[];for(let d=new Date(beg);d<=end;d.setDate(d.getDate()+1)){const k=d.toISOString().slice(0,10);data.push(map.get(k)||{revenue:0,count:0,date:new Date(d)})}}
-  drawPreludeDailySales(data,money);
-  const rows=[];if(active.length)rows.push(`<div class="executive-attention-item warning"><strong>${active.length} pedido${active.length===1?"":"s"} en curso</strong><span>Requieren gestión.</span></div>`);if(cancelled.length)rows.push(`<div class="executive-attention-item danger"><strong>${cancelled.length} cancelado${cancelled.length===1?"":"s"}</strong><span>Consulta el historial de pedidos.</span></div>`);if(!active.length)rows.push('<div class="executive-attention-item success"><strong>Pedidos al día</strong><span>No hay pedidos pendientes.</span></div>');document.getElementById("preludeAttention").innerHTML=rows.join("");
+  document.getElementById("bizClients").textContent=val("clientes");
+  document.getElementById("bizWorks").textContent=val("obras descubiertas");
+  document.getElementById("bizCollection").textContent=val("colección más avanzada");
+  document.getElementById("bizCollectionName").textContent=document.getElementById("metricTopCollectionName")?.textContent||"Ranking Prelude";
+
+  renderPreludeExecutiveChart(finance.perOrder,days,money);
+
+  const perf=[...finance.perfumes]
+    .map(x=>({...x,profit:x.revenue-x.cost}))
+    .sort((a,b)=>b.profit-a.profit).slice(0,3);
+  const perfBox=document.getElementById("dashboardCatalogPerformance");
+  perfBox.innerHTML=perf.length?perf.map((x,i)=>`<div class="dashboard-performance-row">
+    <span class="dashboard-performance-rank">${i+1}º</span>
+    <div><strong>${escapeHtml(x.name)}</strong><small>${x.units} Preludes · ${x.ml.toFixed(x.ml%1?1:0).replace(".",",")} ml${x.missing?` · ${x.missing} sin coste`:""}</small></div>
+    <span class="dashboard-performance-profit">${money(x.profit)}</span>
+  </div>`).join(""):'<p class="diag-empty">Todavía no hay ventas entregadas.</p>';
+
+  let lowStock=0;
+  try{
+    if(!catalogAdminCache.length)await loadCatalogAdmin();
+    lowStock=catalogAdminCache.filter(p=>{
+      const a=Number(p.available_ml??p.stock_available_ml??NaN),t=Number(p.low_stock_threshold_ml??p.stock_threshold_ml??NaN);
+      return Number.isFinite(a)&&Number.isFinite(t)&&a<=t;
+    }).length;
+  }catch(_){}
+
+  const rows=[];
+  if(active.length)rows.push(`<button type="button" class="executive-attention-item warning" data-jump="orders"><strong>${active.length} pedido${active.length===1?"":"s"} en curso</strong><span>Requieren gestión.</span></button>`);
+  if(lowStock)rows.push(`<button type="button" class="executive-attention-item warning" data-jump="stock"><strong>${lowStock} perfume${lowStock===1?"":"s"} con stock bajo</strong><span>Revisa disponibilidad.</span></button>`);
+  if(finance.missing)rows.push(`<button type="button" class="executive-attention-item danger" data-jump="profitability"><strong>${finance.missing} Prelude${finance.missing===1?"":"s"} sin coste</strong><span>Completa las fichas financieras.</span></button>`);
+  if(cancelled.length)rows.push(`<button type="button" class="executive-attention-item danger" data-jump="orders" data-order-filter="cancelled"><strong>${cancelled.length} pedido${cancelled.length===1?"":"s"} cancelado${cancelled.length===1?"":"s"}</strong><span>Consulta el historial.</span></button>`);
+  if(!rows.length)rows.push('<div class="executive-attention-item success"><strong>Todo al día</strong><span>No hay incidencias que requieran atención.</span></div>');
+  document.getElementById("preludeAttention").innerHTML=rows.join("");
+
+  const latest=[...orders].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0)).slice(0,5);
+  const recent=document.getElementById("dashboardRecentOrders");
+  recent.innerHTML=latest.length?latest.map(o=>`<div class="dashboard-order-row" data-jump="orders" data-order-search="${escapeHtml(o.order_number||"")}">
+    <span class="dashboard-order-number">#${escapeHtml(o.order_number||"—")}</span>
+    <div class="dashboard-order-client"><strong>${escapeHtml(o.customer_name||"Cliente")}</strong><small>${escapeHtml(o.delivery_zone||"")}</small></div>
+    <span class="dashboard-order-total">${money(o.total)}</span>
+    <span class="dashboard-order-status">${ORDER_LABELS[o.status]||o.status}</span>
+    <span class="dashboard-order-date">${o.date?new Date(o.date).toLocaleDateString("es-ES"):""}</span>
+  </div>`).join(""):'<p class="diag-empty">Todavía no hay pedidos.</p>';
+
   preludeHideLegacyDashboardMetrics();
  }catch(e){console.error("Prelude dashboard",e)}
 }
-function drawPreludeDailySales(data,money){
- const box=document.getElementById("dailySalesChart");if(!box)return;const W=760,H=190,max=Math.max(1,...data.map(x=>x.revenue)),n=Math.max(1,data.length-1);
- const pts=data.map((x,i)=>({...x,x:12+(i/n)*736,y:170-(x.revenue/max)*145})),path=pts.map((p,i)=>(i?"L":"M")+p.x+" "+p.y).join(" "),step=Math.max(1,Math.ceil(data.length/6));
- box.innerHTML=`<div class="chart-tooltip" id="dailyTooltip"></div><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${path}" fill="none" stroke="var(--prelude-green)" stroke-width="2"></path>${pts.map((p,i)=>`<circle class="daily-point" data-i="${i}" cx="${p.x}" cy="${p.y}" r="${p.revenue?3.5:2}" fill="${p.revenue?'var(--prelude-green)':'#c9c7c2'}"></circle>`).join("")}${pts.filter((_,i)=>i%step===0||i===pts.length-1).map(p=>`<text class="daily-axis-label" x="${p.x}" y="188" text-anchor="middle">${p.date.toLocaleDateString("es-ES",{day:"2-digit",month:"short"}).replace(".","")}</text>`).join("")}</svg>`;
- const tip=box.querySelector("#dailyTooltip");box.querySelectorAll(".daily-point").forEach(el=>{el.onmouseenter=e=>{const p=pts[+el.dataset.i];tip.innerHTML=`<strong>${p.date.toLocaleDateString("es-ES",{day:"numeric",month:"long"})}</strong><br>Ventas: ${money(p.revenue)}<br>Pedidos: ${p.count}<br>Ticket medio: ${money(p.count?p.revenue/p.count:0)}`;tip.style.display="block";tip.style.left=Math.min(box.clientWidth-150,e.offsetX+12)+"px";tip.style.top=Math.max(5,e.offsetY-60)+"px"};el.onmouseleave=()=>tip.style.display="none"});
+
+function renderPreludeExecutiveChart(perOrders,days,money){
+ const box=document.getElementById("dailySalesChart");if(!box)return;
+ const metric=document.querySelector("#dashboardMetric button.active")?.dataset.dashboardMetric||"both";
+ const map=new Map();
+ perOrders.forEach(o=>{
+   if(!o.date)return;
+   const d=new Date(o.date),k=d.toISOString().slice(0,10);
+   const x=map.get(k)||{revenue:0,profit:0,count:0,date:new Date(d.getFullYear(),d.getMonth(),d.getDate())};
+   x.revenue+=Number(o.revenue||0);x.profit+=Number(o.profit||0);x.count++;map.set(k,x);
+ });
+ let data=[...map.values()].sort((a,b)=>a.date-b.date);
+ if(days>0){
+   const end=new Date(),beg=new Date(end.getFullYear(),end.getMonth(),end.getDate());beg.setDate(beg.getDate()-days+1);
+   data=[];for(let d=new Date(beg);d<=end;d.setDate(d.getDate()+1)){const k=d.toISOString().slice(0,10);data.push(map.get(k)||{revenue:0,profit:0,count:0,date:new Date(d)})}
+ }
+ if(!data.length){box.innerHTML='<p class="diag-empty">No hay datos en este periodo.</p>';return}
+ const W=760,H=205,n=Math.max(1,data.length-1),max=Math.max(1,...data.flatMap(x=>[metric==="profit"?0:x.revenue,metric==="revenue"?0:Math.max(0,x.profit)]));
+ const points=(key)=>data.map((x,i)=>({...x,x:12+(i/n)*736,y:178-(Math.max(0,Number(x[key]||0))/max)*150}));
+ const revenuePts=points("revenue"),profitPts=points("profit");
+ const path=pts=>pts.map((p,i)=>(i?"L":"M")+p.x+" "+p.y).join(" ");
+ const step=Math.max(1,Math.ceil(data.length/6));
+ box.innerHTML=`<div class="chart-tooltip" id="dailyTooltip"></div><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+   ${metric!=="profit"?`<path d="${path(revenuePts)}" fill="none" stroke="var(--prelude-green)" stroke-width="2"></path>`:""}
+   ${metric!=="revenue"?`<path d="${path(profitPts)}" fill="none" stroke="#9a927f" stroke-width="2"></path>`:""}
+   ${revenuePts.filter((_,i)=>i%step===0||i===revenuePts.length-1).map(p=>`<text class="daily-axis-label" x="${p.x}" y="202" text-anchor="middle">${p.date.toLocaleDateString("es-ES",{day:"2-digit",month:"short"}).replace(".","")}</text>`).join("")}
+   ${data.map((p,i)=>`<circle class="daily-point" data-i="${i}" cx="${revenuePts[i].x}" cy="${metric==="profit"?profitPts[i].y:revenuePts[i].y}" r="${p.revenue?3.3:2}" fill="${p.revenue?'var(--prelude-green)':'#c9c7c2'}"></circle>`).join("")}
+ </svg>`;
+ const tip=box.querySelector("#dailyTooltip");
+ box.querySelectorAll(".daily-point").forEach(el=>{
+   el.onmouseenter=e=>{const p=data[+el.dataset.i];tip.innerHTML=`<strong>${p.date.toLocaleDateString("es-ES",{day:"numeric",month:"long"})}</strong><br>Ingresos: ${money(p.revenue)}<br>Beneficio: ${money(p.profit)}<br>Pedidos: ${p.count}`;tip.style.display="block";tip.style.left=Math.min(box.clientWidth-160,e.offsetX+12)+"px";tip.style.top=Math.max(5,e.offsetY-70)+"px"};
+   el.onmouseleave=()=>tip.style.display="none";
+ });
 }
+
 document.addEventListener("click",e=>{const b=e.target.closest("#salesRange button");if(!b)return;document.querySelectorAll("#salesRange button").forEach(x=>x.classList.remove("active"));b.classList.add("active");renderPreludeVisualDashboard(+b.dataset.days)});
+document.addEventListener("click",e=>{
+  const b=e.target.closest("#dashboardMetric button");
+  if(!b)return;
+  document.querySelectorAll("#dashboardMetric button").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  renderPreludeVisualDashboard(+document.querySelector("#salesRange button.active")?.dataset.days||30);
+});
+document.addEventListener("click",e=>{
+  const jump=e.target.closest("#preludeExecutiveSection [data-jump]");
+  if(!jump)return;
+  const view=jump.dataset.jump;
+  if(!view)return;
+  switchStudioView(view);
+  if(view==="orders"){
+    setTimeout(()=>{
+      const filter=document.getElementById("ordersStatusFilter");
+      if(filter&&jump.dataset.orderFilter){filter.value=jump.dataset.orderFilter;renderOrders();}
+      const search=document.getElementById("ordersSearch");
+      if(search&&jump.dataset.orderSearch){search.value=jump.dataset.orderSearch;renderOrders();}
+    },80);
+  }
+});
+
 document.addEventListener("DOMContentLoaded",()=>setTimeout(preludeHideLegacyDashboardMetrics,450));
 
 
@@ -4272,7 +4511,7 @@ function buildPreludeGroupedNavigationFixed(){
   const definitions=[
     {title:"Ventas", ids:["ordersTabBtn","customersTabBtn"]},
     {title:"Colección", ids:["catalogTabBtn","pricesTabBtn","stockTabBtn"]},
-    {title:"Finanzas", ids:["profitabilityTabBtn","statsTabBtn"]},
+    {title:"Finanzas", ids:["profitabilityTabBtn","investmentTabBtn","statsTabBtn"]},
     {title:"Fidelización", ids:["codesTabBtn","rewardsTabBtn","rankingTabBtn"]},
     {title:"Universo Prelude", ids:["collectionTabBtn","museumTabBtn"]}
   ];
@@ -4895,7 +5134,7 @@ async function loadInvestment(silent=false){
   try{
     const {data,error}=await client.rpc("admin_list_prelude_investments");
     if(error)throw error;
-    investmentCache=Array.isArray(data)?data:[];
+    investmentCache=Array.isArray(data)?data:(data?[data]:[]);
     renderInvestment();
     if(st&&!silent)status(st,"Inversión actualizada.");
     return investmentCache;
@@ -5042,10 +5281,6 @@ async function preludeDashboardRealFinance(delivered){
 }
 
 
-document.addEventListener("click",e=>{
-  const b=e.target.closest('[data-studio-view="investment"]');
-  if(b)setTimeout(()=>loadInvestment(),50);
-});
 
 </script>
 
