@@ -994,6 +994,14 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
 @media(max-width:700px){.executive-primary-kpis{grid-template-columns:1fr 1fr}.investment-recovery-panel{grid-template-columns:1fr}.executive-chart-controls{justify-content:flex-start}.chart-toolbar{flex-direction:column}.dashboard-order-row{grid-template-columns:85px 1fr auto}.dashboard-order-status{display:none}}
 @media(max-width:460px){.executive-primary-kpis{grid-template-columns:1fr}.community-kpis{grid-template-columns:1fr}}
 
+
+/* PRELUDE · FASE 12.21 · IMPACTO REAL DE RECOMPENSAS */
+.reward-impact-card{margin:0!important}
+.reward-impact-card .reward-economy-title>strong{font-family:Georgia,serif;font-size:17px;font-weight:500;color:var(--prelude-green)}
+.order-profit-metrics{grid-template-columns:repeat(6,minmax(0,1fr))}
+@media(max-width:900px){.order-profit-metrics{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.order-profit-metrics{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
@@ -1330,6 +1338,7 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
       <div><span>Ingresos entregados</span><strong id="orderProfitRevenue">—</strong></div>
       <div><span>Coste decants</span><strong id="orderProfitDirectCost">—</strong></div>
       <div><span>Preparación</span><strong id="orderProfitPrepCost">—</strong></div>
+      <div><span>Coste recompensas</span><strong id="orderProfitRewardCost">—</strong></div>
       <div class="order-profit-main"><span>Beneficio real</span><strong id="orderProfitNet">—</strong></div>
       <div><span>Margen real</span><strong id="orderProfitMargin">—</strong></div>
     </div>
@@ -1344,7 +1353,7 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
 <div class="status" id="profitabilityStatus"></div>
       </div>
       <div class="studio-view" id="rewardsView">
-        <div class="section-heading"><div><div class="dashboard-kicker">Fidelización</div><h1>Recompensas</h1><p>Configura los hitos de Marcapáginas, premios y disponibilidad.</p></div><button class="secondary" id="refreshRewardsBtn" type="button">Actualizar</button></div>
+        <div class="section-heading"><div><div class="dashboard-kicker">Fidelización</div><h1>Recompensas</h1><p>Configura los hitos de Marcapáginas, premios y disponibilidad.</p></div><button class="secondary" id="applyLaunchRewardsBtn" type="button">Aplicar programa Prelude</button><button class="secondary" id="refreshRewardsBtn" type="button">Actualizar</button></div>
         <section class="reward-fold card" data-reward-fold="economy">
   <button class="reward-fold-toggle" type="button" aria-expanded="true">
     <div><span class="reward-fold-kicker">Economía de fidelización</span><h2>Economía de Marcapáginas</h2><p>Configuración base y sostenibilidad económica del sistema.</p></div>
@@ -1369,6 +1378,28 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
           <div id="rewardEconomyAnalysis"><p style="color:var(--muted);font-size:10px">Pulsa «Analizar recompensas» cuando quieras evaluar la configuración actual.</p></div>
         </div>
         
+  </div>
+</section>
+
+<section class="reward-fold card" data-reward-fold="real-impact">
+  <button class="reward-fold-toggle" type="button" aria-expanded="true">
+    <div><span class="reward-fold-kicker">Coste real</span><h2>Impacto económico de recompensas</h2><p>Lo que realmente ha costado cada recompensa entregada según el perfume elegido.</p></div>
+    <span class="reward-fold-icon">−</span>
+  </button>
+  <div class="reward-fold-body">
+    <div class="card reward-impact-card">
+      <div class="bookmark-economy-head">
+        <div><div class="dashboard-kicker">Fidelización real</div><h2>Recompensas entregadas</h2><p>El coste se registra cuando marcas una recompensa como entregada.</p></div>
+        <button class="secondary" id="refreshRewardImpactBtn" type="button">Actualizar</button>
+      </div>
+      <div class="bookmark-economy-summary">
+        <div><span>Entregadas</span><strong id="rewardImpactCount">—</strong></div>
+        <div><span>Coste total</span><strong id="rewardImpactCost">—</strong></div>
+        <div><span>Coste medio</span><strong id="rewardImpactAverage">—</strong></div>
+        <div><span>Pedidos afectados</span><strong id="rewardImpactOrders">—</strong></div>
+      </div>
+      <div id="rewardImpactList"><p class="diag-empty">Cargando impacto real…</p></div>
+    </div>
   </div>
 </section>
 <section class="reward-fold card" data-reward-fold="management">
@@ -1959,7 +1990,7 @@ function switchStudioView(view){
   if(view==="profitability")loadProfitabilityAdmin();
   if(view==="investment")loadInvestment();
   if(view==="ranking")loadAdminRanking();
-  if(view==="rewards")loadRewardsAdmin();
+  if(view==="rewards"){loadRewardsAdmin();loadRewardImpact();}
   if(view==="museum")loadMuseumAdmin();
   if(view==="stats")loadStats();
 }
@@ -2528,6 +2559,16 @@ async function openCustomer(customerId){
   customerRewards.querySelectorAll("[data-claim-reward]").forEach(button=>{
     button.addEventListener("click",async()=>{
       const orderNumber=prompt("Número del pedido en el que se ha entregado la recompensa (opcional):","")||"";
+      let rewardCostPreview=null;
+      try{
+        rewardCostPreview=await calculateCustomerRewardRealCost(button.dataset.claimReward);
+        if(rewardCostPreview.items.length){
+          const detail=rewardCostPreview.items.map(i=>`${i.name} · ${i.size_ml} ml${i.cost==null?" · coste pendiente":` · ${profitMoney(i.cost)}`}`).join("\n");
+          const warning=rewardCostPreview.missing?`\n\nAtención: faltan ${rewardCostPreview.missing} costes financieros.`:"";
+          if(!confirm(`Impacto económico de esta recompensa:\n\n${detail}\n\nCoste real registrado: ${profitMoney(rewardCostPreview.total)}${warning}\n\n¿Marcar como entregada?`))return;
+        }
+      }catch(e){console.warn("Preview reward cost",e);}
+
       const {error}=await client.rpc("admin_claim_customer_reward",{
         input_reward_id:button.dataset.claimReward,
         input_order_number:orderNumber
@@ -2536,6 +2577,12 @@ async function openCustomer(customerId){
       if(error){
         alert("No se pudo confirmar la recompensa: "+error.message);
         return;
+      }
+
+      try{
+        await registerRewardRealCost(button.dataset.claimReward,orderNumber);
+      }catch(e){
+        alert("La recompensa se ha marcado como entregada, pero no se pudo registrar su coste: "+e.message);
       }
 
       await openCustomer(activeCustomerId);
@@ -3475,6 +3522,78 @@ function renderProfitabilityEditor(d){
 
 
 
+
+let rewardCostLedgerCache=[];
+
+async function loadRewardCostLedger(force=false){
+  if(rewardCostLedgerCache.length&&!force)return rewardCostLedgerCache;
+  try{
+    const {data,error}=await client.rpc("admin_list_prelude_reward_costs");
+    if(error)throw error;
+    rewardCostLedgerCache=Array.isArray(data)?data:[];
+  }catch(e){
+    console.warn("Reward cost ledger:",e);
+    rewardCostLedgerCache=[];
+  }
+  return rewardCostLedgerCache;
+}
+function rewardCostForOrder(orderNumber){
+  const key=String(orderNumber||"").replace(/^#/,"").trim().toLowerCase();
+  return rewardCostLedgerCache
+    .filter(x=>String(x.order_number||"").replace(/^#/,"").trim().toLowerCase()===key)
+    .reduce((a,x)=>a+Number(x.total_cost||0),0);
+}
+async function calculateCustomerRewardRealCost(customerRewardId){
+  if(!catalogAdminCache.length)await loadCatalogAdmin();
+  const choices=await loadCustomerRewardChoices(activeCustomerId);
+  const selected=choices.filter(x=>String(x.customer_reward_id||"")===String(customerRewardId));
+  if(!selected.length)return {total:0,items:[],missing:0};
+
+  let total=0,missing=0; const items=[];
+  for(const choice of selected){
+    let catalogId=choice.catalog_id||choice.perfume_id||null;
+    if(!catalogId){
+      const norm=v=>String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLowerCase();
+      catalogId=catalogAdminCache.find(p=>norm(p.name)===norm(choice.name))?.id||null;
+    }
+    const size=Number(choice.decant_size_ml||choice.size_ml||0);
+    const cost=catalogId?await rewardDirectCost(catalogId,size):null;
+    if(cost==null)missing++;
+    else total+=Number(cost);
+    items.push({catalog_id:catalogId,name:choice.name||"Perfume",size_ml:size,cost:cost});
+  }
+  return {total,items,missing};
+}
+async function registerRewardRealCost(customerRewardId,orderNumber){
+  const calc=await calculateCustomerRewardRealCost(customerRewardId);
+  const {error}=await client.rpc("admin_record_prelude_reward_cost",{
+    input_customer_reward_id:customerRewardId,
+    input_order_number:orderNumber||null,
+    input_total_cost:Number(calc.total||0),
+    input_cost_detail:calc.items
+  });
+  if(error)throw error;
+  rewardCostLedgerCache=[];
+  return calc;
+}
+async function loadRewardImpact(){
+  const list=document.getElementById("rewardImpactList"); if(!list)return;
+  list.innerHTML='<p class="diag-empty">Cargando impacto real…</p>';
+  const rows=await loadRewardCostLedger(true);
+  const total=rows.reduce((a,x)=>a+Number(x.total_cost||0),0);
+  document.getElementById("rewardImpactCount").textContent=rows.length;
+  document.getElementById("rewardImpactCost").textContent=profitMoney(total);
+  document.getElementById("rewardImpactAverage").textContent=rows.length?profitMoney(total/rows.length):"—";
+  document.getElementById("rewardImpactOrders").textContent=new Set(rows.map(x=>x.order_number).filter(Boolean)).size;
+  list.innerHTML=rows.length?`<div class="reward-economy-list">${rows.map(x=>{
+    const detail=Array.isArray(x.cost_detail)?x.cost_detail:[];
+    return `<article class="reward-economy-row">
+      <div class="reward-economy-title"><div><strong>${escapeHtml(x.reward_label||"Recompensa Prelude")}</strong><span>${x.customer_name?escapeHtml(x.customer_name):"Cliente"}${x.order_number?` · Pedido #${escapeHtml(x.order_number)}`:""}</span></div><strong>${profitMoney(x.total_cost)}</strong></div>
+      <div class="reward-economy-note">${detail.length?detail.map(i=>`${escapeHtml(i.name||"Perfume")} · ${Number(i.size_ml||0)} ml · ${i.cost==null?"coste pendiente":profitMoney(i.cost)}`).join(" · "):"Sin detalle de elección."}</div>
+    </article>`;
+  }).join("")}</div>`:'<p class="diag-empty">Todavía no hay recompensas entregadas con coste registrado.</p>';
+}
+
 let orderProfitabilityCache=[];
 
 function parsePreludeDecantSize(value){
@@ -3529,6 +3648,7 @@ async function runOrderProfitability(){
     const delivered=(Array.isArray(data)?data:[]).filter(o=>String(o.status).toLowerCase()==="delivered");
     const costMap=await buildProfitabilityCostMap();
     const prepCost=calculateRealPreparationCost();
+    await loadRewardCostLedger(true);
 
     orderProfitabilityCache=delivered.map(order=>{
       const items=Array.isArray(order.items)?order.items:[];
@@ -3545,11 +3665,12 @@ async function runOrderProfitability(){
       }
       const revenue=Number(order.order_total||itemRevenue);
       const adjustment=revenue-itemRevenue; // preparación cobrada, descuentos u otros ajustes netos históricos
-      const totalCost=directCost+prepCost;
+      const rewardCost=rewardCostForOrder(order.order_number);
+      const totalCost=directCost+prepCost+rewardCost;
       const profit=revenue-totalCost;
       const margin=revenue>0?profit/revenue*100:null;
       const state=orderProfitState(margin??0,profit);
-      return {order,revenue,itemRevenue,adjustment,directCost,prepCost,totalCost,profit,margin,state,missingCosts,decants};
+      return {order,revenue,itemRevenue,adjustment,directCost,prepCost,rewardCost,totalCost,profit,margin,state,missingCosts,decants};
     });
 
     renderOrderProfitability();
@@ -3565,11 +3686,13 @@ function renderOrderProfitability(){
   const revenue=all.reduce((a,x)=>a+x.revenue,0);
   const direct=all.reduce((a,x)=>a+x.directCost,0);
   const prep=all.reduce((a,x)=>a+x.prepCost,0);
+  const rewards=all.reduce((a,x)=>a+Number(x.rewardCost||0),0);
   const net=all.reduce((a,x)=>a+x.profit,0);
   const margin=revenue>0?net/revenue*100:null;
   document.getElementById("orderProfitRevenue").textContent=profitMoney(revenue);
   document.getElementById("orderProfitDirectCost").textContent=profitMoney(direct);
   document.getElementById("orderProfitPrepCost").textContent=profitMoney(prep);
+  document.getElementById("orderProfitRewardCost").textContent=profitMoney(rewards);
   document.getElementById("orderProfitNet").textContent=profitMoney(net);
   document.getElementById("orderProfitMargin").textContent=margin==null?"—":profitPct(margin);
 
@@ -3591,6 +3714,7 @@ function renderOrderProfitability(){
         <div><span>Venta</span><strong>${profitMoney(x.revenue)}</strong></div>
         <div><span>Coste decants</span><strong>${profitMoney(x.directCost)}</strong></div>
         <div><span>Coste preparación</span><strong>${profitMoney(x.prepCost)}</strong></div>
+        <div><span>Coste recompensa</span><strong>${x.rewardCost?profitMoney(x.rewardCost):"—"}</strong></div>
         <div><span>Tarifa cobrada</span><strong class="${x.adjustment<0?"finance-negative":""}">${x.adjustment===0?`0,00 € · Gratis`:`${x.adjustment>0?"+":""}${profitMoney(x.adjustment)}`}</strong></div>
         <div class="order-profit-result"><span>Beneficio real</span><strong class="${x.profit>=0?"finance-positive":"finance-negative"}">${profitMoney(x.profit)}</strong></div>
         <div><span>Margen</span><strong>${x.margin==null?"—":profitPct(x.margin)}</strong></div>
@@ -4183,6 +4307,7 @@ async function preludeDashboardFinancialDetail(delivered){
   await loadPreparationFeeSettings();
   const costMap=await buildProfitabilityCostMap();
   const prepCost=calculateRealPreparationCost();
+  await loadRewardCostLedger(true);
   const perfumes=new Map();
   const perOrder=[]; let revenue=0,cost=0,missing=0;
 
@@ -4205,8 +4330,9 @@ async function preludeDashboardFinancialDetail(delivered){
       perfumes.set(name,row);
     }
     const orderRevenue=Number(raw.order_total??order.total??itemRevenue);
-    const orderProfit=orderRevenue-direct-prepCost;
-    revenue+=orderRevenue;cost+=direct+prepCost;
+    const rewardCost=rewardCostForOrder(raw.order_number||order.order_number);
+    const orderProfit=orderRevenue-direct-prepCost-rewardCost;
+    revenue+=orderRevenue;cost+=direct+prepCost+rewardCost;
     perOrder.push({...order,revenue:orderRevenue,profit:orderProfit});
   }
   return {revenue,profit:revenue-cost,margin:revenue>0?(revenue-cost)/revenue*100:null,missing,perOrder,perfumes:[...perfumes.values()]};
@@ -4877,6 +5003,69 @@ document.addEventListener("DOMContentLoaded",()=>setTimeout(()=>ensureCodesCatal
 
 
 
+
+const PRELUDE_LAUNCH_REWARD_PROGRAM=[
+  {threshold:20,label:"2 ml a elegir",size:2,count:1,options:10},
+  {threshold:40,label:"5 ml a elegir",size:5,count:1,options:10},
+  {threshold:50,label:"10 % de descuento en el siguiente pedido",discount:10},
+  {threshold:70,label:"2 × 5 ml a elegir",size:5,count:2,options:10},
+  {threshold:100,label:"30 % de descuento en el siguiente pedido",discount:30}
+];
+
+async function cheapestRewardCatalogIds(size,limit=10){
+  if(!catalogAdminCache.length)await loadCatalogAdmin();
+  const eligible=(catalogAdminCache||[]).filter(p=>!p.deleted_at&&catalogAdminStatus(p)!=="hidden"&&catalogAdminStatus(p)!=="upcoming");
+  const rows=[];
+  for(const p of eligible){
+    const cost=await rewardDirectCost(p.id,size);
+    const price=Number(p[`price_${size}ml`]||0);
+    if(cost!=null&&Number.isFinite(cost)&&cost>=0){
+      rows.push({id:p.id,name:p.name,cost:Number(cost),price,ratio:price>0?Number(cost)/price:999});
+    }
+  }
+  // Prioridad: menor coste real. Desempate: menor proporción coste/PVP y nombre.
+  rows.sort((a,b)=>a.cost-b.cost||a.ratio-b.ratio||String(a.name).localeCompare(String(b.name),"es"));
+  return rows.slice(0,limit);
+}
+async function applyPreludeLaunchRewardProgram(){
+  const btn=document.getElementById("applyLaunchRewardsBtn");
+  const st=document.getElementById("rewardsAdminStatus");
+  if(!confirm("Se activará la escala 20 / 40 / 50 / 70 / 100 y se seleccionarán automáticamente los 10 perfumes con menor coste real para cada recompensa física. ¿Continuar?"))return;
+  try{
+    if(btn){btn.disabled=true;btn.textContent="Configurando…";}
+    status(st,"Preparando programa de recompensas…");
+    const {error}=await client.rpc("admin_apply_prelude_launch_rewards");
+    if(error)throw error;
+    await loadRewardsAdmin();
+    if(!catalogAdminCache.length)await loadCatalogAdmin();
+
+    for(const cfg of PRELUDE_LAUNCH_REWARD_PROGRAM.filter(x=>x.size)){
+      const reward=(rewardsAdminCache||[]).find(r=>Number(r.threshold)===cfg.threshold);
+      if(!reward)throw new Error(`No se encontró la recompensa de ${cfg.threshold} Marcapáginas.`);
+      const picks=await cheapestRewardCatalogIds(cfg.size,cfg.options);
+      if(picks.length<cfg.options)throw new Error(`Solo hay ${picks.length} perfumes con coste financiero completo para ${cfg.size} ml.`);
+      const {error:optError}=await client.rpc("admin_save_prelude_reward_options",{
+        input_reward_id:reward.id,
+        input_choice_type:"choice",
+        input_decant_size_ml:cfg.size,
+        input_choice_count:cfg.count,
+        input_option_limit:cfg.options,
+        input_catalog_ids:picks.map(x=>x.id)
+      });
+      if(optError)throw optError;
+    }
+    await loadRewardsAdmin();
+    await analyzeRewardEconomy();
+    status(st,"Programa aplicado: 20 / 40 / 50 / 70 / 100. Las recompensas físicas tienen 10 perfumes elegidos por coste real.");
+    alert("Programa Prelude aplicado correctamente.\\n\\n20 · 2 ml a elegir\\n40 · 5 ml a elegir\\n50 · 10 % descuento\\n70 · 2 × 5 ml a elegir\\n100 · 30 % descuento\\n\\nLos 10 perfumes de cada premio físico se han elegido automáticamente según el menor coste real para Prelude.");
+  }catch(e){
+    console.error(e);status(st,"No se pudo aplicar el programa: "+(e.message||e),true);
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent="Aplicar programa Prelude";}
+  }
+}
+document.getElementById("applyLaunchRewardsBtn")?.addEventListener("click",applyPreludeLaunchRewardProgram);
+
 let rewardEconomyCache=[];
 
 async function rewardDirectCost(catalogId,size){
@@ -5281,6 +5470,9 @@ async function preludeDashboardRealFinance(delivered){
 }
 
 
+
+
+document.getElementById("refreshRewardImpactBtn")?.addEventListener("click",loadRewardImpact);
 
 </script>
 

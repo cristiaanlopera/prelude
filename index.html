@@ -1362,6 +1362,55 @@ body.reward-choice-open{
   touch-action:pan-y;
 }
 
+
+/* PRELUDE · FASE 12.19 · NOVEDADES + ORDEN PREMIUM */
+.card.novelty .visual{position:relative}
+.novelty-badge{
+  position:absolute;
+  z-index:4;
+  top:13px;
+  left:13px;
+  display:inline-flex;
+  align-items:center;
+  border:1px solid rgba(255,255,255,.72);
+  color:#fff;
+  background:rgba(18,18,18,.68);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:9px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  box-shadow:0 4px 16px rgba(0,0,0,.10);
+}
+@media(max-width:720px){
+  .novelty-badge{top:9px;left:9px;font-size:8px;padding:6px 8px}
+}
+
+
+/* PRELUDE · FASE 12.20 · TOP 5 MÁS VENDIDOS */
+.card.bestseller .visual{position:relative}
+.bestseller-badge{
+  position:absolute;
+  z-index:4;
+  top:13px;
+  left:13px;
+  display:inline-flex;
+  align-items:center;
+  border:1px solid rgba(255,255,255,.68);
+  color:#fff;
+  background:rgba(18,18,18,.62);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:9px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+@media(max-width:720px){.bestseller-badge{top:9px;left:9px;font-size:8px;padding:6px 8px}}
+
 </style>
 </head>
 <body><div class="watermark-brush one"></div><div class="watermark-brush two"></div>
@@ -1446,7 +1495,7 @@ Descubrir colección
 </button></div></div></div>
 <div class="page"><header class="top"><div class="logo">PRELUDE</div><div class="actions"><button class="iconbtn" id="conceptBtn">El concepto</button><button class="iconbtn" id="decantsBtn">Nuestros Decants</button><button class="iconbtn" id="libraryBtn">Mi Colección Prelude <b id="libraryCount">0</b></button><button class="iconbtn sound-toggle" id="soundBtn" type="button" aria-pressed="false">Sonido: no</button><button class="iconbtn" id="theme">◐ <span class="label">Modo oscuro</span></button><button class="iconbtn" id="cartBtn">Cesta <b id="count">0</b></button></div></header>
 <section class="hero"><h2>Every Masterpiece Begins With A Prelude</h2><p>Cada fragancia comienza con una historia. Después llegan las notas, los acordes y la elección.</p></section>
-<div class="catalog-toolbar" aria-label="Ordenar catálogo"><label for="catalogSort">Ordenar por</label><select id="catalogSort" class="catalog-sort"><option value="price-asc">Precio: menor a mayor</option><option value="price-desc">Precio: mayor a menor</option><option value="brand-asc">Marca: A–Z</option><option value="brand-desc">Marca: Z–A</option><option value="name-asc">Perfume: A–Z</option><option value="name-desc">Perfume: Z–A</option></select></div>
+<div class="catalog-toolbar" aria-label="Ordenar catálogo"><label for="catalogSort">Ordenar por</label><select id="catalogSort" class="catalog-sort"><option value="bestsellers" selected>Más vendidos</option><option value="price-desc">Precio: mayor a menor</option><option value="price-asc">Precio: menor a mayor</option><option value="brand-asc">Marca: A–Z</option><option value="brand-desc">Marca: Z–A</option><option value="name-asc">Perfume: A–Z</option><option value="name-desc">Perfume: Z–A</option></select></div>
 <div class="layout"><main class="grid" id="grid"></main><aside class="cart" id="cart"></aside></div></div>
 
 <section class="journey" id="journey">
@@ -1780,22 +1829,142 @@ function playSound(kind){
 function toast(t){let e=document.getElementById("toast");e.textContent=t;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),1600)}
 function fly(img){const r=img.getBoundingClientRect(),target=document.getElementById("cartBtn").getBoundingClientRect();const f=img.cloneNode();f.className="fly";Object.assign(f.style,{left:r.left+"px",top:r.top+"px",width:r.width+"px",height:r.height+"px",objectFit:"cover"});document.body.appendChild(f);requestAnimationFrame(()=>Object.assign(f.style,{left:target.left+"px",top:target.top+"px",width:"30px",height:"30px",opacity:".15"}));setTimeout(()=>f.remove(),700)}
 function add(i,size,qty,img){const p=products[i],f=cart.find(x=>x.name===p.name&&x.size===size);f?f.qty+=qty:cart.push({...p,size,qty,price:p.prices[size]});renderCart();if(img)fly(img);playSound("add");toast(p.name+" añadido")}
-function productMinPrice(p){const vals=Object.values(p.prices||{}).map(Number).filter(Number.isFinite);return vals.length?Math.min(...vals):0}
+
+let PRELUDE_BESTSELLERS=new Map();
+
+async function loadPreludeBestsellers(){
+  if(!supabaseClient)return;
+  try{
+    const {data,error}=await supabaseClient.rpc("get_prelude_public_bestsellers");
+    if(error)throw error;
+    PRELUDE_BESTSELLERS=new Map(
+      (Array.isArray(data)?data:[]).map(row=>[
+        String(row.perfume_name||"").trim(),
+        Number(row.decants_sold||0)
+      ])
+    );
+    renderProducts();
+  }catch(error){
+    console.warn("Prelude: ranking de más vendidos no disponible.",error);
+    PRELUDE_BESTSELLERS=new Map();
+  }
+}
+function productDecantsSold(p){
+  return Number(PRELUDE_BESTSELLERS.get(String(p.name||"").trim())||0);
+}
+function top5BestsellerNames(){
+  return new Set(
+    [...PRELUDE_BESTSELLERS.entries()]
+      .filter(([,count])=>Number(count)>0)
+      .sort((a,b)=>Number(b[1])-Number(a[1]) || String(a[0]).localeCompare(String(b[0]),"es",{sensitivity:"base"}))
+      .slice(0,5)
+      .map(([name])=>name)
+  );
+}
+function bestsellerRank(p){
+  const ordered=[...PRELUDE_BESTSELLERS.entries()]
+    .filter(([,count])=>Number(count)>0)
+    .sort((a,b)=>Number(b[1])-Number(a[1]) || String(a[0]).localeCompare(String(b[0]),"es",{sensitivity:"base"}))
+    .slice(0,5);
+  const ix=ordered.findIndex(([name])=>name===String(p.name||"").trim());
+  return ix>=0?ix+1:0;
+}
+
+function productMinPrice(p){
+  const vals=Object.values(p.prices||{}).map(Number).filter(Number.isFinite);
+  return vals.length?Math.min(...vals):0;
+}
 function catalogStatusOf(p){return p._catalogStatus||"published"}
+
+/*
+  Novedades Prelude:
+  - Si Supabase expone published_at / released_at / status_changed_at, se usa esa fecha.
+  - Como respaldo, un perfume añadido remotamente al catálogo se considera novedad durante 30 días desde su creación.
+  - Además, el navegador recuerda una transición "Próximamente" -> "Publicado" y la mantiene como novedad 30 días.
+*/
+const PRELUDE_NEW_RELEASE_DAYS=30;
+const PRELUDE_CATALOG_STATE_KEY="prelude_catalog_release_state_v1";
+
+function preludeCatalogState(){
+  try{return JSON.parse(localStorage.getItem(PRELUDE_CATALOG_STATE_KEY)||"{}")||{}}
+  catch(_){return {}}
+}
+function updatePreludeCatalogReleaseState(){
+  const state=preludeCatalogState();
+  const now=Date.now();
+
+  products.forEach(p=>{
+    const key=String(p._catalogId||p.name||"");
+    if(!key)return;
+    const status=catalogStatusOf(p);
+    const prev=state[key]?.status;
+
+    if(prev==="upcoming" && status==="published"){
+      state[key]={...(state[key]||{}),status,releasedAt:now};
+    }else{
+      state[key]={...(state[key]||{}),status};
+    }
+  });
+
+  try{localStorage.setItem(PRELUDE_CATALOG_STATE_KEY,JSON.stringify(state))}catch(_){}
+  return state;
+}
+function productNoveltyTimestamp(p,state){
+  if(catalogStatusOf(p)!=="published")return 0;
+  const key=String(p._catalogId||p.name||"");
+  const remembered=Number(state?.[key]?.releasedAt||0);
+  if(remembered)return remembered;
+
+  const explicit=p._catalogReleasedAt?Date.parse(p._catalogReleasedAt):NaN;
+  if(Number.isFinite(explicit))return explicit;
+
+  if(p._catalogRemoteAdded&&p._catalogCreatedAt){
+    const created=Date.parse(p._catalogCreatedAt);
+    if(Number.isFinite(created))return created;
+  }
+  return 0;
+}
+function isPreludeNovelty(p,state){
+  const ts=productNoveltyTimestamp(p,state);
+  if(!ts)return false;
+  const age=Date.now()-ts;
+  return age>=0 && age<=PRELUDE_NEW_RELEASE_DAYS*86400000;
+}
 function sortedCatalogEntries(){
-  const mode=document.getElementById("catalogSort")?.value||"price-asc";
+  const mode=document.getElementById("catalogSort")?.value||"bestsellers";
+  const state=updatePreludeCatalogReleaseState();
+  const top5=top5BestsellerNames();
   const entries=products.map((p,i)=>({p,i})).filter(({p})=>catalogStatusOf(p)!=="hidden");
   const cmpText=(a,b)=>String(a||"").localeCompare(String(b||""),"es",{sensitivity:"base"});
+
   entries.sort((a,b)=>{
     const au=catalogStatusOf(a.p)==="upcoming", bu=catalogStatusOf(b.p)==="upcoming";
-    if(au!==bu)return au?-1:1; // Próximamente siempre primero.
+    if(au!==bu)return au?-1:1; // Próximamente sigue siendo un estado especial y permanece arriba.
+
+    const an=isPreludeNovelty(a.p,state),bn=isPreludeNovelty(b.p,state);
+    if(an!==bn)return an?-1:1; // 1. Novedades.
+    if(an&&bn){
+      const at=productNoveltyTimestamp(a.p,state),bt=productNoveltyTimestamp(b.p,state);
+      if(at!==bt)return bt-at;
+    }
+
+    if(mode==="bestsellers"){
+      const at=top5.has(String(a.p.name||"").trim()),bt=top5.has(String(b.p.name||"").trim());
+      if(at!==bt)return at?-1:1; // 2. Top 5 por número de decants vendidos.
+      if(at&&bt){
+        const diff=productDecantsSold(b.p)-productDecantsSold(a.p);
+        if(diff)return diff;
+      }
+      return cmpText(a.p.name,b.p.name); // 3. Resto alfabético por nombre de perfume.
+    }
+
     if(mode==="price-asc")return productMinPrice(a.p)-productMinPrice(b.p);
     if(mode==="price-desc")return productMinPrice(b.p)-productMinPrice(a.p);
     if(mode==="brand-asc")return cmpText(a.p.brand,b.p.brand)||cmpText(a.p.name,b.p.name);
     if(mode==="brand-desc")return cmpText(b.p.brand,a.p.brand)||cmpText(a.p.name,b.p.name);
     if(mode==="name-asc")return cmpText(a.p.name,b.p.name);
     if(mode==="name-desc")return cmpText(b.p.name,a.p.name);
-    return Number(a.p._catalogOrder??a.i)-Number(b.p._catalogOrder??b.i);
+    return cmpText(a.p.name,b.p.name);
   });
   return entries;
 }
@@ -1803,9 +1972,11 @@ function renderProducts(){
   grid.innerHTML="";
   sortedCatalogEntries().forEach(({p,i})=>{
     const upcoming=catalogStatusOf(p)==="upcoming";
-    let c=document.createElement("article");c.className="card"+(upcoming?" upcoming":"");
+    const novelty=!upcoming&&isPreludeNovelty(p,preludeCatalogState());
+    const rank=!upcoming&&!novelty?bestsellerRank(p):0;
+    let c=document.createElement("article");c.className="card"+(upcoming?" upcoming":"")+(novelty?" novelty":"")+(rank?" bestseller":"");
     let min=productMinPrice(p);
-    c.innerHTML=`<div class="visual"><img src="${p.image}" alt="${p.name}">${upcoming?'<div class="upcoming-badge">Próximamente</div>':''}</div><div class="info"><div class="title"><div><h3>${p.name}</h3><div class="brand">${p.brand}</div></div><div class="from">${upcoming?'Próximamente':'Desde'}${upcoming?'':`<strong>${euro.format(min)}</strong>`}</div></div>${upcoming?'':`<div class="controls"><select id="s${i}">${Object.entries(p.prices).map(([sz,v])=>`<option value="${sz}">${sz} — ${euro.format(v)}</option>`).join("")}</select><input id="q${i}" type="number" min="1" value="1"></div>`}<button class="view" data-view="${i}" ${upcoming?'disabled aria-disabled="true"':''}>${upcoming?'Disponible próximamente':'Comenzar el viaje'}</button>${upcoming?'':`<button class="add" data-add="${i}">Añadir a la cesta</button>`}</div>`;
+    c.innerHTML=`<div class="visual"><img src="${p.image}" alt="${p.name}">${upcoming?'<div class="upcoming-badge">Próximamente</div>':novelty?'<div class="novelty-badge">Novedad</div>':rank?`<div class="bestseller-badge">Top ${rank}</div>`:''}</div><div class="info"><div class="title"><div><h3>${p.name}</h3><div class="brand">${p.brand}</div></div><div class="from">${upcoming?'Próximamente':'Desde'}${upcoming?'':`<strong>${euro.format(min)}</strong>`}</div></div>${upcoming?'':`<div class="controls"><select id="s${i}">${Object.entries(p.prices).map(([sz,v])=>`<option value="${sz}">${sz} — ${euro.format(v)}</option>`).join("")}</select><input id="q${i}" type="number" min="1" value="1"></div>`}<button class="view" data-view="${i}" ${upcoming?'disabled aria-disabled="true"':''}>${upcoming?'Disponible próximamente':'Comenzar el viaje'}</button>${upcoming?'':`<button class="add" data-add="${i}">Añadir a la cesta</button>`}</div>`;
     grid.appendChild(c)
   });
   document.querySelectorAll("[data-view]:not([disabled])").forEach(b=>b.onclick=()=>openJourney(+b.dataset.view));
@@ -2213,7 +2384,10 @@ async function loadStudioManagedCatalog(){
         _catalogActive:status!=="hidden",
         _catalogStatus:status,
         _catalogOrder:Number(row.display_order??baseIndex),
-        _catalogId:row.id||null
+        _catalogId:row.id||null,
+        _catalogCreatedAt:row.created_at||null,
+        _catalogUpdatedAt:row.updated_at||null,
+        _catalogReleasedAt:row.published_at||row.released_at||row.status_changed_at||null
       };
     }).filter(product=>product._catalogStatus!=="hidden");
 
@@ -2235,7 +2409,11 @@ async function loadStudioManagedCatalog(){
         _catalogActive:true,
         _catalogStatus:status,
         _catalogOrder:Number(row.display_order??1000),
-        _catalogId:row.id||null
+        _catalogId:row.id||null,
+        _catalogCreatedAt:row.created_at||null,
+        _catalogUpdatedAt:row.updated_at||null,
+        _catalogReleasedAt:row.published_at||row.released_at||row.status_changed_at||null,
+        _catalogRemoteAdded:true
       });
     });
   }catch(error){
@@ -3932,6 +4110,22 @@ document.addEventListener("DOMContentLoaded",()=>{
   setTimeout(preloadRewardCatalogImages,250);
 });
 window.addEventListener("load",preloadRewardCatalogImages);
+
+
+document.addEventListener("DOMContentLoaded",()=>{
+  const sort=document.getElementById("catalogSort");
+  if(sort && !sessionStorage.getItem("prelude_catalog_sort_touched")){
+    sort.value="bestsellers";
+  }
+});
+document.getElementById("catalogSort")?.addEventListener("change",()=>{
+  sessionStorage.setItem("prelude_catalog_sort_touched","1");
+});
+
+
+document.addEventListener("DOMContentLoaded",()=>{
+  setTimeout(loadPreludeBestsellers,350);
+});
 
 </script>
 <section class="reward-choice-overlay" id="rewardChoiceOverlay" aria-hidden="true">

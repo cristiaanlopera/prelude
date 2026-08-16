@@ -1,0 +1,12 @@
+PRELUDE — FASE 12.21 · RECOMPENSAS CON IMPACTO ECONÓMICO REAL
+
+- Cuando una recompensa con elección se marca como entregada, Studio calcula el coste real del perfume y tamaño elegidos.
+- Antes de confirmar, muestra un resumen económico de la elección.
+- El coste queda guardado en un ledger financiero de Supabase.
+- Finanzas > Rentabilidad de pedidos descuenta el coste de recompensas asociadas al número de pedido.
+- Dashboard también descuenta estos costes del beneficio neto y margen neto.
+- Recompensas incorpora “Impacto económico de recompensas”: entregadas, coste total, coste medio, pedidos afectados y detalle.
+- El cálculo usa el coste real configurado en la ficha financiera del perfume/formato, no el PVP.
+- Si falta un coste financiero, Studio lo avisa.
+
+IMPORTANTE: ejecutar Prelude_FASE_12_21_RECOMPENSAS_IMPACTO_REAL.sql en Supabase antes de usar el nuevo registro.

@@ -1,0 +1,18 @@
+PRELUDE — FASE 12.20 · NOVEDADES + TOP 5 + ALFABÉTICO
+
+Orden predeterminado de la web:
+0. Próximamente (estado especial, si existe).
+1. Novedades publicadas.
+2. Top 5 perfumes más vendidos según NÚMERO DE DECANTS vendidos.
+   - El tamaño en ml no influye.
+   - Un decant de 2 ml y uno de 10 ml cuentan ambos como 1 unidad.
+   - Si una línea tiene cantidad 3, suma 3 decants.
+   - Solo cuentan pedidos entregados.
+3. Resto de perfumes por orden alfabético del NOMBRE DEL PERFUME, no por marca.
+
+Los Top 5 muestran una insignia discreta Top 1, Top 2, etc.
+El selector arranca en “Más vendidos”.
+
+IMPORTANTE:
+Ejecutar Prelude_FASE_12_20_TOP5_MAS_VENDIDOS.sql en Supabase para que la web
+pueda consultar el ranking real de ventas de forma segura.

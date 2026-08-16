@@ -1,0 +1,22 @@
+PRELUDE — FASE 12.19 · NOVEDADES + ORDEN DEL CATÁLOGO
+
+Nuevo orden inicial de la web pública:
+1. Perfumes que todavía están en “Próximamente”.
+2. Perfumes recién publicados, marcados como “Novedad”.
+3. Resto del catálogo, de PRECIO MÁS CARO A MÁS BARATO.
+
+NOVEDAD:
+- Se mantiene 30 días.
+- Si el navegador vio un perfume como Próximamente y después pasa a Publicado,
+  recuerda la transición y lo coloca como Novedad durante 30 días.
+- Si Supabase devuelve una fecha de publicación/release, se utiliza automáticamente.
+- Para perfumes nuevos creados directamente en el catálogo remoto, se usa su fecha
+  de creación como respaldo.
+- Las novedades llevan una insignia discreta “Novedad”.
+
+ORDEN:
+- El selector arranca ahora en “Precio: mayor a menor”.
+- El usuario sigue pudiendo escoger después menor a mayor, marca o nombre.
+- Próximamente y Novedades se mantienen destacados al principio.
+
+No requiere SQL.

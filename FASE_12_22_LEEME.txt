@@ -1,0 +1,23 @@
+PRELUDE — FASE 12.22 · PROGRAMA DE RECOMPENSAS
+
+Escala:
+20 Marcapáginas · 2 ml a elegir
+40 Marcapáginas · 5 ml a elegir
+50 Marcapáginas · 10 % descuento próximo pedido
+70 Marcapáginas · 2 × 5 ml a elegir
+100 Marcapáginas · 30 % descuento próximo pedido (SIN límite máximo)
+
+Selección de perfumes:
+- 10 perfumes en 2 ml.
+- 10 perfumes en 5 ml.
+- 10 perfumes en 2 × 5 ml.
+- Studio los selecciona con los costes REALES guardados en Finanzas.
+- Se priorizan los 10 de menor coste directo para Prelude; el coste/PVP se usa como desempate.
+- Próximamente y ocultos quedan fuera.
+- Esto evita inventar una lista sin utilizar tus datos financieros reales.
+
+PASOS:
+1. Ejecuta Prelude_FASE_12_22_PROGRAMA_RECOMPENSAS.sql en Supabase.
+2. Sube esta versión de Prelude.
+3. En Studio > Recompensas pulsa “Aplicar programa Prelude”.
+4. Studio calculará y guardará automáticamente los 10 perfumes de cada recompensa física.
