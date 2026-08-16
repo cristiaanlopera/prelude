@@ -121,6 +121,40 @@ function renderProducts(){
   let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("show");o.unobserve(e.target)}}),{threshold:.1});document.querySelectorAll(".card").forEach(c=>o.observe(c))
 }
 
+function rewardDiscountPercent(reward){
+  const label=String(reward?.reward_label||"");
+  const match=label.match(/(\d+(?:[.,]\d+)?)\s*%/);
+  if(!match||!/descuento/i.test(label))return 0;
+  return Math.max(0,Number(match[1].replace(",","."))||0);
+}
+
+function selectedDiscountSummary(){
+  const selected=pendingRewards().filter(reward=>selectedRewardIds.has(reward.id));
+  const discounts=selected
+    .map(reward=>({reward,percent:rewardDiscountPercent(reward)}))
+    .filter(item=>item.percent>0);
+  const percent=Math.min(100,discounts.reduce((sum,item)=>sum+item.percent,0));
+  return {discounts,percent};
+}
+
+function cartAmounts(){
+  const subtotal=cart.reduce((sum,item)=>sum+item.price*item.qty,0);
+  const {discounts,percent}=selectedDiscountSummary();
+  const discountAmount=subtotal*(percent/100);
+  const total=Math.max(0,subtotal-discountAmount);
+  return {subtotal,discounts,percent,discountAmount,total};
+}
+
+function refreshCartTotals(){
+  const totals=document.getElementById("cartTotals");
+  if(!totals)return;
+  const {subtotal,percent,discountAmount,total}=cartAmounts();
+  totals.innerHTML=`
+    <div class="row"><span>Subtotal</span><span>${euro.format(subtotal)}</span></div>
+    ${percent>0?`<div class="row discount-row"><span>Descuento aplicado (${percent}% )</span><span>−${euro.format(discountAmount)}</span></div>`:""}
+    <div class="row grand"><span>Total</span><span>${euro.format(total)}</span></div>`;
+}
+
 function renderCart(){
   let sub=cart.reduce((s,x)=>s+x.price*x.qty,0);
   const availableRewards=pendingRewards();
@@ -152,10 +186,7 @@ function renderCart(){
       ? cart.map((x,i)=>`<div class="item"><img src="${x.image}" alt="${x.name}"><div><b>${x.name}</b><div class="muted">${x.size} × ${x.qty}</div><div class="row"><span>${euro.format(x.price*x.qty)}</span><button class="remove" data-r="${i}" type="button">Eliminar</button></div></div></div>`).join("")
       : '<p class="muted">Todavía no has añadido ningún Prelude.</p>'}
     ${rewardsHtml}
-    <div class="totals">
-      <div class="row"><span>Subtotal</span><span>${euro.format(sub)}</span></div>
-      <div class="row grand"><span>Total</span><span>${euro.format(sub)}</span></div>
-    </div>
+    <div class="totals" id="cartTotals"></div>
     <div class="customer">
       <div class="customer-title">Preparar mi Prelude</div>
       <input id="name" type="text" placeholder="Nombre" value="${customerProfile?.name||""}">
@@ -176,6 +207,7 @@ function renderCart(){
     <button class="checkout" id="send" type="button">Solicitar mi Prelude</button>
     <button class="clear" id="clear" type="button">Vaciar cesta</button>`;
 
+  refreshCartTotals();
   count.textContent=cart.reduce((s,x)=>s+x.qty,0);
 
   document.querySelectorAll("[data-r]").forEach(button=>{
@@ -189,6 +221,7 @@ function renderCart(){
     input.addEventListener("change",()=>{
       if(input.checked)selectedRewardIds.add(input.dataset.rewardId);
       else selectedRewardIds.delete(input.dataset.rewardId);
+      refreshCartTotals();
     });
   });
 
@@ -240,7 +273,7 @@ function send(){
   }
 
   const selectedRewards=pendingRewards().filter(reward=>selectedRewardIds.has(reward.id));
-  const sub=cart.reduce((s,x)=>s+x.price*x.qty,0);
+  const {subtotal:sub,percent:discountPercent,discountAmount,total}=cartAmounts();
 
   const lines=[
     "━━━━━━━━━━━━━━━━━━━━",
@@ -263,7 +296,11 @@ function send(){
       ...selectedRewards.map(reward=>`• ${reward.reward_label} [${reward.id}]`)
     ]:[]),
     "",
-    `Total: ${euro.format(sub)}`,
+    ...(discountPercent>0?[
+      `Subtotal: ${euro.format(sub)}`,
+      `Descuento aplicado (${discountPercent}%): -${euro.format(discountAmount)}`,
+      `Total: ${euro.format(total)}`
+    ]:[`Total: ${euro.format(sub)}`]),
     "",
     "━━━━━━━━━━━━━━━━━━━━",
     "",

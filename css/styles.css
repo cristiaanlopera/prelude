@@ -895,3 +895,6 @@ body.dark .profile-gate{background:rgba(20,20,20,.97)}
 .ranking-status.error{
   color:#8a3232;
 }
+
+.discount-row{margin-top:7px;color:var(--text)}
+.discount-row span:last-child{font-weight:600}

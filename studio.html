@@ -1353,7 +1353,7 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
 <div class="status" id="profitabilityStatus"></div>
       </div>
       <div class="studio-view" id="rewardsView">
-        <div class="section-heading"><div><div class="dashboard-kicker">Fidelización</div><h1>Recompensas</h1><p>Configura los hitos de Marcapáginas, premios y disponibilidad.</p></div><button class="secondary" id="applyLaunchRewardsBtn" type="button">Aplicar programa Prelude</button><button class="secondary" id="refreshRewardsBtn" type="button">Actualizar</button></div>
+        <div class="section-heading"><div><div class="dashboard-kicker">Fidelización</div><h1>Recompensas</h1><p>Configura los hitos de Marcapáginas, premios y disponibilidad.</p></div><button class="secondary" id="applyRewardProgressionBtn" type="button">Aplicar progresión de perfumes</button><button class="secondary" id="applyLaunchRewardsBtn" type="button">Aplicar programa Prelude</button><button class="secondary" id="refreshRewardsBtn" type="button">Actualizar</button></div>
         <section class="reward-fold card" data-reward-fold="economy">
   <button class="reward-fold-toggle" type="button" aria-expanded="true">
     <div><span class="reward-fold-kicker">Economía de fidelización</span><h2>Economía de Marcapáginas</h2><p>Configuración base y sostenibilidad económica del sistema.</p></div>
@@ -5005,10 +5005,10 @@ document.addEventListener("DOMContentLoaded",()=>setTimeout(()=>ensureCodesCatal
 
 
 const PRELUDE_LAUNCH_REWARD_PROGRAM=[
-  {threshold:20,label:"2 ml a elegir",size:2,count:1,options:10},
-  {threshold:40,label:"5 ml a elegir",size:5,count:1,options:10},
+  {threshold:20,label:"2 ml a elegir",size:2,count:1,options:6},
+  {threshold:40,label:"5 ml a elegir",size:5,count:1,options:9},
   {threshold:50,label:"10 % de descuento en el siguiente pedido",discount:10},
-  {threshold:70,label:"2 × 5 ml a elegir",size:5,count:2,options:10},
+  {threshold:70,label:"2 × 5 ml a elegir",size:5,count:2,options:12},
   {threshold:100,label:"30 % de descuento en el siguiente pedido",discount:30}
 ];
 
@@ -5030,7 +5030,7 @@ async function cheapestRewardCatalogIds(size,limit=10){
 async function applyPreludeLaunchRewardProgram(){
   const btn=document.getElementById("applyLaunchRewardsBtn");
   const st=document.getElementById("rewardsAdminStatus");
-  if(!confirm("Se activará la escala 20 / 40 / 50 / 70 / 100 y se seleccionarán automáticamente los 10 perfumes con menor coste real para cada recompensa física. ¿Continuar?"))return;
+  if(!confirm("Se activará la escala 20 / 40 / 50 / 70 / 100 y se aplicará una selección progresiva de perfumes según el nivel: 6 opciones (20), 9 opciones (40) y 12 opciones (70), priorizando el menor coste real para Prelude. ¿Continuar?"))return;
   try{
     if(btn){btn.disabled=true;btn.textContent="Configurando…";}
     status(st,"Preparando programa de recompensas…");
@@ -5056,8 +5056,8 @@ async function applyPreludeLaunchRewardProgram(){
     }
     await loadRewardsAdmin();
     await analyzeRewardEconomy();
-    status(st,"Programa aplicado: 20 / 40 / 50 / 70 / 100. Las recompensas físicas tienen 10 perfumes elegidos por coste real.");
-    alert("Programa Prelude aplicado correctamente.\\n\\n20 · 2 ml a elegir\\n40 · 5 ml a elegir\\n50 · 10 % descuento\\n70 · 2 × 5 ml a elegir\\n100 · 30 % descuento\\n\\nLos 10 perfumes de cada premio físico se han elegido automáticamente según el menor coste real para Prelude.");
+    status(st,"Programa aplicado: 20 / 40 / 50 / 70 / 100. Las recompensas físicas tienen una progresión de 6 / 9 / 12 perfumes elegidos por coste real.");
+    alert("Programa Prelude aplicado correctamente.\\n\\n20 · 2 ml a elegir\\n40 · 5 ml a elegir\\n50 · 10 % descuento\\n70 · 2 × 5 ml a elegir\\n100 · 30 % descuento\\n\\nLas opciones se han escalado automáticamente: 20 Marcapáginas · 6 perfumes; 40 · 9 perfumes; 70 · 12 perfumes, priorizando el menor coste real para Prelude.");
   }catch(e){
     console.error(e);status(st,"No se pudo aplicar el programa: "+(e.message||e),true);
   }finally{
@@ -5065,6 +5065,61 @@ async function applyPreludeLaunchRewardProgram(){
   }
 }
 document.getElementById("applyLaunchRewardsBtn")?.addEventListener("click",applyPreludeLaunchRewardProgram);
+
+
+const PRELUDE_REWARD_OPTION_PROGRESSION=[
+  {threshold:20,size:2,count:1,options:6},
+  {threshold:40,size:5,count:1,options:9},
+  {threshold:70,size:5,count:2,options:12}
+];
+
+async function applyPreludeRewardOptionProgression(){
+  const btn=document.getElementById("applyRewardProgressionBtn");
+  const st=document.getElementById("rewardsAdminStatus");
+  const ok=confirm(
+    "Se actualizará únicamente el número de perfumes disponibles en las recompensas físicas:\n\n"+
+    "20 Marcapáginas · 6 perfumes\n"+
+    "40 Marcapáginas · 9 perfumes\n"+
+    "70 Marcapáginas · 12 perfumes\n\n"+
+    "No se modificarán los descuentos ni las demás recompensas. ¿Continuar?"
+  );
+  if(!ok)return;
+  try{
+    if(btn){btn.disabled=true;btn.textContent="Aplicando…";}
+    status(st,"Aplicando progresión de perfumes…");
+    await loadRewardsAdmin();
+    if(!catalogAdminCache.length)await loadCatalogAdmin();
+
+    for(const cfg of PRELUDE_REWARD_OPTION_PROGRESSION){
+      const reward=(rewardsAdminCache||[]).find(r=>Number(r.threshold)===cfg.threshold);
+      if(!reward)throw new Error(`No se encontró la recompensa de ${cfg.threshold} Marcapáginas.`);
+      const picks=await cheapestRewardCatalogIds(cfg.size,cfg.options);
+      if(picks.length<cfg.options){
+        throw new Error(`Solo hay ${picks.length} perfumes elegibles para la recompensa de ${cfg.threshold} Marcapáginas; se necesitan ${cfg.options}.`);
+      }
+      const {error}=await client.rpc("admin_save_prelude_reward_options",{
+        input_reward_id:reward.id,
+        input_choice_type:"choice",
+        input_decant_size_ml:cfg.size,
+        input_choice_count:cfg.count,
+        input_option_limit:cfg.options,
+        input_catalog_ids:picks.map(x=>x.id)
+      });
+      if(error)throw error;
+    }
+
+    await loadRewardsAdmin();
+    await analyzeRewardEconomy();
+    status(st,"Progresión aplicada: 20 → 6 perfumes · 40 → 9 perfumes · 70 → 12 perfumes.");
+    alert("Progresión aplicada correctamente.\n\n20 Marcapáginas → 6 perfumes\n40 Marcapáginas → 9 perfumes\n70 Marcapáginas → 12 perfumes\n\nLos descuentos de 50 y 100 Marcapáginas no se han modificado.");
+  }catch(e){
+    console.error(e);
+    status(st,"No se pudo aplicar la progresión: "+(e.message||e),true);
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent="Aplicar progresión de perfumes";}
+  }
+}
+document.getElementById("applyRewardProgressionBtn")?.addEventListener("click",applyPreludeRewardOptionProgression);
 
 let rewardEconomyCache=[];
 

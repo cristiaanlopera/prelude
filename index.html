@@ -2004,10 +2004,31 @@ function checkoutPreparationFee(subtotal){
   if(threshold>0 && subtotal>=threshold)return 0;
   return fee;
 }
+function rewardDiscountPercent(reward){
+  const label=String(reward?.reward_label||"");
+  const match=label.match(/(\d+(?:[.,]\d+)?)\s*%/);
+  if(!match || !/descuento/i.test(label))return 0;
+  return Math.max(0,Math.min(100,Number(match[1].replace(",","."))||0));
+}
+function selectedDiscountReward(){
+  const selected=pendingRewards().filter(reward=>selectedRewardIds.has(reward.id));
+  const discounts=selected
+    .map(reward=>({reward,percent:rewardDiscountPercent(reward)}))
+    .filter(entry=>entry.percent>0)
+    .sort((a,b)=>b.percent-a.percent);
+  return discounts[0]||null;
+}
+function cartFinancials(){
+  const subtotal=cart.reduce((sum,item)=>sum+item.price*item.qty,0);
+  const preparationFee=checkoutPreparationFee(subtotal);
+  const discountReward=selectedDiscountReward();
+  const discountPercent=discountReward?.percent||0;
+  const discountAmount=Math.min(subtotal,subtotal*(discountPercent/100));
+  const finalTotal=Math.max(0,subtotal-discountAmount+preparationFee);
+  return {subtotal,preparationFee,discountReward,discountPercent,discountAmount,finalTotal};
+}
 function renderCart(){
-  let sub=cart.reduce((s,x)=>s+x.price*x.qty,0);
-  const preparationFee=checkoutPreparationFee(sub);
-  const finalTotal=sub+preparationFee;
+  const {subtotal:sub,preparationFee,discountReward,discountPercent,discountAmount,finalTotal}=cartFinancials();
   const freeFrom=Math.max(0,Number(PRELUDE_PREPARATION_FEE?.free_from||0));
   const availableRewards=pendingRewards();
 
@@ -2048,6 +2069,7 @@ function renderCart(){
     <div class="totals">
       <div class="row"><span>Subtotal</span><span>${euro.format(sub)}</span></div>
       <div class="row"><span>Preparación Prelude</span><span>${preparationFee>0?euro.format(preparationFee):"Gratis"}</span></div>
+      ${discountAmount>0?`<div class="row"><span>Descuento aplicado (${discountPercent}%)</span><span>−${euro.format(discountAmount)}</span></div>`:""}
       ${preparationFee>0&&freeFrom>0&&sub<freeFrom?`<div class="muted" style="margin:5px 0 8px">Preparación gratuita a partir de ${euro.format(freeFrom)}.</div>`:""}
       <div class="row grand"><span>Total</span><span>${euro.format(finalTotal)}</span></div>
     </div>
@@ -2082,18 +2104,30 @@ function renderCart(){
 
   document.querySelectorAll("[data-reward-id]").forEach(input=>{
     input.addEventListener("change",async()=>{
+      const rewardId=String(input.dataset.rewardId||"");
+      const reward=availableRewards.find(item=>String(item.id)===rewardId);
       if(input.checked){
-        selectedRewardIds.add(input.dataset.rewardId);
+        const percent=rewardDiscountPercent(reward);
+        if(percent>0){
+          /* Solo puede aplicarse un descuento por pedido. */
+          availableRewards.forEach(other=>{
+            if(String(other.id)!==rewardId && rewardDiscountPercent(other)>0){
+              selectedRewardIds.delete(String(other.id));
+            }
+          });
+        }
+        selectedRewardIds.add(rewardId);
         try{
-          const cfg=await fetchRewardChoiceConfig(String(input.dataset.rewardId));
+          const cfg=await fetchRewardChoiceConfig(rewardId);
           if(cfg?.choice_type==="choice"){
-            const saved=await fetchSavedRewardChoice(String(input.dataset.rewardId));
-            if(!saved?.selected?.length)await openRewardChoice(String(input.dataset.rewardId));
+            const saved=await fetchSavedRewardChoice(rewardId);
+            if(!saved?.selected?.length)await openRewardChoice(rewardId);
           }
         }catch(error){console.warn("Recompensa:",error);}
       }else{
-        selectedRewardIds.delete(input.dataset.rewardId);
+        selectedRewardIds.delete(rewardId);
       }
+      renderCart();
     });
   });
   setTimeout(()=>refreshClientRewardChoiceUI(true),0);
@@ -2151,9 +2185,7 @@ async function send(){
   }
 
   const selectedRewards=pendingRewards().filter(reward=>selectedRewardIds.has(reward.id));
-  const sub=cart.reduce((s,x)=>s+x.price*x.qty,0);
-  const preparationFee=checkoutPreparationFee(sub);
-  const finalTotal=sub+preparationFee;
+  const {subtotal:sub,preparationFee,discountPercent,discountAmount,finalTotal}=cartFinancials();
 
   let savedOrder=null;
   if(supabaseClient){
@@ -2194,6 +2226,7 @@ async function send(){
     "",
     `Subtotal: ${euro.format(sub)}`,
     `Preparación Prelude: ${preparationFee>0?euro.format(preparationFee):"Gratis"}`,
+    ...(discountAmount>0?[`Descuento aplicado (${discountPercent}%): -${euro.format(discountAmount)}`]:[]),
     ...(selectedRewards.length?[
       "",
       "Recompensas que deseo canjear",
