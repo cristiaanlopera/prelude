@@ -1,0 +1,18 @@
+PRELUDE · AGOTADO Y POCO STOCK
+
+1. En Supabase > SQL Editor > New query, ejecuta completo:
+   Prelude_Stock_Estados_Catalogo.sql
+
+2. Después sube a Netlify esta versión actualizada de la web.
+
+COMPORTAMIENTO
+- Publicado: venta normal.
+- Próximamente: se mantiene el comportamiento actual.
+- Agotado: visible en catálogo, con distintivo "Agotado" y sin posibilidad de añadir a la cesta.
+- Oculto: no aparece en el catálogo.
+- Poco stock: aparece automáticamente cuando el stock disponible es mayor que 0 e igual o inferior al umbral "Aviso bajo (ml)" configurado en Prelude Studio.
+- Stock 0 ml: aunque el estado siga siendo "Publicado", la web lo presenta automáticamente como "Agotado".
+
+DÓNDE SE GESTIONA
+- Prelude Studio > Catálogo: selector de estado, ahora también incluye "Agotado".
+- Prelude Studio > Stock: introduce "Disponible (ml)" y el umbral de "Aviso bajo (ml)".
