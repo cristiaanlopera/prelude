@@ -2885,6 +2885,568 @@ body.dark .prelude-sets-toggle:hover{
   }
 }
 
+
+/* =========================================================
+   PRELUDE SETS · TARJETAS MÓVILES MÁS COMPACTAS
+   ========================================================= */
+@media(max-width:760px){
+  .prelude-set-card{
+    flex:0 0 min(62vw,270px)!important;
+    width:min(62vw,270px)!important;
+    min-width:min(62vw,270px)!important;
+    padding:14px 13px 13px!important;
+    border-radius:15px!important;
+  }
+
+  .prelude-set-card h3{
+    font-size:22px!important;
+    line-height:1.02!important;
+    margin:5px 0 7px!important;
+  }
+
+  .prelude-set-card > p{
+    font-size:10.5px!important;
+    line-height:1.38!important;
+    margin-bottom:8px!important;
+  }
+
+  .prelude-set-sub{
+    font-size:7px!important;
+    letter-spacing:.12em!important;
+  }
+
+  .prelude-set-quote{
+    font-size:9px!important;
+    line-height:1.25!important;
+    margin:8px 0 10px!important;
+  }
+
+  .prelude-set-card .prelude-pack-meta{
+    margin-top:9px!important;
+    padding-top:8px!important;
+    font-size:9px!important;
+  }
+
+  .prelude-set-benefit{
+    min-height:34px!important;
+    padding:6px 7px!important;
+    margin-top:6px!important;
+  }
+
+  .prelude-set-benefit strong,
+  .prelude-set-benefit b{
+    font-size:7.5px!important;
+    line-height:1.15!important;
+  }
+
+  .prelude-set-card > button{
+    min-height:38px!important;
+    margin-top:8px!important;
+    padding:8px 9px!important;
+    font-size:10px!important;
+    border-radius:10px!important;
+  }
+
+  .prelude-set-chip,
+  .prelude-set-card .prelude-pack-chip{
+    top:9px!important;
+    right:9px!important;
+    font-size:6.5px!important;
+    padding:4px 6px!important;
+  }
+
+  .prelude-journey-hours{
+    font-size:6px!important;
+    padding:5px 0!important;
+    margin:4px 0 6px!important;
+  }
+
+  .prelude-sets-grid,
+  .prelude-packs-grid{
+    gap:9px!important;
+    padding-bottom:7px!important;
+  }
+}
+
+@media(max-width:390px){
+  .prelude-set-card{
+    flex-basis:min(66vw,250px)!important;
+    width:min(66vw,250px)!important;
+    min-width:min(66vw,250px)!important;
+  }
+}
+
+
+/* =========================================================
+   PRELUDE SETS · DIFERENCIAR CATÁLOGO VS SELECCIÓN
+   ========================================================= */
+
+/* Tarjeta seleccionada dentro del catálogo */
+.prelude-set-catalog-card.selected{
+  box-shadow:0 0 0 2px var(--set-accent,#171716)!important;
+  border-color:var(--set-accent,#171716)!important;
+}
+
+/* Sección final de los 5 seleccionados */
+.prelude-set-selected-section{
+  margin-top:16px;
+  padding:14px;
+  border:1px solid color-mix(in srgb,var(--set-accent,#171716) 42%,transparent);
+  border-radius:18px;
+  background:color-mix(in srgb,var(--set-accent,#171716) 7%,#fff);
+}
+.prelude-set-selected-head{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+.prelude-set-selected-head span{
+  display:block;
+  font-size:8px;
+  letter-spacing:.12em;
+  opacity:.55;
+}
+.prelude-set-selected-head strong{
+  display:block;
+  margin-top:2px;
+  font:400 20px Georgia,"Times New Roman",serif;
+}
+.prelude-set-selected-head small{
+  border:1px solid color-mix(in srgb,var(--set-accent,#171716) 38%,transparent);
+  color:var(--set-accent,#171716);
+  border-radius:999px;
+  padding:5px 8px;
+  font-size:9px;
+  background:color-mix(in srgb,var(--set-accent,#171716) 8%,#fff);
+}
+
+/* Las 5 tarjetas finales llevan contorno del color del Set */
+.prelude-set-selected-section .prelude-set-product{
+  border:2px solid color-mix(in srgb,var(--set-accent,#171716) 62%,#fff)!important;
+  box-shadow:0 6px 16px color-mix(in srgb,var(--set-accent,#171716) 10%,transparent)!important;
+}
+
+/* Feedback al completar 5/5 */
+@keyframes preludeSelectedFocus{
+  0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--set-accent,#171716) 24%,transparent)}
+  50%{box-shadow:0 0 0 5px color-mix(in srgb,var(--set-accent,#171716) 12%,transparent)}
+  100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--set-accent,#171716) 0%,transparent)}
+}
+.prelude-set-selected-section.selected-focus{
+  animation:preludeSelectedFocus .8s ease both;
+}
+
+/* Accent por Set */
+#preludeSetOverlay.active-set-five{--set-accent:#8f8b81}
+#preludeSetOverlay.active-set-discovery{--set-accent:#78966f}
+#preludeSetOverlay.active-set-journey{--set-accent:#b38235}
+#preludeSetOverlay.active-set-match{--set-accent:#658baa}
+#preludeSetOverlay.active-set-curator{--set-accent:#8b5364}
+
+/* Dark mode */
+body.dark .prelude-set-selected-section{
+  background:color-mix(in srgb,var(--set-accent,#fff) 14%,#1f1f1e)!important;
+  border-color:color-mix(in srgb,var(--set-accent,#fff) 55%,transparent)!important;
+}
+body.dark .prelude-set-selected-head small{
+  background:color-mix(in srgb,var(--set-accent,#fff) 16%,#1f1f1e)!important;
+  color:#fff!important;
+}
+body.dark .prelude-set-selected-section .prelude-set-product{
+  border-color:color-mix(in srgb,var(--set-accent,#fff) 72%,#fff)!important;
+}
+
+/* Mobile: separation still clear without taking too much space */
+@media(max-width:760px){
+  .prelude-set-selected-section{
+    margin-top:12px!important;
+    padding:11px!important;
+    border-radius:16px!important;
+  }
+  .prelude-set-selected-head strong{
+    font-size:18px!important;
+  }
+  .prelude-set-selected-section .prelude-set-products{
+    margin-top:8px!important;
+  }
+}
+
+
+/* =========================================================
+   PRELUDE · RECOMENDADOR OLFACTIVO · IMÁGENES GRANDES
+   ========================================================= */
+
+/* Resultado principal */
+.advisor-result-card,
+.prelude-advisor-result,
+.prelude-recommender-result{
+  overflow:hidden!important;
+}
+
+.advisor-result-card img,
+.prelude-advisor-result img,
+.prelude-recommender-result img{
+  width:100%!important;
+  height:340px!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  display:block!important;
+}
+
+/* Alternativas / también podrían encajar contigo */
+.advisor-alt-card,
+.prelude-advisor-alt,
+.prelude-recommender-alt{
+  overflow:hidden!important;
+}
+
+.advisor-alt-card img,
+.prelude-advisor-alt img,
+.prelude-recommender-alt img{
+  width:100%!important;
+  height:250px!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  display:block!important;
+}
+
+/* =========================================================
+   PRELUDE · POPUPS MÓVILES · SCROLL ROBUSTO
+   ========================================================= */
+@media(max-width:760px){
+
+  /* Advisor overlay/modal */
+  #advisorOverlay,
+  .advisor-overlay,
+  .prelude-advisor-overlay{
+    position:fixed!important;
+    inset:0!important;
+    padding:0!important;
+    align-items:flex-end!important;
+    overflow:hidden!important;
+    overscroll-behavior:none!important;
+  }
+
+  #advisorOverlay .advisor-modal,
+  .advisor-overlay .advisor-modal,
+  .prelude-advisor-modal{
+    width:100%!important;
+    max-width:none!important;
+    height:calc(100dvh - 18px)!important;
+    max-height:calc(100dvh - 18px)!important;
+    margin:0!important;
+    border-radius:22px 22px 0 0!important;
+    overflow:hidden!important;
+    display:flex!important;
+    flex-direction:column!important;
+    padding:0!important;
+  }
+
+  /* Cabecera SIEMPRE visible */
+  #advisorOverlay .advisor-head,
+  .advisor-modal .advisor-head,
+  .prelude-advisor-modal .advisor-head,
+  .advisor-modal-head{
+    position:sticky!important;
+    top:0!important;
+    z-index:30!important;
+    flex:0 0 auto!important;
+    padding:16px 54px 12px 16px!important;
+    background:var(--card,#f4f1eb)!important;
+    border-bottom:1px solid rgba(0,0,0,.08)!important;
+  }
+
+  /* Botón cerrar siempre accesible */
+  #advisorOverlay .advisor-close,
+  .advisor-modal .advisor-close,
+  .prelude-advisor-close,
+  .advisor-modal-close{
+    position:absolute!important;
+    top:12px!important;
+    right:12px!important;
+    width:38px!important;
+    height:38px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    z-index:50!important;
+    margin:0!important;
+    border-radius:50%!important;
+    background:rgba(255,255,255,.84)!important;
+    border:1px solid rgba(0,0,0,.10)!important;
+  }
+
+  /* Contenido scrollable del advisor */
+  #advisorOverlay .advisor-body,
+  .advisor-modal .advisor-body,
+  .prelude-advisor-modal .advisor-body,
+  .advisor-content,
+  .advisor-steps,
+  .advisor-results{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior:contain!important;
+    padding-bottom:calc(110px + env(safe-area-inset-bottom))!important;
+    scroll-padding-bottom:calc(110px + env(safe-area-inset-bottom))!important;
+  }
+
+  /* Fallback cuando el markup actual no tiene body separado */
+  #advisorOverlay .advisor-modal:not(:has(.advisor-body)),
+  .advisor-overlay .advisor-modal:not(:has(.advisor-body)),
+  .prelude-advisor-modal:not(:has(.advisor-body)){
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior:contain!important;
+    padding-bottom:calc(110px + env(safe-area-inset-bottom))!important;
+  }
+
+  /* Resultado principal: imagen a sangre, sin márgenes laterales */
+  .advisor-result-card,
+  .prelude-advisor-result,
+  .prelude-recommender-result{
+    margin:10px 0 14px!important;
+    border-radius:17px!important;
+  }
+
+  .advisor-result-card img,
+  .prelude-advisor-result img,
+  .prelude-recommender-result img{
+    height:270px!important;
+  }
+
+  /* Alternativas compactas en dos columnas si la estructura lo permite */
+  .advisor-alt-grid,
+  .prelude-advisor-alts,
+  .prelude-recommender-alts{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:10px!important;
+  }
+
+  .advisor-alt-card,
+  .prelude-advisor-alt,
+  .prelude-recommender-alt{
+    margin:0!important;
+    border-radius:14px!important;
+  }
+
+  .advisor-alt-card img,
+  .prelude-advisor-alt img,
+  .prelude-recommender-alt img{
+    height:170px!important;
+  }
+
+  /* Texto alternativo más compacto */
+  .advisor-alt-card h3,
+  .prelude-advisor-alt h3,
+  .prelude-recommender-alt h3{
+    font-size:14px!important;
+    line-height:1.08!important;
+  }
+
+  /* CTA con espacio final real */
+  .advisor-actions,
+  .prelude-advisor-actions{
+    padding-bottom:calc(24px + env(safe-area-inset-bottom))!important;
+    margin-bottom:0!important;
+  }
+
+  /* Prelude Set modal: misma solución de cabecera/scroll */
+  .prelude-set-modal{
+    height:calc(100dvh - 18px)!important;
+    max-height:calc(100dvh - 18px)!important;
+    display:flex!important;
+    flex-direction:column!important;
+    overflow:hidden!important;
+  }
+
+  .prelude-set-modal-head{
+    position:sticky!important;
+    top:0!important;
+    z-index:30!important;
+    flex:0 0 auto!important;
+    background:#f5f2ec!important;
+    border-bottom:1px solid rgba(0,0,0,.08)!important;
+    padding:16px 52px 12px 16px!important;
+  }
+
+  .prelude-set-modal-close{
+    position:absolute!important;
+    top:11px!important;
+    right:11px!important;
+    width:38px!important;
+    height:38px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    z-index:50!important;
+    border-radius:50%!important;
+    background:rgba(255,255,255,.88)!important;
+    border:1px solid rgba(0,0,0,.10)!important;
+  }
+
+  #preludeSetModalBody{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior:contain!important;
+    padding:8px 16px calc(120px + env(safe-area-inset-bottom))!important;
+    scroll-padding-bottom:calc(120px + env(safe-area-inset-bottom))!important;
+  }
+
+  /* Dark mode close/head */
+  body.dark .prelude-set-modal-head,
+  body.dark .advisor-modal-head,
+  body.dark .advisor-modal .advisor-head{
+    background:#1f1f1e!important;
+    border-color:rgba(255,255,255,.10)!important;
+  }
+  body.dark .prelude-set-modal-close,
+  body.dark .advisor-close,
+  body.dark .advisor-modal-close{
+    background:rgba(255,255,255,.10)!important;
+    color:#fff!important;
+    border-color:rgba(255,255,255,.14)!important;
+  }
+}
+
+
+/* =========================================================
+   PRELUDE · ASESOR CON 5 RECOMENDACIONES + THE MATCH
+   ========================================================= */
+.pa2-alt-title{
+  margin-top:18px;
+  font:400 19px Georgia,"Times New Roman",serif;
+}
+
+.pa2-match-set{
+  margin:20px 0 12px;
+  padding:18px;
+  border:1px solid rgba(101,139,170,.34);
+  border-radius:18px;
+  background:linear-gradient(145deg,rgba(160,180,198,.16),rgba(255,255,255,.70));
+}
+.pa2-match-set h3{
+  margin:5px 0 6px;
+  font:400 23px Georgia,"Times New Roman",serif;
+}
+.pa2-match-set p{
+  margin:0;
+  max-width:620px;
+  font-size:11px;
+  line-height:1.5;
+  color:rgba(0,0,0,.58);
+}
+.pa2-match-set button{
+  width:100%;
+  margin-top:13px;
+  padding:11px 15px;
+  border:0;
+  border-radius:999px;
+  background:#171716;
+  color:#fff;
+  font:inherit;
+  font-size:11px;
+  cursor:pointer;
+}
+
+/* 4 recomendaciones secundarias: cuadrícula más clara en PC */
+@media(min-width:761px){
+  .pa2-alts{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:12px!important;
+  }
+}
+
+/* Dark mode */
+body.dark .pa2-match-set{
+  background:linear-gradient(145deg,rgba(91,119,143,.30),rgba(31,31,30,.92))!important;
+  border-color:rgba(129,170,203,.40)!important;
+}
+body.dark .pa2-match-set h3{
+  color:#fff!important;
+}
+body.dark .pa2-match-set p{
+  color:rgba(255,255,255,.64)!important;
+}
+body.dark .pa2-match-set button{
+  background:#f1eee8!important;
+  color:#171716!important;
+}
+
+/* Móvil */
+@media(max-width:760px){
+  .pa2-alt-title{
+    margin-top:14px!important;
+    font-size:18px!important;
+  }
+
+  /* Las cuatro alternativas quedan 2 x 2 */
+  .pa2-alts{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+  }
+  .pa2-alt{
+    min-width:0!important;
+    width:100%!important;
+    margin:0!important;
+    overflow:hidden!important;
+    border-radius:14px!important;
+  }
+  .pa2-alt img{
+    width:100%!important;
+    height:165px!important;
+    object-fit:cover!important;
+    object-position:center!important;
+    margin:0!important;
+    padding:0!important;
+    display:block!important;
+  }
+  .pa2-alt-body{
+    padding:9px!important;
+  }
+  .pa2-alt-body strong{
+    font-size:13px!important;
+    line-height:1.08!important;
+  }
+  .pa2-alt-body small{
+    font-size:9px!important;
+    line-height:1.25!important;
+  }
+
+  .pa2-match-set{
+    margin:15px 0 10px!important;
+    padding:14px!important;
+    border-radius:16px!important;
+  }
+  .pa2-match-set h3{
+    font-size:19px!important;
+    line-height:1.08!important;
+  }
+  .pa2-match-set p{
+    font-size:10px!important;
+  }
+  .pa2-match-set button{
+    min-height:45px!important;
+    font-size:12px!important;
+  }
+}
+
 </style>
 </head>
 <body><div class="watermark-brush one"></div><div class="watermark-brush two"></div>
@@ -3186,8 +3748,18 @@ Descubrir colección
     <div class="pa2-results" id="pa2Results">
       <div class="pa2-kicker">Tu Prelude</div>
       <div id="pa2MainResult"></div>
-      <div style="margin-top:18px;font:400 19px Georgia,'Times New Roman',serif">También podrían encajar contigo</div>
+      <div class="pa2-alt-title">Otras cuatro fragancias que encajan contigo</div>
       <div class="pa2-alts" id="pa2AltResults"></div>
+
+      <section class="pa2-match-set">
+        <div class="pa2-match-set-copy">
+          <div class="pa2-kicker">PRELUDE SETS · THE MATCH</div>
+          <h3>Convierte tus recomendaciones en un Set</h3>
+          <p>Reúne tus cinco mayores afinidades en un Prelude Set personalizado de 5 × 2 ml.</p>
+        </div>
+        <button type="button" onclick="PreludeAdvisor.openMatchSet()">Crear mi Set personalizado</button>
+      </section>
+
       <div class="pa2-method">La afinidad compara tus respuestas con el perfil interno de cada fragancia de la colección. Es una orientación para descubrir, no una medición universal del perfume.</div>
       <div class="pa2-nav"><button type="button" onclick="PreludeAdvisor.restart()">Volver a empezar</button></div>
     </div>
@@ -6017,7 +6589,7 @@ window.PreludeAdvisor=(function(){
     }catch(e){ console.warn("Prelude: no se pudo calcular el recomendador.",e); }
     return list;
   }
-  function rank(){ return rankN(3); }
+  function rank(){ return rankN(5); }
 
   function render(){
     document.querySelectorAll(".pa2-step").forEach(step=>{
@@ -6135,6 +6707,22 @@ window.PreludeAdvisor=(function(){
     else document.getElementById("catalog")?.scrollIntoView({behavior:"smooth"});
   }
 
+  function openMatchSet(){
+    const matches=rankN(5);
+    if(matches.length<5){
+      if(typeof showToast==="function") showToast("Necesitamos cinco fragancias disponibles para crear The Match.");
+      return;
+    }
+    close();
+    setTimeout(()=>{
+      if(window.PreludeSetsShop?.open){
+        window.PreludeSetsShop.open("match");
+      }else if(typeof openPreludeSet==="function"){
+        openPreludeSet("match");
+      }
+    },180);
+  }
+
   function restart(){
     state.step=0;
     state.answers={mood:null,moment:null,presence:null,style:null};
@@ -6147,7 +6735,7 @@ window.PreludeAdvisor=(function(){
 
   document.addEventListener("keydown",e=>{ if(e.key==="Escape" && el("pa2Overlay")?.classList.contains("open")) close(); });
 
-  return {open,close,overlayClick,select,next,back,restart,openProduct,getMatches:(n=5)=>rankN(n),hasProfile:()=>Object.values(state.answers).every(Boolean)};
+  return {open,close,overlayClick,select,next,back,restart,openProduct,openMatchSet,getMatches:(n=5)=>rankN(n),hasProfile:()=>Object.values(state.answers).every(Boolean)};
 })();
 </script>
 
@@ -6230,8 +6818,25 @@ function selectedPickerProducts(){
 function updateSetPickerPreview(){
   const body=document.getElementById("preludeSetPickerPreview");if(!body)return;
   const selected=selectedPickerProducts(),cfg=preludeSetConfig(activePreludeSetId);
-  if(selected.length!==5||new Set(selected.map(p=>p.name)).size!==5){body.innerHTML='<div class="prelude-set-warning">Elige cinco fragancias diferentes para completar The Five.</div>';return;}
-  body.innerHTML=setProductCardsHtml(selected)+setSummaryHtml(selected,cfg)+`<div class="prelude-set-actions set-actions-reveal"><button class="primary-set-action" type="button" onclick="PreludeSetsShop.addSelected()">Añadir Set a la cesta</button></div>`;
+  if(selected.length!==5||new Set(selected.map(p=>p.name)).size!==5){
+    body.innerHTML='<div class="prelude-set-warning">Elige cinco fragancias diferentes para completar The Five.</div>';
+    return;
+  }
+  body.innerHTML=`
+    <section class="prelude-set-selected-section" id="preludeSetSelectedSection">
+      <div class="prelude-set-selected-head">
+        <div>
+          <span>TU SELECCIÓN</span>
+          <strong>Tus 5 Preludes</strong>
+        </div>
+        <small>5/5</small>
+      </div>
+      ${setProductCardsHtml(selected)}
+      ${setSummaryHtml(selected,cfg)}
+      <div class="prelude-set-actions set-actions-reveal">
+        <button class="primary-set-action" type="button" onclick="PreludeSetsShop.addSelected()">Añadir Set a la cesta</button>
+      </div>
+    </section>`;
 }
 function curatedSetProducts(cfg){
   return (Array.isArray(cfg.product_ids)?cfg.product_ids:[]).map(productByCatalogId).filter(Boolean);
@@ -6271,7 +6876,21 @@ function toggleSetCatalogProduct(card){
       setTimeout(()=>pill.classList.remove("is-updating"),320);
     }
   }
+
   updateSetPickerPreview();
+
+  if(count===5){
+    setTimeout(()=>{
+      const section=document.getElementById("preludeSetSelectedSection");
+      if(section){
+        section.scrollIntoView({behavior:"smooth",block:"start"});
+        section.classList.remove("selected-focus");
+        void section.offsetWidth;
+        section.classList.add("selected-focus");
+        setTimeout(()=>section.classList.remove("selected-focus"),900);
+      }
+    },120);
+  }
 }
 function openPreludeSet(id){
   const cfg=preludeSetConfig(id),meta=PRELUDE_SET_PUBLIC_META[id]; if(!meta||cfg.active===false)return;
@@ -6283,6 +6902,11 @@ function openPreludeSet(id){
     setTimeout(()=>sourceCard.classList.remove("set-opening"),360);
   }
   activePreludeSetId=id;
+  const overlayRoot=document.getElementById("preludeSetOverlay");
+  if(overlayRoot){
+    overlayRoot.classList.remove("active-set-five","active-set-discovery","active-set-journey","active-set-match","active-set-curator");
+    overlayRoot.classList.add(`active-set-${id}`);
+  }
   const overlay=document.getElementById("preludeSetOverlay"),body=document.getElementById("preludeSetModalBody");
   document.getElementById("preludeSetModalKicker").textContent=meta.kicker;
   document.getElementById("preludeSetModalTitle").textContent=meta.name;
@@ -6385,6 +7009,44 @@ const PreludeSetsToggle={
       setTimeout(resetPreludeSetScroll,60);
     }
   },true);
+})();
+</script>
+<script>
+/* PRELUDE · OVERLAY MOBILE SCROLL SAFETY */
+(function(){
+  function activeScrollable(overlay){
+    return overlay?.querySelector(
+      "#preludeSetModalBody,.advisor-body,.advisor-content,.advisor-steps,.advisor-results,.prelude-advisor-modal"
+    ) || overlay?.querySelector(".prelude-set-modal,.advisor-modal");
+  }
+
+  function resetOverlayScroll(overlay){
+    if(window.innerWidth>760 || !overlay)return;
+    requestAnimationFrame(()=>{
+      const scroller=activeScrollable(overlay);
+      if(scroller)scroller.scrollTop=0;
+    });
+  }
+
+  const observer=new MutationObserver(()=>{
+    document.querySelectorAll(
+      "#preludeSetOverlay.open,#advisorOverlay.open,.advisor-overlay.open,.prelude-advisor-overlay.open"
+    ).forEach(resetOverlayScroll);
+  });
+  observer.observe(document.body,{subtree:true,attributes:true,attributeFilter:["class","aria-hidden"]});
+
+  /* On mobile, ensure touch move stays inside the popup rather than the page behind */
+  document.addEventListener("touchmove",function(e){
+    if(window.innerWidth>760)return;
+    const overlay=e.target.closest(
+      "#preludeSetOverlay.open,#advisorOverlay.open,.advisor-overlay.open,.prelude-advisor-overlay.open"
+    );
+    if(!overlay)return;
+    const scroller=e.target.closest(
+      "#preludeSetModalBody,.advisor-body,.advisor-content,.advisor-steps,.advisor-results,.prelude-advisor-modal,.prelude-set-modal,.advisor-modal"
+    );
+    if(!scroller)e.preventDefault();
+  },{passive:false});
 })();
 </script>
 </body></html>
