@@ -4359,6 +4359,208 @@ body.dark #preludeSetOverlay .prelude-set-selected-section{
   }
 }
 
+
+/* =========================================================
+   PRELUDE SETS · MÓVIL EQUILIBRADO
+   2 columnas + quinto perfume destacado
+   ========================================================= */
+@media(max-width:760px){
+
+  /* Para Sets preseleccionados: Discovery, Journey y Curator */
+  #preludeSetOverlay.active-set-discovery .prelude-set-products,
+  #preludeSetOverlay.active-set-journey .prelude-set-products,
+  #preludeSetOverlay.active-set-curator .prelude-set-products{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    margin:8px 0 10px!important;
+    overflow:visible!important;
+  }
+
+  #preludeSetOverlay.active-set-discovery .prelude-set-product,
+  #preludeSetOverlay.active-set-journey .prelude-set-product,
+  #preludeSetOverlay.active-set-curator .prelude-set-product{
+    width:auto!important;
+    min-width:0!important;
+    border-radius:14px!important;
+    overflow:hidden!important;
+  }
+
+  /* Quinto perfume: ocupa todo el ancho */
+  #preludeSetOverlay.active-set-discovery .prelude-set-product:nth-child(5),
+  #preludeSetOverlay.active-set-journey .prelude-set-product:nth-child(5),
+  #preludeSetOverlay.active-set-curator .prelude-set-product:nth-child(5){
+    grid-column:1 / -1!important;
+    display:grid!important;
+    grid-template-columns:42% 1fr!important;
+    align-items:stretch!important;
+  }
+
+  /* Imágenes más grandes que en la versión anterior */
+  #preludeSetOverlay.active-set-discovery .prelude-set-product img,
+  #preludeSetOverlay.active-set-journey .prelude-set-product img,
+  #preludeSetOverlay.active-set-curator .prelude-set-product img{
+    width:100%!important;
+    height:145px!important;
+    object-fit:cover!important;
+    display:block!important;
+  }
+
+  #preludeSetOverlay.active-set-discovery .prelude-set-product:nth-child(5) img,
+  #preludeSetOverlay.active-set-journey .prelude-set-product:nth-child(5) img,
+  #preludeSetOverlay.active-set-curator .prelude-set-product:nth-child(5) img{
+    height:118px!important;
+  }
+
+  #preludeSetOverlay.active-set-discovery .prelude-set-product-body,
+  #preludeSetOverlay.active-set-journey .prelude-set-product-body,
+  #preludeSetOverlay.active-set-curator .prelude-set-product-body{
+    padding:8px 9px 9px!important;
+    min-height:0!important;
+  }
+
+  #preludeSetOverlay.active-set-discovery .prelude-set-product-body strong,
+  #preludeSetOverlay.active-set-journey .prelude-set-product-body strong,
+  #preludeSetOverlay.active-set-curator .prelude-set-product-body strong{
+    display:block!important;
+    font-size:13px!important;
+    line-height:1.08!important;
+    margin-bottom:2px!important;
+  }
+
+  #preludeSetOverlay.active-set-discovery .prelude-set-product-body small,
+  #preludeSetOverlay.active-set-journey .prelude-set-product-body small,
+  #preludeSetOverlay.active-set-curator .prelude-set-product-body small{
+    display:block!important;
+    font-size:9px!important;
+    line-height:1.2!important;
+  }
+
+  /* Quinto: texto centrado verticalmente */
+  #preludeSetOverlay.active-set-discovery .prelude-set-product:nth-child(5) .prelude-set-product-body,
+  #preludeSetOverlay.active-set-journey .prelude-set-product:nth-child(5) .prelude-set-product-body,
+  #preludeSetOverlay.active-set-curator .prelude-set-product:nth-child(5) .prelude-set-product-body{
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    padding:10px 12px!important;
+  }
+
+  /* Resumen económico 2x2, compacto */
+  #preludeSetOverlay.active-set-discovery .prelude-set-summary,
+  #preludeSetOverlay.active-set-journey .prelude-set-summary,
+  #preludeSetOverlay.active-set-curator .prelude-set-summary{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+    margin:8px 0 10px!important;
+  }
+
+  #preludeSetOverlay.active-set-discovery .prelude-set-summary > div,
+  #preludeSetOverlay.active-set-journey .prelude-set-summary > div,
+  #preludeSetOverlay.active-set-curator .prelude-set-summary > div{
+    min-height:62px!important;
+    padding:9px 10px!important;
+    border-radius:13px!important;
+  }
+
+  #preludeSetOverlay.active-set-discovery .prelude-set-summary span,
+  #preludeSetOverlay.active-set-journey .prelude-set-summary span,
+  #preludeSetOverlay.active-set-curator .prelude-set-summary span{
+    font-size:8px!important;
+  }
+
+  #preludeSetOverlay.active-set-discovery .prelude-set-summary strong,
+  #preludeSetOverlay.active-set-journey .prelude-set-summary strong,
+  #preludeSetOverlay.active-set-curator .prelude-set-summary strong{
+    font-size:14px!important;
+  }
+
+  /* Botón más contenido */
+  #preludeSetOverlay.active-set-discovery .prelude-set-actions,
+  #preludeSetOverlay.active-set-journey .prelude-set-actions,
+  #preludeSetOverlay.active-set-curator .prelude-set-actions{
+    margin-top:6px!important;
+    padding:0!important;
+  }
+
+  #preludeSetOverlay.active-set-discovery [data-set-add],
+  #preludeSetOverlay.active-set-journey [data-set-add],
+  #preludeSetOverlay.active-set-curator [data-set-add]{
+    width:100%!important;
+    min-height:44px!important;
+    padding:9px 14px!important;
+    font-size:12px!important;
+    border-radius:999px!important;
+  }
+
+  /* Reducir el hueco inferior del modal */
+  #preludeSetOverlay.active-set-discovery #preludeSetModalBody,
+  #preludeSetOverlay.active-set-journey #preludeSetModalBody,
+  #preludeSetOverlay.active-set-curator #preludeSetModalBody{
+    padding-bottom:calc(24px + env(safe-area-inset-bottom))!important;
+  }
+}
+
+/* Móviles muy estrechos */
+@media(max-width:390px){
+  #preludeSetOverlay.active-set-discovery .prelude-set-product img,
+  #preludeSetOverlay.active-set-journey .prelude-set-product img,
+  #preludeSetOverlay.active-set-curator .prelude-set-product img{
+    height:132px!important;
+  }
+
+  #preludeSetOverlay.active-set-discovery .prelude-set-product:nth-child(5) img,
+  #preludeSetOverlay.active-set-journey .prelude-set-product:nth-child(5) img,
+  #preludeSetOverlay.active-set-curator .prelude-set-product:nth-child(5) img{
+    height:108px!important;
+  }
+}
+
+
+/* PRELUDE SETS · MÓVIL · LOS 5 PERFUMES DEL MISMO TAMAÑO */
+@media(max-width:760px){
+  #preludeSetOverlay.active-set-discovery .prelude-set-product:nth-child(5),
+  #preludeSetOverlay.active-set-journey .prelude-set-product:nth-child(5),
+  #preludeSetOverlay.active-set-curator .prelude-set-product:nth-child(5){
+    grid-column:auto!important;
+    display:block!important;
+    grid-template-columns:none!important;
+  }
+
+  #preludeSetOverlay.active-set-discovery .prelude-set-product:nth-child(5) img,
+  #preludeSetOverlay.active-set-journey .prelude-set-product:nth-child(5) img,
+  #preludeSetOverlay.active-set-curator .prelude-set-product:nth-child(5) img{
+    width:100%!important;
+    height:145px!important;
+    object-fit:cover!important;
+  }
+
+  #preludeSetOverlay.active-set-discovery .prelude-set-product:nth-child(5) .prelude-set-product-body,
+  #preludeSetOverlay.active-set-journey .prelude-set-product:nth-child(5) .prelude-set-product-body,
+  #preludeSetOverlay.active-set-curator .prelude-set-product:nth-child(5) .prelude-set-product-body{
+    display:block!important;
+    padding:8px 9px 9px!important;
+  }
+}
+@media(max-width:390px){
+  #preludeSetOverlay.active-set-discovery .prelude-set-product:nth-child(5) img,
+  #preludeSetOverlay.active-set-journey .prelude-set-product:nth-child(5) img,
+  #preludeSetOverlay.active-set-curator .prelude-set-product:nth-child(5) img{
+    height:132px!important;
+  }
+}
+
+
+/* PRELUDE SETS · SCROLL MÓVIL SIMPLE Y ESTABLE */
+@media(max-width:760px){
+  #preludeSetModalBody{
+    scroll-behavior:auto!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+  }
+}
+
 </style>
 </head>
 <body><div class="watermark-brush one"></div><div class="watermark-brush two"></div>
@@ -7773,35 +7975,36 @@ function toggleSetCatalogProduct(card){
     card.classList.remove("set-just-selected");
     void card.offsetWidth;
     card.classList.add("set-just-selected");
-    setTimeout(()=>card.classList.remove("set-just-selected"),360);
+    setTimeout(()=>card.classList.remove("set-just-selected"),300);
   }
 
   const count=document.querySelectorAll(".prelude-set-catalog-card.selected").length;
   const countEl=document.getElementById("preludeSetSelectedCount");
-  if(countEl){
-    countEl.textContent=count;
-    const pill=countEl.closest(".prelude-set-picker-count");
-    if(pill){
-      pill.classList.remove("is-updating");
-      void pill.offsetWidth;
-      pill.classList.add("is-updating");
-      setTimeout(()=>pill.classList.remove("is-updating"),320);
-    }
-  }
+  if(countEl) countEl.textContent=count;
 
   updateSetPickerPreview();
 
+  /* Móvil: una sola acción, sin animación ni observers.
+     Esperamos únicamente a que el bloque final exista en el DOM. */
   if(count===5){
-    setTimeout(()=>{
-      const section=document.getElementById("preludeSetSelectedSection");
-      if(section){
-        section.scrollIntoView({behavior:"smooth",block:"start"});
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        const section=document.getElementById("preludeSetSelectedSection");
+        const scroller=document.getElementById("preludeSetModalBody");
+        if(!section||!scroller)return;
+
+        const sr=section.getBoundingClientRect();
+        const cr=scroller.getBoundingClientRect();
+        const target=Math.max(0,scroller.scrollTop+(sr.top-cr.top)-8);
+
+        scroller.scrollTop=target;
+
         section.classList.remove("selected-focus");
         void section.offsetWidth;
         section.classList.add("selected-focus");
-        setTimeout(()=>section.classList.remove("selected-focus"),900);
-      }
-    },120);
+        setTimeout(()=>section.classList.remove("selected-focus"),500);
+      });
+    });
   }
 }
 function openPreludeSet(id){
@@ -7904,25 +8107,7 @@ const PreludeSetsToggle={
   }
 };
 </script>
-<script>
-/* PRELUDE · MOBILE SET MODAL SCROLL SAFETY */
-(function(){
-  function resetPreludeSetScroll(){
-    if(window.innerWidth>760)return;
-    requestAnimationFrame(()=>{
-      const modal=document.querySelector(".prelude-set-overlay.open .prelude-set-modal");
-      const body=modal && modal.querySelector(".prelude-set-modal-body");
-      if(body) body.scrollTop=0;
-      else if(modal) modal.scrollTop=0;
-    });
-  }
-  document.addEventListener("click",function(e){
-    if(e.target.closest("[data-prelude-set], .prelude-set-card, .primary-set-action")){
-      setTimeout(resetPreludeSetScroll,60);
-    }
-  },true);
-})();
-</script>
+
 <script>
 /* PRELUDE · OVERLAY MOBILE SCROLL SAFETY */
 (function(){
@@ -8245,63 +8430,6 @@ const PreludeSetsToggle={
 </script>
 
 
-<script id="preludeFiveAutoscrollSafe">
-(function(){
-  let previous=0;
-  let token=0;
 
-  function goToSelected(){
-    const section=document.getElementById("preludeSetSelectedSection");
-    const scroller=document.getElementById("preludeSetModalBody");
-    if(!section||!scroller)return;
-
-    const myToken=++token;
-
-    function targetTop(){
-      const sr=section.getBoundingClientRect();
-      const cr=scroller.getBoundingClientRect();
-      return Math.max(0,scroller.scrollTop+(sr.top-cr.top)-10);
-    }
-
-    /* Primer salto: inmediatamente después de que el DOM esté pintado. */
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      if(myToken!==token)return;
-      const top=targetTop();
-      try{scroller.scrollTo({top,behavior:"smooth"});}
-      catch(_){scroller.scrollTop=top;}
-
-      section.classList.remove("selected-focus");
-      void section.offsetWidth;
-      section.classList.add("selected-focus");
-    }));
-
-    /* iOS/Safari puede cancelar scroll suave al terminar un repaint.
-       Esta segunda comprobación garantiza que el usuario acabe en la zona 5/5. */
-    setTimeout(()=>{
-      if(myToken!==token)return;
-      const sr=section.getBoundingClientRect();
-      const cr=scroller.getBoundingClientRect();
-      const visible=sr.top>=cr.top-20 && sr.top<=cr.top+Math.min(180,cr.height*.28);
-      if(!visible){
-        const top=targetTop();
-        try{scroller.scrollTo({top,behavior:"smooth"});}
-        catch(_){scroller.scrollTop=top;}
-      }
-    },520);
-  }
-
-  const obs=new MutationObserver(function(){
-    const countEl=document.getElementById("preludeSetSelectedCount");
-    if(!countEl){previous=0;return;}
-    const now=Number(String(countEl.textContent||"0").trim())||0;
-    if(now===5 && previous!==5){
-      setTimeout(goToSelected,90);
-    }
-    previous=now;
-  });
-
-  obs.observe(document.body,{subtree:true,childList:true,characterData:true});
-})();
-</script>
 
 </body></html>
