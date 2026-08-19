@@ -2630,6 +2630,261 @@ body.dark .prelude-sets-toggle:hover{
   background:rgba(255,255,255,.13)!important;
 }
 
+
+/* =========================================================
+   PRELUDE SETS · UX MÓVIL COMPACTA
+   ========================================================= */
+@media(max-width:760px){
+
+  /* Bloque inicial de Prelude Sets: carrusel horizontal compacto */
+  .prelude-sets{
+    padding:18px 14px 16px!important;
+    border-radius:20px!important;
+  }
+  .prelude-packs-head{
+    margin-bottom:10px!important;
+  }
+  .prelude-packs-head h2{
+    font-size:27px!important;
+    line-height:1!important;
+  }
+  .prelude-packs-head p{
+    font-size:11px!important;
+    line-height:1.35!important;
+    max-width:92%!important;
+  }
+
+  .prelude-sets-grid,
+  .prelude-packs-grid{
+    display:flex!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    gap:10px!important;
+    scroll-snap-type:x mandatory!important;
+    -webkit-overflow-scrolling:touch!important;
+    padding:2px 2px 10px!important;
+    scrollbar-width:none!important;
+  }
+  .prelude-sets-grid::-webkit-scrollbar,
+  .prelude-packs-grid::-webkit-scrollbar{
+    display:none!important;
+  }
+
+  .prelude-set-card{
+    flex:0 0 76vw!important;
+    width:76vw!important;
+    min-width:76vw!important;
+    min-height:0!important;
+    height:auto!important;
+    scroll-snap-align:start!important;
+    padding:17px 16px 15px!important;
+    border-radius:17px!important;
+  }
+  .prelude-set-card h3{
+    font-size:27px!important;
+    line-height:1.02!important;
+    margin:7px 0 8px!important;
+  }
+  .prelude-set-card > p{
+    font-size:12px!important;
+    line-height:1.42!important;
+    margin-bottom:10px!important;
+  }
+  .prelude-set-quote{
+    font-size:11px!important;
+    margin:10px 0 14px!important;
+  }
+  .prelude-set-card .prelude-pack-meta{
+    margin-top:12px!important;
+    padding-top:10px!important;
+  }
+  .prelude-set-benefit{
+    min-height:36px!important;
+    margin-top:7px!important;
+    padding:7px 8px!important;
+  }
+  .prelude-set-card > button{
+    min-height:42px!important;
+    margin-top:10px!important;
+    padding:9px 12px!important;
+    font-size:11px!important;
+  }
+
+  /* Modal: usar viewport real del móvil y scroll interno completo */
+  .prelude-set-overlay{
+    align-items:flex-end!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+  .prelude-set-modal{
+    width:100%!important;
+    max-width:none!important;
+    height:calc(100dvh - 58px)!important;
+    max-height:calc(100dvh - 58px)!important;
+    margin:0!important;
+    padding:0!important;
+    border-radius:22px 22px 0 0!important;
+    overflow:hidden!important;
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  .prelude-set-modal-head{
+    flex:0 0 auto!important;
+    position:relative!important;
+    padding:18px 52px 12px 18px!important;
+    background:inherit!important;
+    z-index:5!important;
+  }
+  .prelude-set-modal-head h3{
+    font-size:30px!important;
+    line-height:1.02!important;
+    margin:2px 0 5px!important;
+  }
+  .prelude-set-modal-head p{
+    font-size:11px!important;
+    line-height:1.35!important;
+  }
+  .prelude-set-close{
+    position:absolute!important;
+    top:15px!important;
+    right:15px!important;
+    width:34px!important;
+    height:34px!important;
+    z-index:20!important;
+  }
+
+  /* Cualquier contenido posterior a la cabecera puede recorrer TODO el modal */
+  .prelude-set-modal-body{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior:contain!important;
+    padding:4px 16px calc(100px + env(safe-area-inset-bottom))!important;
+  }
+
+  /* Si la versión actual no envuelve el contenido en modal-body,
+     hacemos scroll del modal sin sacrificar accesibilidad */
+  .prelude-set-modal:not(:has(.prelude-set-modal-body)){
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior:contain!important;
+    padding:18px 16px calc(105px + env(safe-area-inset-bottom))!important;
+  }
+  .prelude-set-modal:not(:has(.prelude-set-modal-body)) .prelude-set-modal-head{
+    padding:0 38px 12px 0!important;
+  }
+
+  /* Resultados del recomendador: mucho más compactos */
+  .prelude-match-results,
+  .prelude-recommender-results{
+    gap:10px!important;
+  }
+  .prelude-match-result,
+  .prelude-recommender-result{
+    border-radius:16px!important;
+  }
+  .prelude-match-result img,
+  .prelude-recommender-result img{
+    width:100%!important;
+    height:210px!important;
+    object-fit:cover!important;
+  }
+
+  /* Catálogo para elegir perfumes: dos columnas, no tarjetas gigantes */
+  .prelude-set-catalog{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+  }
+  .prelude-set-catalog-card img{
+    height:165px!important;
+  }
+  .prelude-set-catalog-card .prelude-set-catalog-body{
+    padding:9px!important;
+  }
+  .prelude-set-catalog-card h4,
+  .prelude-set-catalog-card strong{
+    font-size:13px!important;
+    line-height:1.1!important;
+  }
+
+  /* Los 5 perfumes ya creados: 2 columnas y tamaño contenido */
+  .prelude-set-products{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    margin-top:10px!important;
+  }
+  .prelude-set-products .prelude-set-product{
+    border-radius:14px!important;
+    overflow:hidden!important;
+  }
+  .prelude-set-products .prelude-set-product img{
+    height:175px!important;
+    object-fit:cover!important;
+  }
+  .prelude-set-products .prelude-set-product-body{
+    padding:9px 10px 10px!important;
+    min-height:70px!important;
+  }
+  .prelude-set-products .prelude-set-product-body strong{
+    font-size:13px!important;
+    line-height:1.08!important;
+  }
+  .prelude-set-products .prelude-set-product-body small{
+    font-size:9px!important;
+    line-height:1.25!important;
+  }
+
+  /* Resumen económico compacto */
+  .prelude-set-summary{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+    margin-top:12px!important;
+  }
+  .prelude-set-summary > div{
+    min-height:68px!important;
+    padding:10px!important;
+    border-radius:13px!important;
+  }
+  .prelude-set-summary span{
+    font-size:9px!important;
+  }
+  .prelude-set-summary strong{
+    font-size:15px!important;
+  }
+  .prelude-set-summary .set-summary-price strong{
+    font-size:17px!important;
+  }
+
+  /* CTA siempre con espacio inferior suficiente para Safari/Chrome */
+  .prelude-set-actions{
+    padding-bottom:calc(22px + env(safe-area-inset-bottom))!important;
+    margin-top:12px!important;
+  }
+  .prelude-set-actions button,
+  .primary-set-action{
+    width:100%!important;
+    min-height:46px!important;
+    font-size:13px!important;
+  }
+}
+
+/* Móviles estrechos */
+@media(max-width:390px){
+  .prelude-set-card{
+    flex-basis:82vw!important;
+    width:82vw!important;
+    min-width:82vw!important;
+  }
+  .prelude-set-products .prelude-set-product img{
+    height:155px!important;
+  }
+  .prelude-set-catalog-card img{
+    height:150px!important;
+  }
+}
+
 </style>
 </head>
 <body><div class="watermark-brush one"></div><div class="watermark-brush two"></div>
@@ -6112,5 +6367,24 @@ const PreludeSetsToggle={
     if(icon)icon.textContent=collapsed?"+":"−";
   }
 };
+</script>
+<script>
+/* PRELUDE · MOBILE SET MODAL SCROLL SAFETY */
+(function(){
+  function resetPreludeSetScroll(){
+    if(window.innerWidth>760)return;
+    requestAnimationFrame(()=>{
+      const modal=document.querySelector(".prelude-set-overlay.open .prelude-set-modal");
+      const body=modal && modal.querySelector(".prelude-set-modal-body");
+      if(body) body.scrollTop=0;
+      else if(modal) modal.scrollTop=0;
+    });
+  }
+  document.addEventListener("click",function(e){
+    if(e.target.closest("[data-prelude-set], .prelude-set-card, .primary-set-action")){
+      setTimeout(resetPreludeSetScroll,60);
+    }
+  },true);
+})();
 </script>
 </body></html>
