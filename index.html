@@ -3447,6 +3447,316 @@ body.dark .pa2-match-set button{
   }
 }
 
+
+/* =========================================================
+   PRELUDE ADVISOR · IMÁGENES REALMENTE A SANGRE
+   Clases reales del recomendador: pa2-main / pa2-alt
+   ========================================================= */
+
+/* RESULTADO PRINCIPAL */
+.pa2-main{
+  overflow:hidden!important;
+  padding:0!important;
+}
+.pa2-main-image{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  height:360px!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  margin:0!important;
+  padding:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+.pa2-main-body{
+  padding:18px!important;
+}
+
+/* CUATRO RECOMENDACIONES SECUNDARIAS */
+.pa2-alt{
+  overflow:hidden!important;
+  padding:0!important;
+  display:block!important;
+}
+.pa2-alt > img,
+.pa2-alt img{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  height:260px!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  margin:0!important;
+  padding:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+.pa2-alt-body{
+  display:block!important;
+  padding:12px!important;
+}
+
+/* MÓVIL */
+@media(max-width:760px){
+  .pa2-main-image{
+    height:285px!important;
+  }
+  .pa2-main-body{
+    padding:15px!important;
+  }
+
+  .pa2-alts{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+  }
+  .pa2-alt > img,
+  .pa2-alt img{
+    height:190px!important;
+  }
+  .pa2-alt-body{
+    padding:9px 10px 10px!important;
+  }
+}
+
+/* MÓVILES PEQUEÑOS */
+@media(max-width:390px){
+  .pa2-main-image{
+    height:255px!important;
+  }
+  .pa2-alt > img,
+  .pa2-alt img{
+    height:170px!important;
+  }
+}
+
+
+/* =========================================================
+   PRELUDE SETS · MÓVIL EDITORIAL / COMPACTO
+   ========================================================= */
+.prelude-sets-mobile-hint{display:none}
+
+@media(max-width:760px){
+
+  /* Contenedor general */
+  .prelude-sets{
+    padding:16px 12px 14px!important;
+    border-radius:18px!important;
+  }
+
+  /* Cabecera más compacta y sin sensación de bloque enorme */
+  .prelude-packs-head,
+  .prelude-sets-head{
+    padding-right:0!important;
+    margin-bottom:8px!important;
+  }
+
+  .prelude-packs-head h2,
+  .prelude-sets-head h2{
+    font-size:29px!important;
+    line-height:.98!important;
+    margin-bottom:6px!important;
+  }
+
+  .prelude-packs-head p,
+  .prelude-sets-head p{
+    max-width:88%!important;
+    font-size:10.5px!important;
+    line-height:1.35!important;
+    margin-bottom:6px!important;
+  }
+
+  /* La línea 5x2ml / descubrimiento / ventaja ocupa demasiado en móvil */
+  .prelude-sets-features,
+  .prelude-pack-features,
+  .prelude-sets-summary,
+  .prelude-packs-summary{
+    justify-content:flex-start!important;
+    gap:8px!important;
+    font-size:8px!important;
+    overflow:hidden!important;
+    white-space:nowrap!important;
+    margin:8px 0 6px!important;
+    opacity:.62!important;
+  }
+
+  /* Botón minimizar integrado y discreto */
+  .prelude-sets-toggle{
+    min-height:32px!important;
+    padding:7px 10px!important;
+    font-size:8px!important;
+    letter-spacing:.05em!important;
+    border-radius:999px!important;
+  }
+
+  .prelude-sets-mobile-hint{
+    display:block!important;
+    margin:8px 0 6px 2px!important;
+    font-size:8px!important;
+    letter-spacing:.06em!important;
+    text-transform:uppercase!important;
+    color:var(--muted)!important;
+    opacity:.7!important;
+  }
+
+  /* Carrusel */
+  .prelude-sets-grid,
+  .prelude-packs-grid{
+    gap:9px!important;
+    padding:0 2px 7px!important;
+    scroll-padding-left:2px!important;
+  }
+
+  /* Tarjeta: sensiblemente más baja y estrecha */
+  .prelude-set-card{
+    flex:0 0 min(57vw,230px)!important;
+    width:min(57vw,230px)!important;
+    min-width:min(57vw,230px)!important;
+    min-height:0!important;
+    height:auto!important;
+    padding:13px 12px 12px!important;
+    border-radius:15px!important;
+  }
+
+  .prelude-set-card h3{
+    font-size:21px!important;
+    margin:5px 0 6px!important;
+    line-height:1!important;
+  }
+
+  .prelude-set-sub{
+    font-size:6.5px!important;
+    letter-spacing:.11em!important;
+    line-height:1.2!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  /* Descripción limitada para evitar tarjetas larguísimas */
+  .prelude-set-card > p{
+    display:-webkit-box!important;
+    -webkit-line-clamp:4!important;
+    -webkit-box-orient:vertical!important;
+    overflow:hidden!important;
+    font-size:9.5px!important;
+    line-height:1.34!important;
+    margin:6px 0 8px!important;
+  }
+
+  /* En móvil la frase inglesa aporta poco y consume altura */
+  .prelude-set-quote{
+    display:none!important;
+  }
+
+  /* Journey: mantener horas, pero mucho más comprimidas */
+  .prelude-journey-hours{
+    font-size:5.5px!important;
+    padding:4px 0!important;
+    margin:3px 0 5px!important;
+  }
+
+  .prelude-set-card .prelude-pack-meta{
+    margin-top:8px!important;
+    padding-top:7px!important;
+    font-size:8.5px!important;
+  }
+
+  .prelude-set-benefit{
+    min-height:32px!important;
+    padding:6px!important;
+    margin-top:6px!important;
+    border-radius:9px!important;
+  }
+
+  .prelude-set-benefit strong,
+  .prelude-set-benefit b{
+    font-size:7px!important;
+    line-height:1.15!important;
+  }
+
+  .prelude-set-card > button{
+    min-height:36px!important;
+    margin-top:7px!important;
+    padding:7px 8px!important;
+    font-size:9.5px!important;
+    border-radius:9px!important;
+  }
+
+  .prelude-set-chip,
+  .prelude-set-card .prelude-pack-chip{
+    top:8px!important;
+    right:8px!important;
+    font-size:6px!important;
+    padding:3px 5px!important;
+  }
+
+  /* Reducir el espacio inferior del bloque completo */
+  .prelude-sets > :last-child,
+  .prelude-packs > :last-child{
+    margin-bottom:0!important;
+  }
+}
+
+@media(max-width:390px){
+  .prelude-set-card{
+    flex-basis:min(61vw,220px)!important;
+    width:min(61vw,220px)!important;
+    min-width:min(61vw,220px)!important;
+  }
+}
+
+/* Ocultar cualquier aviso provisional antiguo que pudiera sobrevivir por clase */
+.prelude-sets-disclaimer,
+.prelude-packs-disclaimer,
+.prelude-sets-note.provisional,
+.prelude-packs-note.provisional{
+  display:none!important;
+}
+
+
+/* PRELUDE SETS · SALTO AUTOMÁTICO AL COMPLETAR 5/5 */
+.prelude-set-selected-section{
+  scroll-margin-top:12px!important;
+}
+@keyframes preludeSelectedArrival{
+  0%{
+    opacity:.72;
+    transform:translateY(10px);
+    box-shadow:0 0 0 0 color-mix(in srgb,var(--set-accent,#171716) 0%,transparent);
+  }
+  45%{
+    opacity:1;
+    transform:translateY(0);
+    box-shadow:0 0 0 5px color-mix(in srgb,var(--set-accent,#171716) 13%,transparent);
+  }
+  100%{
+    opacity:1;
+    transform:translateY(0);
+    box-shadow:0 0 0 0 color-mix(in srgb,var(--set-accent,#171716) 0%,transparent);
+  }
+}
+.prelude-set-selected-section.selected-focus{
+  animation:preludeSelectedArrival .9s cubic-bezier(.22,.78,.24,1) both!important;
+}
+
+@media(max-width:760px){
+  #preludeSetModalBody{
+    scroll-behavior:smooth!important;
+    scroll-padding-top:10px!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .prelude-set-selected-section.selected-focus{
+    animation:none!important;
+  }
+  #preludeSetModalBody{
+    scroll-behavior:auto!important;
+  }
+}
+
 </style>
 </head>
 <body><div class="watermark-brush one"></div><div class="watermark-brush two"></div>
@@ -3643,7 +3953,7 @@ Descubrir colección
     </article>
   </div>
 
-  <div class="prelude-pack-note">Los descuentos y marcapáginas son valores provisionales para esta prueba visual. Antes de activarlos se validarán con el margen real de cada Set.</div>
+  
   </div>
 </section>
 
@@ -3656,7 +3966,7 @@ Descubrir colección
   <div class="journey-content">
     <div class="journey-kicker">PRELUDE</div>
     <h2 class="journey-title" id="jtitle"></h2>
-    <p class="journey-copy" id="jcopy"></p>
+    
     <div class="journey-actions">
       <button class="continue" id="continueBtn">Descubrir la fragancia</button>
       <button class="skip" id="skipBtn">Volver a la colección</button>
@@ -3671,7 +3981,7 @@ Descubrir colección
       <div class="sheet-image"><img id="simg"></div>
       <div class="sheet-body">
         <h2 id="sname"></h2><div class="brand" id="sbrand"></div>
-        <p id="sdesc"></p>
+        
         <h4>Acordes principales</h4><div class="chips" id="saccords"></div>
         <h4>Notas destacadas</h4><div class="notes" id="snotes"></div>
         <div class="sheet-actions"><select id="ssize"></select><input id="sqty" type="number" min="1" value="1"><button class="add" id="sadd">Quiero descubrir esta fragancia</button></div>
@@ -3770,7 +4080,7 @@ Descubrir colección
 <section class="prelude-set-overlay" id="preludeSetOverlay" aria-hidden="true">
   <div class="prelude-set-modal" role="dialog" aria-modal="true" aria-labelledby="preludeSetModalTitle">
     <div class="prelude-set-modal-head">
-      <div><div class="prelude-set-modal-kicker" id="preludeSetModalKicker">PRELUDE SET</div><h3 id="preludeSetModalTitle">Prelude Set</h3><p id="preludeSetModalText"></p></div>
+      <div><div class="prelude-set-modal-kicker" id="preludeSetModalKicker">PRELUDE SET</div><h3 id="preludeSetModalTitle">Prelude Set</h3></div>
       <button type="button" class="prelude-set-modal-close" id="preludeSetModalClose" aria-label="Cerrar">×</button>
     </div>
     <div id="preludeSetModalBody"></div>
@@ -6496,7 +6806,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     <button class="reward-choice-close" id="rewardChoiceClose" type="button" aria-label="Cerrar">×</button>
     <div class="eyebrow">Recompensa Prelude</div>
     <h2 id="rewardChoiceTitle">Elige tu Prelude</h2>
-    <p id="rewardChoiceSubtitle"></p>
+    
     <div class="reward-choice-grid" id="rewardChoiceGrid"></div>
     <div class="reward-choice-footer">
       <span id="rewardChoiceCountLabel"></span>
@@ -6882,14 +7192,31 @@ function toggleSetCatalogProduct(card){
   if(count===5){
     setTimeout(()=>{
       const section=document.getElementById("preludeSetSelectedSection");
-      if(section){
-        section.scrollIntoView({behavior:"smooth",block:"start"});
-        section.classList.remove("selected-focus");
-        void section.offsetWidth;
-        section.classList.add("selected-focus");
-        setTimeout(()=>section.classList.remove("selected-focus"),900);
+      const scroller=document.getElementById("preludeSetModalBody");
+      if(!section)return;
+
+      /* En móvil hacemos scroll dentro del popup, no sobre la página de fondo. */
+      if(window.innerWidth<=760 && scroller){
+        const targetTop=Math.max(
+          0,
+          section.offsetTop - scroller.offsetTop - 10
+        );
+        scroller.scrollTo({
+          top:targetTop,
+          behavior:"smooth"
+        });
+      }else{
+        section.scrollIntoView({
+          behavior:"smooth",
+          block:"start"
+        });
       }
-    },120);
+
+      section.classList.remove("selected-focus");
+      void section.offsetWidth;
+      section.classList.add("selected-focus");
+      setTimeout(()=>section.classList.remove("selected-focus"),950);
+    },180);
   }
 }
 function openPreludeSet(id){
