@@ -253,7 +253,7 @@ button{border:0;border-radius:11px;padding:12px 15px;cursor:pointer}
 .catalog-product-thumb.placeholder{display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);text-align:center}
 @media (max-width:700px){.catalog-product-thumb{width:50px;height:62px;flex-basis:50px}.admin-row-head{gap:10px}}
 
-.state-pill.upcoming{background:#3a3a3a;color:#fff;border-color:#3a3a3a}.state-pill.soldout{background:#6b4d4d;color:#fff;border-color:#6b4d4d}.stock-alert.empty{color:#7d3030;font-weight:700}.catalog-state-select{border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:transparent;color:var(--text);font:inherit;font-size:12px}.catalog-delete-btn{border:1px solid rgba(120,35,35,.28);background:transparent;color:#7d3030;border-radius:9px;padding:8px 11px;font:inherit;font-size:12px;cursor:pointer}.catalog-delete-btn:hover{background:rgba(120,35,35,.06);border-color:rgba(120,35,35,.45)}
+.state-pill.upcoming{background:#3a3a3a;color:#fff;border-color:#3a3a3a}.catalog-state-select{border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:transparent;color:var(--text);font:inherit;font-size:12px}.catalog-delete-btn{border:1px solid rgba(120,35,35,.28);background:transparent;color:#7d3030;border-radius:9px;padding:8px 11px;font:inherit;font-size:12px;cursor:pointer}.catalog-delete-btn:hover{background:rgba(120,35,35,.06);border-color:rgba(120,35,35,.45)}
 
 .profit-cost-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;margin-top:16px}.profit-financial-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:14px}.profit-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0}.profit-table{width:100%;border-collapse:collapse;margin-top:12px}.profit-table th,.profit-table td{text-align:right;padding:11px 9px;border-bottom:1px solid var(--line);font-size:12px}.profit-table th:first-child,.profit-table td:first-child{text-align:left}.profit-positive{font-weight:700}.profit-negative{font-weight:700}@media(max-width:900px){.profit-financial-grid,.profit-summary-grid,.profit-cost-grid{grid-template-columns:1fr 1fr}.profit-table{min-width:820px}.profit-table-wrap{overflow:auto}}@media(max-width:560px){.profit-financial-grid,.profit-summary-grid,.profit-cost-grid{grid-template-columns:1fr}}
 
@@ -1002,6 +1002,86 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
 @media(max-width:900px){.order-profit-metrics{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){.order-profit-metrics{grid-template-columns:1fr 1fr}}
 
+
+/* PRELUDE STUDIO · RECOMENDADOR */
+.recommender-admin-top{display:grid;grid-template-columns:minmax(260px,1fr) auto;gap:18px;align-items:end}
+.recommender-profile-summary{display:flex;align-items:baseline;gap:7px;justify-content:flex-end}
+.recommender-profile-summary span{font:400 30px Georgia,serif}.recommender-profile-summary small{color:var(--muted)}
+.recommender-editor-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.recommender-help{color:var(--muted);font-size:13px;line-height:1.55;margin:15px 0 20px}
+.recommender-profile-group{margin-top:20px}.recommender-profile-group h3{font:400 19px Georgia,serif;margin:0 0 10px}
+.recommender-profile-grid{display:grid;grid-template-columns:repeat(2,minmax(220px,1fr));gap:10px}
+.recommender-score-row{border:1px solid var(--line);border-radius:13px;padding:11px 12px;background:rgba(255,255,255,.35)}
+.recommender-score-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.recommender-score-head label{font-size:13px}.recommender-score-value{font:600 13px Arial,sans-serif;min-width:22px;text-align:center}
+.recommender-score-row input[type=range]{width:100%;accent-color:#171716}
+.recommender-editor-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}
+@media(max-width:700px){.recommender-admin-top,.recommender-profile-grid{grid-template-columns:1fr}.recommender-profile-summary{justify-content:flex-start}.recommender-editor-actions{flex-direction:column}.recommender-editor-actions button{width:100%}}
+
+
+/* PRELUDE STUDIO · PERFIL DEL RECOMENDADOR DENTRO DE CATÁLOGO */
+.catalog-recommender-state{
+  display:inline-flex;align-items:center;gap:6px;font-size:11px;
+  border:1px solid var(--line);border-radius:999px;padding:5px 8px;
+  color:var(--muted);background:rgba(255,255,255,.25)
+}
+.catalog-recommender-state.configured{color:var(--text);font-weight:600}
+.catalog-recommender-toggle{
+  border:1px solid var(--line);background:transparent;color:var(--text);
+  border-radius:999px;padding:8px 11px;cursor:pointer;font:inherit;font-size:12px
+}
+.catalog-recommender-panel{
+  display:none;margin-top:14px;padding:16px;border-top:1px solid var(--line)
+}
+.catalog-recommender-panel.open{display:block}
+.catalog-recommender-panel-head{
+  display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:10px
+}
+.catalog-recommender-panel-head h3{font:400 20px Georgia,serif;margin:3px 0}
+.catalog-recommender-panel-head p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
+.catalog-recommender-group{margin-top:17px}
+.catalog-recommender-group h4{font:400 17px Georgia,serif;margin:0 0 9px}
+.catalog-recommender-grid{display:grid;grid-template-columns:repeat(2,minmax(210px,1fr));gap:9px}
+.catalog-recommender-score{
+  border:1px solid var(--line);border-radius:12px;padding:10px 11px;background:rgba(255,255,255,.26)
+}
+.catalog-recommender-score-head{
+  display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:7px
+}
+.catalog-recommender-score-head label{font-size:12px}
+.catalog-recommender-score-head span{font-weight:700;font-size:12px}
+.catalog-recommender-score input[type=range]{width:100%;accent-color:#171716}
+.catalog-recommender-actions{
+  display:flex;justify-content:flex-end;gap:9px;margin-top:17px
+}
+.catalog-recommender-status{font-size:12px;color:var(--muted);margin-top:10px}
+@media(max-width:760px){
+  .catalog-recommender-grid{grid-template-columns:1fr}
+  .catalog-recommender-panel-head{flex-direction:column}
+  .catalog-recommender-actions{flex-direction:column}
+  .catalog-recommender-actions button{width:100%}
+}
+
+
+/* PRELUDE STUDIO · SETS SIMULATOR */
+.sets-studio-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.sets-studio-summary>div{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.sets-studio-summary span,.sets-studio-summary small{display:block;color:var(--muted);font-size:10px}
+.sets-studio-summary strong{display:block;margin:6px 0;font-size:20px}
+.sets-studio-summary input{width:58px;border:0;border-bottom:1px solid var(--line);background:transparent;color:inherit;font:inherit;text-align:right}
+.sets-studio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.sets-admin-card{padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--card)}
+.sets-admin-card h2{margin:5px 0 4px;font:400 24px Georgia,serif}.sets-admin-kicker{font-size:9px;letter-spacing:.14em;color:var(--muted)}
+.sets-admin-card p{color:var(--muted);font-size:11px;line-height:1.5}
+.sets-admin-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.sets-admin-controls label{font-size:9px;color:var(--muted)}.sets-admin-controls input{width:100%;margin-top:5px;padding:9px;border:1px solid var(--line);border-radius:9px;background:transparent;color:inherit}
+.sets-product-selects{display:grid;gap:6px;margin:10px 0}.sets-product-selects select{width:100%;padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:inherit;font-size:10px}
+.sets-result{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}.sets-result>div{padding:9px;border:1px solid var(--line);border-radius:10px}.sets-result span{display:block;font-size:8px;color:var(--muted)}.sets-result strong{display:block;margin-top:4px;font-size:12px}
+.sets-margin-ok{color:#477357}.sets-margin-warn{color:#9b6c25}.sets-margin-bad{color:#9a3d45}
+.sets-dynamic-note{padding:10px;border:1px dashed var(--line);border-radius:10px;font-size:10px;color:var(--muted);margin-top:10px}
+.sets-studio-note{margin-top:12px}.sets-studio-note p{margin-bottom:0;color:var(--muted);font-size:11px}
+@media(max-width:850px){.sets-studio-grid{grid-template-columns:1fr}.sets-studio-summary{grid-template-columns:1fr 1fr}.sets-result{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
@@ -1030,6 +1110,7 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
         <button id="ordersTabBtn" data-studio-view="orders" type="button">Pedidos</button>
         <button id="customersTabBtn" data-studio-view="customers" type="button">Clientes</button>
         <button id="collectionTabBtn" data-studio-view="collection" type="button">Mi Colección Prelude</button>
+        <button id="setsTabBtn" data-studio-view="sets" type="button">Prelude Sets <span class="nav-state">Nuevo</span></button>
         <button id="codesTabBtn" data-studio-view="codes" type="button">Códigos Prelude</button>
         <button id="catalogTabBtn" data-studio-view="catalog" type="button">Catálogo <span class="nav-state">Activo</span></button>
         <button id="pricesTabBtn" data-studio-view="prices" type="button">Precios <span class="nav-state">Activo</span></button>
@@ -1214,7 +1295,7 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
         <div class="card"><div id="collectionAdminGrid" class="collection-grid"><p style="color:var(--muted)">Selecciona un cliente para consultar su colección.</p></div><div class="status" id="collectionAdminStatus"></div></div>
       </div>
       <div class="studio-view" id="catalogView">
-        <div class="section-heading"><div><div class="dashboard-kicker">Gestión comercial</div><h1>Catálogo</h1><p>Publica, oculta y añade fragancias sin editar el HTML.</p></div><button class="secondary" id="refreshCatalogBtn" type="button">Actualizar</button></div>
+        <div class="section-heading"><div><div class="dashboard-kicker">Colección</div><h1>Catálogo</h1><p>Gestiona cada fragancia, su estado, imagen y perfil del recomendador desde un único lugar.</p></div><button class="secondary" id="refreshCatalogBtn" type="button">Actualizar</button></div>
         <div class="card">
           <div class="catalog-create-grid">
             <div class="field"><label>Nombre</label><input id="newCatalogName" placeholder="Nombre del perfume"></div>
@@ -1224,7 +1305,7 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
             <div class="field"><label>3 ml (€)</label><input id="newPrice3" type="number" step="0.01" min="0.01" placeholder="Opcional"></div>
             <div class="field"><label>5 ml (€)</label><input id="newPrice5" type="number" step="0.01" min="0.01" placeholder="Opcional"></div>
             <div class="field"><label>10 ml (€)</label><input id="newPrice10" type="number" step="0.01" min="0.01" placeholder="Opcional"></div>
-            <div class="field"><label>Estado</label><select id="newCatalogStatus"><option value="upcoming">Próximamente</option><option value="published">Publicado</option><option value="soldout">Agotado</option><option value="hidden">Oculto</option></select></div>
+            <div class="field"><label>Estado</label><select id="newCatalogStatus"><option value="upcoming">Próximamente</option><option value="published">Publicado</option><option value="hidden">Oculto</option></select></div>
             <button class="primary" id="createCatalogBtn" type="button">Añadir perfume</button>
           </div>
           <div class="status" id="catalogStatus"></div>
@@ -1241,7 +1322,6 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
         <div id="stockAdminList" class="admin-data-list"><p style="color:var(--muted)">Cargando stock...</p></div>
         <div class="status" id="stockStatus"></div>
       </div>
-
       <div class="studio-view" id="profitabilityView">
         <div class="section-heading"><div><div class="dashboard-kicker">Finanzas</div><h1>Rentabilidad</h1><p>Configura costes reales y analiza el beneficio de cada formato sin duplicar los costes compartidos del pedido.</p></div><button class="secondary" id="refreshProfitabilityBtn" type="button">Actualizar</button></div>
         <section class="finance-fold card is-open" data-finance-fold="materials">
@@ -1506,7 +1586,28 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
   <div class="status" id="statsStatus"></div>
 </div>
 
-  <div class="studio-view" id="codesView">
+  
+<div class="studio-view" id="setsView">
+  <div class="section-heading">
+    <div><div class="dashboard-kicker">Colección · Prelude Sets</div><h1>Prelude Sets</h1>
+      <p>Configura la ventaja comercial de cada Set y simula su rentabilidad antes de conectarlo a la venta real.</p>
+    </div>
+    <button class="secondary" id="refreshSetsSimulatorBtn" type="button">Actualizar costes</button>
+  </div>
+  <div class="sets-studio-summary">
+    <div><span>Formato</span><strong>5 × 2 ml</strong><small>10 ml totales</small></div>
+    <div><span>Margen mínimo</span><strong><input id="setsMinMargin" type="number" min="0" max="100" step="1" value="30"> %</strong><small>Umbral de seguridad</small></div>
+    <div><span>Estado</span><strong>Simulación</strong><small>No modifica la web</small></div>
+  </div>
+  <div class="sets-studio-grid" id="setsStudioGrid"></div>
+  <div class="card sets-studio-note">
+    <strong>Cómo se calcula</strong>
+    <p>Prelude toma el precio actual de 2 ml y el coste directo registrado en Rentabilidad. El descuento se aplica sobre la suma de los cinco decants. El margen mostrado incluye los costes directos; los marcapáginas extra se muestran como incentivo, pero todavía no se monetizan en esta simulación.</p>
+  </div>
+  <div class="status" id="setsStudioStatus"></div>
+</div>
+
+      <div class="studio-view" id="codesView">
     
 <div class="grid">
 <div class="card">
@@ -1859,6 +1960,7 @@ const studioViews={
   orders:document.getElementById("ordersView"),
   customers:document.getElementById("customersView"),
   collection:document.getElementById("collectionView"),
+  sets:document.getElementById("setsView"),
   codes:document.getElementById("codesView"),
   catalog:document.getElementById("catalogView"),
   prices:document.getElementById("pricesView"),
@@ -1984,6 +2086,7 @@ function switchStudioView(view){
   if(view==="orders")loadOrders();
   if(view==="customers")loadCustomers();
   if(view==="collection")loadCollectionModule();
+  if(view==="sets")loadPreludeSetsSimulator();
   if(view==="catalog")loadCatalogAdmin();
   if(view==="prices")loadCatalogAdmin().then(renderPricesAdmin);
   if(view==="stock")loadCatalogAdmin().then(renderStockAdmin);
@@ -2984,12 +3087,57 @@ function catalogAdminStatus(p){return p.availability_status||(p.active===false?"
 function catalogStatusLabel(status){return status==="upcoming"?"Próximamente":status==="soldout"?"Agotado":status==="hidden"?"Oculto":"Publicado"}
 function renderCatalogAdmin(){
   const list=document.getElementById("catalogAdminList"); if(!list)return;
-  if(!catalogAdminCache.length){list.innerHTML='<div class="card"><p style="color:var(--muted)">No hay perfumes en el catálogo.</p></div>';return;}
-  const sorted=[...catalogAdminCache].sort((a,b)=>{const rank=x=>catalogAdminStatus(x)==="upcoming"?0:catalogAdminStatus(x)==="published"?1:catalogAdminStatus(x)==="soldout"?2:3;return rank(a)-rank(b)||String(a.name).localeCompare(String(b.name),"es",{sensitivity:"base"})});
-  list.innerHTML=sorted.map(p=>{const img=p.image_url||STUDIO_CATALOG_IMAGE_MAP[p.name]||"";const status=catalogAdminStatus(p);return `<div class="admin-row-card"><div class="admin-row-head"><div class="catalog-product-main">${img?`<img class="catalog-product-thumb" src="${escapeHtml(img)}" alt="${escapeHtml(p.name)}" loading="lazy">`:`<div class="catalog-product-thumb placeholder">Sin imagen</div>`}<div><div class="admin-row-title">${escapeHtml(p.name)}</div><div class="admin-row-brand">${escapeHtml(p.brand||"")}</div><div class="admin-row-meta">${img?"Imagen del catálogo":"Sin imagen configurada"}</div></div></div><div class="admin-row-actions"><span class="state-pill ${status==="published"?"on":status==="upcoming"?"upcoming":status==="soldout"?"soldout":""}">${catalogStatusLabel(status)}</span><select class="catalog-state-select" data-catalog-status="${p.id}"><option value="published" ${status==="published"?"selected":""}>Publicado</option><option value="upcoming" ${status==="upcoming"?"selected":""}>Próximamente</option><option value="soldout" ${status==="soldout"?"selected":""}>Agotado</option><option value="hidden" ${status==="hidden"?"selected":""}>Oculto</option></select><label class="secondary catalog-image-change">Subir imagen<input type="file" accept="image/png,image/jpeg,image/webp,image/avif" data-catalog-image-file="${p.id}"></label><button class="catalog-delete-btn" type="button" data-delete-catalog="${p.id}" data-delete-name="${escapeHtml(p.name)}">Eliminar</button></div></div></div>`}).join("");
-  list.querySelectorAll("[data-catalog-status]").forEach(sel=>sel.addEventListener("change",()=>setCatalogStatus(sel.dataset.catalogStatus,sel.value)));
-  list.querySelectorAll("[data-delete-catalog]").forEach(btn=>btn.addEventListener("click",()=>deleteCatalogProduct(btn.dataset.deleteCatalog,btn.dataset.deleteName||"este perfume")));
-  list.querySelectorAll("[data-catalog-image-file]").forEach(input=>input.addEventListener("change",async()=>{if(input.files?.[0])await replaceCatalogImage(input.dataset.catalogImageFile,input.files[0])}));
+  if(!catalogAdminCache.length){
+    list.innerHTML='<div class="card"><p style="color:var(--muted)">No hay perfumes en el catálogo.</p></div>';
+    return;
+  }
+  const sorted=[...catalogAdminCache].sort((a,b)=>{
+    const rank=x=>catalogAdminStatus(x)==="upcoming"?0:catalogAdminStatus(x)==="published"?1:2;
+    return rank(a)-rank(b)||String(a.name).localeCompare(String(b.name),"es",{sensitivity:"base"});
+  });
+
+  list.innerHTML=sorted.map(p=>{
+    const img=p.image_url||STUDIO_CATALOG_IMAGE_MAP[p.name]||"";
+    const status=catalogAdminStatus(p);
+    const recConfigured=!!p.recommender_profile;
+    return `<div class="admin-row-card" data-catalog-card="${p.id}">
+      <div class="admin-row-head">
+        <div class="catalog-product-main">
+          ${img?`<img class="catalog-product-thumb" src="${escapeHtml(img)}" alt="${escapeHtml(p.name)}" loading="lazy">`:`<div class="catalog-product-thumb placeholder">Sin imagen</div>`}
+          <div>
+            <div class="admin-row-title">${escapeHtml(p.name)}</div>
+            <div class="admin-row-brand">${escapeHtml(p.brand||"")}</div>
+            <div class="admin-row-meta">${img?"Imagen del catálogo":"Sin imagen configurada"}</div>
+            <div style="margin-top:7px">
+              <span class="catalog-recommender-state ${recConfigured?"configured":""}">
+                ${recConfigured?"Perfil configurado":"Perfil pendiente"}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="admin-row-actions">
+          <span class="state-pill ${status==="published"?"on":status==="upcoming"?"upcoming":""}">${catalogStatusLabel(status)}</span>
+          <select class="catalog-state-select" data-catalog-status="${p.id}">
+            <option value="published" ${status==="published"?"selected":""}>Publicado</option>
+            <option value="upcoming" ${status==="upcoming"?"selected":""}>Próximamente</option>
+            <option value="soldout" ${status==="soldout"?"selected":""}>Agotado</option>
+            <option value="hidden" ${status==="hidden"?"selected":""}>Oculto</option>
+          </select>
+          <button class="catalog-recommender-toggle" type="button" data-open-recommender="${p.id}">Perfil del recomendador</button>
+          <label class="secondary catalog-image-change">Subir imagen
+            <input type="file" accept="image/png,image/jpeg,image/webp,image/avif" data-catalog-image-file="${p.id}">
+          </label>
+          <button class="catalog-delete-btn" type="button" data-delete-catalog="${p.id}" data-delete-name="${escapeHtml(p.name)}">Eliminar</button>
+        </div>
+      </div>
+      <div class="catalog-recommender-panel" id="catalogRecommenderPanel-${p.id}"></div>
+    </div>`;
+  }).join("");
+
+  list.querySelectorAll("[data-catalog-status]").forEach(sel=>sel.addEventListener("change",()=>updateCatalogStatus(sel.dataset.catalogStatus,sel.value)));
+  list.querySelectorAll("[data-catalog-image-file]").forEach(input=>input.addEventListener("change",()=>changeCatalogImage(input.dataset.catalogImageFile,input)));
+  list.querySelectorAll("[data-delete-catalog]").forEach(btn=>btn.addEventListener("click",()=>deleteCatalogProduct(btn.dataset.deleteCatalog,btn.dataset.deleteName)));
+  list.querySelectorAll("[data-open-recommender]").forEach(btn=>btn.addEventListener("click",()=>toggleCatalogRecommenderProfile(btn.dataset.openRecommender)));
 }
 async function setCatalogStatus(id,status){
   const st=document.getElementById("catalogStatus");
@@ -3056,6 +3204,141 @@ async function createCatalogProduct(){
     if(document.getElementById("newCatalogStatus"))document.getElementById("newCatalogStatus").value="upcoming";
     await loadCatalogAdmin();
   }catch(e){if(st)st.textContent="No se pudo añadir: "+(e.message||e)}finally{createCatalogBtn.disabled=false}
+}
+
+
+const RECOMMENDER_DIMENSIONS={
+  mood:{title:"Sensación",items:[["frescura","Frescura"],["elegancia","Elegancia"],["sensualidad","Sensualidad"],["caracter","Carácter"],["calidez","Calidez"]]},
+  moment:{title:"Momento",items:[["diario","Día a día"],["cita","Una cita"],["noche","Noche especial"],["trabajo","Trabajo / ocasiones"],["vacaciones","Vacaciones"]]},
+  presence:{title:"Presencia",items:[["sutil","Sutil"],["equilibrada","Equilibrada"],["huella","Que deje huella"]]},
+  style:{title:"Dirección olfativa",items:[["limpia","Fresca y limpia"],["citrica","Cítrica y luminosa"],["dulce","Dulce y envolvente"],["amaderada","Amaderada y elegante"],["marina","Marina y refrescante"],["oscura","Oscura y sensual"]]}
+};
+
+function defaultRecommenderProfile(){
+  const p={};
+  Object.entries(RECOMMENDER_DIMENSIONS).forEach(([group,def])=>{
+    p[group]={};
+    def.items.forEach(([key])=>p[group][key]=3);
+  });
+  return p;
+}
+
+function normalizeRecommenderProfile(raw){
+  const base=defaultRecommenderProfile();
+  if(!raw||typeof raw!=="object")return base;
+  Object.entries(RECOMMENDER_DIMENSIONS).forEach(([group,def])=>{
+    def.items.forEach(([key])=>{
+      const n=Number(raw?.[group]?.[key]);
+      if(Number.isFinite(n))base[group][key]=Math.max(1,Math.min(5,Math.round(n)));
+    });
+  });
+  return base;
+}
+
+function recommenderFieldsHtml(product){
+  const profile=normalizeRecommenderProfile(product.recommender_profile);
+  return Object.entries(RECOMMENDER_DIMENSIONS).map(([group,def])=>`
+    <section class="catalog-recommender-group">
+      <h4>${def.title}</h4>
+      <div class="catalog-recommender-grid">
+        ${def.items.map(([key,label])=>`
+          <div class="catalog-recommender-score">
+            <div class="catalog-recommender-score-head">
+              <label>${label}</label>
+              <span data-rec-output="${product.id}:${group}.${key}">${profile[group][key]}</span>
+            </div>
+            <input type="range" min="1" max="5" step="1"
+              value="${profile[group][key]}"
+              data-rec-score="${product.id}:${group}.${key}">
+          </div>`).join("")}
+      </div>
+    </section>`).join("");
+}
+
+function toggleCatalogRecommenderProfile(id){
+  const product=catalogAdminCache.find(p=>String(p.id)===String(id));
+  const panel=document.getElementById(`catalogRecommenderPanel-${id}`);
+  if(!product||!panel)return;
+
+  const isOpen=panel.classList.contains("open");
+  document.querySelectorAll(".catalog-recommender-panel.open").forEach(x=>{
+    if(x!==panel)x.classList.remove("open");
+  });
+
+  if(isOpen){
+    panel.classList.remove("open");
+    return;
+  }
+
+  panel.innerHTML=`
+    <div class="catalog-recommender-panel-head">
+      <div>
+        <div class="dashboard-kicker">Perfil del recomendador</div>
+        <h3>${escapeHtml(product.name)}</h3>
+        <p>1 = muy poco relacionado · 5 = muy relacionado. Estos valores son internos y no los ve el cliente.</p>
+      </div>
+      <span class="catalog-recommender-state ${product.recommender_profile?"configured":""}">
+        ${product.recommender_profile?"Configurado":"Pendiente"}
+      </span>
+    </div>
+    ${recommenderFieldsHtml(product)}
+    <div class="catalog-recommender-status" id="catalogRecommenderStatus-${id}">
+      ${product.recommender_profile?"Perfil cargado. Puedes modificarlo y guardar.":"Este perfume todavía no participa en el recomendador."}
+    </div>
+    <div class="catalog-recommender-actions">
+      <button class="secondary" type="button" data-clear-inline-rec="${id}">Quitar del recomendador</button>
+      <button class="primary" type="button" data-save-inline-rec="${id}">Guardar perfil</button>
+    </div>`;
+
+  panel.classList.add("open");
+
+  panel.querySelectorAll("[data-rec-score]").forEach(input=>input.addEventListener("input",()=>{
+    const out=panel.querySelector(`[data-rec-output="${input.dataset.recScore}"]`);
+    if(out)out.textContent=input.value;
+  }));
+  panel.querySelector(`[data-save-inline-rec="${id}"]`)?.addEventListener("click",()=>saveInlineRecommenderProfile(id));
+  panel.querySelector(`[data-clear-inline-rec="${id}"]`)?.addEventListener("click",()=>clearInlineRecommenderProfile(id));
+}
+
+function collectInlineRecommenderProfile(id){
+  const panel=document.getElementById(`catalogRecommenderPanel-${id}`);
+  const profile=defaultRecommenderProfile();
+  panel?.querySelectorAll("[data-rec-score]").forEach(input=>{
+    const raw=input.dataset.recScore.split(":")[1];
+    const [group,key]=raw.split(".");
+    if(profile[group]&&key in profile[group])profile[group][key]=Number(input.value);
+  });
+  return profile;
+}
+
+async function saveInlineRecommenderProfile(id){
+  const status=document.getElementById(`catalogRecommenderStatus-${id}`);
+  try{
+    const profile=collectInlineRecommenderProfile(id);
+    const {error}=await client.rpc("admin_set_prelude_recommender_profile",{input_catalog_id:id,input_profile:profile});
+    if(error)throw error;
+    if(status)status.textContent="Perfil guardado correctamente.";
+    await loadCatalogAdmin();
+    renderCatalogAdmin();
+    setTimeout(()=>toggleCatalogRecommenderProfile(id),0);
+  }catch(e){
+    if(status)status.textContent="No se pudo guardar el perfil: "+(e.message||e);
+  }
+}
+
+async function clearInlineRecommenderProfile(id){
+  const status=document.getElementById(`catalogRecommenderStatus-${id}`);
+  if(!window.confirm("¿Quitar esta fragancia del recomendador? Seguirá visible en el catálogo."))return;
+  try{
+    const {error}=await client.rpc("admin_set_prelude_recommender_profile",{input_catalog_id:id,input_profile:null});
+    if(error)throw error;
+    if(status)status.textContent="Perfil eliminado.";
+    await loadCatalogAdmin();
+    renderCatalogAdmin();
+    setTimeout(()=>toggleCatalogRecommenderProfile(id),0);
+  }catch(e){
+    if(status)status.textContent="No se pudo quitar el perfil: "+(e.message||e);
+  }
 }
 
 let preparationCostsCache=[];
@@ -3946,7 +4229,7 @@ async function savePrices(id){
 }
 function renderStockAdmin(){
   const list=document.getElementById("stockAdminList");if(!list)return;
-  list.innerHTML=catalogAdminCache.map(p=>{const available=p.stock_available_ml==null?"":Number(p.stock_available_ml).toFixed(2), sold=Number(p.sold_ml||0), threshold=Number(p.low_stock_threshold_ml||10), low=p.stock_available_ml!=null&&Number(p.stock_available_ml)>0&&Number(p.stock_available_ml)<=threshold, empty=p.stock_available_ml!=null&&Number(p.stock_available_ml)<=0;return `<div class="admin-row-card stock-grid"><div class="admin-name-cell"><div class="admin-row-title">${escapeHtml(p.name)}</div><div class="admin-row-brand">${escapeHtml(p.brand||"")}</div><div class="stock-alert ${empty?"empty":low?"low":""}">${p.stock_available_ml==null?"Stock sin configurar":empty?"Agotado · 0 ml disponibles":low?`Poco stock · ${available} ml restantes`:`Disponible · ${available} ml`}</div></div><div class="field"><label>Disponible (ml)</label><input data-stock-available="${p.id}" type="number" min="0" step="0.1" value="${available}"></div><div class="field"><label>Vendido</label><input type="text" value="${sold.toFixed(2)} ml" disabled></div><div class="field"><label>Aviso bajo (ml)</label><input data-stock-threshold="${p.id}" type="number" min="0" step="0.1" value="${threshold.toFixed(2)}"></div><button class="primary" type="button" data-save-stock="${p.id}">Guardar</button></div>`}).join("");
+  list.innerHTML=catalogAdminCache.map(p=>{const available=p.stock_available_ml==null?"":Number(p.stock_available_ml).toFixed(2), sold=Number(p.sold_ml||0), threshold=Number(p.low_stock_threshold_ml||10), low=p.stock_available_ml!=null&&Number(p.stock_available_ml)<=threshold;return `<div class="admin-row-card stock-grid"><div class="admin-name-cell"><div class="admin-row-title">${escapeHtml(p.name)}</div><div class="admin-row-brand">${escapeHtml(p.brand||"")}</div><div class="stock-alert ${low?"low":""}">${p.stock_available_ml==null?"Stock sin configurar":low?`Stock bajo · ${available} ml restantes`:`Disponible · ${available} ml`}</div></div><div class="field"><label>Disponible (ml)</label><input data-stock-available="${p.id}" type="number" min="0" step="0.1" value="${available}"></div><div class="field"><label>Vendido</label><input type="text" value="${sold.toFixed(2)} ml" disabled></div><div class="field"><label>Aviso bajo (ml)</label><input data-stock-threshold="${p.id}" type="number" min="0" step="0.1" value="${threshold.toFixed(2)}"></div><button class="primary" type="button" data-save-stock="${p.id}">Guardar</button></div>`}).join("");
   list.querySelectorAll("[data-save-stock]").forEach(b=>b.addEventListener("click",()=>saveStock(b.dataset.saveStock)));
 }
 async function saveStock(id){
@@ -4636,7 +4919,7 @@ function buildPreludeGroupedNavigationFixed(){
 
   const definitions=[
     {title:"Ventas", ids:["ordersTabBtn","customersTabBtn"]},
-    {title:"Colección", ids:["catalogTabBtn","pricesTabBtn","stockTabBtn"]},
+    {title:"Colección", ids:["catalogTabBtn","pricesTabBtn","stockTabBtn","setsTabBtn"]},
     {title:"Finanzas", ids:["profitabilityTabBtn","investmentTabBtn","statsTabBtn"]},
     {title:"Fidelización", ids:["codesTabBtn","rewardsTabBtn","rankingTabBtn"]},
     {title:"Universo Prelude", ids:["collectionTabBtn","museumTabBtn"]}
@@ -5606,5 +5889,154 @@ document.getElementById("refreshRewardImpactBtn")?.addEventListener("click",load
     <div class="status" id="rewardOptionsStatus"></div>
     <div class="order-actions" style="justify-content:flex-end;margin-top:16px"><button class="secondary" id="cancelRewardOptionsBtn" type="button">Cancelar</button><button class="primary" id="saveRewardOptionsBtn" type="button">Guardar opciones</button></div>
   </div>
-</section></body>
+</section><script>
+const PRELUDE_SET_DEFS=[
+ {id:"five",name:"The Five",kicker:"CHOSEN BY YOU",discount:5,bonus:5,dynamic:true,desc:"El cliente elige cinco fragancias diferentes."},
+ {id:"discovery",name:"The Discovery",kicker:"FIND YOUR DIRECTION",discount:10,bonus:5,desc:"Cinco direcciones olfativas seleccionadas por Prelude."},
+ {id:"journey",name:"The Journey",kicker:"FROM FIRST LIGHT TO AFTER DARK",discount:10,bonus:5,desc:"Cinco momentos del día, cinco fragancias."},
+ {id:"match",name:"The Match",kicker:"CHOSEN FOR YOU",discount:5,bonus:5,dynamic:true,desc:"Las cinco mayores afinidades del recomendador."},
+ {id:"curator",name:"The Curator",kicker:"SELECTED BY PRELUDE",discount:10,bonus:5,desc:"Cinco fragancias seleccionadas por Prelude."}
+];
+let preludeSetCostMap=new Map();
+
+function setMoney(v){return Number.isFinite(Number(v))?Number(v).toFixed(2).replace(".",",")+" €":"—"}
+function setProductPrice2(p){const v=p?.price_2ml;return v===null||v===undefined||v===""?null:Number(v)}
+async function loadPreludeSetCostMap(){
+ preludeSetCostMap=new Map();
+ for(const p of catalogAdminCache){
+  try{
+   const {data,error}=await client.rpc("admin_get_prelude_catalog_profitability",{input_catalog_id:p.id});
+   if(error)continue;
+   const row=(Array.isArray(data?.formats)?data.formats:[]).find(x=>Number(x.size_ml)===2);
+   const raw=row?.direct_cost ?? row?.cost_direct ?? row?.cost;
+   if(raw!==null&&raw!==undefined&&raw!=="")preludeSetCostMap.set(String(p.id),Number(raw));
+  }catch(_){}
+ }
+}
+function renderPreludeSetsSimulator(){
+ const box=document.getElementById("setsStudioGrid"); if(!box)return;
+ const available=catalogAdminCache.filter(p=>catalogAdminStatus(p)==="published");
+ const options='<option value="">Selecciona perfume</option>'+available.map(p=>`<option value="${escapeHtml(String(p.id))}">${escapeHtml(p.name)} · ${setMoney(setProductPrice2(p))}</option>`).join("");
+ box.innerHTML=PRELUDE_SET_DEFS.map(def=>`
+  <section class="sets-admin-card" data-set-card="${def.id}">
+   <div class="sets-admin-kicker">${def.kicker}</div><h2>${def.name}</h2><p>${def.desc}</p>
+   <div class="sets-admin-controls">
+    <label>Descuento (%)<input data-set-discount type="number" min="0" max="50" step=".5" value="${def.discount}"></label>
+    <label>Marcapáginas extra<input data-set-bonus type="number" min="0" step="1" value="${def.bonus}"></label>
+   </div>
+   ${def.dynamic?`<div class="sets-dynamic-note">${def.id==="five"?"Set dinámico: selecciona cinco perfumes abajo para simular una combinación concreta. En la venta real los elegirá el cliente.":"Set dinámico: selecciona cinco perfumes abajo para simular un resultado del recomendador."}</div>`:""}
+   <div class="sets-product-selects">${[1,2,3,4,5].map((_,i)=>`<select data-set-product="${i}">${options}</select>`).join("")}</div>
+   <div class="sets-result">
+    <div><span>Precio individual</span><strong data-set-normal>—</strong></div>
+    <div><span>Precio Set</span><strong data-set-price>—</strong></div>
+    <div><span>Beneficio</span><strong data-set-profit>—</strong></div>
+    <div><span>Margen</span><strong data-set-margin>—</strong></div>
+   </div>
+  </section>`).join("");
+ box.querySelectorAll("[data-set-card]").forEach(card=>{
+  card.querySelectorAll("input,select").forEach(el=>el.addEventListener("input",()=>calculatePreludeSetCard(card)));
+ });
+}
+function calculatePreludeSetCard(card){
+ const ids=[...card.querySelectorAll("[data-set-product]")].map(x=>x.value).filter(Boolean);
+ const normalEl=card.querySelector("[data-set-normal]"),priceEl=card.querySelector("[data-set-price]"),profitEl=card.querySelector("[data-set-profit]"),marginEl=card.querySelector("[data-set-margin]");
+ if(ids.length!==5||new Set(ids).size!==5){
+  [normalEl,priceEl,profitEl,marginEl].forEach(x=>x.textContent="—");marginEl.className="";return;
+ }
+ let normal=0,cost=0,missing=false;
+ ids.forEach(id=>{
+  const p=catalogAdminCache.find(x=>String(x.id)===String(id));
+  const price=setProductPrice2(p),c=preludeSetCostMap.get(String(id));
+  if(!Number.isFinite(price)||!Number.isFinite(c))missing=true;
+  normal+=Number(price||0);cost+=Number(c||0);
+ });
+ if(missing){marginEl.textContent="Faltan costes";marginEl.className="sets-margin-bad";return}
+ const discount=Number(card.querySelector("[data-set-discount]").value||0);
+ const sale=normal*(1-discount/100);
+ const profit=sale-cost;
+ const margin=sale>0?profit/sale*100:0;
+ const min=Number(document.getElementById("setsMinMargin")?.value||30);
+ normalEl.textContent=setMoney(normal);priceEl.textContent=setMoney(sale);profitEl.textContent=setMoney(profit);
+ marginEl.textContent=margin.toFixed(1).replace(".",",")+" %";
+ marginEl.className=margin<min?"sets-margin-bad":margin<min+10?"sets-margin-warn":"sets-margin-ok";
+}
+async function loadPreludeSetsSimulator(){
+ const st=document.getElementById("setsStudioStatus");
+ if(st)st.textContent="Actualizando catálogo y costes…";
+ try{
+  await loadCatalogAdmin();
+  await loadPreludeSetCostMap();
+  renderPreludeSetsSimulator();
+  if(st)st.textContent="Simulador actualizado. Los cambios de esta pantalla todavía no se publican.";
+ }catch(e){console.error(e);if(st)st.textContent="No se pudo preparar el simulador: "+(e.message||e)}
+}
+document.getElementById("refreshSetsSimulatorBtn")?.addEventListener("click",loadPreludeSetsSimulator);
+document.getElementById("setsMinMargin")?.addEventListener("input",()=>document.querySelectorAll("[data-set-card]").forEach(c=>calculatePreludeSetCard(c)));
+</script>
+
+<script>
+let preludeSetsAdminCache=new Map();
+
+async function loadPreludeSetsAdminConfig(){
+  const {data,error}=await client.rpc("admin_list_prelude_sets");
+  if(error)throw error;
+  preludeSetsAdminCache=new Map((Array.isArray(data)?data:[]).map(x=>[String(x.id),x]));
+}
+
+function renderPreludeSetsSimulator(){
+ const box=document.getElementById("setsStudioGrid");if(!box)return;
+ const available=catalogAdminCache.filter(p=>catalogAdminStatus(p)==="published");
+ const options=available.map(p=>`<option value="${escapeHtml(String(p.id))}">${escapeHtml(p.name)} · ${setMoney(setProductPrice2(p))}</option>`).join("");
+ box.innerHTML=PRELUDE_SET_DEFS.map(def=>{
+  const saved=preludeSetsAdminCache.get(def.id)||{};
+  const discount=Number(saved.discount_percent??def.discount),bonus=Number(saved.bonus_bookmarks??def.bonus),active=saved.active!==false;
+  const savedIds=Array.isArray(saved.product_ids)?saved.product_ids.map(String):[];
+  return `<section class="sets-admin-card" data-set-card="${def.id}">
+   <div class="sets-admin-kicker">${def.kicker}</div><h2>${def.name}</h2><p>${def.desc}</p>
+   <label style="display:flex;align-items:center;gap:7px;font-size:10px;margin:9px 0"><input data-set-active type="checkbox" ${active?"checked":""}> Set activo en la web</label>
+   <div class="sets-admin-controls">
+    <label>Descuento (%)<input data-set-discount type="number" min="0" max="50" step=".5" value="${discount}"></label>
+    <label>Marcapáginas extra<input data-set-bonus type="number" min="0" step="1" value="${bonus}"></label>
+   </div>
+   ${def.dynamic?`<div class="sets-dynamic-note">${def.id==="five"?"The Five es dinámico: los cinco perfumes los elige el cliente. Los selectores sirven solo para simular rentabilidad.":"The Match es dinámico: sus cinco perfumes proceden del recomendador. Los selectores sirven solo para simular rentabilidad."}</div>`:""}
+   <div class="sets-product-selects">${[0,1,2,3,4].map(i=>`<select data-set-product="${i}"><option value="">Selecciona perfume</option>${available.map(p=>`<option value="${escapeHtml(String(p.id))}" ${String(savedIds[i]||"")===String(p.id)?"selected":""}>${escapeHtml(p.name)} · ${setMoney(setProductPrice2(p))}</option>`).join("")}</select>`).join("")}</div>
+   <div class="sets-result"><div><span>Precio individual</span><strong data-set-normal>—</strong></div><div><span>Precio Set</span><strong data-set-price>—</strong></div><div><span>Beneficio</span><strong data-set-profit>—</strong></div><div><span>Margen</span><strong data-set-margin>—</strong></div></div>
+   <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="primary" data-save-set="${def.id}" type="button">Guardar Set</button></div>
+   <div class="status" data-set-status="${def.id}">${saved.id?"Configuración cargada desde Supabase.":"Pendiente de guardar en Supabase."}</div>
+  </section>`;
+ }).join("");
+ box.querySelectorAll("[data-set-card]").forEach(card=>{
+  card.querySelectorAll("input,select").forEach(el=>el.addEventListener("input",()=>calculatePreludeSetCard(card)));
+  card.querySelector("[data-save-set]")?.addEventListener("click",()=>savePreludeSetConfig(card));
+  calculatePreludeSetCard(card);
+ });
+}
+async function savePreludeSetConfig(card){
+ const id=card.dataset.setCard,def=PRELUDE_SET_DEFS.find(x=>x.id===id),st=card.querySelector("[data-set-status]");
+ const active=card.querySelector("[data-set-active]").checked;
+ const discount=Number(card.querySelector("[data-set-discount]").value||0),bonus=Number(card.querySelector("[data-set-bonus]").value||0);
+ const ids=[...card.querySelectorAll("[data-set-product]")].map(x=>x.value).filter(Boolean);
+ if(!def.dynamic && active && (ids.length!==5||new Set(ids).size!==5)){st.textContent="Selecciona cinco perfumes diferentes antes de publicar este Set.";return;}
+ if(discount<0||discount>50||bonus<0){st.textContent="Revisa descuento y Marcapáginas.";return;}
+ const marginText=card.querySelector("[data-set-margin]")?.textContent||"";
+ const margin=Number(marginText.replace("%","").replace(",","."));
+ const min=Number(document.getElementById("setsMinMargin")?.value||30);
+ if(active && Number.isFinite(margin) && margin<min && !confirm(`El margen simulado es ${marginText}, por debajo del mínimo de ${min} %. ¿Guardar igualmente?`))return;
+ try{
+  st.textContent="Guardando…";
+  const {error}=await client.rpc("admin_update_prelude_set",{input_id:id,input_active:active,input_discount_percent:discount,input_bonus_bookmarks:Math.round(bonus),input_product_ids:def.dynamic?[]:ids});
+  if(error)throw error;
+  await loadPreludeSetsAdminConfig();st.textContent="Set guardado. La web pública leerá esta configuración al recargar.";
+ }catch(e){st.textContent="No se pudo guardar: "+(e.message||e)}
+}
+async function loadPreludeSetsSimulator(){
+ const st=document.getElementById("setsStudioStatus");if(st)st.textContent="Actualizando catálogo, costes y Sets…";
+ try{
+  await loadCatalogAdmin();await Promise.all([loadPreludeSetCostMap(),loadPreludeSetsAdminConfig()]);
+  renderPreludeSetsSimulator();if(st)st.textContent="Prelude Sets conectado a Supabase. Puedes simular y guardar cada Set.";
+ }catch(e){console.error(e);if(st)st.textContent="No se pudo preparar Prelude Sets: "+(e.message||e)}
+}
+</script>
+
+</body>
 </html>

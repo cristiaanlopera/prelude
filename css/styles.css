@@ -898,13 +898,3 @@ body.dark .profile-gate{background:rgba(20,20,20,.97)}
 
 .discount-row{margin-top:7px;color:var(--text)}
 .discount-row span:last-child{font-weight:600}
-
-/* Prelude · disponibilidad de catálogo */
-.catalog-availability-badge{position:absolute;top:14px;left:14px;z-index:3;border-radius:999px;padding:7px 11px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.upcoming-badge{background:rgba(28,28,28,.88);color:#fff}
-.soldout-badge{background:rgba(45,45,45,.9);color:#fff}
-.low-stock-badge{background:rgba(255,255,255,.9);color:#4e4032;border:1px solid rgba(78,64,50,.18)}
-.catalog-stock-note{margin:8px 0 2px;font-size:11px;letter-spacing:.06em;color:#77614b}
-.card.soldout .visual img{filter:saturate(.72);opacity:.78}
-.card .soldout-action{opacity:.55;cursor:not-allowed}
-@media(max-width:620px){.catalog-availability-badge{top:10px;left:10px;padding:6px 9px;font-size:9px}.catalog-stock-note{font-size:10px}}

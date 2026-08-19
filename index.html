@@ -59,7 +59,7 @@ button,input,select{font:inherit}
 .primary{border:0;background:var(--dark);color:var(--bg);padding:14px 20px;border-radius:999px;cursor:pointer}
 .page{width:min(1250px,calc(100% - 24px));margin:auto;padding-bottom:70px}
 .top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(18px) saturate(115%);-webkit-backdrop-filter:blur(18px) saturate(115%);display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}
-.logo{font:400 42px Georgia;letter-spacing:.13em}
+.logo{font:400 42px Georgia;letter-spacing:.13em;cursor:pointer}
 .actions{display:flex;gap:8px}.iconbtn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:10px 13px;cursor:pointer}
 .hero{padding:46px 0 30px;display:grid;grid-template-columns:1.3fr .7fr;gap:24px;align-items:end}
 .hero h2{font:400 clamp(38px,5.6vw,70px)/1.04 Georgia;margin:0;letter-spacing:-.025em;max-width:900px}.hero p{color:var(--muted);line-height:1.7}
@@ -1188,6 +1188,12 @@ body.dark .museum-unlock{background:rgba(18,18,18,.985)}
 .card.upcoming .view{opacity:.62;pointer-events:none}
 .card.upcoming .from{opacity:.55}
 @media(max-width:720px){.catalog-toolbar{justify-content:stretch;align-items:stretch;flex-direction:column}.catalog-sort{width:100%;min-width:0}.upcoming-badge{font-size:9px;padding:8px 11px}}
+.card.soldout{position:relative}.card.soldout .visual,.card.soldout .info{filter:saturate(.58)}
+.soldout-badge{position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%);border:1px solid rgba(255,255,255,.78);color:#fff;background:rgba(10,10,10,.48);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);padding:10px 15px;border-radius:999px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
+.stock-note{margin-top:8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.stock-note.low{color:#8a5a18;font-weight:700}.stock-note.out{color:#7a2525;font-weight:700}
+.controls select option:disabled{color:#999}.add:disabled,.controls select:disabled,.controls input:disabled{opacity:.42;cursor:not-allowed}.size-stock-hint{font-size:10px;color:var(--muted);margin-top:5px}
+@media(max-width:720px){.soldout-badge{font-size:9px;padding:8px 11px}.stock-note{font-size:10px}}
+
 
 /* PRELUDE · FASE 11.1 · ELECCIÓN DE RECOMPENSAS EN CLIENTE */
 .reward-select-btn{
@@ -1411,6 +1417,1219 @@ body.reward-choice-open{
 }
 @media(max-width:720px){.bestseller-badge{top:9px;left:9px;font-size:8px;padding:6px 8px}}
 
+
+/* PRELUDE · ASESOR OLFATIVO — VERSIÓN LIMPIA */
+.prelude-advisor-entry{
+  margin:0 0 18px;padding:18px 20px;border:1px solid var(--line);
+  border-radius:18px;background:rgba(255,255,255,.28);
+  display:flex;justify-content:space-between;align-items:center;gap:16px
+}
+.prelude-advisor-entry h3{font:400 22px Georgia,"Times New Roman",serif;margin:0 0 4px}
+.prelude-advisor-entry p{margin:0;opacity:.67;font-size:13px}
+.prelude-advisor-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:190px;min-height:44px;padding:11px 18px;
+  border:1px solid #171716;background:#171716;color:#fff !important;
+  -webkit-text-fill-color:#fff !important;border-radius:999px;
+  font:inherit;cursor:pointer;pointer-events:auto
+}
+.prelude-advisor-btn:hover{transform:translateY(-1px)}
+
+.pa2-overlay{
+  position:fixed;inset:0;z-index:100050;background:rgba(7,7,7,.62);
+  display:none;align-items:center;justify-content:center;padding:16px
+}
+.pa2-overlay.open{display:flex}
+.pa2-modal{
+  width:min(760px,100%);max-height:92vh;overflow:auto;
+  background:#f5f2ec;color:#171716;border-radius:24px;padding:26px;
+  box-shadow:0 30px 100px rgba(0,0,0,.35)
+}
+.pa2-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+.pa2-kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.55}
+.pa2-head h3{font:400 31px Georgia,"Times New Roman",serif;margin:3px 0 6px}
+.pa2-close{border:0;background:transparent;color:#171716;font-size:29px;line-height:1;cursor:pointer}
+.pa2-progress{display:flex;gap:6px;margin:22px 0}
+.pa2-progress span{height:3px;flex:1;background:rgba(0,0,0,.12);border-radius:999px}
+.pa2-progress span.active{background:#171716}
+.pa2-step{display:none}
+.pa2-step.active{display:block}
+.pa2-step h4{font:400 23px Georgia,"Times New Roman",serif;margin:0 0 7px}
+.pa2-step>p{margin:0 0 15px;opacity:.62;font-size:13px}
+.pa2-options{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.pa2-option{
+  border:1px solid rgba(0,0,0,.13);background:rgba(255,255,255,.6);
+  color:#171716;border-radius:14px;padding:13px 14px;text-align:left;
+  cursor:pointer;font:inherit
+}
+.pa2-option:hover{border-color:rgba(0,0,0,.35)}
+.pa2-option.selected{background:#171716;color:#fff;border-color:#171716}
+.pa2-nav{display:flex;justify-content:space-between;gap:12px;margin-top:20px}
+.pa2-nav button{
+  border:1px solid rgba(0,0,0,.16);border-radius:999px;padding:10px 15px;
+  background:transparent;color:#171716;font:inherit;cursor:pointer
+}
+.pa2-nav .pa2-next{background:#171716;color:#fff}
+.pa2-results{display:none}
+.pa2-results.active{display:block}
+.pa2-main{
+  margin-top:15px;border:1px solid rgba(0,0,0,.12);background:#fff;
+  border-radius:20px;overflow:hidden
+}
+.pa2-main-image{
+  width:100%;height:300px;object-fit:contain;background:#f1eee8;display:block;padding:16px;box-sizing:border-box
+}
+.pa2-main-body{padding:18px}
+.pa2-match{font:400 38px Georgia,"Times New Roman",serif;line-height:1}
+.pa2-match span{font:400 13px Arial,sans-serif;opacity:.45}
+.pa2-main h4{font:400 28px Georgia,"Times New Roman",serif;margin:12px 0 2px}
+.pa2-brand{opacity:.55;font-size:13px}
+.pa2-why{margin:13px 0 0;line-height:1.55}
+.pa2-discover{
+  margin-top:14px;border:0;border-radius:999px;background:#171716;
+  color:#fff;padding:11px 15px;cursor:pointer;font:inherit
+}
+.pa2-alts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.pa2-alt{
+  border:1px solid rgba(0,0,0,.12);background:#fff;border-radius:16px;
+  overflow:hidden;text-align:left;cursor:pointer;padding:0;color:#171716
+}
+.pa2-alt img{
+  width:100%;height:155px;object-fit:contain;background:#f1eee8;
+  display:block;padding:10px;box-sizing:border-box
+}
+.pa2-alt-body{padding:11px 12px 13px}
+.pa2-alt strong{display:block;font:400 17px Georgia,"Times New Roman",serif}
+.pa2-alt small{display:block;opacity:.55;margin-top:3px}
+.pa2-method{margin-top:17px;font-size:11px;line-height:1.5;opacity:.48}
+@media(max-width:700px){
+  .prelude-advisor-entry{align-items:flex-start;flex-direction:column}
+  .prelude-advisor-btn{width:100%;min-width:0}
+  .pa2-options,.pa2-alts{grid-template-columns:1fr}
+  .pa2-modal{padding:21px}
+  .pa2-main-image{height:240px}
+  .pa2-alt img{height:135px}
+}
+
+
+/* PRELUDE · PODIO PRELUDE + NOVEDAD ANIMADA */
+@keyframes preludeNoveltyPulse{
+  0%,100%{box-shadow:0 4px 16px rgba(92,18,32,.16),0 0 0 0 rgba(126,25,45,0)}
+  50%{box-shadow:0 7px 22px rgba(92,18,32,.28),0 0 0 5px rgba(126,25,45,.08)}
+}
+.novelty-badge{
+  background:linear-gradient(135deg,#65192a,#8a263b)!important;
+  border-color:rgba(255,235,239,.78)!important;
+  color:#fff!important;
+  animation:preludeNoveltyPulse 2.8s ease-in-out infinite;
+}
+
+@keyframes preludeMedalLight{
+  0%{background-position:120% 0}
+  55%,100%{background-position:-120% 0}
+}
+.card.podium-card{
+  position:relative;
+  overflow:hidden;
+  border-width:1px;
+}
+.card.podium-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+  background:linear-gradient(115deg,transparent 25%,rgba(255,255,255,.32) 43%,rgba(255,255,255,.08) 52%,transparent 68%);
+  background-size:240% 100%;
+  animation:preludeMedalLight 6.8s ease-in-out infinite;
+}
+.card.podium-card .visual,.card.podium-card .info{position:relative;z-index:2}
+.card.podium-1{
+  background:linear-gradient(145deg,rgba(255,248,220,.96),rgba(218,181,77,.22),rgba(255,252,239,.96))!important;
+  border-color:rgba(172,126,22,.42)!important;
+  box-shadow:0 13px 34px rgba(151,111,25,.13);
+}
+.card.podium-2{
+  background:linear-gradient(145deg,rgba(249,250,251,.98),rgba(174,181,190,.22),rgba(255,255,255,.98))!important;
+  border-color:rgba(128,137,147,.34)!important;
+  box-shadow:0 12px 30px rgba(94,104,116,.10);
+}
+.card.podium-3{
+  background:linear-gradient(145deg,rgba(255,245,237,.98),rgba(176,111,63,.22),rgba(255,250,246,.98))!important;
+  border-color:rgba(144,82,43,.34)!important;
+  box-shadow:0 12px 30px rgba(126,73,39,.10);
+}
+.card.podium-2::after{animation-delay:1.4s}
+.card.podium-3::after{animation-delay:2.8s}
+
+.podium-badge{font-weight:600!important}
+.podium-badge.podium-1{
+  background:linear-gradient(135deg,#8d6817,#c8a33c)!important;
+  border-color:rgba(255,244,199,.82)!important;
+}
+.podium-badge.podium-2{
+  background:linear-gradient(135deg,#69717a,#aab0b7)!important;
+  border-color:rgba(255,255,255,.82)!important;
+}
+.podium-badge.podium-3{
+  background:linear-gradient(135deg,#7b4528,#ad7048)!important;
+  border-color:rgba(255,235,222,.80)!important;
+}
+@media (prefers-reduced-motion:reduce){
+  .novelty-badge,.card.podium-card::after{animation:none!important}
+}
+
+
+/* PRELUDE · BADGES UNIFICADOS + PODIO MÁS VISIBLE */
+.bestseller-badge,
+.novelty-badge,
+.stock-badge,
+.low-stock-badge{
+  min-height:22px!important;
+  height:22px!important;
+  padding:0 8px!important;
+  border-radius:999px!important;
+  font-size:9px!important;
+  line-height:20px!important;
+  letter-spacing:.055em!important;
+  white-space:nowrap!important;
+  box-sizing:border-box!important;
+}
+
+/* Podio con metal más presente, manteniendo legibilidad */
+.card.podium-1{
+  background:
+    linear-gradient(145deg,
+      rgba(255,244,188,.99) 0%,
+      rgba(211,164,43,.48) 46%,
+      rgba(255,249,218,.98) 100%)!important;
+  border-color:rgba(163,115,12,.66)!important;
+  box-shadow:0 14px 38px rgba(151,108,15,.22)!important;
+}
+.card.podium-2{
+  background:
+    linear-gradient(145deg,
+      rgba(244,247,249,.99) 0%,
+      rgba(150,160,171,.46) 46%,
+      rgba(252,253,254,.99) 100%)!important;
+  border-color:rgba(103,114,126,.58)!important;
+  box-shadow:0 14px 36px rgba(89,100,113,.17)!important;
+}
+.card.podium-3{
+  background:
+    linear-gradient(145deg,
+      rgba(255,232,214,.99) 0%,
+      rgba(169,93,46,.48) 46%,
+      rgba(255,244,235,.98) 100%)!important;
+  border-color:rgba(132,68,30,.59)!important;
+  box-shadow:0 14px 36px rgba(126,68,31,.18)!important;
+}
+
+/* Cápsulas del podio compactas pero inequívocas */
+.podium-badge.podium-1{
+  background:linear-gradient(135deg,#76520b,#c99c25)!important;
+  border-color:rgba(255,239,177,.9)!important;
+}
+.podium-badge.podium-2{
+  background:linear-gradient(135deg,#59616a,#929ba5)!important;
+  border-color:rgba(255,255,255,.88)!important;
+}
+.podium-badge.podium-3{
+  background:linear-gradient(135deg,#6f381e,#a45f37)!important;
+  border-color:rgba(255,225,207,.88)!important;
+}
+
+/* Poco stock: misma geometría que Novedad y Podio */
+.stock-badge,.low-stock-badge{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+
+
+/* PRELUDE · PRUEBA VISUAL PACKS */
+.prelude-packs{margin:8px 0 26px;padding:26px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.74),rgba(232,230,225,.38))}
+.prelude-packs-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:18px}
+.prelude-packs-kicker{font-size:10px;letter-spacing:.18em;color:var(--muted);margin-bottom:7px}
+.prelude-packs h2{font:400 30px Georgia,serif;margin:0 0 5px}.prelude-packs-head p{margin:0;color:var(--muted);font-size:13px}
+.prelude-packs-test{border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-size:9px;letter-spacing:.12em;text-transform:uppercase}
+.prelude-packs-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.prelude-pack-card{position:relative;min-height:245px;padding:18px;border:1px solid var(--line);border-radius:17px;background:var(--card);display:flex;flex-direction:column;overflow:hidden}
+.prelude-pack-card.featured{border-color:rgba(120,93,35,.5);box-shadow:0 12px 30px rgba(110,82,25,.09)}
+.prelude-pack-num{font:400 11px Georgia,serif;color:var(--muted);letter-spacing:.12em}.prelude-pack-chip{position:absolute;right:13px;top:13px;font-size:8px;letter-spacing:.12em;border:1px solid rgba(145,111,32,.38);border-radius:999px;padding:5px 7px}
+.prelude-pack-card h3{font:400 22px Georgia,serif;margin:25px 0 9px}.prelude-pack-card p{font-size:12px;line-height:1.55;color:var(--muted);margin:0 0 18px}
+.prelude-pack-meta{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:13px;border-top:1px solid var(--line);font-size:11px}.prelude-pack-meta strong{font-size:14px}
+.prelude-pack-card button{margin-top:12px;width:100%;border:1px solid #171716;background:#171716;color:#fff;border-radius:11px;padding:11px;cursor:pointer;font:inherit;font-size:11px}
+.prelude-pack-note{margin-top:13px;color:var(--muted);font-size:10px;text-align:center}
+@media(max-width:980px){.prelude-packs-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.prelude-packs{padding:18px 12px}.prelude-packs-head{align-items:flex-start}.prelude-packs-grid{grid-template-columns:1fr 1fr;gap:8px}.prelude-pack-card{min-height:220px;padding:13px}.prelude-pack-card h3{font-size:18px;margin-top:20px}.prelude-pack-card p{font-size:10px}.prelude-pack-chip{display:none}.prelude-packs h2{font-size:25px}}
+
+
+/* PRELUDE · DOBLE VENTAJA EN PACKS */
+.prelude-pack-reward{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  margin-top:8px;padding:9px 10px;border:1px solid var(--line);
+  border-radius:10px;background:rgba(255,255,255,.32);
+  font-size:9px
+}
+.prelude-pack-reward span{color:var(--muted)}
+.prelude-pack-reward b{font-size:10px;font-weight:600;white-space:nowrap}
+.prelude-pack-card.featured .prelude-pack-reward{
+  border-color:rgba(145,111,32,.32);
+  background:rgba(197,161,76,.08)
+}
+@media(max-width:620px){
+  .prelude-pack-reward{display:block;padding:8px}
+  .prelude-pack-reward span,.prelude-pack-reward b{display:block}
+  .prelude-pack-reward b{margin-top:3px;white-space:normal}
+}
+
+
+/* PRELUDE · PACKS DE CINCO */
+.prelude-pack-meta span{font-weight:600}
+.prelude-packs-head p{max-width:620px}
+
+
+/* PRELUDE SETS */
+.prelude-sets-intro{display:flex;align-items:center;justify-content:center;gap:12px;margin:-4px 0 18px;color:var(--muted);font-size:10px;letter-spacing:.06em}
+.prelude-sets-intro i{display:block;width:18px;height:1px;background:var(--line)}
+.prelude-sets-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+.prelude-set-card{min-height:300px}
+.prelude-set-sub{margin-top:20px;font-size:8px;letter-spacing:.15em;color:var(--muted)}
+.prelude-set-card h3{margin-top:7px}
+.prelude-set-quote{margin:2px 0 15px;font:italic 11px Georgia,serif;color:var(--muted);line-height:1.4}
+.prelude-journey-hours{display:flex;justify-content:space-between;gap:4px;margin:0 0 12px;padding:8px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:8px;color:var(--muted)}
+.prelude-set-card.curator{background:linear-gradient(145deg,rgba(250,249,246,.98),rgba(225,220,209,.48))}
+@media(max-width:1180px){.prelude-sets-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:800px){.prelude-sets-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){
+  .prelude-sets-intro{gap:7px;font-size:8px;flex-wrap:wrap}
+  .prelude-sets-intro i{width:10px}
+  .prelude-sets-grid{grid-template-columns:1fr 1fr}
+  .prelude-set-card{min-height:275px}
+  .prelude-set-sub{font-size:7px}
+  .prelude-set-quote{font-size:9px}
+  .prelude-journey-hours{font-size:7px}
+}
+
+
+/* PRELUDE SETS · ABIERTO POR DEFECTO + MINIMIZABLE */
+.prelude-sets-toggle{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--line);background:rgba(255,255,255,.48);color:var(--ink);
+  border-radius:999px;padding:7px 10px;cursor:pointer;
+  font:inherit;font-size:9px;letter-spacing:.09em;text-transform:uppercase;
+}
+.prelude-sets-toggle:hover{background:rgba(255,255,255,.82)}
+.prelude-sets-toggle-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:16px;height:16px;border-radius:50%;font-size:14px;line-height:1;
+}
+.prelude-sets-content{
+  display:grid;
+  grid-template-rows:1fr;
+  opacity:1;
+  transition:grid-template-rows .32s ease,opacity .22s ease,margin .32s ease;
+}
+.prelude-sets-content > *{min-height:0}
+.prelude-sets.is-collapsed{
+  padding-bottom:20px;
+}
+.prelude-sets.is-collapsed .prelude-sets-content{
+  display:none;
+}
+.prelude-sets.is-collapsed .prelude-packs-head{
+  margin-bottom:0;
+}
+@media(max-width:620px){
+  .prelude-sets-toggle{padding:6px 8px;font-size:8px}
+  .prelude-sets-toggle-label{display:inline}
+}
+
+
+/* PRELUDE SETS · IDENTIDAD CROMÁTICA SUTIL */
+.prelude-set-card{
+  transition:
+    background .42s ease,
+    border-color .42s ease,
+    box-shadow .42s ease,
+    transform .28s ease!important;
+}
+
+/* 01 · The Five — piedra / perla, punto de partida neutro */
+.prelude-set-card.set-five{
+  background:linear-gradient(145deg,
+    rgba(255,255,255,.98) 0%,
+    rgba(210,208,202,.18) 52%,
+    rgba(250,249,247,.98) 100%)!important;
+  border-color:rgba(145,143,137,.28)!important;
+}
+.prelude-set-card.set-five:hover{
+  background:linear-gradient(145deg,
+    rgba(255,255,255,.99) 0%,
+    rgba(196,193,186,.29) 52%,
+    rgba(249,248,245,.99) 100%)!important;
+  border-color:rgba(130,127,119,.40)!important;
+}
+
+/* 02 · The Discovery — salvia */
+.prelude-set-card.set-discovery{
+  background:linear-gradient(145deg,
+    rgba(255,255,253,.98) 0%,
+    rgba(174,190,164,.18) 50%,
+    rgba(249,251,247,.98) 100%)!important;
+  border-color:rgba(126,151,116,.28)!important;
+}
+.prelude-set-card.set-discovery:hover{
+  background:linear-gradient(145deg,
+    rgba(255,255,253,.99) 0%,
+    rgba(158,181,146,.31) 50%,
+    rgba(247,250,244,.99) 100%)!important;
+  border-color:rgba(108,139,96,.43)!important;
+}
+
+/* 03 · The Journey — luz cálida que evoluciona hacia noche */
+.prelude-set-card.set-journey{
+  background:linear-gradient(145deg,
+    rgba(255,253,247,.99) 0%,
+    rgba(220,190,132,.20) 44%,
+    rgba(151,163,176,.15) 100%)!important;
+  border-color:rgba(182,147,84,.31)!important;
+}
+.prelude-set-card.set-journey:hover{
+  background:linear-gradient(145deg,
+    rgba(255,252,243,.99) 0%,
+    rgba(216,174,98,.33) 44%,
+    rgba(132,148,166,.24) 100%)!important;
+  border-color:rgba(171,129,57,.45)!important;
+}
+
+/* 04 · The Match — azul grisáceo, precisión y afinidad */
+.prelude-set-card.set-match{
+  background:linear-gradient(145deg,
+    rgba(253,254,255,.99) 0%,
+    rgba(160,180,198,.19) 52%,
+    rgba(248,250,252,.99) 100%)!important;
+  border-color:rgba(105,137,164,.34)!important;
+  box-shadow:0 12px 30px rgba(83,112,137,.07)!important;
+}
+.prelude-set-card.set-match:hover{
+  background:linear-gradient(145deg,
+    rgba(253,254,255,.99) 0%,
+    rgba(139,168,192,.32) 52%,
+    rgba(246,249,252,.99) 100%)!important;
+  border-color:rgba(87,124,154,.49)!important;
+  box-shadow:0 14px 32px rgba(83,112,137,.11)!important;
+}
+
+/* 05 · The Curator — marfil y ciruela/burdeos editorial */
+.prelude-set-card.set-curator{
+  background:linear-gradient(145deg,
+    rgba(255,253,248,.99) 0%,
+    rgba(150,99,112,.16) 54%,
+    rgba(250,246,244,.99) 100%)!important;
+  border-color:rgba(126,75,90,.28)!important;
+}
+.prelude-set-card.set-curator:hover{
+  background:linear-gradient(145deg,
+    rgba(255,253,248,.99) 0%,
+    rgba(145,82,100,.28) 54%,
+    rgba(249,243,241,.99) 100%)!important;
+  border-color:rgba(116,62,79,.43)!important;
+}
+
+/* El hover responde, pero sin levantar excesivamente la tarjeta */
+.prelude-set-card:hover{transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){
+  .prelude-set-card{transition:none!important}
+  .prelude-set-card:hover{transform:none!important}
+}
+
+
+/* PRELUDE SETS · FUNCIONAL */
+.prelude-set-overlay{position:fixed;inset:0;z-index:100060;background:rgba(7,7,7,.64);display:none;align-items:center;justify-content:center;padding:16px}
+.prelude-set-overlay.open{display:flex}
+.prelude-set-modal{width:min(840px,100%);max-height:92vh;overflow:auto;background:#f5f2ec;color:#171716;border-radius:24px;padding:25px;box-shadow:0 30px 100px rgba(0,0,0,.35)}
+.prelude-set-modal-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
+.prelude-set-modal-kicker{font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.52}
+.prelude-set-modal-head h3{font:400 31px Georgia,"Times New Roman",serif;margin:4px 0 5px}
+.prelude-set-modal-head p{margin:0;opacity:.62;font-size:12px;line-height:1.5}
+.prelude-set-modal-close{border:0;background:transparent;color:#171716;font-size:29px;cursor:pointer}
+.prelude-set-picker{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:18px}
+.prelude-set-picker select{width:100%;padding:9px;border:1px solid rgba(0,0,0,.13);border-radius:10px;background:#fff;color:#171716;font-size:10px}
+.prelude-set-products{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:18px}
+.prelude-set-product{border:1px solid rgba(0,0,0,.11);border-radius:14px;background:#fff;overflow:hidden}
+.prelude-set-product img{width:100%;height:135px;object-fit:contain;background:#f0ede7;padding:8px;box-sizing:border-box}
+.prelude-set-product-body{padding:9px}.prelude-set-product strong{display:block;font:400 14px Georgia,serif}.prelude-set-product small{display:block;opacity:.55;margin-top:2px;font-size:9px}
+.prelude-set-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.prelude-set-summary>div{border:1px solid rgba(0,0,0,.11);border-radius:12px;padding:10px;background:rgba(255,255,255,.55)}
+.prelude-set-summary span{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.07em;opacity:.52}.prelude-set-summary strong{display:block;margin-top:5px;font-size:14px}
+.prelude-set-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:16px}
+.prelude-set-actions button{border:1px solid rgba(0,0,0,.14);border-radius:999px;padding:10px 14px;background:transparent;color:#171716;cursor:pointer;font:inherit}
+.prelude-set-actions .primary-set-action{background:#171716;color:#fff;border-color:#171716}
+.prelude-set-warning{margin-top:14px;padding:10px;border:1px solid rgba(130,78,25,.20);border-radius:11px;background:rgba(196,151,73,.09);font-size:10px;line-height:1.5}
+.cart-set-label{display:inline-block;margin-top:3px;font-size:9px;letter-spacing:.06em;color:var(--muted)}
+.cart-set-bonus{font-size:10px;color:var(--muted);margin-top:4px}
+@media(max-width:760px){
+ .prelude-set-products{grid-template-columns:repeat(2,1fr)}
+ .prelude-set-picker{grid-template-columns:1fr}
+ .prelude-set-summary{grid-template-columns:1fr 1fr}
+ .prelude-set-product img{height:115px}
+}
+
+
+/* PRELUDE SETS · CATÁLOGO VISUAL */
+.prelude-set-picker-head{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:14px;
+  margin-top:18px;margin-bottom:10px
+}
+.prelude-set-picker-head strong{
+  display:block;font:400 20px Georgia,"Times New Roman",serif
+}
+.prelude-set-picker-head small{
+  display:block;margin-top:4px;font-size:10px;opacity:.55
+}
+.prelude-set-picker-count{
+  min-width:52px;text-align:center;border:1px solid rgba(0,0,0,.14);
+  border-radius:999px;padding:7px 10px;font-size:12px;background:rgba(255,255,255,.55)
+}
+.prelude-set-catalog{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;max-height:480px;overflow:auto;padding:2px 3px 5px 0
+}
+.prelude-set-catalog-card{
+  position:relative;border:1px solid rgba(0,0,0,.11);border-radius:14px;
+  background:#fff;color:#171716;padding:0;overflow:hidden;cursor:pointer;text-align:left;
+  transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease
+}
+.prelude-set-catalog-card:hover{
+  transform:translateY(-1px);border-color:rgba(0,0,0,.28);
+  box-shadow:0 7px 18px rgba(0,0,0,.06)
+}
+.prelude-set-catalog-card.selected{
+  border-color:#171716;box-shadow:0 0 0 1px #171716
+}
+.prelude-set-catalog-card img{
+  width:100%;height:145px;object-fit:contain;background:#f0ede7;
+  display:block;padding:8px;box-sizing:border-box
+}
+.prelude-set-catalog-body{display:block;padding:9px 10px 11px}
+.prelude-set-catalog-body strong{
+  display:block;font:400 14px Georgia,"Times New Roman",serif;line-height:1.2
+}
+.prelude-set-catalog-body small{
+  display:block;margin-top:3px;font-size:9px;opacity:.53
+}
+.prelude-set-catalog-body b{
+  display:block;margin-top:7px;font-size:9px;font-weight:600
+}
+.prelude-set-selected-mark{
+  position:absolute;top:7px;right:7px;z-index:2;
+  width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:#171716;color:#fff;font-size:12px;
+  opacity:0;transform:scale(.8);transition:.18s ease
+}
+.prelude-set-catalog-card.selected .prelude-set-selected-mark{
+  opacity:1;transform:scale(1)
+}
+@media(max-width:760px){
+  .prelude-set-catalog{grid-template-columns:repeat(2,minmax(0,1fr));max-height:58vh}
+  .prelude-set-catalog-card img{height:125px}
+}
+
+
+/* PRELUDE SETS · CÁPSULAS DE IDENTIDAD */
+.prelude-set-card{position:relative}
+.prelude-set-chip{
+  position:absolute!important;
+  top:14px!important;
+  right:14px!important;
+  margin:0!important;
+  font-size:8px!important;
+  letter-spacing:.09em!important;
+  padding:5px 9px!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.62)!important;
+  backdrop-filter:blur(5px);
+}
+.set-chip-five{border-color:rgba(120,117,108,.34)!important}
+.set-chip-discovery{border-color:rgba(108,139,96,.38)!important}
+.set-chip-journey{border-color:rgba(171,129,57,.40)!important}
+.set-match .prelude-pack-chip{border-color:rgba(87,124,154,.40)!important}
+.set-curator .prelude-pack-chip{border-color:rgba(116,62,79,.38)!important}
+@media(max-width:620px){
+  .prelude-set-chip,.prelude-set-card .prelude-pack-chip{
+    top:10px!important;right:10px!important;font-size:7px!important;padding:4px 7px!important
+  }
+}
+
+
+/* PRELUDE SETS · IMÁGENES A SANGRE */
+.prelude-set-catalog-card img{
+  width:100%!important;
+  height:230px!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  display:block!important;
+}
+.prelude-set-catalog-card{
+  overflow:hidden!important;
+}
+.prelude-set-catalog-body{
+  border-top:0!important;
+}
+@media(max-width:760px){
+  .prelude-set-catalog-card img{
+    height:190px!important;
+  }
+}
+
+
+/* PRELUDE SETS · IMÁGENES GRANDES EN TODOS LOS SETS */
+.prelude-set-product{
+  overflow:hidden!important;
+}
+.prelude-set-product img{
+  width:100%!important;
+  height:230px!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  display:block!important;
+}
+.prelude-set-product-body{
+  border-top:0!important;
+}
+@media(max-width:760px){
+  .prelude-set-product img{
+    height:190px!important;
+  }
+}
+
+
+/* PRELUDE SETS · RESUMEN DE LOS 5 SELECCIONADOS CON IMAGEN GRANDE */
+.prelude-set-products{
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+.prelude-set-products .prelude-set-product img{
+  width:100%!important;
+  height:220px!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+}
+.prelude-set-products .prelude-set-product-body{
+  padding:11px!important;
+}
+.prelude-set-products .prelude-set-product-body strong{
+  font-size:15px!important;
+  line-height:1.15!important;
+}
+@media(max-width:760px){
+  .prelude-set-products{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .prelude-set-products .prelude-set-product img{
+    height:190px!important;
+  }
+}
+
+
+/* PRELUDE SETS · MICROANIMACIONES PREMIUM */
+
+/* 1. Apertura del modal: aparición suave + pequeño ascenso */
+@keyframes preludeSetOverlayIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+@keyframes preludeSetModalIn{
+  0%{opacity:0;transform:translateY(14px) scale(.985)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+.prelude-set-overlay.open{
+  animation:preludeSetOverlayIn .24s ease both;
+}
+.prelude-set-overlay.open .prelude-set-modal{
+  animation:preludeSetModalIn .38s cubic-bezier(.22,.78,.24,1) both;
+}
+
+/* 2. Selección de un perfume: confirmación táctil y elegante */
+@keyframes preludeSetSelectPulse{
+  0%{transform:scale(1)}
+  46%{transform:scale(.975)}
+  100%{transform:scale(1)}
+}
+@keyframes preludeSetCheckIn{
+  0%{opacity:0;transform:scale(.45) rotate(-12deg)}
+  65%{opacity:1;transform:scale(1.12) rotate(2deg)}
+  100%{opacity:1;transform:scale(1) rotate(0)}
+}
+.prelude-set-catalog-card.set-just-selected{
+  animation:preludeSetSelectPulse .30s ease both;
+}
+.prelude-set-catalog-card.set-just-selected .prelude-set-selected-mark{
+  animation:preludeSetCheckIn .34s cubic-bezier(.2,.75,.25,1) both;
+}
+
+/* Contador 0/5 → 5/5 */
+@keyframes preludeSetCountPulse{
+  0%{transform:scale(1)}
+  45%{transform:scale(1.10)}
+  100%{transform:scale(1)}
+}
+.prelude-set-picker-count.is-updating{
+  animation:preludeSetCountPulse .28s ease both;
+}
+
+/* 3. Los cinco seleccionados aparecen de forma escalonada */
+@keyframes preludeSetRevealCard{
+  0%{opacity:0;transform:translateY(12px) scale(.985)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+.prelude-set-products.set-reveal .prelude-set-product{
+  opacity:0;
+  animation:preludeSetRevealCard .42s cubic-bezier(.22,.78,.24,1) forwards;
+}
+.prelude-set-products.set-reveal .prelude-set-product:nth-child(1){animation-delay:.03s}
+.prelude-set-products.set-reveal .prelude-set-product:nth-child(2){animation-delay:.09s}
+.prelude-set-products.set-reveal .prelude-set-product:nth-child(3){animation-delay:.15s}
+.prelude-set-products.set-reveal .prelude-set-product:nth-child(4){animation-delay:.21s}
+.prelude-set-products.set-reveal .prelude-set-product:nth-child(5){animation-delay:.27s}
+
+/* Resumen económico entra después de las imágenes */
+@keyframes preludeSetSummaryIn{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.prelude-set-summary.set-summary-reveal{
+  animation:preludeSetSummaryIn .34s ease .31s both;
+}
+.prelude-set-actions.set-actions-reveal{
+  animation:preludeSetSummaryIn .34s ease .38s both;
+}
+
+/* Animación discreta al pulsar cualquiera de los 5 Sets en la portada */
+@keyframes preludeSetCardTap{
+  0%{transform:translateY(0)}
+  45%{transform:translateY(-3px)}
+  100%{transform:translateY(0)}
+}
+.prelude-set-card.set-opening{
+  animation:preludeSetCardTap .32s ease both;
+}
+
+/* No depender del hover para funcionar */
+@media (prefers-reduced-motion:reduce){
+  .prelude-set-overlay.open,
+  .prelude-set-overlay.open .prelude-set-modal,
+  .prelude-set-catalog-card.set-just-selected,
+  .prelude-set-catalog-card.set-just-selected .prelude-set-selected-mark,
+  .prelude-set-picker-count.is-updating,
+  .prelude-set-products.set-reveal .prelude-set-product,
+  .prelude-set-summary.set-summary-reveal,
+  .prelude-set-actions.set-actions-reveal,
+  .prelude-set-card.set-opening{
+    animation:none!important;
+    opacity:1!important;
+    transform:none!important;
+  }
+}
+
+
+/* PRELUDE SETS · COLOR EN CESTA SEGÚN SET */
+.cart-from-set{
+  border-radius:12px!important;
+  padding:9px!important;
+  margin:4px 0!important;
+  border:1px solid transparent!important;
+}
+.cart-set-five{
+  background:linear-gradient(90deg,rgba(210,208,202,.18),rgba(255,255,255,.18))!important;
+  border-color:rgba(145,143,137,.22)!important;
+}
+.cart-set-discovery{
+  background:linear-gradient(90deg,rgba(174,190,164,.18),rgba(255,255,255,.18))!important;
+  border-color:rgba(126,151,116,.24)!important;
+}
+.cart-set-journey{
+  background:linear-gradient(90deg,rgba(220,190,132,.20),rgba(151,163,176,.10))!important;
+  border-color:rgba(182,147,84,.24)!important;
+}
+.cart-set-match{
+  background:linear-gradient(90deg,rgba(160,180,198,.20),rgba(255,255,255,.18))!important;
+  border-color:rgba(105,137,164,.27)!important;
+}
+.cart-set-curator{
+  background:linear-gradient(90deg,rgba(150,99,112,.16),rgba(255,253,248,.20))!important;
+  border-color:rgba(126,75,90,.24)!important;
+}
+.cart-from-set .cart-set-label{
+  display:inline-flex!important;
+  align-items:center!important;
+  margin-top:4px!important;
+  padding:3px 7px!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.52)!important;
+  border:1px solid rgba(0,0,0,.07)!important;
+  font-size:8px!important;
+  letter-spacing:.055em!important;
+  text-transform:uppercase!important;
+}
+
+/* PRELUDE SETS · PRECIO DEL SET DESTACADO */
+.prelude-set-summary .set-summary-price{
+  position:relative;
+  background:linear-gradient(145deg,rgba(25,25,24,.96),rgba(47,46,43,.96))!important;
+  border-color:#171716!important;
+  color:#fff!important;
+  box-shadow:0 8px 20px rgba(0,0,0,.10)!important;
+}
+.prelude-set-summary .set-summary-price span{
+  color:rgba(255,255,255,.65)!important;
+}
+.prelude-set-summary .set-summary-price strong{
+  color:#fff!important;
+  font-size:18px!important;
+}
+.prelude-set-summary .set-summary-saving{
+  background:rgba(176,137,63,.10)!important;
+  border-color:rgba(176,137,63,.28)!important;
+}
+.prelude-set-summary .set-summary-saving strong{
+  color:#8a651f!important;
+}
+@media(max-width:760px){
+  .prelude-set-summary .set-summary-price strong{font-size:16px!important}
+}
+
+
+/* PRELUDE SETS · POP-UP AMPLIO EN ESCRITORIO */
+@media(min-width:1000px){
+  .prelude-set-modal{
+    width:min(1240px,94vw)!important;
+    max-height:94vh!important;
+    padding:30px 34px 28px!important;
+    border-radius:26px!important;
+  }
+  .prelude-set-modal-head h3{
+    font-size:38px!important;
+  }
+  .prelude-set-modal-head p{
+    font-size:13px!important;
+  }
+  .prelude-set-products{
+    gap:12px!important;
+    margin-top:20px!important;
+  }
+  .prelude-set-products .prelude-set-product img{
+    height:300px!important;
+  }
+  .prelude-set-products .prelude-set-product-body{
+    padding:13px 14px 14px!important;
+    min-height:76px!important;
+  }
+  .prelude-set-products .prelude-set-product-body strong{
+    font-size:17px!important;
+    line-height:1.12!important;
+  }
+  .prelude-set-products .prelude-set-product-body small{
+    font-size:10px!important;
+    line-height:1.25!important;
+    margin-top:4px!important;
+  }
+  .prelude-set-summary{
+    gap:10px!important;
+    margin-top:18px!important;
+  }
+  .prelude-set-summary>div{
+    padding:12px 14px!important;
+  }
+  .prelude-set-summary strong{
+    font-size:15px!important;
+  }
+  .prelude-set-summary .set-summary-price strong{
+    font-size:20px!important;
+  }
+  .prelude-set-actions{
+    margin-top:16px!important;
+  }
+  .prelude-set-actions button{
+    padding:12px 18px!important;
+  }
+}
+
+/* En pantallas grandes aprovechamos todavía más el espacio */
+@media(min-width:1400px){
+  .prelude-set-modal{
+    width:min(1380px,94vw)!important;
+  }
+  .prelude-set-products .prelude-set-product img{
+    height:330px!important;
+  }
+}
+
+
+/* PRELUDE · CESTA CON MINIATURAS MÁS GRANDES EN PC */
+@media(min-width:900px){
+  #cart .item{
+    grid-template-columns:76px 1fr!important;
+    gap:12px!important;
+    align-items:center!important;
+    padding:11px 0!important;
+  }
+  #cart .item > img{
+    width:76px!important;
+    height:92px!important;
+    object-fit:cover!important;
+    object-position:center!important;
+    border-radius:10px!important;
+  }
+  #cart .item b{
+    font-size:15px!important;
+    line-height:1.15!important;
+  }
+  #cart .item .muted{
+    font-size:11px!important;
+  }
+  #cart .item .row{
+    margin-top:3px!important;
+  }
+}
+
+/* En pantallas especialmente anchas, un poco más de presencia */
+@media(min-width:1300px){
+  #cart .item{
+    grid-template-columns:84px 1fr!important;
+  }
+  #cart .item > img{
+    width:84px!important;
+    height:102px!important;
+  }
+}
+
+/* Móvil: conservar proporción compacta */
+@media(max-width:899px){
+  #cart .item > img{
+    object-fit:cover!important;
+  }
+}
+
+
+/* PRELUDE SETS · VENTAJA UNIFICADA */
+.prelude-pack-format{
+  justify-content:flex-start!important;
+}
+.prelude-set-benefit{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:38px;
+  margin-top:8px;
+  padding:9px 10px;
+  border:1px solid transparent;
+  border-radius:11px;
+  font-size:9px;
+  line-height:1.15;
+  text-align:center;
+}
+.prelude-set-benefit strong,
+.prelude-set-benefit b{
+  font-size:10px;
+  font-weight:650;
+  white-space:nowrap;
+}
+.prelude-set-benefit span{
+  opacity:.42;
+}
+
+/* The Five · piedra */
+.set-five .prelude-set-benefit{
+  background:rgba(174,171,163,.24);
+  border-color:rgba(126,123,115,.32);
+}
+
+/* The Discovery · salvia */
+.set-discovery .prelude-set-benefit{
+  background:rgba(155,177,145,.26);
+  border-color:rgba(105,137,94,.34);
+}
+
+/* The Journey · ámbar */
+.set-journey .prelude-set-benefit{
+  background:linear-gradient(90deg,rgba(214,172,96,.28),rgba(142,157,174,.16));
+  border-color:rgba(167,125,52,.34);
+}
+
+/* The Match · azul grisáceo */
+.set-match .prelude-set-benefit{
+  background:rgba(137,166,190,.27);
+  border-color:rgba(79,119,151,.34);
+}
+
+/* The Curator · ciruela */
+.set-curator .prelude-set-benefit{
+  background:rgba(145,82,100,.23);
+  border-color:rgba(112,58,76,.32);
+}
+
+@media(max-width:620px){
+  .prelude-set-benefit{
+    gap:4px;
+    padding:8px 6px;
+    font-size:8px;
+  }
+  .prelude-set-benefit strong,
+  .prelude-set-benefit b{
+    font-size:8px;
+    white-space:normal;
+  }
+}
+
+
+/* PRELUDE SETS · AJUSTE DE BANDA DE VENTAJA */
+.prelude-set-benefit{
+  width:100%!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:1fr auto 1fr!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  min-height:42px!important;
+  margin:8px 0 0!important;
+  padding:8px 9px!important;
+  overflow:hidden!important;
+}
+.prelude-set-benefit strong,
+.prelude-set-benefit b{
+  min-width:0!important;
+  max-width:100%!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  line-height:1.18!important;
+  text-align:center!important;
+  font-size:9px!important;
+}
+.prelude-set-benefit strong{justify-self:end!important}
+.prelude-set-benefit b{justify-self:start!important}
+.prelude-set-benefit > span{
+  flex:0 0 auto!important;
+  opacity:.38!important;
+}
+
+@media(max-width:1180px){
+  .prelude-set-benefit{
+    grid-template-columns:1fr!important;
+    gap:2px!important;
+    padding:7px 8px!important;
+  }
+  .prelude-set-benefit > span{display:none!important}
+  .prelude-set-benefit strong,
+  .prelude-set-benefit b{
+    justify-self:center!important;
+    font-size:8px!important;
+  }
+}
+
+@media(max-width:620px){
+  .prelude-set-benefit{
+    min-height:44px!important;
+    padding:7px 6px!important;
+  }
+  .prelude-set-benefit strong,
+  .prelude-set-benefit b{
+    font-size:8px!important;
+  }
+}
+
+
+/* PRELUDE SETS · DARK MODE MEJORADO */
+body.dark .prelude-sets{
+  background:rgba(24,24,23,.88)!important;
+  border-color:rgba(255,255,255,.10)!important;
+}
+body.dark .prelude-sets .prelude-packs-kicker,
+body.dark .prelude-sets .prelude-set-sub,
+body.dark .prelude-sets .prelude-set-quote,
+body.dark .prelude-sets .prelude-packs-head p,
+body.dark .prelude-sets .prelude-sets-intro{
+  color:rgba(255,255,255,.62)!important;
+}
+body.dark .prelude-sets h2,
+body.dark .prelude-set-card h3,
+body.dark .prelude-set-card > p,
+body.dark .prelude-pack-format,
+body.dark .prelude-set-benefit{
+  color:#f3f1ec!important;
+}
+
+/* Cards: más contraste, manteniendo identidad */
+body.dark .prelude-set-card{
+  box-shadow:none!important;
+}
+body.dark .prelude-set-card.set-five{
+  background:linear-gradient(145deg,rgba(54,53,50,.96),rgba(84,82,76,.42))!important;
+  border-color:rgba(210,208,202,.28)!important;
+}
+body.dark .prelude-set-card.set-discovery{
+  background:linear-gradient(145deg,rgba(40,48,38,.96),rgba(101,126,91,.28))!important;
+  border-color:rgba(154,181,143,.34)!important;
+}
+body.dark .prelude-set-card.set-journey{
+  background:linear-gradient(145deg,rgba(55,46,31,.96),rgba(132,108,67,.31),rgba(66,75,87,.24))!important;
+  border-color:rgba(205,167,96,.38)!important;
+}
+body.dark .prelude-set-card.set-match{
+  background:linear-gradient(145deg,rgba(35,43,50,.97),rgba(92,120,145,.30))!important;
+  border-color:rgba(131,166,195,.40)!important;
+}
+body.dark .prelude-set-card.set-curator{
+  background:linear-gradient(145deg,rgba(50,34,40,.97),rgba(115,67,82,.30))!important;
+  border-color:rgba(174,112,131,.38)!important;
+}
+
+/* Cápsulas superiores */
+body.dark .prelude-set-card .prelude-pack-chip,
+body.dark .prelude-set-chip{
+  background:rgba(255,255,255,.08)!important;
+  color:#f4f1eb!important;
+  border-color:rgba(255,255,255,.18)!important;
+  box-shadow:none!important;
+}
+
+/* Banda descuento + marcapáginas */
+body.dark .set-five .prelude-set-benefit{
+  background:rgba(164,161,151,.18)!important;
+  border-color:rgba(200,197,188,.25)!important;
+}
+body.dark .set-discovery .prelude-set-benefit{
+  background:rgba(118,153,106,.22)!important;
+  border-color:rgba(149,184,136,.30)!important;
+}
+body.dark .set-journey .prelude-set-benefit{
+  background:linear-gradient(90deg,rgba(184,139,64,.24),rgba(107,127,149,.19))!important;
+  border-color:rgba(205,166,94,.31)!important;
+}
+body.dark .set-match .prelude-set-benefit{
+  background:rgba(95,136,169,.23)!important;
+  border-color:rgba(130,169,199,.33)!important;
+}
+body.dark .set-curator .prelude-set-benefit{
+  background:rgba(137,75,94,.24)!important;
+  border-color:rgba(176,111,131,.31)!important;
+}
+body.dark .prelude-set-benefit strong,
+body.dark .prelude-set-benefit b{
+  color:#fff!important;
+}
+body.dark .prelude-set-benefit > span{
+  color:rgba(255,255,255,.55)!important;
+}
+
+/* Separadores, horas, formato */
+body.dark .prelude-set-card .prelude-pack-meta,
+body.dark .prelude-journey-hours{
+  border-color:rgba(255,255,255,.14)!important;
+}
+body.dark .prelude-journey-hours{
+  color:rgba(255,255,255,.58)!important;
+}
+
+/* Botones negros -> en dark algo más separados del fondo */
+body.dark .prelude-set-card > button{
+  background:#f1eee8!important;
+  color:#171716!important;
+  border-color:#f1eee8!important;
+}
+body.dark .prelude-set-card > button:hover{
+  background:#fff!important;
+}
+
+/* CESTA · distinguir claramente los productos de Sets */
+body.dark .cart-from-set{
+  color:#f5f2ec!important;
+  border-width:1px!important;
+}
+body.dark .cart-set-five{
+  background:linear-gradient(90deg,rgba(106,103,95,.33),rgba(54,53,50,.55))!important;
+  border-color:rgba(202,198,187,.22)!important;
+}
+body.dark .cart-set-discovery{
+  background:linear-gradient(90deg,rgba(79,105,70,.34),rgba(39,48,38,.57))!important;
+  border-color:rgba(145,177,132,.24)!important;
+}
+body.dark .cart-set-journey{
+  background:linear-gradient(90deg,rgba(126,94,46,.34),rgba(58,67,78,.44))!important;
+  border-color:rgba(197,154,83,.25)!important;
+}
+body.dark .cart-set-match{
+  background:linear-gradient(90deg,rgba(70,101,126,.36),rgba(37,45,52,.58))!important;
+  border-color:rgba(124,161,191,.27)!important;
+}
+body.dark .cart-set-curator{
+  background:linear-gradient(90deg,rgba(109,60,76,.36),rgba(48,34,39,.58))!important;
+  border-color:rgba(168,103,123,.25)!important;
+}
+
+/* Nombre del Set en la cesta: más legible y con identidad */
+body.dark .cart-from-set .cart-set-label{
+  background:rgba(0,0,0,.28)!important;
+  color:#fff!important;
+  border-color:rgba(255,255,255,.16)!important;
+  font-weight:650!important;
+  opacity:1!important;
+}
+body.dark .cart-set-five .cart-set-label{
+  box-shadow:inset 3px 0 0 rgba(205,201,190,.70)!important;
+}
+body.dark .cart-set-discovery .cart-set-label{
+  box-shadow:inset 3px 0 0 rgba(145,180,132,.75)!important;
+}
+body.dark .cart-set-journey .cart-set-label{
+  box-shadow:inset 3px 0 0 rgba(211,166,87,.78)!important;
+}
+body.dark .cart-set-match .cart-set-label{
+  box-shadow:inset 3px 0 0 rgba(129,170,203,.78)!important;
+}
+body.dark .cart-set-curator .cart-set-label{
+  box-shadow:inset 3px 0 0 rgba(177,110,132,.78)!important;
+}
+
+/* Texto general de productos Set en cesta */
+body.dark .cart-from-set b,
+body.dark .cart-from-set .muted,
+body.dark .cart-from-set .row,
+body.dark .cart-from-set button{
+  color:inherit!important;
+}
+body.dark .cart-from-set .muted{
+  color:rgba(255,255,255,.62)!important;
+}
+body.dark .cart-from-set button{
+  color:rgba(255,255,255,.70)!important;
+}
+
+/* Barra minimizar */
+body.dark .prelude-sets-toggle{
+  background:rgba(255,255,255,.08)!important;
+  color:#f2efe9!important;
+  border-color:rgba(255,255,255,.16)!important;
+}
+body.dark .prelude-sets-toggle:hover{
+  background:rgba(255,255,255,.13)!important;
+}
+
 </style>
 </head>
 <body><div class="watermark-brush one"></div><div class="watermark-brush two"></div>
@@ -1493,8 +2712,125 @@ body.reward-choice-open{
 onclick="var s=document.getElementById('splash');if(s){s.classList.add('hide');setTimeout(function(){s.style.display='none';},850);}">
 Descubrir colección
 </button></div></div></div>
-<div class="page"><header class="top"><div class="logo">PRELUDE</div><div class="actions"><button class="iconbtn" id="conceptBtn">El concepto</button><button class="iconbtn" id="decantsBtn">Nuestros Decants</button><button class="iconbtn" id="libraryBtn">Mi Colección Prelude <b id="libraryCount">0</b></button><button class="iconbtn sound-toggle" id="soundBtn" type="button" aria-pressed="false">Sonido: no</button><button class="iconbtn" id="theme">◐ <span class="label">Modo oscuro</span></button><button class="iconbtn" id="cartBtn">Cesta <b id="count">0</b></button></div></header>
-<section class="hero"><h2>Every Masterpiece Begins With A Prelude</h2><p>Cada fragancia comienza con una historia. Después llegan las notas, los acordes y la elección.</p></section>
+<div class="page"><header class="top"><div class="logo" id="preludeLogo" role="button" tabindex="0" aria-label="Ir al catálogo">PRELUDE</div><div class="actions"><button class="iconbtn" id="conceptBtn">El concepto</button><button class="iconbtn" id="decantsBtn">Nuestros Decants</button><button class="iconbtn" id="libraryBtn">Mi Colección Prelude <b id="libraryCount">0</b></button><button class="iconbtn sound-toggle" id="soundBtn" type="button" aria-pressed="false">Sonido: no</button><button class="iconbtn" id="theme">◐ <span class="label">Modo oscuro</span></button><button class="iconbtn" id="cartBtn">Cesta <b id="count">0</b></button></div></header>
+<section class="hero"><h2>Every Masterpiece Begins With A Prelude</h2><p>Una fragancia no se elige. Se descubre.</p></section>
+
+<div class="prelude-advisor-entry" id="preludeAdvisorEntry">
+  <div>
+    <h3>¿Qué te apetece descubrir?</h3>
+    <p>Déjate guiar por Prelude y encuentra las fragancias que mejor encajan contigo.</p>
+  </div>
+  <button class="prelude-advisor-btn" type="button" onclick="PreludeAdvisor.open()">Encontrar mi fragancia</button>
+</div>
+
+
+
+<section class="prelude-packs prelude-sets" id="preludeSets">
+  <div class="prelude-packs-head">
+    <div>
+      <div class="prelude-packs-kicker">PRELUDE · DISCOVERY COLLECTION</div>
+      <h2>Prelude Sets</h2>
+      <p>Cinco fragancias. Cinco formas de descubrir. Cada Set propone un recorrido diferente por la colección Prelude.</p>
+    </div>
+    <button class="prelude-sets-toggle" type="button" aria-expanded="true" aria-controls="preludeSetsContent" onclick="PreludeSetsToggle.toggle(this)">
+      <span class="prelude-sets-toggle-label">Minimizar</span>
+      <span class="prelude-sets-toggle-icon" aria-hidden="true">−</span>
+    </button>
+  </div>
+
+  <div id="preludeSetsContent" class="prelude-sets-content">
+<div class="prelude-sets-intro">
+    <span>5 × 2 ml</span><i></i><span>10 ml de descubrimiento</span><i></i><span>Ventaja exclusiva</span>
+  </div>
+
+  <div class="prelude-packs-grid prelude-sets-grid">
+    <article class="prelude-pack-card prelude-set-card set-five" data-prelude-set="five">
+      <div class="prelude-pack-chip prelude-set-chip set-chip-five">TU SELECCIÓN</div>
+      <div class="prelude-pack-num">01</div>
+      <div class="prelude-set-sub">CHOSEN BY YOU</div>
+      <h3>The Five</h3>
+      <p>Cinco fragancias. Tu selección. Construye tu propia colección y descubre cada Prelude antes de decidir cuál merece quedarse.</p>
+      <div class="prelude-set-quote">Five choices. One collection. Yours.</div>
+      <div class="prelude-pack-meta prelude-pack-format"><span>5 × 2 ml · 10 ml</span></div>
+      <div class="prelude-set-benefit" data-set-benefit="five">
+          <strong>−5 % Descuento</strong>
+          <span>·</span>
+          <b>+5 Marcapáginas extra</b>
+        </div>
+      <button type="button" onclick="PreludePacks.preview('The Five')">Elegir fragancias</button>
+    </article>
+
+    <article class="prelude-pack-card prelude-set-card set-discovery" data-prelude-set="discovery">
+      <div class="prelude-pack-chip prelude-set-chip set-chip-discovery">EXPLORACIÓN</div>
+      <div class="prelude-pack-num">02</div>
+      <div class="prelude-set-sub">FIND YOUR DIRECTION</div>
+      <h3>The Discovery</h3>
+      <p>Una selección para quienes todavía tienen mucho por descubrir. Cinco fragancias, cinco formas distintas de explorar la perfumería y quizá, entre ellas, encontrar algo que no sabías que estabas buscando.</p>
+      <div class="prelude-set-quote">Five fragrances. Five directions.</div>
+      <div class="prelude-pack-meta prelude-pack-format"><span>5 × 2 ml · 10 ml</span></div>
+      <div class="prelude-set-benefit" data-set-benefit="discovery">
+          <strong>−10 % Descuento</strong>
+          <span>·</span>
+          <b>+5 Marcapáginas extra</b>
+        </div>
+      <button type="button" onclick="PreludePacks.preview('The Discovery')">Descubrir el Set</button>
+    </article>
+
+    <article class="prelude-pack-card prelude-set-card set-journey" data-prelude-set="journey">
+      <div class="prelude-pack-chip prelude-set-chip set-chip-journey">5 MOMENTOS</div>
+      <div class="prelude-pack-num">03</div>
+      <div class="prelude-set-sub">FROM FIRST LIGHT TO AFTER DARK</div>
+      <h3>The Journey</h3>
+      <p>Cinco momentos. Cinco fragancias. Un recorrido desde la primera luz del día hasta después de medianoche.</p>
+      <div class="prelude-journey-hours"><span>08:00</span><span>12:00</span><span>17:00</span><span>21:00</span><span>00:00</span></div>
+      <div class="prelude-set-quote">From first light to after dark.</div>
+      <div class="prelude-pack-meta prelude-pack-format"><span>5 × 2 ml · 10 ml</span></div>
+      <div class="prelude-set-benefit" data-set-benefit="journey">
+          <strong>−10 % Descuento</strong>
+          <span>·</span>
+          <b>+5 Marcapáginas extra</b>
+        </div>
+      <button type="button" onclick="PreludePacks.preview('The Journey')">Descubrir el Set</button>
+    </article>
+
+    <article class="prelude-pack-card prelude-set-card featured set-match" data-prelude-set="match">
+      <div class="prelude-pack-num">04</div>
+      <div class="prelude-pack-chip">PERSONALIZADO</div>
+      <div class="prelude-set-sub">CHOSEN FOR YOU</div>
+      <h3>The Match</h3>
+      <p>Tu perfil. Tus cinco fragancias. Prelude reúne las cinco mayores afinidades obtenidas a partir de tu recomendador olfativo.</p>
+      <div class="prelude-set-quote">Five fragrances. Chosen for you.</div>
+      <div class="prelude-pack-meta prelude-pack-format"><span>5 × 2 ml · 10 ml</span></div>
+      <div class="prelude-set-benefit" data-set-benefit="match">
+          <strong>−5 % Descuento</strong>
+          <span>·</span>
+          <b>+5 Marcapáginas extra</b>
+        </div>
+      <button type="button" onclick="PreludePacks.preview('The Match')">Ver mi Match</button>
+    </article>
+
+    <article class="prelude-pack-card prelude-set-card curator set-curator" data-prelude-set="curator">
+      <div class="prelude-pack-num">05</div>
+      <div class="prelude-pack-chip">SELECCIÓN PRELUDE</div>
+      <div class="prelude-set-sub">SELECTED BY PRELUDE</div>
+      <h3>The Curator</h3>
+      <p>Cinco fragancias que creemos que merece la pena descubrir ahora. Una selección especial que evoluciona con Prelude.</p>
+      <div class="prelude-set-quote">Selected by Prelude.</div>
+      <div class="prelude-pack-meta prelude-pack-format"><span>5 × 2 ml · 10 ml</span></div>
+      <div class="prelude-set-benefit" data-set-benefit="curator">
+          <strong>−10 % Descuento</strong>
+          <span>·</span>
+          <b>+5 Marcapáginas extra</b>
+        </div>
+      <button type="button" onclick="PreludePacks.preview('The Curator')">Ver selección</button>
+    </article>
+  </div>
+
+  <div class="prelude-pack-note">Los descuentos y marcapáginas son valores provisionales para esta prueba visual. Antes de activarlos se validarán con el margen real de cada Set.</div>
+  </div>
+</section>
+
+
 <div class="catalog-toolbar" aria-label="Ordenar catálogo"><label for="catalogSort">Ordenar por</label><select id="catalogSort" class="catalog-sort"><option value="bestsellers" selected>Más vendidos</option><option value="price-desc">Precio: mayor a menor</option><option value="price-asc">Precio: menor a mayor</option><option value="brand-asc">Marca: A–Z</option><option value="brand-desc">Marca: Z–A</option><option value="name-asc">Perfume: A–Z</option><option value="name-desc">Perfume: Z–A</option></select></div>
 <div class="layout"><main class="grid" id="grid"></main><aside class="cart" id="cart"></aside></div></div>
 
@@ -1526,6 +2862,94 @@ Descubrir colección
     </div>
   </div>
 </section>
+
+<section class="pa2-overlay" id="pa2Overlay" aria-hidden="true" onclick="PreludeAdvisor.overlayClick(event)">
+  <div class="pa2-modal" role="dialog" aria-modal="true" aria-labelledby="pa2Title" onclick="event.stopPropagation()">
+    <div class="pa2-head">
+      <div>
+        <div class="pa2-kicker">Prelude · asesor olfativo</div>
+        <h3 id="pa2Title">Encuentra tu próximo Prelude</h3>
+        <div style="opacity:.62;font-size:13px">No necesitas conocer notas ni familias olfativas.</div>
+      </div>
+      <button class="pa2-close" type="button" onclick="PreludeAdvisor.close()" aria-label="Cerrar">×</button>
+    </div>
+
+    <div class="pa2-progress" id="pa2Progress"><span></span><span></span><span></span><span></span></div>
+
+    <div class="pa2-step" data-pa2-step="0" data-group="mood">
+      <h4>¿Qué quieres que transmita tu fragancia?</h4>
+      <p>Elige la sensación que más te apetece proyectar.</p>
+      <div class="pa2-options">
+        <button class="pa2-option" type="button" data-value="frescura" onclick="PreludeAdvisor.select(this)">Frescura</button>
+        <button class="pa2-option" type="button" data-value="elegancia" onclick="PreludeAdvisor.select(this)">Elegancia</button>
+        <button class="pa2-option" type="button" data-value="sensualidad" onclick="PreludeAdvisor.select(this)">Sensualidad</button>
+        <button class="pa2-option" type="button" data-value="caracter" onclick="PreludeAdvisor.select(this)">Carácter</button>
+        <button class="pa2-option" type="button" data-value="calidez" onclick="PreludeAdvisor.select(this)">Calidez</button>
+      </div>
+    </div>
+
+    <div class="pa2-step" data-pa2-step="1" data-group="moment">
+      <h4>¿Cuándo imaginas llevándola?</h4>
+      <p>Pensar en el momento suele ser más útil que pensar en ingredientes.</p>
+      <div class="pa2-options">
+        <button class="pa2-option" type="button" data-value="diario" onclick="PreludeAdvisor.select(this)">Día a día</button>
+        <button class="pa2-option" type="button" data-value="cita" onclick="PreludeAdvisor.select(this)">Una cita</button>
+        <button class="pa2-option" type="button" data-value="noche" onclick="PreludeAdvisor.select(this)">Una noche especial</button>
+        <button class="pa2-option" type="button" data-value="trabajo" onclick="PreludeAdvisor.select(this)">Trabajo / ocasiones</button>
+        <button class="pa2-option" type="button" data-value="vacaciones" onclick="PreludeAdvisor.select(this)">Vacaciones</button>
+      </div>
+    </div>
+
+    <div class="pa2-step" data-pa2-step="2" data-group="presence">
+      <h4>¿Qué presencia buscas?</h4>
+      <p>No es mejor una u otra: se trata de cuánto quieres que se haga notar.</p>
+      <div class="pa2-options">
+        <button class="pa2-option" type="button" data-value="sutil" onclick="PreludeAdvisor.select(this)">Sutil</button>
+        <button class="pa2-option" type="button" data-value="equilibrada" onclick="PreludeAdvisor.select(this)">Equilibrada</button>
+        <button class="pa2-option" type="button" data-value="huella" onclick="PreludeAdvisor.select(this)">Que deje huella</button>
+      </div>
+    </div>
+
+    <div class="pa2-step" data-pa2-step="3" data-group="style">
+      <h4>¿Hacia dónde quieres llevarla?</h4>
+      <p>Elige la imagen olfativa que más te atraiga.</p>
+      <div class="pa2-options">
+        <button class="pa2-option" type="button" data-value="limpia" onclick="PreludeAdvisor.select(this)">Fresca y limpia</button>
+        <button class="pa2-option" type="button" data-value="citrica" onclick="PreludeAdvisor.select(this)">Cítrica y luminosa</button>
+        <button class="pa2-option" type="button" data-value="dulce" onclick="PreludeAdvisor.select(this)">Dulce y envolvente</button>
+        <button class="pa2-option" type="button" data-value="amaderada" onclick="PreludeAdvisor.select(this)">Amaderada y elegante</button>
+        <button class="pa2-option" type="button" data-value="marina" onclick="PreludeAdvisor.select(this)">Marina y refrescante</button>
+        <button class="pa2-option" type="button" data-value="oscura" onclick="PreludeAdvisor.select(this)">Oscura y sensual</button>
+      </div>
+    </div>
+
+    <div class="pa2-nav" id="pa2Nav">
+      <button id="pa2Back" type="button" onclick="PreludeAdvisor.back()">Atrás</button>
+      <button class="pa2-next" id="pa2Next" type="button" onclick="PreludeAdvisor.next()">Continuar</button>
+    </div>
+
+    <div class="pa2-results" id="pa2Results">
+      <div class="pa2-kicker">Tu Prelude</div>
+      <div id="pa2MainResult"></div>
+      <div style="margin-top:18px;font:400 19px Georgia,'Times New Roman',serif">También podrían encajar contigo</div>
+      <div class="pa2-alts" id="pa2AltResults"></div>
+      <div class="pa2-method">La afinidad compara tus respuestas con el perfil interno de cada fragancia de la colección. Es una orientación para descubrir, no una medición universal del perfume.</div>
+      <div class="pa2-nav"><button type="button" onclick="PreludeAdvisor.restart()">Volver a empezar</button></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="prelude-set-overlay" id="preludeSetOverlay" aria-hidden="true">
+  <div class="prelude-set-modal" role="dialog" aria-modal="true" aria-labelledby="preludeSetModalTitle">
+    <div class="prelude-set-modal-head">
+      <div><div class="prelude-set-modal-kicker" id="preludeSetModalKicker">PRELUDE SET</div><h3 id="preludeSetModalTitle">Prelude Set</h3><p id="preludeSetModalText"></p></div>
+      <button type="button" class="prelude-set-modal-close" id="preludeSetModalClose" aria-label="Cerrar">×</button>
+    </div>
+    <div id="preludeSetModalBody"></div>
+  </div>
+</section>
+
 <div class="toast" id="toast"></div>
 
 <section class="library-overlay" id="libraryOverlay" aria-hidden="true">
@@ -1828,7 +3252,17 @@ function playSound(kind){
 
 function toast(t){let e=document.getElementById("toast");e.textContent=t;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),1600)}
 function fly(img){const r=img.getBoundingClientRect(),target=document.getElementById("cartBtn").getBoundingClientRect();const f=img.cloneNode();f.className="fly";Object.assign(f.style,{left:r.left+"px",top:r.top+"px",width:r.width+"px",height:r.height+"px",objectFit:"cover"});document.body.appendChild(f);requestAnimationFrame(()=>Object.assign(f.style,{left:target.left+"px",top:target.top+"px",width:"30px",height:"30px",opacity:".15"}));setTimeout(()=>f.remove(),700)}
-function add(i,size,qty,img){const p=products[i],f=cart.find(x=>x.name===p.name&&x.size===size);f?f.qty+=qty:cart.push({...p,size,qty,price:p.prices[size]});renderCart();if(img)fly(img);playSound("add");toast(p.name+" añadido")}
+function sizeMl(size){const m=String(size||"").match(/([0-9]+(?:[.,][0-9]+)?)/);return m?Number(m[1].replace(",",".")):0}
+function configuredStockMl(p){const n=Number(p?._stockAvailableMl);return p?._stockAvailableMl==null||!Number.isFinite(n)?null:Math.max(0,n)}
+function cartReservedMl(p){return cart.filter(x=>x.name===p.name).reduce((sum,x)=>sum+sizeMl(x.size)*Math.max(0,Number(x.qty||0)),0)}
+function remainingStockMl(p){const available=configuredStockMl(p);return available==null?null:Math.max(0,available-cartReservedMl(p))}
+function stockThresholdMl(p){const n=Number(p?._lowStockThresholdMl);return Number.isFinite(n)?Math.max(0,n):null}
+function productMinSaleMl(p){const sizes=Object.keys(p?.prices||{}).map(sizeMl).filter(n=>n>0);return sizes.length?Math.min(...sizes):Infinity}
+function isEffectivelySoldOut(p){const status=catalogStatusOf(p);if(status==="soldout")return true;const remaining=remainingStockMl(p);return remaining!=null&&remaining<productMinSaleMl(p)}
+function isLowStock(p){const available=configuredStockMl(p),threshold=stockThresholdMl(p);return available!=null&&threshold!=null&&available>0&&available<=threshold&&!isEffectivelySoldOut(p)}
+function canAddStock(p,size,qty){if(isEffectivelySoldOut(p))return false;const remaining=remainingStockMl(p);if(remaining==null)return true;return sizeMl(size)*Math.max(1,Number(qty||1))<=remaining+1e-9}
+function add(i,size,qty,img){const p=products[i];qty=Math.max(1,Number(qty||1));if(!canAddStock(p,size,qty)){toast("No queda stock suficiente para esa cantidad");updateAllProductStockControls();return}const f=cart.find(x=>x.name===p.name&&x.size===size);f?f.qty+=qty:cart.push({...p,size,qty,price:p.prices[size]});renderCart();updateAllProductStockControls();if(img)fly(img);playSound("add");toast(p.name+" añadido")}
+
 
 let PRELUDE_BESTSELLERS=new Map();
 
@@ -1857,7 +3291,7 @@ function top5BestsellerNames(){
     [...PRELUDE_BESTSELLERS.entries()]
       .filter(([,count])=>Number(count)>0)
       .sort((a,b)=>Number(b[1])-Number(a[1]) || String(a[0]).localeCompare(String(b[0]),"es",{sensitivity:"base"}))
-      .slice(0,5)
+      .slice(0,3)
       .map(([name])=>name)
   );
 }
@@ -1865,7 +3299,7 @@ function bestsellerRank(p){
   const ordered=[...PRELUDE_BESTSELLERS.entries()]
     .filter(([,count])=>Number(count)>0)
     .sort((a,b)=>Number(b[1])-Number(a[1]) || String(a[0]).localeCompare(String(b[0]),"es",{sensitivity:"base"}))
-    .slice(0,5);
+    .slice(0,3);
   const ix=ordered.findIndex(([name])=>name===String(p.name||"").trim());
   return ix>=0?ix+1:0;
 }
@@ -1950,7 +3384,7 @@ function sortedCatalogEntries(){
 
     if(mode==="bestsellers"){
       const at=top5.has(String(a.p.name||"").trim()),bt=top5.has(String(b.p.name||"").trim());
-      if(at!==bt)return at?-1:1; // 2. Top 5 por número de decants vendidos.
+      if(at!==bt)return at?-1:1; // 2. Podio Prelude: Top 3 por número de decants vendidos.
       if(at&&bt){
         const diff=productDecantsSold(b.p)-productDecantsSold(a.p);
         if(diff)return diff;
@@ -1968,21 +3402,61 @@ function sortedCatalogEntries(){
   });
   return entries;
 }
+function updateProductStockControls(i){
+  const p=products[i];
+  const select=document.getElementById("s"+i),qtyInput=document.getElementById("q"+i);
+  const addBtn=document.querySelector(`[data-add="${i}"]`);
+  if(!select||!qtyInput||!addBtn)return;
+  const qty=Math.max(1,Number(qtyInput.value||1));
+  const remaining=remainingStockMl(p);
+  [...select.options].forEach(option=>{
+    const needed=sizeMl(option.value)*qty;
+    option.disabled=isEffectivelySoldOut(p)||(remaining!=null&&needed>remaining+1e-9);
+    const base=option.dataset.baseLabel||option.textContent.replace(/ · No disponible$/,'');
+    option.dataset.baseLabel=base;
+    option.textContent=base+(option.disabled?' · No disponible':'');
+  });
+  if(select.selectedOptions[0]?.disabled){
+    const first=[...select.options].find(o=>!o.disabled);
+    if(first)select.value=first.value;
+  }
+  const chosenSize=sizeMl(select.value);
+  const maxQty=remaining==null?99:Math.max(0,Math.floor((remaining+1e-9)/Math.max(chosenSize,0.0001)));
+  qtyInput.max=String(Math.max(1,maxQty));
+  const valid=maxQty>=qty&&canAddStock(p,select.value,qty);
+  addBtn.disabled=!valid;
+  addBtn.setAttribute('aria-disabled',valid?'false':'true');
+  const hint=document.getElementById("stockHint"+i);
+  if(hint&&remaining!=null){
+    hint.textContent=valid?"":(isEffectivelySoldOut(p)?"Sin formatos disponibles":"No queda stock suficiente para esa selección");
+  }
+}
+
+function updateAllProductStockControls(){
+  products.forEach((_,i)=>updateProductStockControls(i));
+}
+
 function renderProducts(){
   grid.innerHTML="";
   sortedCatalogEntries().forEach(({p,i})=>{
     const upcoming=catalogStatusOf(p)==="upcoming";
-    const novelty=!upcoming&&isPreludeNovelty(p,preludeCatalogState());
-    const rank=!upcoming&&!novelty?bestsellerRank(p):0;
-    let c=document.createElement("article");c.className="card"+(upcoming?" upcoming":"")+(novelty?" novelty":"")+(rank?" bestseller":"");
+    const soldout=!upcoming&&isEffectivelySoldOut(p);
+    const low=!upcoming&&!soldout&&isLowStock(p);
+    const novelty=!upcoming&&!soldout&&isPreludeNovelty(p,preludeCatalogState());
+    const rank=!upcoming&&!soldout&&!novelty?bestsellerRank(p):0;
+    let c=document.createElement("article");c.className="card"+(upcoming?" upcoming":"")+(soldout?" soldout":"")+(novelty?" novelty":"")+(rank?` bestseller podium-card podium-${rank}`:"");
     let min=productMinPrice(p);
-    c.innerHTML=`<div class="visual"><img src="${p.image}" alt="${p.name}">${upcoming?'<div class="upcoming-badge">Próximamente</div>':novelty?'<div class="novelty-badge">Novedad</div>':rank?`<div class="bestseller-badge">Top ${rank}</div>`:''}</div><div class="info"><div class="title"><div><h3>${p.name}</h3><div class="brand">${p.brand}</div></div><div class="from">${upcoming?'Próximamente':'Desde'}${upcoming?'':`<strong>${euro.format(min)}</strong>`}</div></div>${upcoming?'':`<div class="controls"><select id="s${i}">${Object.entries(p.prices).map(([sz,v])=>`<option value="${sz}">${sz} — ${euro.format(v)}</option>`).join("")}</select><input id="q${i}" type="number" min="1" value="1"></div>`}<button class="view" data-view="${i}" ${upcoming?'disabled aria-disabled="true"':''}>${upcoming?'Disponible próximamente':'Comenzar el viaje'}</button>${upcoming?'':`<button class="add" data-add="${i}">Añadir a la cesta</button>`}</div>`;
+    const badge=upcoming?'<div class="upcoming-badge">Próximamente</div>':soldout?'<div class="soldout-badge">Agotado</div>':novelty?'<div class="novelty-badge">Novedad</div>':rank?`<div class="bestseller-badge podium-badge podium-${rank}">${rank}º · Podio Prelude</div>`:'';
+    const stockNote=soldout?'<div class="stock-note out">Agotado</div>':low?'<div class="stock-note low">Poco stock</div>':'';
+    const sellable=!upcoming&&!soldout;
+    c.innerHTML=`<div class="visual"><img src="${p.image}" alt="${p.name}">${badge}</div><div class="info"><div class="title"><div><h3>${p.name}</h3><div class="brand">${p.brand}</div></div><div class="from">${upcoming?'Próximamente':soldout?'Sin stock':'Desde'}${upcoming||soldout?'':`<strong>${euro.format(min)}</strong>`}</div></div>${stockNote}${sellable?`<div class="controls"><select id="s${i}">${Object.entries(p.prices).map(([sz,v])=>`<option value="${sz}">${sz} — ${euro.format(v)}</option>`).join("")}</select><input id="q${i}" type="number" min="1" value="1"></div><div class="size-stock-hint" id="stockHint${i}"></div>`:''}<button class="view" data-view="${i}" ${upcoming?'disabled aria-disabled="true"':''}>${upcoming?'Disponible próximamente':'Comenzar el viaje'}</button>${sellable?`<button class="add" data-add="${i}">Añadir a la cesta</button>`:''}</div>`;
     grid.appendChild(c)
   });
   document.querySelectorAll("[data-view]:not([disabled])").forEach(b=>b.onclick=()=>openJourney(+b.dataset.view));
-  document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{let i=+b.dataset.add;add(i,document.getElementById("s"+i).value,+document.getElementById("q"+i).value,b.closest(".card").querySelector("img"))});
+  document.querySelectorAll("[data-add]").forEach(b=>{const i=+b.dataset.add;const select=document.getElementById("s"+i),qty=document.getElementById("q"+i);select?.addEventListener("change",()=>updateProductStockControls(i));qty?.addEventListener("input",()=>updateProductStockControls(i));updateProductStockControls(i);b.onclick=()=>add(i,select.value,+qty.value,b.closest(".card").querySelector("img"))});
   let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("show");o.unobserve(e.target)}}),{threshold:.1});document.querySelectorAll(".card").forEach(c=>o.observe(c))
 }
+
 
 
 let PRELUDE_PREPARATION_FEE={enabled:true,customer_fee:1,free_from:20,real_cost:0};
@@ -2018,14 +3492,25 @@ function selectedDiscountReward(){
     .sort((a,b)=>b.percent-a.percent);
   return discounts[0]||null;
 }
+function cartSetBonusTotal(){
+  const seen=new Set(); let total=0;
+  cart.forEach(item=>{
+    const key=item._setInstance;
+    if(!key||seen.has(key))return;
+    seen.add(key); total+=Number(item._setBonus||0);
+  });
+  return total;
+}
 function cartFinancials(){
   const subtotal=cart.reduce((sum,item)=>sum+item.price*item.qty,0);
+  const setSubtotal=cart.filter(item=>item._setInstance).reduce((sum,item)=>sum+item.price*item.qty,0);
+  const regularSubtotal=Math.max(0,subtotal-setSubtotal);
   const preparationFee=checkoutPreparationFee(subtotal);
   const discountReward=selectedDiscountReward();
   const discountPercent=discountReward?.percent||0;
-  const discountAmount=Math.min(subtotal,subtotal*(discountPercent/100));
+  const discountAmount=Math.min(regularSubtotal,regularSubtotal*(discountPercent/100));
   const finalTotal=Math.max(0,subtotal-discountAmount+preparationFee);
-  return {subtotal,preparationFee,discountReward,discountPercent,discountAmount,finalTotal};
+  return {subtotal,setSubtotal,regularSubtotal,preparationFee,discountReward,discountPercent,discountAmount,finalTotal};
 }
 function renderCart(){
   const {subtotal:sub,preparationFee,discountReward,discountPercent,discountAmount,finalTotal}=cartFinancials();
@@ -2063,13 +3548,14 @@ function renderCart(){
   cartEl.innerHTML=`<h3>Tu selección</h3>
     <p class="muted">Revisa el pedido antes de solicitarlo.</p>
     ${cart.length
-      ? cart.map((x,i)=>`<div class="item"><img src="${x.image}" alt="${x.name}"><div><b>${x.name}</b><div class="muted">${x.size} × ${x.qty}</div><div class="row"><span>${euro.format(x.price*x.qty)}</span><button class="remove" data-r="${i}" type="button">Eliminar</button></div></div></div>`).join("")
+      ? cart.map((x,i)=>`<div class="item ${x._setId?`cart-from-set cart-set-${x._setId}`:""}"><img src="${x.image}" alt="${x.name}"><div><b>${x.name}</b><div class="muted">${x.size} × ${x.qty}</div>${x._setName?`<span class="cart-set-label">${x._setName}</span>`:""}<div class="row"><span>${euro.format(x.price*x.qty)}</span><button class="remove" data-r="${i}" type="button">Eliminar</button></div></div></div>`).join("")
       : '<p class="muted">Todavía no has añadido ningún Prelude.</p>'}
     ${rewardsHtml}
     <div class="totals">
       <div class="row"><span>Subtotal</span><span>${euro.format(sub)}</span></div>
       <div class="row"><span>Preparación Prelude</span><span>${preparationFee>0?euro.format(preparationFee):"Gratis"}</span></div>
       ${discountAmount>0?`<div class="row"><span>Descuento aplicado (${discountPercent}%)</span><span>−${euro.format(discountAmount)}</span></div>`:""}
+      ${cartSetBonusTotal()>0?`<div class="cart-set-bonus">Prelude Sets · +${cartSetBonusTotal()} Marcapáginas extra al entregar el pedido</div>`:""}
       ${preparationFee>0&&freeFrom>0&&sub<freeFrom?`<div class="muted" style="margin:5px 0 8px">Preparación gratuita a partir de ${euro.format(freeFrom)}.</div>`:""}
       <div class="row grand"><span>Total</span><span>${euro.format(finalTotal)}</span></div>
     </div>
@@ -2097,8 +3583,16 @@ function renderCart(){
 
   document.querySelectorAll("[data-r]").forEach(button=>{
     button.onclick=()=>{
-      cart.splice(+button.dataset.r,1);
+      const ix=+button.dataset.r;
+      const target=cart[ix];
+      if(target?._setInstance){
+        const instance=target._setInstance;
+        for(let j=cart.length-1;j>=0;j--)if(cart[j]._setInstance===instance)cart.splice(j,1);
+      }else{
+        cart.splice(ix,1);
+      }
       renderCart();
+      updateAllProductStockControls();
     };
   });
 
@@ -2135,6 +3629,7 @@ function renderCart(){
   document.getElementById("clear").onclick=()=>{
     cart.length=0;
     renderCart();
+    updateAllProductStockControls();
   };
   document.getElementById("send").onclick=requestCheckout;
 }
@@ -2190,7 +3685,7 @@ async function send(){
   let savedOrder=null;
   if(supabaseClient){
     try{
-      const payloadItems=cart.map(x=>({name:x.name,size:x.size,qty:Number(x.qty||1),price:Number(x.price||0)}));
+      const payloadItems=cart.map(x=>({name:x.name,size:x.size,qty:Number(x.qty||1),price:Number(x.price||0),set_id:x._setId||null,set_name:x._setName||null,set_instance:x._setInstance||null,set_bonus_bookmarks:Number(x._setBonus||0)}));
       const {data,error}=await supabaseClient.rpc("create_prelude_order",{
         input_customer_id:customerProfile?.id||null,
         input_customer_name:customerName,
@@ -2222,11 +3717,12 @@ async function send(){
     "",
     "Pedido",
     "",
-    ...cart.map(x=>`• ${x.name} · ${x.size} × ${x.qty} — ${euro.format(x.price*x.qty)}`),
+    ...cart.map(x=>`• ${x.name} · ${x.size} × ${x.qty}${x._setName?` · ${x._setName}`:""} — ${euro.format(x.price*x.qty)}`),
     "",
     `Subtotal: ${euro.format(sub)}`,
     `Preparación Prelude: ${preparationFee>0?euro.format(preparationFee):"Gratis"}`,
     ...(discountAmount>0?[`Descuento aplicado (${discountPercent}%): -${euro.format(discountAmount)}`]:[]),
+    ...(cartSetBonusTotal()>0?[`Prelude Sets: +${cartSetBonusTotal()} Marcapáginas extra al entregar el pedido`]:[]),
     ...(selectedRewards.length?[
       "",
       "Recompensas que deseo canjear",
@@ -2420,7 +3916,10 @@ async function loadStudioManagedCatalog(){
         _catalogId:row.id||null,
         _catalogCreatedAt:row.created_at||null,
         _catalogUpdatedAt:row.updated_at||null,
-        _catalogReleasedAt:row.published_at||row.released_at||row.status_changed_at||null
+        _catalogReleasedAt:row.published_at||row.released_at||row.status_changed_at||null,
+        _stockAvailableMl:row.stock_available_ml==null?null:Number(row.stock_available_ml),
+        _lowStockThresholdMl:row.low_stock_threshold_ml==null?null:Number(row.low_stock_threshold_ml),
+        _recommenderProfile:row.recommender_profile&&typeof row.recommender_profile==='object'?row.recommender_profile:null
       };
     }).filter(product=>product._catalogStatus!=="hidden");
 
@@ -2446,6 +3945,9 @@ async function loadStudioManagedCatalog(){
         _catalogCreatedAt:row.created_at||null,
         _catalogUpdatedAt:row.updated_at||null,
         _catalogReleasedAt:row.published_at||row.released_at||row.status_changed_at||null,
+        _stockAvailableMl:row.stock_available_ml==null?null:Number(row.stock_available_ml),
+        _lowStockThresholdMl:row.low_stock_threshold_ml==null?null:Number(row.low_stock_threshold_ml),
+        _recommenderProfile:row.recommender_profile&&typeof row.recommender_profile==='object'?row.recommender_profile:null,
         _catalogRemoteAdded:true
       });
     });
@@ -3792,6 +5294,7 @@ async function bootstrapPrelude(){
   renderProducts();
   renderCart();
   try{ await loadStudioManagedCatalog(); }catch(err){ console.warn("Catálogo Studio no disponible; se mantiene el catálogo local.",err); }
+  try{ await loadPreludeSetsPublic(); }catch(err){ console.warn("Prelude Sets no disponible.",err); }
   try{ await loadPreparationFee(); }catch(err){ console.warn("Tarifa de preparación no disponible.",err); }
   renderProducts();
   renderCart();
@@ -4175,4 +5678,439 @@ document.addEventListener("DOMContentLoaded",()=>{
   </div>
 </section>
 
+
+<script>
+(function(){
+  const logo = document.getElementById('preludeLogo');
+  const catalog = document.getElementById('grid');
+  if (!logo || !catalog) return;
+  const goToCatalog = () => {
+    catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  logo.addEventListener('click', goToCatalog);
+  logo.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      goToCatalog();
+    }
+  });
+})();
+</script>
+
+<script>
+window.PreludeAdvisor=(function(){
+  const FALLBACK_PROFILES={"Le Sel d'Issey":{"mood":{"frescura":5,"elegancia":4,"sensualidad":2,"caracter":3,"calidez":1},"moment":{"diario":4,"cita":2,"noche":2,"trabajo":4,"vacaciones":5},"presence":{"sutil":3,"equilibrada":5,"huella":2},"style":{"limpia":5,"citrica":3,"dulce":1,"amaderada":4,"marina":5,"oscura":1}},"Amber Oud Gold Edition":{"mood":{"frescura":2,"elegancia":3,"sensualidad":4,"caracter":4,"calidez":5},"moment":{"diario":2,"cita":4,"noche":5,"trabajo":2,"vacaciones":3},"presence":{"sutil":1,"equilibrada":2,"huella":5},"style":{"limpia":1,"citrica":2,"dulce":5,"amaderada":2,"marina":1,"oscura":3}},"Dior Homme Intense":{"mood":{"frescura":1,"elegancia":5,"sensualidad":5,"caracter":4,"calidez":4},"moment":{"diario":2,"cita":5,"noche":5,"trabajo":4,"vacaciones":1},"presence":{"sutil":2,"equilibrada":4,"huella":4},"style":{"limpia":2,"citrica":1,"dulce":3,"amaderada":5,"marina":1,"oscura":4}},"Mercedes-Benz Club Black":{"mood":{"frescura":1,"elegancia":3,"sensualidad":5,"caracter":4,"calidez":5},"moment":{"diario":2,"cita":5,"noche":5,"trabajo":2,"vacaciones":1},"presence":{"sutil":1,"equilibrada":3,"huella":5},"style":{"limpia":1,"citrica":1,"dulce":5,"amaderada":4,"marina":1,"oscura":5}},"CK One":{"mood":{"frescura":5,"elegancia":3,"sensualidad":2,"caracter":2,"calidez":1},"moment":{"diario":5,"cita":2,"noche":1,"trabajo":4,"vacaciones":5},"presence":{"sutil":5,"equilibrada":3,"huella":1},"style":{"limpia":5,"citrica":5,"dulce":1,"amaderada":2,"marina":2,"oscura":1}},"La Nuit de L'Homme":{"mood":{"frescura":2,"elegancia":5,"sensualidad":5,"caracter":4,"calidez":4},"moment":{"diario":2,"cita":5,"noche":5,"trabajo":3,"vacaciones":1},"presence":{"sutil":3,"equilibrada":5,"huella":3},"style":{"limpia":2,"citrica":1,"dulce":3,"amaderada":5,"marina":1,"oscura":5}},"Club de Nuit Sillage":{"mood":{"frescura":5,"elegancia":4,"sensualidad":2,"caracter":4,"calidez":1},"moment":{"diario":4,"cita":3,"noche":2,"trabajo":4,"vacaciones":4},"presence":{"sutil":2,"equilibrada":4,"huella":4},"style":{"limpia":5,"citrica":5,"dulce":1,"amaderada":3,"marina":2,"oscura":1}},"Détour Noir":{"mood":{"frescura":2,"elegancia":4,"sensualidad":4,"caracter":4,"calidez":5},"moment":{"diario":3,"cita":5,"noche":5,"trabajo":3,"vacaciones":1},"presence":{"sutil":2,"equilibrada":4,"huella":4},"style":{"limpia":2,"citrica":1,"dulce":5,"amaderada":4,"marina":1,"oscura":4}},"Fico di Amalfi":{"mood":{"frescura":5,"elegancia":4,"sensualidad":2,"caracter":2,"calidez":2},"moment":{"diario":5,"cita":3,"noche":1,"trabajo":4,"vacaciones":5},"presence":{"sutil":4,"equilibrada":4,"huella":1},"style":{"limpia":4,"citrica":5,"dulce":2,"amaderada":3,"marina":2,"oscura":1}},"Eros":{"mood":{"frescura":3,"elegancia":3,"sensualidad":5,"caracter":5,"calidez":4},"moment":{"diario":2,"cita":5,"noche":5,"trabajo":1,"vacaciones":3},"presence":{"sutil":1,"equilibrada":2,"huella":5},"style":{"limpia":2,"citrica":3,"dulce":5,"amaderada":3,"marina":1,"oscura":4}},"Bois Impérial":{"mood":{"frescura":4,"elegancia":5,"sensualidad":3,"caracter":5,"calidez":2},"moment":{"diario":4,"cita":4,"noche":4,"trabajo":5,"vacaciones":3},"presence":{"sutil":2,"equilibrada":4,"huella":5},"style":{"limpia":4,"citrica":2,"dulce":1,"amaderada":5,"marina":1,"oscura":3}},"Bal d'Afrique":{"mood":{"frescura":4,"elegancia":5,"sensualidad":3,"caracter":4,"calidez":3},"moment":{"diario":4,"cita":4,"noche":3,"trabajo":4,"vacaciones":4},"presence":{"sutil":3,"equilibrada":5,"huella":2},"style":{"limpia":4,"citrica":4,"dulce":2,"amaderada":5,"marina":1,"oscura":2}},"Le Rem":{"mood":{"frescura":5,"elegancia":3,"sensualidad":2,"caracter":2,"calidez":1},"moment":{"diario":5,"cita":2,"noche":1,"trabajo":3,"vacaciones":5},"presence":{"sutil":4,"equilibrada":4,"huella":1},"style":{"limpia":5,"citrica":2,"dulce":1,"amaderada":2,"marina":5,"oscura":1}},"Le Beau":{"mood":{"frescura":3,"elegancia":3,"sensualidad":5,"caracter":4,"calidez":4},"moment":{"diario":3,"cita":5,"noche":4,"trabajo":1,"vacaciones":5},"presence":{"sutil":2,"equilibrada":4,"huella":4},"style":{"limpia":2,"citrica":2,"dulce":5,"amaderada":2,"marina":2,"oscura":3}},"Stronger With You":{"mood":{"frescura":1,"elegancia":4,"sensualidad":5,"caracter":4,"calidez":5},"moment":{"diario":2,"cita":5,"noche":5,"trabajo":2,"vacaciones":1},"presence":{"sutil":2,"equilibrada":4,"huella":4},"style":{"limpia":1,"citrica":1,"dulce":5,"amaderada":3,"marina":1,"oscura":4}},"Torino 21":{"mood":{"frescura":5,"elegancia":5,"sensualidad":2,"caracter":4,"calidez":1},"moment":{"diario":5,"cita":3,"noche":2,"trabajo":5,"vacaciones":5},"presence":{"sutil":3,"equilibrada":5,"huella":3},"style":{"limpia":5,"citrica":5,"dulce":1,"amaderada":2,"marina":1,"oscura":1}},"First Instinct":{"mood":{"frescura":4,"elegancia":2,"sensualidad":3,"caracter":2,"calidez":2},"moment":{"diario":5,"cita":3,"noche":2,"trabajo":3,"vacaciones":5},"presence":{"sutil":4,"equilibrada":4,"huella":1},"style":{"limpia":4,"citrica":3,"dulce":3,"amaderada":2,"marina":3,"oscura":1}},"Egeo Bomb Black":{"mood":{"frescura":1,"elegancia":2,"sensualidad":4,"caracter":5,"calidez":5},"moment":{"diario":1,"cita":4,"noche":5,"trabajo":1,"vacaciones":1},"presence":{"sutil":1,"equilibrada":2,"huella":5},"style":{"limpia":1,"citrica":1,"dulce":5,"amaderada":2,"marina":1,"oscura":5}},"Armani Code":{"mood":{"frescura":2,"elegancia":5,"sensualidad":5,"caracter":4,"calidez":4},"moment":{"diario":3,"cita":5,"noche":5,"trabajo":4,"vacaciones":1},"presence":{"sutil":2,"equilibrada":5,"huella":3},"style":{"limpia":2,"citrica":2,"dulce":3,"amaderada":4,"marina":1,"oscura":5}},"Starwalker":{"mood":{"frescura":4,"elegancia":4,"sensualidad":2,"caracter":2,"calidez":2},"moment":{"diario":5,"cita":3,"noche":2,"trabajo":5,"vacaciones":4},"presence":{"sutil":5,"equilibrada":3,"huella":1},"style":{"limpia":5,"citrica":3,"dulce":1,"amaderada":4,"marina":2,"oscura":1}},"Nautica Voyage":{"mood":{"frescura":5,"elegancia":2,"sensualidad":2,"caracter":2,"calidez":1},"moment":{"diario":5,"cita":2,"noche":1,"trabajo":3,"vacaciones":5},"presence":{"sutil":5,"equilibrada":3,"huella":1},"style":{"limpia":5,"citrica":2,"dulce":2,"amaderada":2,"marina":5,"oscura":1}},"Cool Water":{"mood":{"frescura":5,"elegancia":3,"sensualidad":2,"caracter":3,"calidez":1},"moment":{"diario":5,"cita":2,"noche":2,"trabajo":4,"vacaciones":5},"presence":{"sutil":4,"equilibrada":4,"huella":2},"style":{"limpia":5,"citrica":2,"dulce":1,"amaderada":3,"marina":5,"oscura":1}},"Sauvage":{"mood":{"frescura":4,"elegancia":4,"sensualidad":4,"caracter":5,"calidez":3},"moment":{"diario":5,"cita":4,"noche":4,"trabajo":4,"vacaciones":4},"presence":{"sutil":1,"equilibrada":3,"huella":5},"style":{"limpia":4,"citrica":4,"dulce":1,"amaderada":3,"marina":2,"oscura":3}},"Acqua di Giò":{"mood":{"frescura":5,"elegancia":4,"sensualidad":3,"caracter":3,"calidez":1},"moment":{"diario":5,"cita":3,"noche":2,"trabajo":4,"vacaciones":5},"presence":{"sutil":3,"equilibrada":5,"huella":2},"style":{"limpia":5,"citrica":5,"dulce":1,"amaderada":2,"marina":5,"oscura":1}},"Versace Dylan Blue":{"mood":{"frescura":4,"elegancia":4,"sensualidad":4,"caracter":5,"calidez":3},"moment":{"diario":4,"cita":4,"noche":4,"trabajo":4,"vacaciones":4},"presence":{"sutil":1,"equilibrada":3,"huella":5},"style":{"limpia":4,"citrica":4,"dulce":1,"amaderada":4,"marina":4,"oscura":3}},"Born In Roma Intense":{"mood":{"frescura":1,"elegancia":4,"sensualidad":5,"caracter":4,"calidez":5},"moment":{"diario":2,"cita":5,"noche":5,"trabajo":2,"vacaciones":1},"presence":{"sutil":1,"equilibrada":3,"huella":5},"style":{"limpia":1,"citrica":1,"dulce":5,"amaderada":3,"marina":1,"oscura":4}},"Terre d'Hermès EDT":{"mood":{"frescura":4,"elegancia":5,"sensualidad":3,"caracter":5,"calidez":3},"moment":{"diario":5,"cita":3,"noche":3,"trabajo":5,"vacaciones":4},"presence":{"sutil":2,"equilibrada":5,"huella":3},"style":{"limpia":3,"citrica":5,"dulce":1,"amaderada":5,"marina":1,"oscura":3}}};
+  const state={step:0,answers:{mood:null,moment:null,presence:null,style:null}};
+
+  function el(id){ return document.getElementById(id); }
+  function currentStepEl(){ return document.querySelector('.pa2-step[data-pa2-step="'+state.step+'"]'); }
+
+  function productByName(name){
+    try{ return products.find(p=>String(p.name||"").trim()===name); }catch(e){ return null; }
+  }
+
+  function available(name){
+    const p=productByName(name);
+    if(!p) return false;
+    try{
+      if(typeof catalogStatusOf==="function" && catalogStatusOf(p)!=="published") return false;
+      if(typeof isEffectivelySoldOut==="function" && isEffectivelySoldOut(p)) return false;
+    }catch(e){}
+    return true;
+  }
+
+  function profileForProduct(product){
+    if(product && product._recommenderProfile && typeof product._recommenderProfile==="object"){
+      return product._recommenderProfile;
+    }
+    return FALLBACK_PROFILES[String(product?.name||"").trim()]||null;
+  }
+
+  function affinity(profile){
+    const groups=["mood","moment","presence","style"];
+    let total=0,max=0;
+    groups.forEach(g=>{
+      const choice=state.answers[g];
+      if(!choice)return;
+      const value=Number(profile?.[g]?.[choice]||1);
+      total += value-1;
+      max += 4;
+    });
+    return max ? Math.round(60+(total/max)*38) : 0;
+  }
+
+  function why(){
+    const l={
+      frescura:"fresca",elegancia:"elegante",sensualidad:"sensual",caracter:"con carácter",calidez:"cálida",
+      diario:"para el día a día",cita:"para una cita",noche:"para una noche especial",trabajo:"para trabajo y ocasiones",vacaciones:"para vacaciones",
+      sutil:"de presencia sutil",equilibrada:"de presencia equilibrada",huella:"con una presencia que deja huella",
+      limpia:"fresca y limpia",citrica:"cítrica y luminosa",dulce:"dulce y envolvente",amaderada:"amaderada y elegante",marina:"marina y refrescante",oscura:"oscura y sensual"
+    };
+    return "Encaja especialmente con una búsqueda "+l[state.answers.mood]+", "+l[state.answers.moment]+" y "+l[state.answers.style]+".";
+  }
+
+  function rankN(limit=3){
+    let list=[];
+    try{
+      list=products
+        .filter(p=>available(p.name))
+        .map(p=>({product:p,profile:profileForProduct(p)}))
+        .filter(x=>x.profile)
+        .map(x=>({name:x.product.name,score:affinity(x.profile),product:x.product}))
+        .sort((a,b)=>b.score-a.score || a.name.localeCompare(b.name,"es"))
+        .slice(0,limit);
+    }catch(e){ console.warn("Prelude: no se pudo calcular el recomendador.",e); }
+    return list;
+  }
+  function rank(){ return rankN(3); }
+
+  function render(){
+    document.querySelectorAll(".pa2-step").forEach(step=>{
+      step.classList.toggle("active",Number(step.dataset.pa2Step)===state.step);
+    });
+    document.querySelectorAll("#pa2Progress span").forEach((bar,i)=>bar.classList.toggle("active",i<=state.step));
+
+    const current=currentStepEl();
+    const group=current?.dataset.group;
+    if(current && group){
+      current.querySelectorAll(".pa2-option").forEach(btn=>{
+        btn.classList.toggle("selected",state.answers[group]===btn.dataset.value);
+      });
+    }
+
+    el("pa2Back").style.visibility=state.step===0?"hidden":"visible";
+    el("pa2Next").textContent=state.step===3?"Ver mi Prelude":"Continuar";
+  }
+
+  function open(){
+    state.step=0;
+    state.answers={mood:null,moment:null,presence:null,style:null};
+    document.querySelectorAll(".pa2-option").forEach(b=>b.classList.remove("selected"));
+    el("pa2Results").classList.remove("active");
+    el("pa2Nav").style.display="flex";
+    el("pa2Progress").style.display="flex";
+    el("pa2Overlay").classList.add("open");
+    el("pa2Overlay").setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+    render();
+  }
+
+  function close(){
+    el("pa2Overlay").classList.remove("open");
+    el("pa2Overlay").setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+  }
+
+  function overlayClick(event){
+    if(event.target===el("pa2Overlay")) close();
+  }
+
+  function select(btn){
+    const step=btn.closest(".pa2-step");
+    if(!step)return;
+    const group=step.dataset.group;
+    state.answers[group]=btn.dataset.value;
+    step.querySelectorAll(".pa2-option").forEach(x=>x.classList.remove("selected"));
+    btn.classList.add("selected");
+  }
+
+  function next(){
+    const step=currentStepEl();
+    if(!step)return;
+    const group=step.dataset.group;
+    if(!state.answers[group]){
+      if(typeof showToast==="function") showToast("Elige una opción para continuar.");
+      return;
+    }
+    if(state.step<3){
+      state.step++;
+      render();
+    }else{
+      showResults();
+    }
+  }
+
+  function back(){
+    if(state.step>0){ state.step--; render(); }
+  }
+
+  function safe(s){
+    return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+
+  function showResults(){
+    const ranked=rank();
+    if(!ranked.length){
+      if(typeof showToast==="function") showToast("Ahora mismo no hay fragancias disponibles para recomendar.");
+      return;
+    }
+    document.querySelectorAll(".pa2-step").forEach(x=>x.classList.remove("active"));
+    el("pa2Nav").style.display="none";
+    el("pa2Progress").style.display="none";
+    el("pa2Results").classList.add("active");
+
+    const first=ranked[0];
+    const img=first.product?.image||"";
+    el("pa2MainResult").innerHTML=
+      '<article class="pa2-main">'+
+      '<img class="pa2-main-image" src="'+safe(img)+'" alt="'+safe(first.name)+'">'+
+      '<div class="pa2-main-body">'+
+      '<div class="pa2-match">'+first.score+'% <span>afinidad</span></div>'+
+      '<h4>'+safe(first.name)+'</h4>'+
+      '<div class="pa2-brand">'+safe(first.product?.brand||"")+'</div>'+
+      '<p class="pa2-why">'+safe(why())+'</p>'+
+      '<button class="pa2-discover" type="button" onclick="PreludeAdvisor.openProduct('+JSON.stringify(first.name)+')">Descubrir esta fragancia</button>'+
+      '</div></article>';
+
+    el("pa2AltResults").innerHTML=ranked.slice(1).map(x=>{
+      const image=x.product?.image||"";
+      return '<button class="pa2-alt" type="button" onclick="PreludeAdvisor.openProduct('+JSON.stringify(x.name).replace(/"/g,"&quot;")+')">'+
+        '<img src="'+safe(image)+'" alt="'+safe(x.name)+'">'+
+        '<span class="pa2-alt-body"><strong>'+safe(x.name)+'</strong><small>'+safe(x.product?.brand||"")+' · '+x.score+'% afinidad</small></span>'+
+        '</button>';
+    }).join("");
+  }
+
+  function openProduct(name){
+    const p=productByName(name);
+    if(!p)return;
+    const index=products.indexOf(p);
+    close();
+    if(typeof openJourney==="function") openJourney(index);
+    else document.getElementById("catalog")?.scrollIntoView({behavior:"smooth"});
+  }
+
+  function restart(){
+    state.step=0;
+    state.answers={mood:null,moment:null,presence:null,style:null};
+    document.querySelectorAll(".pa2-option").forEach(b=>b.classList.remove("selected"));
+    el("pa2Results").classList.remove("active");
+    el("pa2Nav").style.display="flex";
+    el("pa2Progress").style.display="flex";
+    render();
+  }
+
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape" && el("pa2Overlay")?.classList.contains("open")) close(); });
+
+  return {open,close,overlayClick,select,next,back,restart,openProduct,getMatches:(n=5)=>rankN(n),hasProfile:()=>Object.values(state.answers).every(Boolean)};
+})();
+</script>
+
+<script>
+let PRELUDE_SETS_CONFIG=new Map();
+let activePreludeSetId=null;
+
+const PRELUDE_SET_DEFAULTS={
+  five:{discount_percent:5,bonus_bookmarks:5},
+  discovery:{discount_percent:10,bonus_bookmarks:5},
+  journey:{discount_percent:10,bonus_bookmarks:5},
+  match:{discount_percent:5,bonus_bookmarks:5},
+  curator:{discount_percent:10,bonus_bookmarks:5}
+};
+
+const PRELUDE_SET_PUBLIC_META={
+  five:{name:"The Five",kicker:"CHOSEN BY YOU",text:"Cinco fragancias. Tu selección."},
+  discovery:{name:"The Discovery",kicker:"FIND YOUR DIRECTION",text:"Una selección para quienes todavía tienen mucho por descubrir."},
+  journey:{name:"The Journey",kicker:"FROM FIRST LIGHT TO AFTER DARK",text:"Cinco momentos. Cinco fragancias."},
+  match:{name:"The Match",kicker:"CHOSEN FOR YOU",text:"Tus cinco mayores afinidades."},
+  curator:{name:"The Curator",kicker:"SELECTED BY PRELUDE",text:"Cinco fragancias seleccionadas por Prelude."}
+};
+
+function preludeSetConfig(id){
+  return PRELUDE_SETS_CONFIG.get(id)||{id,active:true,...(PRELUDE_SET_DEFAULTS[id]||{}),product_ids:[]};
+}
+function productByCatalogId(id){return products.find(p=>String(p._catalogId||"")===String(id));}
+function setEligibleProducts(){return products.filter(p=>catalogStatusOf(p)==="published"&&!isEffectivelySoldOut(p)&&Number(p.prices?.["2 ml"])>0);}
+function setSaleSummary(selected,cfg){
+  const normal=selected.reduce((s,p)=>s+Number(p.prices["2 ml"]||0),0);
+  const discount=Math.max(0,Number(cfg.discount_percent||0));
+  const sale=Math.round(normal*(1-discount/100)*100)/100;
+  return {normal,sale,saving:Math.max(0,normal-sale),discount};
+}
+function setProductCardsHtml(selected){
+  return `<div class="prelude-set-products set-reveal">${selected.map(p=>`<article class="prelude-set-product"><img src="${p.image}" alt="${p.name}"><div class="prelude-set-product-body"><strong>${p.name}</strong><small>${p.brand}</small><small>2 ml · ${euro.format(p.prices["2 ml"])}</small></div></article>`).join("")}</div>`;
+}
+function setSummaryHtml(selected,cfg){
+  const s=setSaleSummary(selected,cfg);
+  return `<div class="prelude-set-summary set-summary-reveal">
+    <div class="set-summary-normal"><span>Por separado</span><strong>${euro.format(s.normal)}</strong></div>
+    <div class="set-summary-price"><span>Precio Set</span><strong>${euro.format(s.sale)}</strong></div>
+    <div class="set-summary-saving"><span>Ahorras</span><strong>${euro.format(s.saving)} · ${s.discount}%</strong></div>
+    <div class="set-summary-bonus"><span>Bonus</span><strong>+${Number(cfg.bonus_bookmarks||0)} Marcapáginas</strong></div>
+  </div>`;
+}
+function renderSetPicker(cfg){
+  const eligible=setEligibleProducts();
+  return `
+    <div class="prelude-set-picker-head">
+      <div>
+        <strong>Elige tus 5 Preludes</strong>
+        <small>Selecciona cinco fragancias diferentes del catálogo.</small>
+      </div>
+      <div class="prelude-set-picker-count"><span id="preludeSetSelectedCount">0</span>/5</div>
+    </div>
+    <div class="prelude-set-catalog" id="preludeSetCatalog">
+      ${eligible.map(p=>`
+        <button class="prelude-set-catalog-card" type="button"
+          data-set-catalog-id="${p._catalogId||p.name}"
+          onclick="PreludeSetsShop.toggleProduct(this)">
+          <span class="prelude-set-selected-mark">✓</span>
+          <img src="${p.image}" alt="${p.name}" loading="lazy">
+          <span class="prelude-set-catalog-body">
+            <strong>${p.name}</strong>
+            <small>${p.brand}</small>
+            <b>2 ml · ${euro.format(p.prices["2 ml"])}</b>
+          </span>
+        </button>
+      `).join("")}
+    </div>
+    <div id="preludeSetPickerPreview"></div>`;
+}
+function selectedPickerProducts(){
+  return [...document.querySelectorAll(".prelude-set-catalog-card.selected")].map(card=>{
+    const v=card.dataset.setCatalogId;
+    return products.find(p=>String(p._catalogId||p.name)===String(v));
+  }).filter(Boolean);
+}
+function updateSetPickerPreview(){
+  const body=document.getElementById("preludeSetPickerPreview");if(!body)return;
+  const selected=selectedPickerProducts(),cfg=preludeSetConfig(activePreludeSetId);
+  if(selected.length!==5||new Set(selected.map(p=>p.name)).size!==5){body.innerHTML='<div class="prelude-set-warning">Elige cinco fragancias diferentes para completar The Five.</div>';return;}
+  body.innerHTML=setProductCardsHtml(selected)+setSummaryHtml(selected,cfg)+`<div class="prelude-set-actions set-actions-reveal"><button class="primary-set-action" type="button" onclick="PreludeSetsShop.addSelected()">Añadir Set a la cesta</button></div>`;
+}
+function curatedSetProducts(cfg){
+  return (Array.isArray(cfg.product_ids)?cfg.product_ids:[]).map(productByCatalogId).filter(Boolean);
+}
+function matchSetProducts(){
+  if(!window.PreludeAdvisor?.hasProfile?.())return [];
+  return (PreludeAdvisor.getMatches?.(5)||[]).map(x=>x.product).filter(Boolean);
+}
+
+function toggleSetCatalogProduct(card){
+  const selected=document.querySelectorAll(".prelude-set-catalog-card.selected");
+  const adding=!card.classList.contains("selected");
+
+  if(!adding){
+    card.classList.remove("selected");
+  }else{
+    if(selected.length>=5){
+      toast("Puedes elegir un máximo de 5 Preludes.");
+      return;
+    }
+    card.classList.add("selected");
+    card.classList.remove("set-just-selected");
+    void card.offsetWidth;
+    card.classList.add("set-just-selected");
+    setTimeout(()=>card.classList.remove("set-just-selected"),360);
+  }
+
+  const count=document.querySelectorAll(".prelude-set-catalog-card.selected").length;
+  const countEl=document.getElementById("preludeSetSelectedCount");
+  if(countEl){
+    countEl.textContent=count;
+    const pill=countEl.closest(".prelude-set-picker-count");
+    if(pill){
+      pill.classList.remove("is-updating");
+      void pill.offsetWidth;
+      pill.classList.add("is-updating");
+      setTimeout(()=>pill.classList.remove("is-updating"),320);
+    }
+  }
+  updateSetPickerPreview();
+}
+function openPreludeSet(id){
+  const cfg=preludeSetConfig(id),meta=PRELUDE_SET_PUBLIC_META[id]; if(!meta||cfg.active===false)return;
+  const sourceCard=document.querySelector(`[data-prelude-set="${id}"]`);
+  if(sourceCard){
+    sourceCard.classList.remove("set-opening");
+    void sourceCard.offsetWidth;
+    sourceCard.classList.add("set-opening");
+    setTimeout(()=>sourceCard.classList.remove("set-opening"),360);
+  }
+  activePreludeSetId=id;
+  const overlay=document.getElementById("preludeSetOverlay"),body=document.getElementById("preludeSetModalBody");
+  document.getElementById("preludeSetModalKicker").textContent=meta.kicker;
+  document.getElementById("preludeSetModalTitle").textContent=meta.name;
+  document.getElementById("preludeSetModalText").textContent=meta.text;
+  if(id==="five"){
+    body.innerHTML=renderSetPicker(cfg);
+    updateSetPickerPreview();
+  }else if(id==="match"){
+    const selected=matchSetProducts();
+    if(selected.length<5){
+      body.innerHTML='<div class="prelude-set-warning">Completa primero el asesor olfativo para que Prelude pueda construir tus cinco mayores afinidades.</div><div class="prelude-set-actions set-actions-reveal"><button class="primary-set-action" type="button" onclick="PreludeSetsShop.close();PreludeAdvisor.open()">Abrir asesor olfativo</button></div>';
+    }else{
+      body.innerHTML=setProductCardsHtml(selected)+setSummaryHtml(selected,cfg)+`<div class="prelude-set-actions set-actions-reveal"><button class="primary-set-action" type="button" onclick="PreludeSetsShop.addProducts('match')">Añadir Set a la cesta</button></div>`;
+    }
+  }else{
+    const selected=curatedSetProducts(cfg);
+    if(selected.length<5){
+      body.innerHTML='<div class="prelude-set-warning">Este Set todavía está pendiente de configurar en Prelude Studio.</div>';
+    }else{
+      body.innerHTML=setProductCardsHtml(selected)+setSummaryHtml(selected,cfg)+`<div class="prelude-set-actions set-actions-reveal"><button class="primary-set-action" type="button" onclick="PreludeSetsShop.addProducts('${id}')">Añadir Set a la cesta</button></div>`;
+    }
+  }
+  overlay.classList.add("open");overlay.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+}
+function closePreludeSet(){const o=document.getElementById("preludeSetOverlay");o.classList.remove("open");o.setAttribute("aria-hidden","true");document.body.style.overflow="";}
+function addPreludeSetItems(id,selected){
+  const cfg=preludeSetConfig(id),meta=PRELUDE_SET_PUBLIC_META[id];
+  if(selected.length!==5||new Set(selected.map(p=>p.name)).size!==5){toast("El Set necesita cinco fragancias diferentes.");return;}
+  for(const p of selected)if(!canAddStock(p,"2 ml",1)){toast(`${p.name}: no queda stock suficiente para completar el Set.`);return;}
+  const {normal,sale}=setSaleSummary(selected,cfg);
+  if(normal<=0)return;
+  const instance=(window.crypto?.randomUUID?.()||`set-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+  let assigned=0;
+  selected.forEach((p,i)=>{
+    let price;
+    if(i===selected.length-1)price=Math.max(0,Math.round((sale-assigned)*100)/100);
+    else{price=Math.round((Number(p.prices["2 ml"])*sale/normal)*100)/100;assigned+=price;}
+    cart.push({...p,size:"2 ml",qty:1,price,_setInstance:instance,_setId:id,_setName:meta.name,_setBonus:Number(cfg.bonus_bookmarks||0)});
+  });
+  renderCart();updateAllProductStockControls();closePreludeSet();playSound("add");toast(`${meta.name} añadido a tu selección`);
+}
+async function loadPreludeSetsPublic(){
+  if(!supabaseClient)return;
+  try{
+    const {data,error}=await supabaseClient.rpc("get_prelude_sets");if(error)throw error;
+    PRELUDE_SETS_CONFIG=new Map((Array.isArray(data)?data:[]).map(x=>[String(x.id),x]));
+    document.querySelectorAll("[data-prelude-set]").forEach(card=>{
+      const id=card.dataset.preludeSet,cfg=preludeSetConfig(id);
+      card.style.display=cfg.active===false?"none":"";
+      const benefit=card.querySelector(".prelude-set-benefit");
+      if(benefit){
+        const discountEl=benefit.querySelector("strong");
+        const bonusEl=benefit.querySelector("b");
+        if(discountEl)discountEl.textContent=`−${Number(cfg.discount_percent||0)} % Descuento`;
+        if(bonusEl)bonusEl.textContent=`+${Number(cfg.bonus_bookmarks||0)} Marcapáginas extra`;
+      }
+    });
+  }catch(e){console.warn("Prelude Sets no disponible; se mantiene la configuración visual local.",e);}
+}
+const PreludeSetsShop={
+  open:openPreludeSet,close:closePreludeSet,toggleProduct:toggleSetCatalogProduct,
+  addSelected(){addPreludeSetItems("five",selectedPickerProducts())},
+  addProducts(id){addPreludeSetItems(id,id==="match"?matchSetProducts():curatedSetProducts(preludeSetConfig(id)))}
+};
+const PreludePacks={preview(name){
+  const id=Object.entries(PRELUDE_SET_PUBLIC_META).find(([,x])=>x.name===name)?.[0];
+  if(id)openPreludeSet(id);
+}};
+document.getElementById("preludeSetModalClose")?.addEventListener("click",closePreludeSet);
+document.getElementById("preludeSetOverlay")?.addEventListener("click",e=>{if(e.target.id==="preludeSetOverlay")closePreludeSet()});
+</script>
+<script>
+const PreludeSetsToggle={
+  toggle(button){
+    const section=button.closest(".prelude-sets");
+    if(!section)return;
+    const collapsed=section.classList.toggle("is-collapsed");
+    button.setAttribute("aria-expanded",String(!collapsed));
+    const label=button.querySelector(".prelude-sets-toggle-label");
+    const icon=button.querySelector(".prelude-sets-toggle-icon");
+    if(label)label.textContent=collapsed?"Mostrar Sets":"Minimizar";
+    if(icon)icon.textContent=collapsed?"+":"−";
+  }
+};
+</script>
 </body></html>

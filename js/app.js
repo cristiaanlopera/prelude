@@ -90,22 +90,13 @@ function fly(img){const r=img.getBoundingClientRect(),target=document.getElement
 function add(i,size,qty,img){const p=products[i],f=cart.find(x=>x.name===p.name&&x.size===size);f?f.qty+=qty:cart.push({...p,size,qty,price:p.prices[size]});renderCart();if(img)fly(img);playSound("add");toast(p.name+" añadido")}
 function productMinPrice(p){const vals=Object.values(p.prices||{}).map(Number).filter(Number.isFinite);return vals.length?Math.min(...vals):0}
 function catalogStatusOf(p){return p._catalogStatus||"published"}
-function catalogStockState(p){
-  const available=p._stockAvailableMl;
-  const threshold=p._lowStockThresholdMl;
-  if(catalogStatusOf(p)==="soldout")return "soldout";
-  if(Number.isFinite(available)&&available<=0)return "soldout";
-  if(Number.isFinite(available)&&Number.isFinite(threshold)&&threshold>0&&available<=threshold)return "low";
-  return "normal";
-}
 function sortedCatalogEntries(){
   const mode=document.getElementById("catalogSort")?.value||"recommended";
   const entries=products.map((p,i)=>({p,i})).filter(({p})=>catalogStatusOf(p)!=="hidden");
   const cmpText=(a,b)=>String(a||"").localeCompare(String(b||""),"es",{sensitivity:"base"});
   entries.sort((a,b)=>{
-    const rank=p=>catalogStatusOf(p)==="upcoming"?0:catalogStockState(p)==="soldout"?2:1;
-    const ar=rank(a.p), br=rank(b.p);
-    if(ar!==br)return ar-br; // Próximamente primero; agotados al final.
+    const au=catalogStatusOf(a.p)==="upcoming", bu=catalogStatusOf(b.p)==="upcoming";
+    if(au!==bu)return au?-1:1; // Próximamente siempre primero.
     if(mode==="price-asc")return productMinPrice(a.p)-productMinPrice(b.p);
     if(mode==="price-desc")return productMinPrice(b.p)-productMinPrice(a.p);
     if(mode==="brand-asc")return cmpText(a.p.brand,b.p.brand)||cmpText(a.p.name,b.p.name);
@@ -120,14 +111,9 @@ function renderProducts(){
   grid.innerHTML="";
   sortedCatalogEntries().forEach(({p,i})=>{
     const upcoming=catalogStatusOf(p)==="upcoming";
-    const stockState=catalogStockState(p);
-    const soldout=stockState==="soldout";
-    const lowStock=stockState==="low";
-    let c=document.createElement("article");c.className="card"+(upcoming?" upcoming":"")+(soldout?" soldout":"");
+    let c=document.createElement("article");c.className="card"+(upcoming?" upcoming":"");
     let min=productMinPrice(p);
-    const badge=upcoming?'<div class="catalog-availability-badge upcoming-badge">Próximamente</div>':soldout?'<div class="catalog-availability-badge soldout-badge">Agotado</div>':lowStock?'<div class="catalog-availability-badge low-stock-badge">Poco stock</div>':'';
-    const unavailable=upcoming||soldout;
-    c.innerHTML=`<div class="visual"><img src="${p.image}" alt="${p.name}">${badge}</div><div class="info"><div class="title"><div><h3>${p.name}</h3><div class="brand">${p.brand}</div></div><div class="from">${upcoming?'Próximamente':soldout?'Agotado':'Desde'}${unavailable?'':`<strong>${euro.format(min)}</strong>`}</div></div>${lowStock?'<div class="catalog-stock-note">Poco stock disponible</div>':''}${unavailable?'':`<div class="controls"><select id="s${i}">${Object.entries(p.prices).map(([sz,v])=>`<option value="${sz}">${sz} — ${euro.format(v)}</option>`).join("")}</select><input id="q${i}" type="number" min="1" value="1"></div>`}<button class="view" data-view="${i}" ${upcoming?'disabled aria-disabled="true"':''}>${upcoming?'Disponible próximamente':soldout?'Descubrir el perfume':'Comenzar el viaje'}</button>${unavailable?'':`<button class="add" data-add="${i}">Añadir a la cesta</button>`}${soldout?'<button class="add soldout-action" type="button" disabled aria-disabled="true">Temporalmente agotado</button>':''}</div>`;
+    c.innerHTML=`<div class="visual"><img src="${p.image}" alt="${p.name}">${upcoming?'<div class="upcoming-badge">Próximamente</div>':''}</div><div class="info"><div class="title"><div><h3>${p.name}</h3><div class="brand">${p.brand}</div></div><div class="from">${upcoming?'Próximamente':'Desde'}${upcoming?'':`<strong>${euro.format(min)}</strong>`}</div></div>${upcoming?'':`<div class="controls"><select id="s${i}">${Object.entries(p.prices).map(([sz,v])=>`<option value="${sz}">${sz} — ${euro.format(v)}</option>`).join("")}</select><input id="q${i}" type="number" min="1" value="1"></div>`}<button class="view" data-view="${i}" ${upcoming?'disabled aria-disabled="true"':''}>${upcoming?'Disponible próximamente':'Comenzar el viaje'}</button>${upcoming?'':`<button class="add" data-add="${i}">Añadir a la cesta</button>`}</div>`;
     grid.appendChild(c)
   });
   document.querySelectorAll("[data-view]:not([disabled])").forEach(b=>b.onclick=()=>openJourney(+b.dataset.view));
@@ -452,8 +438,6 @@ async function loadStudioManagedCatalog(){
         prices:catalogPricesFromRow(row,product.prices),
         _catalogActive:row.active!==false,
         _catalogStatus:row.availability_status||(row.active===false?"hidden":"published"),
-        _stockAvailableMl:row.stock_available_ml==null?null:Number(row.stock_available_ml),
-        _lowStockThresholdMl:row.low_stock_threshold_ml==null?null:Number(row.low_stock_threshold_ml),
         _catalogOrder:Number(row.display_order??products.indexOf(product)),
         _catalogId:row.id||null
       };
@@ -476,8 +460,6 @@ async function loadStudioManagedCatalog(){
         journeyCopy:row.journey_copy||row.description||"",
         _catalogActive:row.availability_status!=="hidden",
         _catalogStatus:row.availability_status||"published",
-        _stockAvailableMl:row.stock_available_ml==null?null:Number(row.stock_available_ml),
-        _lowStockThresholdMl:row.low_stock_threshold_ml==null?null:Number(row.low_stock_threshold_ml),
         _catalogOrder:Number(row.display_order??1000),
         _catalogId:row.id||null
       });
