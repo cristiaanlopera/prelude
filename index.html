@@ -3716,45 +3716,497 @@ body.dark .pa2-match-set button{
 }
 
 
-/* PRELUDE SETS · SALTO AUTOMÁTICO AL COMPLETAR 5/5 */
-.prelude-set-selected-section{
-  scroll-margin-top:12px!important;
+/* PRELUDE SETS · CONTROLADOR ÚNICO */
+[data-set-open],
+[data-set-add],
+[data-set-action],
+[data-set-toggle-product],
+#preludeSetModalClose{
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent;
 }
-@keyframes preludeSelectedArrival{
-  0%{
-    opacity:.72;
-    transform:translateY(10px);
-    box-shadow:0 0 0 0 color-mix(in srgb,var(--set-accent,#171716) 0%,transparent);
-  }
-  45%{
-    opacity:1;
-    transform:translateY(0);
-    box-shadow:0 0 0 5px color-mix(in srgb,var(--set-accent,#171716) 13%,transparent);
-  }
-  100%{
-    opacity:1;
-    transform:translateY(0);
-    box-shadow:0 0 0 0 color-mix(in srgb,var(--set-accent,#171716) 0%,transparent);
-  }
+
+#preludeSetOverlay.open{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
 }
-.prelude-set-selected-section.selected-focus{
-  animation:preludeSelectedArrival .9s cubic-bezier(.22,.78,.24,1) both!important;
+
+#preludeSetModalClose{
+  z-index:999!important;
 }
 
 @media(max-width:760px){
+  #preludeSetOverlay{
+    overflow:hidden!important;
+  }
+  .prelude-set-modal{
+    height:calc(100dvh - 12px)!important;
+    max-height:calc(100dvh - 12px)!important;
+    overflow:hidden!important;
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  .prelude-set-modal-head{
+    flex:0 0 auto!important;
+    position:sticky!important;
+    top:0!important;
+    z-index:100!important;
+  }
   #preludeSetModalBody{
-    scroll-behavior:smooth!important;
-    scroll-padding-top:10px!important;
+    flex:1 1 auto!important;
+    min-height:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior:contain!important;
+    padding-bottom:calc(120px + env(safe-area-inset-bottom))!important;
   }
 }
 
-@media(prefers-reduced-motion:reduce){
-  .prelude-set-selected-section.selected-focus{
-    animation:none!important;
-  }
-  #preludeSetModalBody{
-    scroll-behavior:auto!important;
-  }
+
+/* =========================================================
+   PRELUDE SETS · FONDO DEL POPUP SEGÚN EL SET
+   ========================================================= */
+
+/* Transición suave al abrir/cambiar de Set */
+#preludeSetOverlay .prelude-set-modal{
+  transition:
+    background .28s ease,
+    border-color .28s ease,
+    box-shadow .28s ease!important;
+}
+
+/* 01 · THE FIVE · piedra / gris cálido */
+#preludeSetOverlay.active-set-five .prelude-set-modal{
+  background:
+    linear-gradient(145deg,
+      rgba(247,246,242,.98),
+      rgba(224,222,215,.88)
+    )!important;
+  border:1px solid rgba(143,139,129,.28)!important;
+}
+
+/* 02 · THE DISCOVERY · salvia */
+#preludeSetOverlay.active-set-discovery .prelude-set-modal{
+  background:
+    linear-gradient(145deg,
+      rgba(247,249,244,.98),
+      rgba(220,231,214,.90)
+    )!important;
+  border:1px solid rgba(120,150,111,.30)!important;
+}
+
+/* 03 · THE JOURNEY · ámbar + transición al azul */
+#preludeSetOverlay.active-set-journey .prelude-set-modal{
+  background:
+    linear-gradient(145deg,
+      rgba(250,246,237,.98) 0%,
+      rgba(235,219,184,.88) 48%,
+      rgba(221,229,235,.88) 100%
+    )!important;
+  border:1px solid rgba(179,130,53,.30)!important;
+}
+
+/* 04 · THE MATCH · azul grisáceo */
+#preludeSetOverlay.active-set-match .prelude-set-modal{
+  background:
+    linear-gradient(145deg,
+      rgba(245,248,250,.98),
+      rgba(214,226,235,.90)
+    )!important;
+  border:1px solid rgba(101,139,170,.30)!important;
+}
+
+/* 05 · THE CURATOR · ciruela / rosa envejecido */
+#preludeSetOverlay.active-set-curator .prelude-set-modal{
+  background:
+    linear-gradient(145deg,
+      rgba(249,245,246,.98),
+      rgba(231,214,219,.90)
+    )!important;
+  border:1px solid rgba(139,83,100,.30)!important;
+}
+
+/* La cabecera hereda el color del modal en móvil */
+#preludeSetOverlay.active-set-five .prelude-set-modal-head,
+#preludeSetOverlay.active-set-discovery .prelude-set-modal-head,
+#preludeSetOverlay.active-set-journey .prelude-set-modal-head,
+#preludeSetOverlay.active-set-match .prelude-set-modal-head,
+#preludeSetOverlay.active-set-curator .prelude-set-modal-head{
+  background:transparent!important;
+}
+
+/* Las tarjetas internas siguen siendo claras para mantener contraste */
+#preludeSetOverlay .prelude-set-product,
+#preludeSetOverlay .prelude-set-catalog-card,
+#preludeSetOverlay .prelude-set-summary > div{
+  background:rgba(255,255,255,.76)!important;
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+
+/* Sección de los 5 elegidos: ligeramente más vinculada al Set */
+#preludeSetOverlay.active-set-five{--set-accent:#8f8b81}
+#preludeSetOverlay.active-set-discovery{--set-accent:#78966f}
+#preludeSetOverlay.active-set-journey{--set-accent:#b38235}
+#preludeSetOverlay.active-set-match{--set-accent:#658baa}
+#preludeSetOverlay.active-set-curator{--set-accent:#8b5364}
+
+#preludeSetOverlay .prelude-set-selected-section{
+  background:
+    color-mix(in srgb,var(--set-accent,#8f8b81) 8%,rgba(255,255,255,.90))!important;
+  border-color:
+    color-mix(in srgb,var(--set-accent,#8f8b81) 35%,transparent)!important;
+}
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+body.dark #preludeSetOverlay.active-set-five .prelude-set-modal{
+  background:
+    linear-gradient(145deg,#272623,#3a3833)!important;
+  border-color:rgba(205,201,190,.28)!important;
+}
+
+body.dark #preludeSetOverlay.active-set-discovery .prelude-set-modal{
+  background:
+    linear-gradient(145deg,#252c23,#33412f)!important;
+  border-color:rgba(145,180,132,.30)!important;
+}
+
+body.dark #preludeSetOverlay.active-set-journey .prelude-set-modal{
+  background:
+    linear-gradient(145deg,#302719,#42351f 52%,#29323a)!important;
+  border-color:rgba(211,166,87,.32)!important;
+}
+
+body.dark #preludeSetOverlay.active-set-match .prelude-set-modal{
+  background:
+    linear-gradient(145deg,#22292f,#2d3a45)!important;
+  border-color:rgba(129,170,203,.32)!important;
+}
+
+body.dark #preludeSetOverlay.active-set-curator .prelude-set-modal{
+  background:
+    linear-gradient(145deg,#302126,#402a31)!important;
+  border-color:rgba(177,110,132,.32)!important;
+}
+
+/* Tarjetas internas oscuras */
+body.dark #preludeSetOverlay .prelude-set-product,
+body.dark #preludeSetOverlay .prelude-set-catalog-card,
+body.dark #preludeSetOverlay .prelude-set-summary > div{
+  background:rgba(24,24,23,.76)!important;
+  color:#f4f1eb!important;
+  border-color:rgba(255,255,255,.10)!important;
+}
+
+body.dark #preludeSetOverlay .prelude-set-product small,
+body.dark #preludeSetOverlay .prelude-set-catalog-card small,
+body.dark #preludeSetOverlay .prelude-set-summary span{
+  color:rgba(255,255,255,.60)!important;
+}
+
+
+/* =========================================================
+   PRELUDE SETS · POPUP = MISMO COLOR EXACTO DEL SET
+   SIN TRANSPARENCIAS · LEGIBILIDAD CLARO/OSCURO
+   ========================================================= */
+
+/* Overlay: oscurecer completamente la web de fondo */
+#preludeSetOverlay{
+  background:rgba(8,8,8,.78)!important;
+  backdrop-filter:blur(2px)!important;
+  -webkit-backdrop-filter:blur(2px)!important;
+}
+
+/* El popup deja de ser translúcido */
+#preludeSetOverlay .prelude-set-modal{
+  opacity:1!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  color:#171716!important;
+}
+
+/* ---------------------------------------------------------
+   MISMO FONDO QUE LAS TARJETAS DEL BLOQUE PRELUDE SETS
+   --------------------------------------------------------- */
+
+/* The Five · piedra */
+#preludeSetOverlay.active-set-five .prelude-set-modal{
+  background:
+    linear-gradient(145deg,
+      #f6f5f1 0%,
+      #e4e2dc 100%
+    )!important;
+  border-color:#c9c6bd!important;
+}
+
+/* The Discovery · salvia */
+#preludeSetOverlay.active-set-discovery .prelude-set-modal{
+  background:
+    linear-gradient(145deg,
+      #f3f7f0 0%,
+      #dce8d6 100%
+    )!important;
+  border-color:#b7cbaa!important;
+}
+
+/* The Journey · ámbar / azul */
+#preludeSetOverlay.active-set-journey .prelude-set-modal{
+  background:
+    linear-gradient(145deg,
+      #faf5e9 0%,
+      #ead7ae 50%,
+      #dce5ec 100%
+    )!important;
+  border-color:#d2b77b!important;
+}
+
+/* The Match · azul grisáceo */
+#preludeSetOverlay.active-set-match .prelude-set-modal{
+  background:
+    linear-gradient(145deg,
+      #f2f6f9 0%,
+      #d6e3ed 100%
+    )!important;
+  border-color:#afc7d9!important;
+}
+
+/* The Curator · ciruela / rosa envejecido */
+#preludeSetOverlay.active-set-curator .prelude-set-modal{
+  background:
+    linear-gradient(145deg,
+      #f8f2f4 0%,
+      #e7d5da 100%
+    )!important;
+  border-color:#cfb1ba!important;
+}
+
+/* ---------------------------------------------------------
+   TEXTO · MODO CLARO
+   --------------------------------------------------------- */
+#preludeSetOverlay .prelude-set-modal,
+#preludeSetOverlay .prelude-set-modal h1,
+#preludeSetOverlay .prelude-set-modal h2,
+#preludeSetOverlay .prelude-set-modal h3,
+#preludeSetOverlay .prelude-set-modal strong,
+#preludeSetOverlay .prelude-set-modal b{
+  color:#171716!important;
+}
+
+#preludeSetOverlay .prelude-set-modal p,
+#preludeSetOverlay .prelude-set-modal small,
+#preludeSetOverlay .prelude-set-modal .muted,
+#preludeSetOverlay .prelude-set-modal-kicker{
+  color:#66635e!important;
+  opacity:1!important;
+}
+
+/* Cabecera opaca y coherente */
+#preludeSetOverlay .prelude-set-modal-head{
+  background:transparent!important;
+  color:#171716!important;
+}
+
+/* Botón cerrar siempre visible */
+#preludeSetModalClose{
+  color:#171716!important;
+  background:rgba(255,255,255,.88)!important;
+  border:1px solid rgba(23,23,22,.16)!important;
+  box-shadow:0 2px 8px rgba(0,0,0,.08)!important;
+}
+
+/* Tarjetas de perfumes: opacas */
+#preludeSetOverlay .prelude-set-product,
+#preludeSetOverlay .prelude-set-catalog-card{
+  background:#fffdf9!important;
+  color:#171716!important;
+  border-color:rgba(23,23,22,.12)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+
+/* Texto interno tarjetas */
+#preludeSetOverlay .prelude-set-product strong,
+#preludeSetOverlay .prelude-set-catalog-card strong,
+#preludeSetOverlay .prelude-set-product b,
+#preludeSetOverlay .prelude-set-catalog-card b{
+  color:#171716!important;
+}
+#preludeSetOverlay .prelude-set-product small,
+#preludeSetOverlay .prelude-set-catalog-card small{
+  color:#74716b!important;
+  opacity:1!important;
+}
+
+/* Resumen económico: completamente opaco */
+#preludeSetOverlay .prelude-set-summary > div{
+  background:#fffdf9!important;
+  color:#171716!important;
+  border-color:rgba(23,23,22,.12)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+#preludeSetOverlay .prelude-set-summary span{
+  color:#77736d!important;
+  opacity:1!important;
+}
+#preludeSetOverlay .prelude-set-summary strong{
+  color:#171716!important;
+}
+
+/* Precio Set mantiene protagonismo */
+#preludeSetOverlay .prelude-set-summary .set-summary-price{
+  background:#2d2c29!important;
+  border-color:#2d2c29!important;
+}
+#preludeSetOverlay .prelude-set-summary .set-summary-price span{
+  color:rgba(255,255,255,.68)!important;
+}
+#preludeSetOverlay .prelude-set-summary .set-summary-price strong{
+  color:#fff!important;
+}
+
+/* Ahorro con buen contraste */
+#preludeSetOverlay .prelude-set-summary .set-summary-saving strong{
+  color:#8a6418!important;
+}
+
+/* Botón añadir */
+#preludeSetOverlay .primary-set-action,
+#preludeSetOverlay [data-set-add]{
+  background:#171716!important;
+  color:#fff!important;
+  border-color:#171716!important;
+}
+
+/* ---------------------------------------------------------
+   DARK MODE · MISMO COLOR DEL SET PERO PROFUNDO Y OPACO
+   --------------------------------------------------------- */
+body.dark #preludeSetOverlay{
+  background:rgba(0,0,0,.88)!important;
+}
+
+body.dark #preludeSetOverlay.active-set-five .prelude-set-modal{
+  background:linear-gradient(145deg,#292824,#3a3832)!important;
+  border-color:#59564f!important;
+}
+body.dark #preludeSetOverlay.active-set-discovery .prelude-set-modal{
+  background:linear-gradient(145deg,#232b21,#354331)!important;
+  border-color:#566d50!important;
+}
+body.dark #preludeSetOverlay.active-set-journey .prelude-set-modal{
+  background:linear-gradient(145deg,#332918 0%,#493a22 52%,#2c3740 100%)!important;
+  border-color:#765d30!important;
+}
+body.dark #preludeSetOverlay.active-set-match .prelude-set-modal{
+  background:linear-gradient(145deg,#20282e,#30404c)!important;
+  border-color:#526d82!important;
+}
+body.dark #preludeSetOverlay.active-set-curator .prelude-set-modal{
+  background:linear-gradient(145deg,#302126,#452e35)!important;
+  border-color:#76515d!important;
+}
+
+/* Texto oscuro */
+body.dark #preludeSetOverlay .prelude-set-modal,
+body.dark #preludeSetOverlay .prelude-set-modal h1,
+body.dark #preludeSetOverlay .prelude-set-modal h2,
+body.dark #preludeSetOverlay .prelude-set-modal h3,
+body.dark #preludeSetOverlay .prelude-set-modal strong,
+body.dark #preludeSetOverlay .prelude-set-modal b{
+  color:#f5f2ec!important;
+}
+
+body.dark #preludeSetOverlay .prelude-set-modal p,
+body.dark #preludeSetOverlay .prelude-set-modal small,
+body.dark #preludeSetOverlay .prelude-set-modal .muted,
+body.dark #preludeSetOverlay .prelude-set-modal-kicker{
+  color:#c2bdb4!important;
+  opacity:1!important;
+}
+
+/* Cabecera */
+body.dark #preludeSetOverlay .prelude-set-modal-head{
+  background:transparent!important;
+  color:#f5f2ec!important;
+}
+
+/* Cerrar */
+body.dark #preludeSetModalClose{
+  color:#fff!important;
+  background:#181817!important;
+  border-color:rgba(255,255,255,.18)!important;
+}
+
+/* Tarjetas internas oscuras, totalmente opacas */
+body.dark #preludeSetOverlay .prelude-set-product,
+body.dark #preludeSetOverlay .prelude-set-catalog-card{
+  background:#242422!important;
+  border-color:rgba(255,255,255,.12)!important;
+  color:#f5f2ec!important;
+}
+body.dark #preludeSetOverlay .prelude-set-product strong,
+body.dark #preludeSetOverlay .prelude-set-catalog-card strong,
+body.dark #preludeSetOverlay .prelude-set-product b,
+body.dark #preludeSetOverlay .prelude-set-catalog-card b{
+  color:#fff!important;
+}
+body.dark #preludeSetOverlay .prelude-set-product small,
+body.dark #preludeSetOverlay .prelude-set-catalog-card small{
+  color:#aaa59d!important;
+}
+
+/* Resumen oscuro */
+body.dark #preludeSetOverlay .prelude-set-summary > div{
+  background:#242422!important;
+  border-color:rgba(255,255,255,.12)!important;
+}
+body.dark #preludeSetOverlay .prelude-set-summary span{
+  color:#aaa59d!important;
+}
+body.dark #preludeSetOverlay .prelude-set-summary strong{
+  color:#fff!important;
+}
+body.dark #preludeSetOverlay .prelude-set-summary .set-summary-price{
+  background:#eee9df!important;
+  border-color:#eee9df!important;
+}
+body.dark #preludeSetOverlay .prelude-set-summary .set-summary-price span{
+  color:#69655f!important;
+}
+body.dark #preludeSetOverlay .prelude-set-summary .set-summary-price strong{
+  color:#171716!important;
+}
+body.dark #preludeSetOverlay .prelude-set-summary .set-summary-saving strong{
+  color:#e2bd67!important;
+}
+
+/* Botón dark */
+body.dark #preludeSetOverlay .primary-set-action,
+body.dark #preludeSetOverlay [data-set-add]{
+  background:#f1ede5!important;
+  color:#171716!important;
+  border-color:#f1ede5!important;
+}
+
+/* Selección The Five */
+body.dark #preludeSetOverlay .prelude-set-selected-section{
+  background:#1f1f1d!important;
+  color:#f5f2ec!important;
+}
+
+/* Garantía final: ningún fondo interno semi-transparente que deje ver la página */
+#preludeSetOverlay .prelude-set-modal,
+#preludeSetOverlay .prelude-set-product,
+#preludeSetOverlay .prelude-set-catalog-card,
+#preludeSetOverlay .prelude-set-summary > div,
+#preludeSetOverlay .prelude-set-selected-section{
+  background-clip:padding-box!important;
 }
 
 </style>
@@ -3884,7 +4336,7 @@ Descubrir colección
           <span>·</span>
           <b>+5 Marcapáginas extra</b>
         </div>
-      <button type="button" onclick="PreludePacks.preview('The Five')">Elegir fragancias</button>
+      <button type="button" data-set-open="five">Elegir fragancias</button>
     </article>
 
     <article class="prelude-pack-card prelude-set-card set-discovery" data-prelude-set="discovery">
@@ -3900,7 +4352,7 @@ Descubrir colección
           <span>·</span>
           <b>+5 Marcapáginas extra</b>
         </div>
-      <button type="button" onclick="PreludePacks.preview('The Discovery')">Descubrir el Set</button>
+      <button type="button" data-set-open="discovery">Descubrir el Set</button>
     </article>
 
     <article class="prelude-pack-card prelude-set-card set-journey" data-prelude-set="journey">
@@ -3917,7 +4369,7 @@ Descubrir colección
           <span>·</span>
           <b>+5 Marcapáginas extra</b>
         </div>
-      <button type="button" onclick="PreludePacks.preview('The Journey')">Descubrir el Set</button>
+      <button type="button" data-set-open="journey">Descubrir el Set</button>
     </article>
 
     <article class="prelude-pack-card prelude-set-card featured set-match" data-prelude-set="match">
@@ -3933,7 +4385,7 @@ Descubrir colección
           <span>·</span>
           <b>+5 Marcapáginas extra</b>
         </div>
-      <button type="button" onclick="PreludePacks.preview('The Match')">Ver mi Match</button>
+      <button type="button" data-set-open="match">Ver mi Match</button>
     </article>
 
     <article class="prelude-pack-card prelude-set-card curator set-curator" data-prelude-set="curator">
@@ -3949,7 +4401,7 @@ Descubrir colección
           <span>·</span>
           <b>+5 Marcapáginas extra</b>
         </div>
-      <button type="button" onclick="PreludePacks.preview('The Curator')">Ver selección</button>
+      <button type="button" data-set-open="curator">Ver selección</button>
     </article>
   </div>
 
@@ -4067,7 +4519,7 @@ Descubrir colección
           <h3>Convierte tus recomendaciones en un Set</h3>
           <p>Reúne tus cinco mayores afinidades en un Prelude Set personalizado de 5 × 2 ml.</p>
         </div>
-        <button type="button" onclick="PreludeAdvisor.openMatchSet()">Crear mi Set personalizado</button>
+        <button type="button" data-set-open="match">Crear mi Set personalizado</button>
       </section>
 
       <div class="pa2-method">La afinidad compara tus respuestas con el perfil interno de cada fragancia de la colección. Es una orientación para descubrir, no una medición universal del perfume.</div>
@@ -7106,7 +7558,7 @@ function renderSetPicker(cfg){
       ${eligible.map(p=>`
         <button class="prelude-set-catalog-card" type="button"
           data-set-catalog-id="${p._catalogId||p.name}"
-          onclick="PreludeSetsShop.toggleProduct(this)">
+          data-set-toggle-product="1">
           <span class="prelude-set-selected-mark">✓</span>
           <img src="${p.image}" alt="${p.name}" loading="lazy">
           <span class="prelude-set-catalog-body">
@@ -7144,7 +7596,7 @@ function updateSetPickerPreview(){
       ${setProductCardsHtml(selected)}
       ${setSummaryHtml(selected,cfg)}
       <div class="prelude-set-actions set-actions-reveal">
-        <button class="primary-set-action" type="button" onclick="PreludeSetsShop.addSelected()">Añadir Set a la cesta</button>
+        <button class="primary-set-action" type="button" data-set-add="five">Añadir Set a la cesta</button>
       </div>
     </section>`;
 }
@@ -7192,31 +7644,14 @@ function toggleSetCatalogProduct(card){
   if(count===5){
     setTimeout(()=>{
       const section=document.getElementById("preludeSetSelectedSection");
-      const scroller=document.getElementById("preludeSetModalBody");
-      if(!section)return;
-
-      /* En móvil hacemos scroll dentro del popup, no sobre la página de fondo. */
-      if(window.innerWidth<=760 && scroller){
-        const targetTop=Math.max(
-          0,
-          section.offsetTop - scroller.offsetTop - 10
-        );
-        scroller.scrollTo({
-          top:targetTop,
-          behavior:"smooth"
-        });
-      }else{
-        section.scrollIntoView({
-          behavior:"smooth",
-          block:"start"
-        });
+      if(section){
+        section.scrollIntoView({behavior:"smooth",block:"start"});
+        section.classList.remove("selected-focus");
+        void section.offsetWidth;
+        section.classList.add("selected-focus");
+        setTimeout(()=>section.classList.remove("selected-focus"),900);
       }
-
-      section.classList.remove("selected-focus");
-      void section.offsetWidth;
-      section.classList.add("selected-focus");
-      setTimeout(()=>section.classList.remove("selected-focus"),950);
-    },180);
+    },120);
   }
 }
 function openPreludeSet(id){
@@ -7244,16 +7679,16 @@ function openPreludeSet(id){
   }else if(id==="match"){
     const selected=matchSetProducts();
     if(selected.length<5){
-      body.innerHTML='<div class="prelude-set-warning">Completa primero el asesor olfativo para que Prelude pueda construir tus cinco mayores afinidades.</div><div class="prelude-set-actions set-actions-reveal"><button class="primary-set-action" type="button" onclick="PreludeSetsShop.close();PreludeAdvisor.open()">Abrir asesor olfativo</button></div>';
+      body.innerHTML='<div class="prelude-set-warning">Completa primero el asesor olfativo para que Prelude pueda construir tus cinco mayores afinidades.</div><div class="prelude-set-actions set-actions-reveal"><button class="primary-set-action" type="button" data-set-action="open-advisor">Abrir asesor olfativo</button></div>';
     }else{
-      body.innerHTML=setProductCardsHtml(selected)+setSummaryHtml(selected,cfg)+`<div class="prelude-set-actions set-actions-reveal"><button class="primary-set-action" type="button" onclick="PreludeSetsShop.addProducts('match')">Añadir Set a la cesta</button></div>`;
+      body.innerHTML=setProductCardsHtml(selected)+setSummaryHtml(selected,cfg)+`<div class="prelude-set-actions set-actions-reveal"><button class="primary-set-action" type="button" data-set-add="match">Añadir Set a la cesta</button></div>`;
     }
   }else{
     const selected=curatedSetProducts(cfg);
     if(selected.length<5){
       body.innerHTML='<div class="prelude-set-warning">Este Set todavía está pendiente de configurar en Prelude Studio.</div>';
     }else{
-      body.innerHTML=setProductCardsHtml(selected)+setSummaryHtml(selected,cfg)+`<div class="prelude-set-actions set-actions-reveal"><button class="primary-set-action" type="button" onclick="PreludeSetsShop.addProducts('${id}')">Añadir Set a la cesta</button></div>`;
+      body.innerHTML=setProductCardsHtml(selected)+setSummaryHtml(selected,cfg)+`<div class="prelude-set-actions set-actions-reveal"><button class="primary-set-action" type="button" data-set-add="${id}">Añadir Set a la cesta</button></div>`;
     }
   }
   overlay.classList.add("open");overlay.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
@@ -7376,4 +7811,319 @@ const PreludeSetsToggle={
   },{passive:false});
 })();
 </script>
+
+<script id="preludeSetsUnifiedController">
+(function(){
+  "use strict";
+
+  const $ = (id)=>document.getElementById(id);
+
+  function getCfg(id){
+    try{
+      if(typeof preludeSetConfig==="function") return preludeSetConfig(id);
+    }catch(e){ console.warn("Prelude Sets config fallback",e); }
+    const defaults={
+      five:{discount_percent:5,bonus_bookmarks:5},
+      discovery:{discount_percent:10,bonus_bookmarks:5},
+      journey:{discount_percent:10,bonus_bookmarks:5},
+      match:{discount_percent:5,bonus_bookmarks:5},
+      curator:{discount_percent:10,bonus_bookmarks:5}
+    };
+    return {id,active:true,...(defaults[id]||{}),product_ids:[]};
+  }
+
+  function getMeta(id){
+    const local={
+      five:{name:"The Five",kicker:"CHOSEN BY YOU",text:"Cinco fragancias. Tu selección."},
+      discovery:{name:"The Discovery",kicker:"FIND YOUR DIRECTION",text:"Una selección para quienes todavía tienen mucho por descubrir."},
+      journey:{name:"The Journey",kicker:"FROM FIRST LIGHT TO AFTER DARK",text:"Cinco momentos. Cinco fragancias."},
+      match:{name:"The Match",kicker:"CHOSEN FOR YOU",text:"Tus cinco mayores afinidades."},
+      curator:{name:"The Curator",kicker:"SELECTED BY PRELUDE",text:"Cinco fragancias seleccionadas por Prelude."}
+    };
+    try{
+      if(typeof PRELUDE_SET_PUBLIC_META!=="undefined" && PRELUDE_SET_PUBLIC_META[id]) return PRELUDE_SET_PUBLIC_META[id];
+    }catch(_){}
+    return local[id];
+  }
+
+  function forceClose(){
+    const overlay=$("preludeSetOverlay");
+    if(!overlay)return;
+    overlay.classList.remove("open","active-set-five","active-set-discovery","active-set-journey","active-set-match","active-set-curator");
+    overlay.setAttribute("aria-hidden","true");
+    overlay.style.display="";
+    overlay.style.pointerEvents="";
+    document.body.style.overflow="";
+  }
+
+  function forceOpenShell(id){
+    const overlay=$("preludeSetOverlay");
+    const body=$("preludeSetModalBody");
+    const meta=getMeta(id);
+    if(!overlay||!body||!meta) return null;
+
+    try{
+      $("preludeSetModalKicker").textContent=meta.kicker;
+      $("preludeSetModalTitle").textContent=meta.name;
+      $("preludeSetModalText").textContent=meta.text;
+    }catch(_){}
+
+    try{ activePreludeSetId=id; }catch(_){}
+
+    overlay.classList.remove("active-set-five","active-set-discovery","active-set-journey","active-set-match","active-set-curator");
+    overlay.classList.add("open","active-set-"+id);
+    overlay.setAttribute("aria-hidden","false");
+    overlay.style.display="flex";
+    overlay.style.pointerEvents="auto";
+    document.body.style.overflow="hidden";
+    body.scrollTop=0;
+    return body;
+  }
+
+  function openSet(id){
+    const cfg=getCfg(id);
+    if(cfg && cfg.active===false){
+      if(typeof toast==="function") toast("Este Prelude Set no está disponible ahora mismo.");
+      return;
+    }
+
+    /* Primero abrimos la carcasa. Así el clic nunca parece no responder. */
+    const body=forceOpenShell(id);
+    if(!body)return;
+
+    try{
+      if(id==="five"){
+        /* The Five siempre empieza con una selección limpia al abrirse. */
+        try{
+          document.querySelectorAll(".prelude-set-catalog-card.selected").forEach(card=>{
+            card.classList.remove("selected","set-just-selected");
+          });
+        }catch(_){}
+        if(typeof renderSetPicker!=="function") throw new Error("renderSetPicker no disponible");
+        body.innerHTML=renderSetPicker(cfg);
+        if(typeof updateSetPickerPreview==="function") updateSetPickerPreview();
+        return;
+      }
+
+      if(id==="match"){
+        const selected=(typeof matchSetProducts==="function") ? matchSetProducts() : [];
+        if(selected.length<5){
+          body.innerHTML=
+            '<div class="prelude-set-warning">Completa primero el asesor olfativo para que Prelude pueda construir tus cinco mayores afinidades.</div>'+
+            '<div class="prelude-set-actions set-actions-reveal">'+
+              '<button class="primary-set-action" type="button" data-set-action="open-advisor">Abrir asesor olfativo</button>'+
+            '</div>';
+        }else{
+          body.innerHTML=
+            setProductCardsHtml(selected)+
+            setSummaryHtml(selected,cfg)+
+            '<div class="prelude-set-actions set-actions-reveal">'+
+              '<button class="primary-set-action" type="button" data-set-add="match">Añadir Set a la cesta</button>'+
+            '</div>';
+        }
+        return;
+      }
+
+      const selected=(typeof curatedSetProducts==="function") ? curatedSetProducts(cfg) : [];
+      if(selected.length<5){
+        body.innerHTML='<div class="prelude-set-warning">Este Set todavía está pendiente de configurar en Prelude Studio.</div>';
+      }else{
+        body.innerHTML=
+          setProductCardsHtml(selected)+
+          setSummaryHtml(selected,cfg)+
+          '<div class="prelude-set-actions set-actions-reveal">'+
+            '<button class="primary-set-action" type="button" data-set-add="'+id+'">Añadir Set a la cesta</button>'+
+          '</div>';
+      }
+    }catch(err){
+      console.error("Prelude Sets · openSet",id,err);
+      body.innerHTML=
+        '<div class="prelude-set-warning">No se pudo cargar este Set correctamente.</div>'+
+        '<div class="prelude-set-actions">'+
+          '<button class="primary-set-action" type="button" data-set-action="close">Cerrar</button>'+
+        '</div>';
+    }
+  }
+
+  function addSet(id){
+    try{
+      let selected=[];
+      if(id==="five"){
+        selected=(typeof selectedPickerProducts==="function") ? selectedPickerProducts() : [];
+      }else if(id==="match"){
+        selected=(typeof matchSetProducts==="function") ? matchSetProducts() : [];
+      }else{
+        selected=(typeof curatedSetProducts==="function") ? curatedSetProducts(getCfg(id)) : [];
+      }
+
+      if(typeof addPreludeSetItems!=="function") throw new Error("addPreludeSetItems no disponible");
+
+      /* Guardamos referencias antes de añadir porque addPreludeSetItems puede cerrar el modal. */
+      const body=$("preludeSetModalBody");
+
+      addPreludeSetItems(id,selected);
+
+      /* Limpiar completamente el estado visual del Set. */
+      try{
+        if(body) body.innerHTML="";
+        document.querySelectorAll(".prelude-set-catalog-card.selected").forEach(card=>{
+          card.classList.remove("selected","set-just-selected");
+        });
+        const count=$("preludeSetSelectedCount");
+        if(count) count.textContent="0";
+        if(typeof activePreludeSetId!=="undefined") activePreludeSetId=null;
+      }catch(cleanErr){
+        console.warn("Prelude Sets · limpieza visual",cleanErr);
+      }
+
+      /* Asegurar cierre del popup incluso si la función antigua no lo hace. */
+      forceClose();
+
+      /* Volver al catálogo principal. */
+      setTimeout(()=>{
+        const catalog=
+          document.getElementById("catalog") ||
+          document.getElementById("grid") ||
+          document.querySelector(".catalog-toolbar") ||
+          document.querySelector(".layout");
+
+        if(catalog){
+          try{
+            catalog.scrollIntoView({
+              behavior:"smooth",
+              block:"start"
+            });
+          }catch(_){
+            window.scrollTo({
+              top:catalog.getBoundingClientRect().top+window.scrollY-20,
+              behavior:"smooth"
+            });
+          }
+        }
+      },140);
+
+    }catch(err){
+      console.error("Prelude Sets · addSet",id,err);
+      if(typeof toast==="function") toast("No se pudo añadir el Set a la cesta.");
+    }
+  }
+
+  function toggleProduct(card){
+    try{
+      if(typeof toggleSetCatalogProduct==="function"){
+        toggleSetCatalogProduct(card);
+      }
+    }catch(err){
+      console.error("Prelude Sets · toggleProduct",err);
+    }
+  }
+
+  function openAdvisor(){
+    forceClose();
+    setTimeout(()=>{
+      try{
+        if(window.PreludeAdvisor && typeof window.PreludeAdvisor.open==="function"){
+          window.PreludeAdvisor.open();
+        }
+      }catch(err){ console.error(err); }
+    },120);
+  }
+
+  /* ÚNICO listener de Sets, en captura para adelantarse a handlers heredados. */
+  document.addEventListener("click",function(event){
+    const closeBtn=event.target.closest("#preludeSetModalClose,[data-set-action='close']");
+    if(closeBtn){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      forceClose();
+      return;
+    }
+
+    const opener=event.target.closest("[data-set-open]");
+    if(opener){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openSet(opener.dataset.setOpen);
+      return;
+    }
+
+    const toggle=event.target.closest("[data-set-toggle-product]");
+    if(toggle){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      toggleProduct(toggle);
+      return;
+    }
+
+    const add=event.target.closest("[data-set-add]");
+    if(add){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      addSet(add.dataset.setAdd);
+      return;
+    }
+
+    const advisor=event.target.closest("[data-set-action='open-advisor']");
+    if(advisor){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openAdvisor();
+      return;
+    }
+
+    const overlay=$("preludeSetOverlay");
+    if(overlay && event.target===overlay){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      forceClose();
+    }
+  },true);
+
+  /* Escape también cierra siempre */
+  document.addEventListener("keydown",function(event){
+    if(event.key==="Escape" && $("preludeSetOverlay")?.classList.contains("open")){
+      forceClose();
+    }
+  },true);
+
+  window.PreludeSetsUnified={
+    open:openSet,
+    close:forceClose,
+    add:addSet
+  };
+})();
+</script>
+
+
+<script id="preludeFiveAutoscrollSafe">
+(function(){
+  let previous=0;
+  const obs=new MutationObserver(function(){
+    const countEl=document.getElementById("preludeSetSelectedCount");
+    if(!countEl){ previous=0; return; }
+    const now=Number(String(countEl.textContent||"0").trim())||0;
+
+    if(now===5 && previous!==5){
+      setTimeout(function(){
+        const section=document.getElementById("preludeSetSelectedSection");
+        const scroller=document.getElementById("preludeSetModalBody");
+        if(!section||!scroller)return;
+
+        const sr=section.getBoundingClientRect();
+        const cr=scroller.getBoundingClientRect();
+        const top=scroller.scrollTop+(sr.top-cr.top)-8;
+        try{ scroller.scrollTo({top:Math.max(0,top),behavior:"smooth"}); }
+        catch(_){ scroller.scrollTop=Math.max(0,top); }
+
+        section.classList.remove("selected-focus");
+        void section.offsetWidth;
+        section.classList.add("selected-focus");
+      },180);
+    }
+    previous=now;
+  });
+  obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+})();
+</script>
+
 </body></html>
