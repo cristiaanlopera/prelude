@@ -6829,7 +6829,8 @@ function renderCustomerOrders(){
         <div><div class="collection-order-number">#${customerEscape(order.order_number)}</div><div class="collection-order-meta">${order.created_at?new Date(order.created_at).toLocaleString("es-ES"):""} · ${customerEscape(order.delivery_zone||"")}</div></div>
         <span class="collection-order-status">${CUSTOMER_ORDER_LABELS[order.status]||customerEscape(order.status)}</span>
       </div>
-      <div class="collection-order-items">${items.length?items.map(item=>`<div class="collection-order-item"><span>${customerEscape(item.name||"Pedido histórico")} ${item.size?"· "+customerEscape(item.size):""} × ${Number(item.qty||1)}</span><strong>${customerMoney(Number(item.price||0)*Number(item.qty||1))}</strong></div>`).join(""):'<div class="muted" style="padding:5px 0">Detalle de productos no disponible para este pedido histórico.</div>'}</div>
+      ${[...new Set(items.map(item=>String(item.set_name||"").trim()).filter(Boolean))].length?`<div class="collection-order-meta" style="margin:10px 0 2px"><strong>Prelude Set · ${[...new Set(items.map(item=>String(item.set_name||"").trim()).filter(Boolean))].map(customerEscape).join(" + ")}</strong></div>`:""}
+      <div class="collection-order-items">${items.length?items.map(item=>`<div class="collection-order-item"><span>${customerEscape(item.name||"Pedido histórico")} ${item.size?"· "+customerEscape(item.size):""} × ${Number(item.qty||1)}${item.set_name?` · ${customerEscape(item.set_name)}`:""}</span><strong>${customerMoney(Number(item.price||0)*Number(item.qty||1))}</strong></div>`).join(""):'<div class="muted" style="padding:5px 0">Detalle de productos no disponible para este pedido histórico.</div>'}</div>
       <div class="collection-order-total"><span>Total</span><span>${customerMoney(order.order_total)}</span></div>
     </article>`;
   }).join("");

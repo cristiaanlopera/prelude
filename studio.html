@@ -2200,8 +2200,10 @@ function openOrder(id){
   document.getElementById("orderDetailTitle").textContent="#"+activeOrder.order_number;
   document.getElementById("orderDetailMeta").textContent=`${activeOrder.customer_name||"Cliente"} · ${activeOrder.delivery_zone||"Sin zona"}`;
   const items=Array.isArray(activeOrder.items)?activeOrder.items:[];
+  const orderSetNames=[...new Set(items.map(i=>String(i.set_name||"").trim()).filter(Boolean))];
   document.getElementById("orderDetailBody").innerHTML=`<div><strong>Cliente</strong><div class="order-meta">${escapeHtml(activeOrder.customer_name||"")} ${activeOrder.customer_phone?"· "+escapeHtml(activeOrder.customer_phone):""}</div></div>
-    <div class="order-detail-items">${items.map(i=>`<div class="order-detail-item"><span>${escapeHtml(i.name)} · ${escapeHtml(i.size)} × ${Number(i.qty||1)}</span><strong>${money(Number(i.price||0)*Number(i.qty||1))}</strong></div>`).join("")}</div>
+    ${orderSetNames.length?`<div style="margin-top:14px"><strong>Prelude Set</strong><div class="order-meta">${orderSetNames.map(escapeHtml).join(" + ")}</div></div>`:""}
+    <div class="order-detail-items">${items.map(i=>`<div class="order-detail-item"><span>${escapeHtml(i.name)} · ${escapeHtml(i.size)} × ${Number(i.qty||1)}${i.set_name?` · <em>${escapeHtml(i.set_name)}</em>`:""}</span><strong>${money(Number(i.price||0)*Number(i.qty||1))}</strong></div>`).join("")}</div>
     ${activeOrder.notes?`<div><strong>Observaciones</strong><div class="order-meta">${escapeHtml(activeOrder.notes)}</div></div>`:""}
     <div style="display:flex;justify-content:space-between;margin-top:15px;font-size:18px"><strong>Total</strong><strong>${money(activeOrder.order_total)}</strong></div>`;
   const btns=document.getElementById("orderStatusButtons");
@@ -2254,8 +2256,11 @@ function downloadOrderPdf(order){
   doc.setFont("times","bold");doc.setFontSize(22);doc.text("PRELUDE",20,y);y+=8;doc.setFontSize(10);doc.setFont("times","normal");doc.text("Documento de compra",20,y);y+=12;
   doc.setDrawColor(190);doc.line(20,y,190,y);y+=10;doc.setFontSize(11);
   const rows=[`Pedido: #${order.order_number}`,`Fecha: ${order.created_at?new Date(order.created_at).toLocaleDateString("es-ES"):"—"}`,`Cliente: ${order.customer_name||"—"}`,`Zona de entrega: ${order.delivery_zone||"—"}`]; if(order.customer_phone)rows.push(`Teléfono: ${order.customer_phone}`);
-  rows.forEach(t=>{doc.text(t,20,y);y+=6}); y+=4;doc.setFont("times","bold");doc.text("Pedido",20,y);y+=7;doc.setFont("times","normal");
-  (order.items||[]).forEach(i=>{const label=`${i.name} · ${i.size} x ${i.qty||1}`;doc.text(label,20,y,{maxWidth:125});doc.text(money(Number(i.price||0)*Number(i.qty||1)),190,y,{align:"right"});y+=7;if(y>265){doc.addPage();y=20}});
+  rows.forEach(t=>{doc.text(t,20,y);y+=6});
+  const pdfSetNames=[...new Set((order.items||[]).map(i=>String(i.set_name||"").trim()).filter(Boolean))];
+  if(pdfSetNames.length){y+=2;doc.setFont("times","bold");doc.text(`Prelude Set: ${pdfSetNames.join(" + ")}`,20,y,{maxWidth:170});y+=7;doc.setFont("times","normal");}
+  y+=4;doc.setFont("times","bold");doc.text("Pedido",20,y);y+=7;doc.setFont("times","normal");
+  (order.items||[]).forEach(i=>{const label=`${i.name} · ${i.size} x ${i.qty||1}${i.set_name?` · ${i.set_name}`:""}`;doc.text(label,20,y,{maxWidth:125});doc.text(money(Number(i.price||0)*Number(i.qty||1)),190,y,{align:"right"});y+=7;if(y>265){doc.addPage();y=20}});
   y+=3;doc.line(20,y,190,y);y+=8;doc.setFont("times","bold");doc.setFontSize(13);doc.text("Total",20,y);doc.text(money(order.order_total),190,y,{align:"right"});y+=14;doc.setFont("times","italic");doc.setFontSize(9);doc.text("Gracias por confiar en Prelude. Every Masterpiece Begins With A Prelude.",20,y);
   doc.save(`Prelude_${order.order_number}.pdf`);
 }
@@ -2396,8 +2401,10 @@ async function loadCustomerOrdersForDetail(customerId){
   if(error){customerOrders.innerHTML='<p class="error">No se pudieron cargar los pedidos: '+escapeHtml(error.message)+'</p>';return []}
   const orders=data||[];
   customerOrders.innerHTML=orders.length?orders.map(o=>{
-    const items=(o.items||[]).map(i=>`${escapeHtml(i.name||"Perfume")} · ${escapeHtml(String(i.size||""))}${i.size?" ml":""}${Number(i.qty||1)>1?` × ${i.qty}`:""}`).join("<br>");
-    return `<div class="customer-order-row"><div class="customer-order-top"><strong>#${escapeHtml(o.order_number||"—")}</strong><span class="order-status status-${o.status}">${ORDER_LABELS[o.status]||o.status}</span></div><div class="customer-order-items">${items||"Sin detalle de productos"}<br><strong>${Number(o.order_total||0).toFixed(2).replace(".",",")} €</strong> · ${o.created_at?new Date(o.created_at).toLocaleDateString("es-ES"):"—"}</div><div style="margin-top:10px"><button class="secondary" type="button" data-edit-customer-order="${o.id}" ${["delivered","cancelled"].includes(o.status)?"disabled title=\"Cambia primero el estado del pedido para editarlo\"":""}>Editar pedido</button></div></div>`;
+    const setNames=[...new Set((o.items||[]).map(i=>String(i.set_name||"").trim()).filter(Boolean))];
+    const setLabel=setNames.length?`<div style="margin:7px 0 9px;font-weight:600">Prelude Set · ${setNames.map(escapeHtml).join(" + ")}</div>`:"";
+    const items=(o.items||[]).map(i=>`${escapeHtml(i.name||"Perfume")} · ${escapeHtml(String(i.size||""))}${i.size?" ml":""}${Number(i.qty||1)>1?` × ${i.qty}`:""}${i.set_name?` <span style="color:var(--muted)">· ${escapeHtml(i.set_name)}</span>`:""}`).join("<br>");
+    return `<div class="customer-order-row"><div class="customer-order-top"><strong>#${escapeHtml(o.order_number||"—")}</strong><span class="order-status status-${o.status}">${ORDER_LABELS[o.status]||o.status}</span></div><div class="customer-order-items">${setLabel}${items||"Sin detalle de productos"}<br><strong>${Number(o.order_total||0).toFixed(2).replace(".",",")} €</strong> · ${o.created_at?new Date(o.created_at).toLocaleDateString("es-ES"):"—"}</div><div style="margin-top:10px"><button class="secondary" type="button" data-edit-customer-order="${o.id}" ${o.status==="cancelled"?"disabled title=\"Los pedidos cancelados no se editan directamente\"":""}>Editar pedido</button></div></div>`;
   }).join(""):'<p style="color:var(--muted)">Sin pedidos registrados.</p>';
   customerOrders.querySelectorAll("[data-edit-customer-order]").forEach(btn=>{
     btn.addEventListener("click",()=>openCustomerOrderEditor(btn.dataset.editCustomerOrder));
@@ -2429,7 +2436,11 @@ function customerOrderLineMarkup(item={}){
   const qty=Math.max(1,Number(item.qty||1));
   const existingPrice=Number(item.price||0);
   const options=customerOrderCatalogCache.map(p=>`<option value="${escapeHtml(p.name)}" ${p.name===name?"selected":""}>${escapeHtml(p.name)} · ${escapeHtml(p.brand||"")}</option>`).join("");
-  return `<div class="customer-order-edit-line" style="display:grid;grid-template-columns:minmax(220px,1fr) 110px 90px 120px auto;gap:10px;align-items:end;margin-bottom:10px">
+  const setId=String(item.set_id||"");
+  const setName=String(item.set_name||"");
+  const setInstance=String(item.set_instance||"");
+  const setBonus=Math.max(0,Number(item.set_bonus_bookmarks||0));
+  return `<div class="customer-order-edit-line" data-set-id="${escapeHtml(setId)}" data-set-name="${escapeHtml(setName)}" data-set-instance="${escapeHtml(setInstance)}" data-set-bonus="${setBonus}" style="display:grid;grid-template-columns:minmax(220px,1fr) 110px 90px 120px auto;gap:10px;align-items:end;margin-bottom:10px">
     <div class="detail-field"><label>Perfume</label><select class="manual-order-product"><option value="">Selecciona perfume</option>${options}</select></div>
     <div class="detail-field"><label>Formato</label><select class="manual-order-size">${[2,3,5,10].map(v=>`<option value="${v}" ${String(v)===size?"selected":""}>${v} ml</option>`).join("")}</select></div>
     <div class="detail-field"><label>Cantidad</label><input class="manual-order-qty" type="number" min="1" step="1" value="${qty}"></div>
@@ -2475,7 +2486,11 @@ function getCustomerOrderEditorItems(){
     name:row.querySelector(".manual-order-product").value,
     size:Number(row.querySelector(".manual-order-size").value),
     qty:Math.max(1,Number(row.querySelector(".manual-order-qty").value||1)),
-    price:Number(row.querySelector(".manual-order-price").value||0)
+    price:Number(row.querySelector(".manual-order-price").value||0),
+    set_id:row.dataset.setId||null,
+    set_name:row.dataset.setName||null,
+    set_instance:row.dataset.setInstance||null,
+    set_bonus_bookmarks:Number(row.dataset.setBonus||0)
   })).filter(i=>i.name&&i.price>0);
 }
 
@@ -2499,8 +2514,8 @@ async function openCustomerOrderEditor(orderId=null){
   customerOrderEditorOrderId=orderId||null;
   const order=orderId?ordersCache.find(o=>String(o.id)===String(orderId)):null;
 
-  if(order&&["delivered","cancelled"].includes(order.status)){
-    alert("Por seguridad, los pedidos entregados o cancelados no se editan directamente. Cambia primero su estado.");
+  if(order&&order.status==="cancelled"){
+    alert("Los pedidos cancelados no se editan directamente. Cambia primero su estado.");
     return;
   }
 
