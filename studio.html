@@ -2417,6 +2417,7 @@ async function loadCustomerOrdersForDetail(customerId){
   const {data,error}=await client.rpc("admin_get_customer_orders",{input_customer_id:customerId});
   if(error){customerOrders.innerHTML='<p class="error">No se pudieron cargar los pedidos: '+escapeHtml(error.message)+'</p>';return []}
   const orders=data||[];
+  customerDetailOrdersCache=orders;
   customerOrders.innerHTML=orders.length?orders.map(o=>{
     const setNames=[...new Set((o.items||[]).map(i=>String(i.set_name||"").trim()).filter(Boolean))];
     const setLabel=setNames.length?`<div style="margin:7px 0 9px;font-weight:600">Prelude Set · ${setNames.map(escapeHtml).join(" + ")}</div>`:"";
@@ -2433,6 +2434,7 @@ async function loadCustomerOrdersForDetail(customerId){
 let customerOrderEditorMode="create";
 let customerOrderEditorOrderId=null;
 let customerOrderCatalogCache=[];
+let customerDetailOrdersCache=[];
 
 async function ensureCustomerOrderCatalog(){
   if(customerOrderCatalogCache.length)return customerOrderCatalogCache;
@@ -2548,7 +2550,25 @@ async function openCustomerOrderEditor(orderId=null){
 
   customerOrderEditorMode=orderId?"edit":"create";
   customerOrderEditorOrderId=orderId||null;
-  const order=orderId?ordersCache.find(o=>String(o.id)===String(orderId)):null;
+  let order=orderId?customerDetailOrdersCache.find(o=>String(o.id)===String(orderId)):null;
+
+  // La ficha del cliente usa admin_get_customer_orders. No dependemos del listado global
+  // de pedidos, porque puede estar sin cargar o filtrado y hacía que "Editar" abriese
+  // el formulario como un pedido nuevo. Si no está en la caché de la ficha, lo buscamos
+  // directamente de nuevo antes de abrir el editor.
+  if(orderId&&!order){
+    const {data:detailOrders,error:detailError}=await client.rpc("admin_get_customer_orders",{input_customer_id:activeCustomerId});
+    if(detailError){
+      alert("No se pudo cargar el pedido para editarlo: "+detailError.message);
+      return;
+    }
+    customerDetailOrdersCache=Array.isArray(detailOrders)?detailOrders:[];
+    order=customerDetailOrdersCache.find(o=>String(o.id)===String(orderId))||null;
+  }
+  if(orderId&&!order){
+    alert("No se encontró el pedido seleccionado. Actualiza la ficha del cliente e inténtalo de nuevo.");
+    return;
+  }
 
   if(order&&order.status==="cancelled"){
     alert("Los pedidos cancelados no se editan directamente. Cambia primero su estado.");
