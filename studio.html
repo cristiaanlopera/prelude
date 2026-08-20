@@ -1861,6 +1861,19 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
 
     <div id="customerOrderLines"></div>
 
+    <div style="margin-top:18px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.38)">
+      <label style="display:flex;align-items:center;justify-content:space-between;gap:18px;cursor:pointer;margin:0">
+        <span>
+          <strong style="display:block;font-size:15px">Preparación Prelude</strong>
+          <small id="customerOrderPreparationHint" style="display:block;margin-top:3px;color:var(--muted)">Añadir suplemento de preparación al pedido.</small>
+        </span>
+        <span style="display:flex;align-items:center;gap:10px;white-space:nowrap">
+          <strong id="customerOrderPreparationAmount">+1,00 €</strong>
+          <input id="customerOrderPreparationFee" type="checkbox" style="width:20px;height:20px;accent-color:#171717">
+        </span>
+      </label>
+    </div>
+
     <div style="display:flex;justify-content:flex-end;align-items:center;gap:16px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)">
       <span style="color:var(--muted)">Total</span>
       <strong id="customerOrderEditorTotal" style="font-size:20px">0,00 €</strong>
@@ -2205,6 +2218,7 @@ function openOrder(id){
     ${orderSetNames.length?`<div style="margin-top:14px"><strong>Prelude Set</strong><div class="order-meta">${orderSetNames.map(escapeHtml).join(" + ")}</div></div>`:""}
     <div class="order-detail-items">${items.map(i=>`<div class="order-detail-item"><span>${escapeHtml(i.name)} · ${escapeHtml(i.size)} × ${Number(i.qty||1)}${i.set_name?` · <em>${escapeHtml(i.set_name)}</em>`:""}</span><strong>${money(Number(i.price||0)*Number(i.qty||1))}</strong></div>`).join("")}</div>
     ${activeOrder.notes?`<div><strong>Observaciones</strong><div class="order-meta">${escapeHtml(activeOrder.notes)}</div></div>`:""}
+    ${(()=>{const subtotal=items.reduce((sum,i)=>sum+Number(i.price||0)*Number(i.qty||1),0);const extra=Number(activeOrder.order_total||0)-subtotal;return extra>0.009?`<div class="order-detail-item" style="margin-top:10px"><span>Preparación Prelude</span><strong>${money(extra)}</strong></div>`:""})()}
     <div style="display:flex;justify-content:space-between;margin-top:15px;font-size:18px"><strong>Total</strong><strong>${money(activeOrder.order_total)}</strong></div>`;
   const btns=document.getElementById("orderStatusButtons");
   btns.innerHTML=Object.entries(ORDER_LABELS).map(([value,label])=>`<button class="secondary ${activeOrder.status===value?"active":""}" type="button" data-order-status="${value}">${label}</button>`).join("");
@@ -2261,6 +2275,9 @@ function downloadOrderPdf(order){
   if(pdfSetNames.length){y+=2;doc.setFont("times","bold");doc.text(`Prelude Set: ${pdfSetNames.join(" + ")}`,20,y,{maxWidth:170});y+=7;doc.setFont("times","normal");}
   y+=4;doc.setFont("times","bold");doc.text("Pedido",20,y);y+=7;doc.setFont("times","normal");
   (order.items||[]).forEach(i=>{const label=`${i.name} · ${i.size} x ${i.qty||1}${i.set_name?` · ${i.set_name}`:""}`;doc.text(label,20,y,{maxWidth:125});doc.text(money(Number(i.price||0)*Number(i.qty||1)),190,y,{align:"right"});y+=7;if(y>265){doc.addPage();y=20}});
+  const pdfItemsSubtotal=(order.items||[]).reduce((sum,i)=>sum+Number(i.price||0)*Number(i.qty||1),0);
+  const pdfPreparation=Number(order.order_total||0)-pdfItemsSubtotal;
+  if(pdfPreparation>0.009){doc.text("Preparación Prelude",20,y);doc.text(money(pdfPreparation),190,y,{align:"right"});y+=7;}
   y+=3;doc.line(20,y,190,y);y+=8;doc.setFont("times","bold");doc.setFontSize(13);doc.text("Total",20,y);doc.text(money(order.order_total),190,y,{align:"right"});y+=14;doc.setFont("times","italic");doc.setFontSize(9);doc.text("Gracias por confiar en Prelude. Every Masterpiece Begins With A Prelude.",20,y);
   doc.save(`Prelude_${order.order_number}.pdf`);
 }
@@ -2494,8 +2511,27 @@ function getCustomerOrderEditorItems(){
   })).filter(i=>i.name&&i.price>0);
 }
 
+function customerOrderPreparationFeeAmount(){
+  return Math.max(0,Number(preparationFeeSettings?.customer_fee||1));
+}
+
+function customerOrderItemsSubtotal(){
+  return getCustomerOrderEditorItems().reduce((sum,i)=>sum+i.price*i.qty,0);
+}
+
+function syncCustomerOrderPreparationUi(){
+  const fee=customerOrderPreparationFeeAmount();
+  const amount=document.getElementById("customerOrderPreparationAmount");
+  const hint=document.getElementById("customerOrderPreparationHint");
+  if(amount)amount.textContent=`+${money(fee)}`;
+  if(hint)hint.textContent=fee>0?`Añadir ${money(fee)} de preparación al pedido.`:"La tarifa de preparación está configurada en 0 €.";
+}
+
 function recalcCustomerOrderTotal(){
-  const total=getCustomerOrderEditorItems().reduce((sum,i)=>sum+i.price*i.qty,0);
+  const subtotal=customerOrderItemsSubtotal();
+  const addPreparation=Boolean(document.getElementById("customerOrderPreparationFee")?.checked);
+  const preparation=addPreparation?customerOrderPreparationFeeAmount():0;
+  const total=subtotal+preparation;
   document.getElementById("customerOrderEditorTotal").textContent=money(total);
   return total;
 }
@@ -2525,6 +2561,15 @@ async function openCustomerOrderEditor(orderId=null){
   document.getElementById("customerOrderNotes").value=order?.notes||"";
   document.getElementById("customerOrderLines").innerHTML="";
   document.getElementById("customerOrderEditorStatus").textContent="";
+
+  const prepCheckbox=document.getElementById("customerOrderPreparationFee");
+  syncCustomerOrderPreparationUi();
+  if(prepCheckbox){
+    const historicalSubtotal=(order?.items||[]).reduce((sum,i)=>sum+Number(i.price||0)*Number(i.qty||1),0);
+    const historicalAdjustment=order?Number(order.order_total||0)-historicalSubtotal:0;
+    const configuredFee=customerOrderPreparationFeeAmount();
+    prepCheckbox.checked=Boolean(order && configuredFee>0 && Math.abs(historicalAdjustment-configuredFee)<0.02);
+  }
 
   const items=order?.items?.length?order.items:[{}];
   items.forEach(addCustomerOrderLine);
@@ -4295,6 +4340,7 @@ document.getElementById("addCustomerOrderLineBtn")?.addEventListener("click",()=
 document.getElementById("closeCustomerOrderEditorBtn")?.addEventListener("click",closeCustomerOrderEditor);
 document.getElementById("cancelCustomerOrderEditorBtn")?.addEventListener("click",closeCustomerOrderEditor);
 document.getElementById("saveCustomerOrderBtn")?.addEventListener("click",saveCustomerOrderEditor);
+document.getElementById("customerOrderPreparationFee")?.addEventListener("change",recalcCustomerOrderTotal);
 document.getElementById("customerOrderEditorOverlay")?.addEventListener("click",e=>{if(e.target.id==="customerOrderEditorOverlay")closeCustomerOrderEditor();});
 saveCustomerBtn.addEventListener("click",saveCustomer);
 resetCustomerBtn.addEventListener("click",()=>openDangerConfirm("reset"));
