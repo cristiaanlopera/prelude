@@ -4785,7 +4785,7 @@ Descubrir colección
       <div class="sheet-image"><img id="simg"></div>
       <div class="sheet-body">
         <h2 id="sname"></h2><div class="brand" id="sbrand"></div>
-        
+        <p id="sdesc"></p>
         <h4>Acordes principales</h4><div class="chips" id="saccords"></div>
         <h4>Notas destacadas</h4><div class="notes" id="snotes"></div>
         <div class="sheet-actions"><select id="ssize"></select><input id="sqty" type="number" min="1" value="1"><button class="add" id="sadd">Quiero descubrir esta fragancia</button></div>
@@ -5574,8 +5574,8 @@ function renderCart(){
   };
   document.getElementById("send").onclick=requestCheckout;
 }
-function openJourney(i){playSound("navigate");current=i;const p=products[i];document.getElementById("scene").className="scene theme-"+p.journeyTheme;document.getElementById("jimg").src=p.image;document.getElementById("jtitle").textContent=p.journeyTitle;document.getElementById("jcopy").textContent=p.journeyCopy;document.getElementById("journey").classList.add("open")}
-function openSheet(){const p=products[current];document.getElementById("simg").src=p.image;document.getElementById("sname").textContent=p.name;document.getElementById("sbrand").textContent=p.brand;document.getElementById("sdesc").textContent=p.description;document.getElementById("saccords").innerHTML=p.accords.map(a=>`<span class="chip">${a}</span>`).join("");document.getElementById("snotes").innerHTML=p.notes.map(n=>`<span class="note">${n}</span>`).join("");document.getElementById("ssize").innerHTML=Object.entries(p.prices).map(([s,v])=>`<option value="${s}">${s} — ${euro.format(v)}</option>`).join("");document.getElementById("sqty").value=1;document.getElementById("journey").classList.remove("open");document.getElementById("sheet").classList.add("open")}
+function openJourney(i){playSound("navigate");current=i;const p=products[i];document.getElementById("scene").className="scene theme-"+p.journeyTheme;document.getElementById("jimg").src=p.image;document.getElementById("jtitle").textContent=p.journeyTitle;const jcopy=document.getElementById("jcopy");if(jcopy)jcopy.textContent=p.journeyCopy||"";document.getElementById("journey").classList.add("open")}
+function openSheet(){const p=products[current];document.getElementById("simg").src=p.image;document.getElementById("sname").textContent=p.name;document.getElementById("sbrand").textContent=p.brand;const sdesc=document.getElementById("sdesc");if(sdesc)sdesc.textContent=p.description||"";document.getElementById("saccords").innerHTML=p.accords.map(a=>`<span class="chip">${a}</span>`).join("");document.getElementById("snotes").innerHTML=p.notes.map(n=>`<span class="note">${n}</span>`).join("");document.getElementById("ssize").innerHTML=Object.entries(p.prices).map(([s,v])=>`<option value="${s}">${s} — ${euro.format(v)}</option>`).join("");document.getElementById("sqty").value=1;document.getElementById("journey").classList.remove("open");document.getElementById("sheet").classList.add("open")}
 function requestCheckout(){
   if(!cart.length){
     alert("Añade al menos un Prelude antes de solicitar el pedido.");
