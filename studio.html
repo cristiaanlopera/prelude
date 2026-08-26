@@ -1893,7 +1893,12 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
     <div class="order-detail-head"><div><div class="dashboard-kicker">Pedido</div><h2 id="orderDetailTitle">—</h2><div class="order-meta" id="orderDetailMeta"></div></div><button class="secondary" id="closeOrderDetailBtn" type="button">Cerrar</button></div>
     <div id="orderDetailBody"></div>
     <div class="order-status-buttons" id="orderStatusButtons"></div>
-    <div class="order-actions" style="margin-top:16px;justify-content:flex-start"><button id="downloadInvoiceBtn" type="button">Descargar documento PDF</button><button class="danger-btn" id="deleteCancelledOrderBtn" type="button" style="display:none" onclick="deleteCancelledOrder()">Eliminar pedido cancelado</button></div>
+    <div class="order-actions" style="margin-top:16px;justify-content:flex-start;align-items:center">
+      <button id="printOrderLabelsBtn" type="button">Imprimir etiquetas</button>
+      <button id="downloadInvoiceBtn" class="secondary" type="button">Descargar documento PDF</button>
+      <button class="danger-btn" id="deleteCancelledOrderBtn" type="button" style="display:none" onclick="deleteCancelledOrder()">Eliminar pedido cancelado</button>
+    </div>
+    <div id="orderPrintStatus" class="order-document-note" style="margin-top:8px"></div>
     <div class="order-document-note">Documento de compra de Prelude. Para utilizarlo como factura fiscal deberán configurarse previamente los datos fiscales y la numeración correspondiente.</div>
   </div>
 </section>
@@ -2225,8 +2230,86 @@ function openOrder(id){
   btns.querySelectorAll("[data-order-status]").forEach(b=>b.addEventListener("click",()=>setOrderStatus(b.dataset.orderStatus)));
   const deleteBtn=document.getElementById("deleteCancelledOrderBtn");
   if(deleteBtn)deleteBtn.style.display=activeOrder.status==="cancelled"?"inline-flex":"none";
+  const printNote=document.getElementById("orderPrintStatus");
+  if(printNote)printNote.textContent="";
   document.getElementById("orderDetailOverlay").classList.add("open");
 }
+
+const PRELUDE_PRINT_BRIDGE_URL="http://127.0.0.1:18771";
+
+function normalizePrintKey(value){
+  return String(value||"")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[’‘`´]/g,"'")
+    .trim().toLowerCase();
+}
+
+function printBrandForName(name){
+  const key=normalizePrintKey(name);
+  const product=(Array.isArray(catalogAdminCache)?catalogAdminCache:[]).find(p=>normalizePrintKey(p.name)===key);
+  return String(product?.brand||"").trim();
+}
+
+function normalizePrintSize(size){
+  const raw=String(size||"").trim();
+  const match=raw.match(/([0-9]+(?:[.,][0-9]+)?)\s*ml/i);
+  return match ? `${match[1].replace(",", ".")} ML` : raw.toUpperCase();
+}
+
+async function buildOrderPrintLabels(order){
+  if(!order)return [];
+  if(!Array.isArray(catalogAdminCache)||!catalogAdminCache.length){
+    try{await loadCatalogAdmin();}catch(_){/* Mostramos abajo cualquier marca que falte. */}
+  }
+  const labels=[];
+  for(const item of (Array.isArray(order.items)?order.items:[])){
+    const perfume=String(item.name||"").trim();
+    const brand=String(item.brand||item.marca||printBrandForName(perfume)||"").trim();
+    const ml=normalizePrintSize(item.size);
+    const qty=Math.max(1,Math.floor(Number(item.qty||1)));
+    if(!perfume||!ml)continue;
+    if(!brand)throw new Error(`No encuentro la marca de «${perfume}» en el catálogo.`);
+    for(let i=0;i<qty;i++)labels.push({Marca:brand,Perfume:perfume,ML:ml});
+  }
+  return labels;
+}
+
+async function printActiveOrderLabels(){
+  const btn=document.getElementById("printOrderLabelsBtn");
+  const note=document.getElementById("orderPrintStatus");
+  if(!activeOrder||!btn)return;
+  const original=btn.textContent;
+  btn.disabled=true;
+  btn.textContent="Preparando etiquetas…";
+  if(note)note.textContent="Conectando con Prelude Print en este PC…";
+  try{
+    const labels=await buildOrderPrintLabels(activeOrder);
+    if(!labels.length)throw new Error("Este pedido no contiene etiquetas imprimibles.");
+    const response=await fetch(`${PRELUDE_PRINT_BRIDGE_URL}/print`,{
+      method:"POST",
+      mode:"cors",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        order_id:activeOrder.id,
+        order_number:activeOrder.order_number,
+        labels
+      })
+    });
+    let result={};
+    try{result=await response.json();}catch(_){/* noop */}
+    if(!response.ok||result.ok===false)throw new Error(result.error||`Prelude Print respondió con código ${response.status}.`);
+    const count=Number(result.count||labels.length);
+    if(note)note.textContent=`✓ ${count} etiqueta${count===1?"":"s"} enviada${count===1?"":"s"} a la Brother.`;
+  }catch(error){
+    console.error("Prelude Print:",error);
+    if(note)note.textContent="";
+    alert("No se pudieron imprimir las etiquetas.\n\n"+(error?.message||error)+"\n\nComprueba que Prelude Print esté abierto en este PC y que la plantilla Prelude_Label.lbx esté configurada.");
+  }finally{
+    btn.disabled=false;
+    btn.textContent=original;
+  }
+}
+
 async function setOrderStatus(next){
   if(!activeOrder||activeOrder.status===next)return;
   if(activeOrder.status==="delivered"&&next!=="delivered"){
@@ -4332,6 +4415,7 @@ document.getElementById("newCatalogStatus")?.addEventListener("change",e=>{const
 document.getElementById("refreshOrdersBtn")?.addEventListener("click",loadOrders);
 document.getElementById("ordersSearch")?.addEventListener("input",renderOrders);
 document.getElementById("ordersStatusFilter")?.addEventListener("change",renderOrders);
+document.getElementById("printOrderLabelsBtn")?.addEventListener("click",printActiveOrderLabels);
 document.getElementById("closeOrderDetailBtn")?.addEventListener("click",()=>document.getElementById("orderDetailOverlay").classList.remove("open"));
 document.getElementById("orderDetailOverlay")?.addEventListener("click",e=>{if(e.target.id==="orderDetailOverlay")e.currentTarget.classList.remove("open")});
 document.getElementById("downloadInvoiceBtn")?.addEventListener("click",()=>downloadOrderPdf(activeOrder));
