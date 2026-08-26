@@ -3214,7 +3214,7 @@ function renderCatalogAdmin(){
     </div>`;
   }).join("");
 
-  list.querySelectorAll("[data-catalog-status]").forEach(sel=>sel.addEventListener("change",()=>updateCatalogStatus(sel.dataset.catalogStatus,sel.value)));
+  list.querySelectorAll("[data-catalog-status]").forEach(sel=>sel.addEventListener("change",()=>setCatalogStatus(sel.dataset.catalogStatus,sel.value)));
   list.querySelectorAll("[data-catalog-image-file]").forEach(input=>input.addEventListener("change",()=>changeCatalogImage(input.dataset.catalogImageFile,input)));
   list.querySelectorAll("[data-delete-catalog]").forEach(btn=>btn.addEventListener("click",()=>deleteCatalogProduct(btn.dataset.deleteCatalog,btn.dataset.deleteName)));
   list.querySelectorAll("[data-open-recommender]").forEach(btn=>btn.addEventListener("click",()=>toggleCatalogRecommenderProfile(btn.dataset.openRecommender)));
