@@ -5380,17 +5380,25 @@ function updateAllProductStockControls(){
 function renderProducts(){
   grid.innerHTML="";
   sortedCatalogEntries().forEach(({p,i})=>{
-    const upcoming=catalogStatusOf(p)==="upcoming";
-    const soldout=!upcoming&&isEffectivelySoldOut(p);
-    const low=!upcoming&&!soldout&&isLowStock(p);
-    const novelty=!upcoming&&!soldout&&isPreludeNovelty(p,preludeCatalogState());
-    const rank=!upcoming&&!soldout&&!novelty?bestsellerRank(p):0;
-    let c=document.createElement("article");c.className="card"+(upcoming?" upcoming":"")+(soldout?" soldout":"")+(novelty?" novelty":"")+(rank?` bestseller podium-card podium-${rank}`:"");
+    const status=catalogStatusOf(p);
+    const upcoming=status==="upcoming";
+    const restocking=status==="restocking";
+    const soldout=!upcoming&&!restocking&&isEffectivelySoldOut(p);
+    const low=!upcoming&&!restocking&&!soldout&&isLowStock(p);
+    const novelty=!upcoming&&!restocking&&!soldout&&isPreludeNovelty(p,preludeCatalogState());
+    // El podio depende de las ventas históricas, no de la disponibilidad actual.
+    // Así un perfume en reposición conserva su medalla y sus estadísticas.
+    const rank=!upcoming&&!novelty?bestsellerRank(p):0;
+    let c=document.createElement("article");c.className="card"+(upcoming?" upcoming":"")+(restocking?" restocking":"")+(soldout?" soldout":"")+(novelty?" novelty":"")+(rank?` bestseller podium-card podium-${rank}`:"");
     let min=productMinPrice(p);
-    const badge=upcoming?'<div class="upcoming-badge">Próximamente</div>':soldout?'<div class="soldout-badge">Agotado</div>':novelty?'<div class="novelty-badge">Novedad</div>':rank?`<div class="bestseller-badge podium-badge podium-${rank}">${rank}º · Podio Prelude</div>`:'';
-    const stockNote=soldout?'<div class="stock-note out">Agotado</div>':low?'<div class="stock-note low">Poco stock</div>':'';
-    const sellable=!upcoming&&!soldout;
-    c.innerHTML=`<div class="visual"><img src="${p.image}" alt="${p.name}">${badge}</div><div class="info"><div class="title"><div><h3>${p.name}</h3><div class="brand">${p.brand}</div></div><div class="from">${upcoming?'Próximamente':soldout?'Sin stock':'Desde'}${upcoming||soldout?'':`<strong>${euro.format(min)}</strong>`}</div></div>${stockNote}${sellable?`<div class="controls"><select id="s${i}">${Object.entries(p.prices).map(([sz,v])=>`<option value="${sz}">${sz} — ${euro.format(v)}</option>`).join("")}</select><input id="q${i}" type="number" min="1" value="1"></div><div class="size-stock-hint" id="stockHint${i}"></div>`:''}<button class="view" data-view="${i}" ${upcoming?'disabled aria-disabled="true"':''}>${upcoming?'Disponible próximamente':'Comenzar el viaje'}</button>${sellable?`<button class="add" data-add="${i}">Añadir a la cesta</button>`:''}</div>`;
+    const podiumBadge=rank?`<div class="bestseller-badge podium-badge podium-${rank}">${rank}º · Podio Prelude</div>`:'';
+    const availabilityBadge=upcoming?'<div class="upcoming-badge">Próximamente</div>':restocking?'<div class="upcoming-badge">Reposición próximamente</div>':soldout?'<div class="soldout-badge">Agotado</div>':'';
+    const noveltyBadge=novelty?'<div class="novelty-badge">Novedad</div>':'';
+    const badge=podiumBadge+noveltyBadge+availabilityBadge;
+    const stockNote=restocking?'<div class="stock-note low">Reposición próximamente</div>':soldout?'<div class="stock-note out">Agotado</div>':low?'<div class="stock-note low">Poco stock</div>':'';
+    const sellable=!upcoming&&!restocking&&!soldout;
+    const availabilityText=upcoming?'Próximamente':restocking?'Reposición':soldout?'Sin stock':'Desde';
+    c.innerHTML=`<div class="visual"><img src="${p.image}" alt="${p.name}">${badge}</div><div class="info"><div class="title"><div><h3>${p.name}</h3><div class="brand">${p.brand}</div></div><div class="from">${availabilityText}${upcoming||restocking||soldout?'':`<strong>${euro.format(min)}</strong>`}</div></div>${stockNote}${sellable?`<div class="controls"><select id="s${i}">${Object.entries(p.prices).map(([sz,v])=>`<option value="${sz}">${sz} — ${euro.format(v)}</option>`).join("")}</select><input id="q${i}" type="number" min="1" value="1"></div><div class="size-stock-hint" id="stockHint${i}"></div>`:''}<button class="view" data-view="${i}" ${upcoming?'disabled aria-disabled="true"':''}>${upcoming?'Disponible próximamente':'Comenzar el viaje'}</button>${sellable?`<button class="add" data-add="${i}">Añadir a la cesta</button>`:''}</div>`;
     grid.appendChild(c)
   });
   document.querySelectorAll("[data-view]:not([disabled])").forEach(b=>b.onclick=()=>openJourney(+b.dataset.view));

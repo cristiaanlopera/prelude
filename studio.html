@@ -3164,7 +3164,7 @@ async function loadCatalogAdmin(){
   }
 }
 function catalogAdminStatus(p){return p.availability_status||(p.active===false?"hidden":"published")}
-function catalogStatusLabel(status){return status==="upcoming"?"Próximamente":status==="soldout"?"Agotado":status==="hidden"?"Oculto":"Publicado"}
+function catalogStatusLabel(status){return status==="upcoming"?"Próximamente":status==="restocking"?"Reposición próximamente":status==="soldout"?"Agotado":status==="hidden"?"Oculto":"Publicado"}
 function renderCatalogAdmin(){
   const list=document.getElementById("catalogAdminList"); if(!list)return;
   if(!catalogAdminCache.length){
@@ -3172,7 +3172,7 @@ function renderCatalogAdmin(){
     return;
   }
   const sorted=[...catalogAdminCache].sort((a,b)=>{
-    const rank=x=>catalogAdminStatus(x)==="upcoming"?0:catalogAdminStatus(x)==="published"?1:2;
+    const rank=x=>catalogAdminStatus(x)==="upcoming"?0:catalogAdminStatus(x)==="published"?1:catalogAdminStatus(x)==="restocking"?2:catalogAdminStatus(x)==="soldout"?3:4;
     return rank(a)-rank(b)||String(a.name).localeCompare(String(b.name),"es",{sensitivity:"base"});
   });
 
@@ -3196,10 +3196,11 @@ function renderCatalogAdmin(){
           </div>
         </div>
         <div class="admin-row-actions">
-          <span class="state-pill ${status==="published"?"on":status==="upcoming"?"upcoming":""}">${catalogStatusLabel(status)}</span>
+          <span class="state-pill ${status==="published"?"on":status==="upcoming"||status==="restocking"?"upcoming":""}">${catalogStatusLabel(status)}</span>
           <select class="catalog-state-select" data-catalog-status="${p.id}">
             <option value="published" ${status==="published"?"selected":""}>Publicado</option>
             <option value="upcoming" ${status==="upcoming"?"selected":""}>Próximamente</option>
+            <option value="restocking" ${status==="restocking"?"selected":""}>Reposición próximamente</option>
             <option value="soldout" ${status==="soldout"?"selected":""}>Agotado</option>
             <option value="hidden" ${status==="hidden"?"selected":""}>Oculto</option>
           </select>
