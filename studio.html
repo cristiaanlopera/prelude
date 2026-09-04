@@ -2276,16 +2276,6 @@ async function buildOrderPrintLabels(order){
     if(!brand)throw new Error(`No encuentro la marca de «${perfume}» en el catálogo.`);
     for(let i=0;i<qty;i++)labels.push({Marca:brand,Perfume:perfume,ML:ml});
   }
-
-  // Etiquetas extra de identificación del pedido.
-  // Se utiliza el campo central (Perfume) para que aparezca una única línea de texto.
-  // Prelude Print exige los tres campos de la plantilla. Usamos espacios no separables
-  // en Marca y ML para que sean técnicamente válidos pero visualmente queden vacíos.
-  const blankPrintField="\u00A0";
-  labels.push({Marca:blankPrintField,Perfume:"PRELUDE",ML:blankPrintField});
-  const customerName=String(order.customer_name||"Cliente").trim();
-  labels.push({Marca:blankPrintField,Perfume:customerName.toUpperCase(),ML:blankPrintField});
-
   return labels;
 }
 
