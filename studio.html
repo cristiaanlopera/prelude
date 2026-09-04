@@ -2279,9 +2279,12 @@ async function buildOrderPrintLabels(order){
 
   // Etiquetas extra de identificación del pedido.
   // Se utiliza el campo central (Perfume) para que aparezca una única línea de texto.
-  labels.push({Marca:"",Perfume:"PRELUDE",ML:""});
+  // Prelude Print exige los tres campos de la plantilla. Usamos espacios no separables
+  // en Marca y ML para que sean técnicamente válidos pero visualmente queden vacíos.
+  const blankPrintField="\u00A0";
+  labels.push({Marca:blankPrintField,Perfume:"PRELUDE",ML:blankPrintField});
   const customerName=String(order.customer_name||"Cliente").trim();
-  labels.push({Marca:"",Perfume:customerName.toUpperCase(),ML:""});
+  labels.push({Marca:blankPrintField,Perfume:customerName.toUpperCase(),ML:blankPrintField});
 
   return labels;
 }
