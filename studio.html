@@ -2246,6 +2246,11 @@ function normalizePrintKey(value){
 
 function printBrandForName(name){
   const key=normalizePrintKey(name);
+  const printBrandOverrides={
+    "aegean salt & citrus":"Theodoros Kalotinis",
+    "sauvage elixir":"Dior"
+  };
+  if(printBrandOverrides[key])return printBrandOverrides[key];
   const product=(Array.isArray(catalogAdminCache)?catalogAdminCache:[]).find(p=>normalizePrintKey(p.name)===key);
   return String(product?.brand||"").trim();
 }
@@ -2271,6 +2276,13 @@ async function buildOrderPrintLabels(order){
     if(!brand)throw new Error(`No encuentro la marca de «${perfume}» en el catálogo.`);
     for(let i=0;i<qty;i++)labels.push({Marca:brand,Perfume:perfume,ML:ml});
   }
+
+  // Etiquetas extra de identificación del pedido.
+  // Se utiliza el campo central (Perfume) para que aparezca una única línea de texto.
+  labels.push({Marca:"",Perfume:"PRELUDE",ML:""});
+  const customerName=String(order.customer_name||"Cliente").trim();
+  labels.push({Marca:"",Perfume:customerName.toUpperCase(),ML:""});
+
   return labels;
 }
 
