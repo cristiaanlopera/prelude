@@ -1094,7 +1094,20 @@ html[data-studio-theme="dark"] .executive-sub{color:var(--muted)!important}
 <div class="field"><label>Correo electrónico</label><input id="email" type="email" autocomplete="username"></div>
 <div class="field"><label>Contraseña</label><input id="password" type="password" autocomplete="current-password"></div>
 <button class="primary" id="loginBtn">Entrar en Prelude Studio</button>
+<button class="secondary" id="forgotPasswordBtn" style="width:100%;margin-top:12px">He olvidado mi contraseña</button>
 <div class="status" id="loginStatus"></div>
+</section>
+
+<section class="card login" id="recoveryCard" hidden>
+<h1>Nueva contraseña</h1>
+<p style="color:var(--muted)">Elige una nueva contraseña para acceder a Prelude Studio.</p>
+<form id="recoveryForm">
+<div class="field"><label for="newPassword">Nueva contraseña</label><input id="newPassword" type="password" autocomplete="new-password" minlength="8" required></div>
+<div class="field"><label for="confirmPassword">Repite la contraseña</label><input id="confirmPassword" type="password" autocomplete="new-password" minlength="8" required></div>
+<button class="primary" id="savePasswordBtn" disabled>Guardar contraseña</button>
+</form>
+<div class="status" id="recoveryStatus" role="status" aria-live="polite"></div>
+<button class="secondary" id="recoveryBackBtn" style="width:100%;margin-top:12px">Volver al acceso</button>
 </section>
 
 
@@ -1963,6 +1976,8 @@ document.getElementById("refreshOverviewBtn")?.addEventListener("click",()=>setT
 <script>
 const SUPABASE_URL="https://uhsnlqbvgbvhfcasbyxf.supabase.co";
 const SUPABASE_KEY="sb_publishable__lvQajtpPNhX2VERTg6bDQ_g8E7rIfY";
+const recoveryHash=new URLSearchParams(location.hash.slice(1));
+let passwordRecovery=recoveryHash.get("type")==="recovery" || new URLSearchParams(location.search).get("recovery")==="1";
 const client=window.supabase
   ? window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
   : null;
@@ -2047,6 +2062,7 @@ function status(el,message,error=false){
 }
 
 async function showDashboard(){
+  if(passwordRecovery)return;
   loginCard.style.display="none";
   dashboard.classList.add("open");
   switchStudioView("overview");
@@ -4655,10 +4671,80 @@ document.getElementById("createMaterialBtn")?.addEventListener("click",createPre
 document.getElementById("materialEditorOverlay")?.addEventListener("click",e=>{if(e.target.id==="materialEditorOverlay")closeMaterialEditor();});
 document.getElementById("profitabilityProductSelect")?.addEventListener("change",e=>loadProfitabilityProduct(e.target.value));
 document.getElementById("profitTargetMarkup")?.addEventListener("input",refreshProfitabilityMarkupTable);
+const recoveryCard=document.getElementById("recoveryCard");
+const recoveryStatus=document.getElementById("recoveryStatus");
+const savePasswordBtn=document.getElementById("savePasswordBtn");
+function showRecovery(){
+  passwordRecovery=true;
+  loginCard.style.display="none";
+  dashboard.classList.remove("open");
+  recoveryCard.hidden=false;
+}
+function cleanRecoveryUrl(){
+  const url=new URL(location.href);
+  url.hash="";
+  url.searchParams.delete("recovery");
+  url.searchParams.delete("code");
+  history.replaceState(null,"",url.pathname+url.search);
+}
+document.getElementById("forgotPasswordBtn").addEventListener("click",async(event)=>{
+  const emailInput=document.getElementById("email");
+  if(!emailInput.value.trim() || !emailInput.checkValidity()){
+    status(loginStatus,"Introduce un correo electrónico válido para recuperar el acceso.",true);
+    emailInput.focus();return;
+  }
+  if(!client){status(loginStatus,"No se ha podido cargar Supabase. Recarga la página.",true);return;}
+  const button=event.currentTarget;
+  button.disabled=true;
+  try{
+    const {error}=await client.auth.resetPasswordForEmail(emailInput.value.trim(),{redirectTo:location.origin+"/studio?recovery=1"});
+    if(error){status(loginStatus,error.status===429 ? "Se ha alcanzado el límite de correos. Espera antes de volver a solicitarlo." : "No se ha podido enviar el correo de recuperación. Inténtalo más tarde.",true);}
+    else status(loginStatus,"Si el correo corresponde a una cuenta, recibirás un enlace para elegir una nueva contraseña. Revisa también spam.");
+  }catch{status(loginStatus,"Error de conexión. Inténtalo de nuevo.",true);}
+  finally{button.disabled=false;}
+});
+document.getElementById("recoveryForm").addEventListener("submit",async(event)=>{
+  event.preventDefault();
+  if(savePasswordBtn.disabled || !client)return;
+  const password=document.getElementById("newPassword").value;
+  if(password!==document.getElementById("confirmPassword").value){status(recoveryStatus,"Las contraseñas no coinciden.",true);return;}
+  savePasswordBtn.disabled=true;
+  try{
+    const {error}=await client.auth.updateUser({password});
+    if(error){status(recoveryStatus,"No se ha podido cambiar la contraseña: "+error.message,true);return;}
+    document.getElementById("recoveryForm").reset();
+    cleanRecoveryUrl();
+    recoveryCard.hidden=true;
+    passwordRecovery=false;
+    loginCard.style.display="";
+    document.getElementById("password").value="";
+    status(loginStatus,"Contraseña actualizada. Inicia sesión con tu nueva contraseña.");
+    await client.auth.signOut({scope:"local"});
+  }catch{status(recoveryStatus,"Error de conexión. Inténtalo de nuevo.",true);}
+  finally{savePasswordBtn.disabled=false;}
+});
+document.getElementById("recoveryBackBtn").addEventListener("click",async()=>{
+  if(client)await client.auth.signOut({scope:"local"});
+  cleanRecoveryUrl();
+  location.reload();
+});
+if(passwordRecovery){showRecovery();status(recoveryStatus,"Comprobando el enlace…");}
 if(client){
-  client.auth.getSession().then(({data})=>{
-    if(data.session)showDashboard();
-  }).catch(error=>console.error(error));
+  client.auth.onAuthStateChange((event,session)=>{
+    if(event==="PASSWORD_RECOVERY"){
+      showRecovery();
+      savePasswordBtn.disabled=!session;
+      status(recoveryStatus,session ? "Introduce al menos 8 caracteres." : "El enlace no es válido. Solicita uno nuevo.",!session);
+    }
+  });
+  client.auth.getSession().then(({data,error})=>{
+    if(passwordRecovery){
+      showRecovery();
+      savePasswordBtn.disabled=!!error || !data.session;
+      status(recoveryStatus,error || !data.session ? "El enlace ha caducado o no es válido. Vuelve al acceso y solicita uno nuevo." : "Introduce al menos 8 caracteres.",!!error || !data.session);
+    }else if(data.session)showDashboard();
+    else if(recoveryHash.has("error"))status(loginStatus,"El enlace ha caducado o no es válido. Solicita uno nuevo.",true);
+  }).catch(()=>status(passwordRecovery ? recoveryStatus : loginStatus,"No se ha podido comprobar la sesión. Recarga la página.",true));
 }else{
   status(loginStatus,"No se ha podido cargar Supabase. Recarga la página.",true);
 }
