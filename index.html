@@ -5850,7 +5850,14 @@ async function send(){
       console.error("No se pudo registrar el pedido en Prelude Studio",error);
       if(hasAutumnSet){
         window.PreludeAutumnCommerce.unlock();
-        alert("El pedido no se ha podido registrar en Supabase. No se enviará por WhatsApp para evitar una solicitud duplicada.");
+        const errorCode=String(error?.code||"sin código").slice(0,80);
+        const errorText=String(error?.message||"No se obtuvo un motivo concreto de Supabase.")
+          .replace(/[\\r\\n]+/g," ").slice(0,450);
+        alert("Supabase ha devuelto un error al registrar el Autumn Discovery Set.\\n"+
+          "Código: "+errorCode+"\\n"+
+          "Motivo: "+errorText+"\\n\\n"+
+          "No se abrirá WhatsApp. No repitas el pedido hasta verificar si quedó registrado en Studio.");
+
         return;
       }
     }
