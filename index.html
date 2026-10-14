@@ -4562,6 +4562,29 @@ body.dark #preludeSetOverlay .prelude-set-selected-section{
 }
 
 </style>
+<style id="prelude-autumn-editorial-style">
+.prelude-set-card.autumn-card{background:linear-gradient(145deg,#f7f4ef,#ede8e1);border-color:#d8d1c8}
+.autumn-cta{display:block;width:100%;box-sizing:border-box;padding:12px 8px;text-align:center;border:1px solid #292621;text-decoration:none;color:#292621;background:transparent;letter-spacing:.06em;font-size:11px}
+.autumn-cta:hover,.autumn-cta:focus-visible{background:#292621;color:#fff}
+.autumn-editorial{scroll-margin-top:90px;background:#faf9f6;color:#282622;padding:60px max(20px,calc((100vw - 1100px)/2));font-family:Georgia,"Times New Roman",serif}
+.autumn-head{text-align:center;padding:4px 12px 35px}
+.autumn-overline,.autumn-meta,.autumn-summary,.autumn-count,.autumn-story h4,.autumn-pending{font-family:Arial,sans-serif;letter-spacing:.12em}
+.autumn-head h2{font-size:clamp(28px,4vw,51px);font-weight:400;line-height:1.15;margin:12px 0}
+.autumn-tagline{font-size:clamp(17px,2vw,23px);font-style:italic;margin:10px 0}
+.autumn-meta{font-size:12px;margin-top:18px}
+.autumn-overline,.autumn-summary{font-size:11px}
+.autumn-story{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,0.9fr);align-items:center;gap:clamp(18px,5vw,72px);border-top:1px solid #ddd9d2;padding:22px 10px}
+.autumn-story-copy{max-width:520px}
+.autumn-count{font-size:10px;color:#7c776f}
+.autumn-story h3{font-size:clamp(24px,3vw,36px);font-weight:400;letter-spacing:.08em;margin:10px 0 6px;line-height:1.1}
+.autumn-story h4{text-transform:uppercase;font-size:11px;font-weight:500;margin:0 0 25px;color:#777167}
+.autumn-story p{font-size:clamp(15px,1.5vw,18px);line-height:1.7;margin:0}
+.autumn-story img{display:block;width:100%;height:auto;max-height:450px;object-fit:contain;object-position:center}
+.autumn-foot{text-align:center;border-top:1px solid #ddd9d2;padding:24px 10px 0;font-size:15px}
+.autumn-pending{font-size:10px;color:#726d65;line-height:1.6;margin-top:12px}
+@media(max-width:650px){.autumn-editorial{padding:38px 15px}.autumn-story{grid-template-columns:minmax(0,1fr) minmax(0,0.82fr);gap:12px;padding:22px 0}.autumn-story h3{font-size:20px;letter-spacing:.03em}.autumn-story h4{font-size:9px;margin-bottom:10px}.autumn-story p{font-size:13px;line-height:1.55}.autumn-story img{max-height:330px}}
+@media(max-width:410px){.autumn-story{grid-template-columns:1fr}.autumn-story img{max-height:310px;width:min(100%,280px);margin:auto}.autumn-story p{font-size:14px}}
+</style>
 </head>
 <body><div class="watermark-brush one"></div><div class="watermark-brush two"></div>
 
@@ -4755,12 +4778,46 @@ Descubrir colección
         </div>
       <button type="button" data-set-open="curator">Ver selección</button>
     </article>
+    <article class="prelude-pack-card prelude-set-card autumn-card" aria-labelledby="autumn-card-name">
+      <div class="prelude-pack-chip">EDICIÓN DE OTOÑO</div>
+      <div class="prelude-pack-num">06</div>
+      <h3 id="autumn-card-name">Autumn Discovery Set</h3>
+      <p class="prelude-set-quote">Five scents. One season.</p>
+      <div class="prelude-pack-meta prelude-pack-format"><span>5 × 3 ml · 15 ml</span></div>
+      <div class="prelude-set-benefit"><strong>20,00 €</strong><span>·</span><b>Selección estacional</b></div>
+      <a class="autumn-cta" href="#autumn-discovery">Descubrir la edición</a>
+    </article>
   </div>
 
   
   </div>
 </section>
 
+
+<section id="autumn-discovery" class="autumn-editorial" aria-labelledby="autumn-title">
+ <div class="autumn-head"><p class="autumn-overline">PRELUDE · EDICIÓN DE TEMPORADA</p><h2 id="autumn-title">Autumn Discovery Set</h2><p class="autumn-tagline">Five scents. One season.</p><p class="autumn-summary">Cinco fragancias. Cinco emociones. Una estación.</p><p class="autumn-meta">5 × 3 ml · 15 ml en total · <strong>20,00 €</strong></p></div>
+ <article class="autumn-story">
+ <div class="autumn-story-copy"><span class="autumn-count">01 / 05</span><h3>Gris Charnel</h3><h4>La belleza de los días grises</h4><p>Hay una belleza especial en los días en los que el cielo se vuelve gris. El sonido de la lluvia, una taza de té caliente y el tiempo que parece detenerse. Un otoño sereno, íntimo y lleno de pequeños placeres.</p></div>
+ <img src="assets/autumn/gris-charnel.webp" alt="Ilustración Prelude de Gris Charnel" loading="lazy" width="768" height="1024">
+ </article>
+<article class="autumn-story">
+ <div class="autumn-story-copy"><span class="autumn-count">02 / 05</span><h3>By the Fireplace</h3><h4>El calor del hogar</h4><p>Hay algo especial en volver a casa cuando el frío comienza a sentirse. El crepitar de la leña, el aroma de las castañas asadas, el calor de una chimenea encendida y la sensación de que, por un momento, no existe ningún lugar mejor en el mundo.</p></div>
+ <img src="assets/autumn/by-the-fireplace.webp" alt="Ilustración Prelude de By the Fireplace" loading="lazy" width="768" height="1024">
+ </article>
+<article class="autumn-story">
+ <div class="autumn-story-copy"><span class="autumn-count">03 / 05</span><h3>La Nuit de L&#x27;Homme</h3><h4>El misterio de la noche</h4><p>Hay algo especial en las noches de otoño. Las calles se iluminan, el aire se vuelve más fresco y todo adquiere un encanto más enigmático. Entre luces y sombras, el aroma especiado del cardamomo acompaña una elegancia serena y una sensualidad discreta, propia de quien sabe dejar huella sin necesidad de decir demasiado.</p></div>
+ <img src="assets/autumn/la-nuit-de-lhomme.webp" alt="Ilustración Prelude de La Nuit de L&#x27;Homme" loading="lazy" width="768" height="1024">
+ </article>
+<article class="autumn-story">
+ <div class="autumn-story-copy"><span class="autumn-count">04 / 05</span><h3>Stronger With You</h3><h4>Donde comienza el otoño</h4><p>Las hojas comienzan a caer, las tardes se acortan y el aire anuncia una nueva estación. Entre paseos, sonrisas y abrazos inesperados, descubrimos que el verdadero calor del otoño no siempre viene del sol, sino de quien camina a nuestro lado.</p></div>
+ <img src="assets/autumn/stronger-with-you.webp" alt="Ilustración Prelude de Stronger With You" loading="lazy" width="768" height="1024">
+ </article>
+<article class="autumn-story">
+ <div class="autumn-story-copy"><span class="autumn-count">05 / 05</span><h3>Mercedes-Benz Club Black</h3><h4>El último atardecer</h4><p>Los últimos rayos de sol tiñen el paisaje de tonos ámbar y el día se apaga lentamente. La dulzura de la vainilla envuelve el aire con una calidez suave y reconfortante, como esa luz que permanece unos instantes antes de desaparecer. Un otoño envolvente, sereno y lleno de calidez.</p></div>
+ <img src="assets/autumn/mercedes-club-black.webp" alt="Ilustración Prelude de Mercedes-Benz Club Black" loading="lazy" width="768" height="1024">
+ </article>
+ <div class="autumn-foot"><p>Edición disponible únicamente durante otoño.</p><p class="autumn-pending">Presentación informativa. Compra del set pendiente de activación en Prelude Studio.</p></div>
+</section>
 
 <div class="catalog-toolbar" aria-label="Ordenar catálogo"><label for="catalogSort">Ordenar por</label><select id="catalogSort" class="catalog-sort"><option value="bestsellers" selected>Más vendidos</option><option value="price-desc">Precio: mayor a menor</option><option value="price-asc">Precio: menor a mayor</option><option value="brand-asc">Marca: A–Z</option><option value="brand-desc">Marca: Z–A</option><option value="name-asc">Perfume: A–Z</option><option value="name-desc">Perfume: Z–A</option></select></div>
 <div class="layout"><main class="grid" id="grid"></main><aside class="cart" id="cart"></aside></div></div>

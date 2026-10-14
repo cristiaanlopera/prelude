@@ -1,0 +1,30 @@
+PRELUDE — Autumn Discovery Set | Integración editorial
+Fecha: 14/10/2026
+
+BASE: archivo facilitado «Nuevo Archivo WinRAR ZIP(7).zip».
+ARCHIVOS MODIFICADOS: index.html
+ARCHIVOS AÑADIDOS: assets/autumn/*.webp (cinco ilustraciones proporcionadas por el usuario).
+NO MODIFICADOS: studio.html, js/, css/, SQL, funciones Supabase ni reglas de pedidos, stock y marcapáginas.
+
+LO INCLUIDO:
+- Sexta tarjeta dentro de la sección Prelude Sets.
+- Enlace «Descubrir la edición» a nueva sección editorial dentro de la misma página.
+- Las cinco descripciones aprobadas, cada una con imagen a la derecha y texto a la izquierda.
+- Imágenes optimizadas WebP con proporciones naturales (sin deformarlas).
+- Precio informativo 20 € / 5×3 ml. Disponibilidad solo otoño.
+
+NO INCLUIDO:
+- Compra del set, incorporación en Studio/Supabase, descuento de inventario,
+  bonus de marcapáginas, disponibilidad automática por fechas.
+- Comprobación de la versión desplegada en Netlify ni despliegue a GitHub.
+- Verificación legal del fraccionamiento y venta.
+
+DESPLIEGUE SEGURO:
+1. Crear copia/rama del repositorio actual.
+2. Comparar su index.html con este (es una integración basada en el ZIP adjunto).
+3. Aplicar index.html y la carpeta assets/autumn/ (no es necesario reemplazar los otros archivos si coinciden).
+4. Probar la vista responsive, imágenes y los cinco Sets existentes.
+5. Registrar el set comercial con precio, formato, stock, costes y reglas de marcapáginas verificadas antes de habilitar compra.
+6. Una vez validado, desplegar en Netlify desde GitHub.
+
+ESTADO: Archivos preparados; no desplegados ni probados en producción.
